@@ -1,0 +1,7 @@
+easy_admin:
+    site_name: 'ITStyr'
+    entities:
+        System:
+            class: App\Entity\System
+    design:
+        brand_color: '#2E8B57'
