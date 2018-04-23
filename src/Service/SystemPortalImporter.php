@@ -47,11 +47,10 @@ class SystemPortalImporter
             if (!$system) {
                 $system = new System();
                 $system->setSysId($entry->id);
+                $system->setName($this->sanitizeText($entry->title));
 
                 $this->entityManager->persist($system);
             }
-
-            $system->setName($this->sanitizeText($entry->title));
 
             $system->setSysUpdated($this->convertDate($entry->updated));
 

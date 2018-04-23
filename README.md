@@ -21,7 +21,7 @@ https://symfony.com/doc/current/setup/built_in_web_server.html
 
 Start the PHP development server with
 ```sh
-php bin/console server:run
+bin/console server:run
 ```
 
 Access the site at http://127.0.0.1:8000
@@ -29,7 +29,7 @@ Access the site at http://127.0.0.1:8000
 ## Setup on server
 https://symfony.com/doc/current/setup/web_server_configuration.html
 
-## Import fra system portal
+## Import from system portal
 ```sh
 bin/console itstyr:import PATH
 ```
