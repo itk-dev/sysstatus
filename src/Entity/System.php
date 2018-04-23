@@ -648,4 +648,9 @@ class System
     {
         return $this->getSysId();
     }
+
+    public function getShowableName()
+    {
+        return isset($this->sysTitle) ? $this->sysTitle : $this->getName();
+    }
 }

@@ -5,7 +5,7 @@ easy_admin:
         time:     'H:i'
         datetime: 'd/m/Y H:i:s'
     list:
-        max_results: 25
+        max_results: 20
         actions:
             - show
     entities:
@@ -14,8 +14,8 @@ easy_admin:
             list:
                 fields:
                     - { property: 'id', label: 'entity.system.id' }
-                    - { property: 'name', label: 'entity.system.name' }
-                    - { property: 'sys_title', label: 'entity.system.sys_title' }
+                    - { property: 'showable_name', label: 'entity.system.sys_title' }
+                    - { property: 'sys_owner', label: 'entity.system.sys_owner' }
                     - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
                     - { property: 'text', label: 'entity.system.text' }
                 sort: ['id', 'ASC']

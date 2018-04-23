@@ -1,7 +1,7 @@
 entity:
     system:
         id: ID
-        name: Navn
+        name: Internt navn
         text: Noter
         sys_id: Id
         sys_id_as_link: Link til systemportalen
