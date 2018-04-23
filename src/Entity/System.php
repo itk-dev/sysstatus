@@ -643,4 +643,9 @@ class System
     {
         $this->sysAlternativeTitle = $sysAlternativeTitle;
     }
+
+    public function getSysIdAsLink()
+    {
+        return $this->getSysId();
+    }
 }

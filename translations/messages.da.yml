@@ -4,6 +4,7 @@ entity:
         name: Navn
         text: Noter
         sys_id: Id
+        sys_id_as_link: Link til systemportalen
         sys_title: Systemnavn
         sys_updated: Opdateret
         sys_description: Beskrivelse
@@ -33,3 +34,6 @@ entity:
 menu:
     systemportal: Fra systemportalen
     general: Redigerbar Data
+System: System
+Systems: Systemer
+User: Bruger

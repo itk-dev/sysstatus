@@ -12,7 +12,7 @@ $ bin/console doctrine:migrations:migrate
 ```
 
 ### Create a super admin user
-```
+```sh
 bin/console fos:user:create --super-admin
 ```
 
@@ -29,3 +29,7 @@ Access the site at http://127.0.0.1:8000
 ## Setup on server
 https://symfony.com/doc/current/setup/web_server_configuration.html
 
+## Import fra system portal
+```sh
+bin/console itstyr:import PATH
+```

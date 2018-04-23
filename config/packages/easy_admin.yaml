@@ -4,6 +4,10 @@ easy_admin:
         date:     'd/m/Y'
         time:     'H:i'
         datetime: 'd/m/Y H:i:s'
+    list:
+        max_results: 25
+        actions:
+            - show
     entities:
         System:
             class: App\Entity\System
@@ -12,7 +16,41 @@ easy_admin:
                     - { property: 'id', label: 'entity.system.id' }
                     - { property: 'name', label: 'entity.system.name' }
                     - { property: 'sys_title', label: 'entity.system.sys_title' }
+                    - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
                     - { property: 'text', label: 'entity.system.text' }
+                sort: ['id', 'ASC']
+            show:
+                fields:
+                    - { property: 'name', label: 'entity.system.name' }
+                    - { property: 'text', label: 'entity.system.text' }
+                    - { property: 'sys_title', label: 'entity.system.sys_title' }
+                    - { property: 'sys_id', label: 'entity.system.sys_id' }
+                    - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
+                    - { property: 'sys_updated', label: 'entity.system.sys_updated', type: 'datetime' }
+                    - { property: 'sys_description', label: 'entity.system.sys_description' }
+                    - { property: 'sys_owner', label: 'entity.system.sys_owner' }
+                    - { property: 'sys_owner_subdepartment', label: 'entity.system.sys_owner_subdepartment' }
+                    - { property: 'sys_emergency_setup', label: 'entity.system.sys_emergency_setup' }
+                    - { property: 'sys_contractor', label: 'entity.system.sys_contractor' }
+                    - { property: 'sys_urgency_rating', label: 'entity.system.sys_urgency_rating' }
+                    - { property: 'sys_number_of_users', label: 'entity.system.sys_number_of_users' }
+                    - { property: 'sys_technical_documentation', label: 'entity.system.sys_technical_documentation' }
+                    - { property: 'sys_external_dependencies', label: 'entity.system.sys_external_dependencies' }
+                    - { property: 'sys_important_information', label: 'entity.system.sys_important_information' }
+                    - { property: 'sys_superuser_organization', label: 'entity.system.sys_superuser_organization' }
+                    - { property: 'sys_itsecurity_category', label: 'entity.system.sys_itsecurity_category' }
+                    - { property: 'sys_link_to_security_review', label: 'entity.system.sys_link_to_security_review' }
+                    - { property: 'sys_link_to_contract', label: 'entity.system.sys_link_to_contract' }
+                    - { property: 'sys_end_of_contract', label: 'entity.system.sys_end_of_contract', type: 'datetime' }
+                    - { property: 'sys_archiving', label: 'entity.system.sys_archiving' }
+                    - { property: 'sys_open_data', label: 'entity.system.sys_open_data' }
+                    - { property: 'sys_open_source', label: 'entity.system.sys_open_source' }
+                    - { property: 'sys_digital_post', label: 'entity.system.sys_digital_post' }
+                    - { property: 'sys_system_category', label: 'entity.system.sys_system_category' }
+                    - { property: 'sys_digital_transactions_pr_year', label: 'entity.system.sys_digital_transactions_pr_year' }
+                    - { property: 'sys_total_transactions_pr_year', label: 'entity.system.sys_total_transactions_pr_year' }
+                    - { property: 'sys_self_service_url', label: 'entity.system.sys_self_service_url' }
+                    - { property: 'sys_alternative_title', label: 'entity.system.sys_alternative_title' }
             form:
                 fields:
                     - { type: 'group', label: 'menu.general', icon: 'cog' }
