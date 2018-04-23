@@ -1,0 +1,35 @@
+entity:
+    system:
+        id: ID
+        name: Navn
+        text: Noter
+        sys_id: Id
+        sys_title: Systemnavn
+        sys_updated: Opdateret
+        sys_description: Beskrivelse
+        sys_owner: Systemejerskab
+        sys_owner_subdepartment: SystemejerskabUnderafdeling
+        sys_emergency_setup: Driftsberedskab
+        sys_contractor: Systemleverandør
+        sys_urgency_rating: Urgency Rating
+        sys_number_of_users: Antal brugere
+        sys_technical_documentation: Teknisk dokumentation
+        sys_external_dependencies: Eksterne systemafhængigheder
+        sys_important_information: Vigtige supplerende oplysninger
+        sys_superuser_organization: Superbrugerorganisation
+        sys_itsecurity_category: IT sikkerhedskategori
+        sys_link_to_security_review: Link til sikkerhedsanmeldelse
+        sys_link_to_contract: Link til kontrakt
+        sys_end_of_contract: Kontraktudløbsdato
+        sys_archiving: Arkivering
+        sys_open_data: Open data
+        sys_open_source: Open source
+        sys_digital_post: Digital Post
+        sys_system_category: Systemkategori
+        sys_digital_transactions_pr_year: Antal digitale transaktioner pr år
+        sys_total_transactions_pr_year: Antal totale transaktioner pr år
+        sys_self_service_url: Selvbetjenings-URL
+        sys_alternative_title: Kaldenavn
+menu:
+    systemportal: Fra systemportalen
+    general: Redigerbar Data
