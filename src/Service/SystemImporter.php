@@ -3,35 +3,9 @@
 namespace App\Service;
 
 use App\Entity\System;
-use Doctrine\ORM\EntityManagerInterface;
 
-class SystemPortalImporter
+class SystemImporter extends BaseImporter
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    private function sanitizeText(string $str) {
-        $newStr = html_entity_decode($str);
-        $newStr = strip_tags($newStr, '<p>');
-        $newStr = str_replace('<p>', '', $newStr);
-        $newStr = str_replace('</p>', "\n", $newStr);
-        return $newStr;
-    }
-
-    private function convertDate(string $date) {
-        if (!is_string($date)) {
-            return null;
-        }
-
-        $new = new \DateTime($date);
-
-        return $new;
-    }
-
     public function import($src)
     {
         $xml = simplexml_load_file($src);
@@ -53,10 +27,9 @@ class SystemPortalImporter
             }
 
             $system->setSysUpdated($this->convertDate($entry->updated));
+            $system->setSysTitle($this->sanitizeText($entry->title));
 
             $properties = $entry->content->children('m', TRUE)->children('d', TRUE);
-
-            $system->setSysTitle($this->sanitizeText($entry->title));
 
             $system->setSysAlternativeTitle($this->sanitizeText($properties->Kaldenavn));
             $system->setSysDescription($this->sanitizeText($properties->Beskrivelse));
@@ -69,7 +42,7 @@ class SystemPortalImporter
             $system->setSysTechnicalDocumentation($this->sanitizeText($properties->TekniskDokumentation));
             $system->setSysExternalDependencies($this->sanitizeText($properties->EksterneSystemafhængigheder));
             $system->setSysImportantInformation($this->sanitizeText($properties->VigtigeSupplerendeOplysninger));
-
+            $system->setSysEmergencySetup($this->sanitizeText($properties->Driftsberedskab));
             $system->setSysSuperuserOrganization($this->sanitizeText($properties->Superbrugerorganisation));
             $system->setSysITSecurityCategory($this->sanitizeText($properties->ITSikkerhedskategoriValue));
             $system->setSysLinkToSecurityReview($this->sanitizeText($properties->LinkTilSikkerhedsanmeldelse));

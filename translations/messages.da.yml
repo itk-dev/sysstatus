@@ -31,6 +31,45 @@ entity:
         sys_total_transactions_pr_year: Antal totale transaktioner pr år
         sys_self_service_url: Selvbetjenings-URL
         sys_alternative_title: Kaldenavn
+        sys_version: Version
+    report:
+        id: ID
+        name: Internt navn
+        text: Noter
+        sys_id: Id
+        sys_title: Navn
+        sys_alternative_title: SystemetsKaldenavn
+        sys_updated: Opdateret
+        sys_owner: Systemejerskab
+        sys_confidential_information: Fortrolige oplysninger
+        sys_purpose: Formål
+        sys_classification: Systemets klassifikation
+        sys_date_for_revision: Dato for Revision
+        sys_persons: Personkreds
+        sys_information_types: Oplysningstyper
+        sys_dato_to_previous_internal_system_dependencies: Hvor overføres data til tidligere interne systemafhængigheder
+        sys_dato_from_previous_external_system_dependencies: Hvor kommer data fra tidligere eksterne systemafhængigheder
+        sys_data_location: Placering af data
+        sys_latest_deletion_date: Hvornår slettes oplysningerne senest
+        sys_data_worth_saving: Bevaringsværdige data
+        sys_data_worth_saving_via: Bevaringsværdige data via
+        sys_data_processors: Databehandler
+        sys_data_processing_agreement: Databehandleraftale
+        sys_data_processing_agreement_link: Link til databehandleraftale
+        sys_auditor_statement: Revisorerklæring tilsyn
+        sys_auditor_statement_link: Link til revisorerklæring
+        sys_usage: Systembrug
+        sys_request_for_insight: Anmodning om indsigt
+        sys_date_use: Ibrugtagning
+        sys_status: Status
+        sys_remarks: Bemærkninger
+        sys_video_suveillance: Hvor tv overvåges der henne
+        sys_obligation_to_inform: Oplysningspligten
+        sys_legal_basis: RetligtGrundlag
+        sys_consent: SamtykkeValue
+        sys_impact_analysis: Konsekvensanalyse
+        sys_authorization_procedure: Autorisationsprocedure
+        sys_version: Version
 menu:
     systemportal: Fra systemportalen
     general: Redigerbar Data

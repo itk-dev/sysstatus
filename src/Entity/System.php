@@ -166,6 +166,11 @@ class System
      */
     private $sysSelfServiceURL;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysVersion;
+
     public function getId()
     {
         return $this->id;
@@ -652,5 +657,21 @@ class System
     public function getShowableName()
     {
         return isset($this->sysTitle) ? $this->sysTitle : $this->getName();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSysVersion()
+    {
+        return $this->sysVersion;
+    }
+
+    /**
+     * @param mixed $sysVersion
+     */
+    public function setSysVersion($sysVersion)
+    {
+        $this->sysVersion = $sysVersion;
     }
 }
