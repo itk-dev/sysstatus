@@ -1,0 +1,10 @@
+/* Make cke_editable fields appear as disabled fields */
+.cke_editable {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  outline: none;
+}
+.cke_float .cke_top {
+  display: none;
+}

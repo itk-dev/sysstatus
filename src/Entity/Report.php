@@ -781,4 +781,27 @@ class Report
         $this->sysVersion = $sysVersion;
     }
 
+    /**
+     * Virtual property.
+     */
+    public function getSysIdAsLink()
+    {
+        return $this->getSysId();
+    }
+
+    /**
+     * Virtual property.
+     */
+    public function getShowableName()
+    {
+        return isset($this->sysTitle) ? $this->sysTitle : $this->getName();
+    }
+
+    /**
+     * Virtual property.
+     */
+    public function getTextSet()
+    {
+        return isset($this->text);
+    }
 }

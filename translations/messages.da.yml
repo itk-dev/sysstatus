@@ -37,6 +37,7 @@ entity:
         name: Internt navn
         text: Noter
         sys_id: Id
+        sys_id_as_link: Link til anmeldelsesportalen
         sys_title: Navn
         sys_alternative_title: SystemetsKaldenavn
         sys_updated: Opdateret
