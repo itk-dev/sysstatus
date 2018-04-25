@@ -56,6 +56,7 @@ class SystemImporter extends BaseImporter
             $system->setSysDigitalTransactionsPrYear($this->sanitizeText($properties->AntalDigitaleTransaktionerPrÅr));
             $system->setSysTotalTransactionsPrYear($this->sanitizeText($properties->AntalTotaleTransaktionerPrÅr));
             $system->setSysSelfServiceURL($this->sanitizeText($properties->SelvbetjeningsURL));
+            $system->setSysVersion($this->sanitizeText($properties->Version));
         };
 
         $this->entityManager->flush();
