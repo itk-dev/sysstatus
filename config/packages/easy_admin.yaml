@@ -204,4 +204,4 @@ easy_admin:
             - { entity: 'User', icon: 'users', label: 'menu.users'  }
         assets:
             css:
-                - style.css
+                - ckeditor_styles.css
