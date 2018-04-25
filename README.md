@@ -29,7 +29,8 @@ Access the site at http://127.0.0.1:8000
 ## Setup on server
 https://symfony.com/doc/current/setup/web_server_configuration.html
 
-## Import from system portal
+## Import systems and reports
 ```sh
-bin/console itstyr:import PATH
+bin/console itstyr:import:system PATH
+bin/console itstyr:import:report PATH
 ```
