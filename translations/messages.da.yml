@@ -1,4 +1,8 @@
 entity:
+    note:
+        id: ID
+        name: Navn
+        text: Notater
     system:
         id: ID
         name: Internt navn
@@ -72,6 +76,7 @@ entity:
         sys_authorization_procedure: Autorisationsprocedure
         sys_version: Version
 menu:
+    notes: Notater
     systemportal: Fra systemportalen
     general: Redigerbar Data
     reportportal: Fra anmeldelsesportalen
@@ -82,3 +87,12 @@ System: System
 Systems: Systemer
 User: Bruger
 Report: Anmeldelse
+Note: Notat
+Username: Brugernavn
+Email: Email
+Enabled: Aktiveret
+'Last login': Sidste login
+Roles: Roller
+'Plain password': Ubeskyttet kodeord
+ROLE_USER: ROLE_USER
+ROLE_ADMIN: ROLE_ADMIN
