@@ -1,5 +1,8 @@
 # ITStyr CHANGELOG
 
+## 1.0.2
+* Added .htaccess file.
+
 ## 1.0.1
 * Added dotenv.
 * Added security-checker.
