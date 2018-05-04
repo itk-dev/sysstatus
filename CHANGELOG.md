@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.0.1
+* Added dotenv.
+* Added security-checker.
+
 ## 1.0.0
 * Initial version.
 * Reports and systems, with import scripts.
