@@ -1,4 +1,8 @@
 entity:
+    answer:
+        id: ID
+        note: Notat
+        smiley: Smiley
     note:
         id: ID
         name: Navn
@@ -83,11 +87,21 @@ menu:
     reports: Anmeldelser
     systems: Systemer
     users: Brugere
+    answers: Svar
+    questions: Spørgsmål
+    categories: Kategorier
+    themes: Temaer
+    admin: Admin
+    sysstatus: System status
+    separator: ''
 System: System
 Systems: Systemer
 User: Bruger
 Report: Anmeldelse
 Note: Notat
+Question: Spørgsmål
+Smiley: Smiley
+Answer: Svar
 Username: Brugernavn
 Email: Email
 Enabled: Aktiveret
@@ -96,3 +110,7 @@ Roles: Roller
 'Plain password': Ubeskyttet kodeord
 ROLE_USER: ROLE_USER
 ROLE_ADMIN: ROLE_ADMIN
+Green: Grøn
+Yellow: Gul
+Red: Rød
+Blue: Blue

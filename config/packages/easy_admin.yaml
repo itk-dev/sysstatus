@@ -8,7 +8,44 @@ easy_admin:
         max_results: 15
         actions:
             - show
+    design:
+        brand_color: '#2A3CA2'
+        menu:
+            - { label: 'menu.sysstatus' }
+            - { entity: 'Report', icon: 'file', label: 'menu.reports', default: true }
+            - { entity: 'System', icon: 'cogs', label: 'menu.systems' }
+            - { entity: 'Note', icon: 'edit', label: 'menu.notes' }
+            - { label: 'menu.separator' }
+            - { label: 'menu.separator' }
+            - { label: 'menu.separator' }
+            - { label: 'menu.admin' }
+            - { entity: 'User', icon: 'users', label: 'menu.users'  }
+            - { entity: 'Theme', icon: 'th-large', label: 'menu.themes' }
+            - { entity: 'Category', icon: 'list', label: 'menu.categories' }
+            - { entity: 'Question', icon: 'question', label: 'menu.questions' }
+            - { entity: 'Answer', icon: 'comment', label: 'menu.answers' }
+        assets:
+            css:
+                - ckeditor_styles.css
     entities:
+        Theme:
+            class: App\Entity\Theme
+        Category:
+            class: App\Entity\Category
+        Question:
+            class: App\Entity\Question
+        Answer:
+            class: App\Entity\Answer
+            list:
+                fields:
+                    - { property: 'id', label: 'entity.answer.id' }
+                    - { property: 'smiley', label: 'entity.answer.smiley', type: 'text', template: 'easy_admin_overrides/field_smiley.html.twig' }
+                    - { property: 'note', label: 'entity.answer.note', type: 'text' }
+                sort: ['id', 'ASC']
+            show:
+                fields:
+                    - { property: 'smiley', label: 'entity.answer.smiley', type: 'text', template: 'easy_admin_overrides/field_smiley.html.twig' }
+                    - { property: 'note', label: 'entity.answer.note', type: 'text' }
         Note:
             class: App\Entity\Note
             list:
@@ -220,13 +257,3 @@ easy_admin:
                     # if administrators are allowed to edit users' passwords and roles, add this:
                     - { property: 'plainPassword', type: 'text', type_options: { required: false } }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
-    design:
-        brand_color: '#2A3CA2'
-        menu:
-            - { entity: 'Report', icon: 'file', label: 'menu.reports', default: true }
-            - { entity: 'System', icon: 'cogs', label: 'menu.systems' }
-            - { entity: 'Note', icon: 'edit', label: 'menu.notes' }
-            - { entity: 'User', icon: 'users', label: 'menu.users'  }
-        assets:
-            css:
-                - ckeditor_styles.css
