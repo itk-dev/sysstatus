@@ -11,6 +11,7 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
+        theme: Tema
         sys_id: Id
         sys_id_as_link: Link til systemportalen
         sys_title: Systemnavn
@@ -44,6 +45,10 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
+        theme: Tema
+        answers: Smileys
+        answers_remarks: Rediger
+        answers_remarks_create: Opret
         sys_id: Id
         sys_id_as_link: Link til anmeldelsesportalen
         sys_title: Navn

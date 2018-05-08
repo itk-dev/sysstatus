@@ -35,6 +35,16 @@ class Answer
      */
     private $smiley;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\System", inversedBy="answers")
+     */
+    private $system;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Report", inversedBy="answers")
+     */
+    private $report;
+
     public function getId()
     {
         return $this->id;
@@ -76,8 +86,32 @@ class Answer
         return $this;
     }
 
+    public function getSystem(): ?System
+    {
+        return $this->system;
+    }
+
+    public function setSystem(?System $system): self
+    {
+        $this->system = $system;
+
+        return $this;
+    }
+
+    public function getReport(): ?Report
+    {
+        return $this->report;
+    }
+
+    public function setReport(?Report $report): self
+    {
+        $this->report = $report;
+
+        return $this;
+    }
+
     public function __toString()
     {
-        return $this->getId();
+        return $this->getNote();
     }
 }
