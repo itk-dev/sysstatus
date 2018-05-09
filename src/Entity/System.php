@@ -762,4 +762,12 @@ class System
 
         return $this;
     }
+
+    /**
+     * Virtual property.
+     */
+    public function getAnswerArea()
+    {
+        return $this->getTheme();
+    }
 }

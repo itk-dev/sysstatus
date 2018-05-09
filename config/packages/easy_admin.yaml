@@ -35,16 +35,38 @@ easy_admin:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
                     - { property: 'categories', label: 'entity.theme.categories' }
+            list:
+                fields:
+                    - { property: 'id', label: 'entity.theme.id' }
+                    - { property: 'name', label: 'entity.theme.name' }
+                    - { property: 'categories', label: 'entity.theme.categories' }
+                sort: ['id', 'ASC']
+            form:
+                fields:
+                    - { property: 'name', label: 'entity.theme.name' }
+                    - { property: 'categories', label: 'entity.theme.categories' }
+                    - { property: 'systems', label: 'entity.theme.systems' }
+                    - { property: 'reports', label: 'entity.theme.reports' }
         Category:
             class: App\Entity\Category
-            show:
+            list:
+                fields:
+                    - { property: 'id', label: 'entity.category.id' }
+                    - { property: 'name', label: 'entity.category.name' }
+                    - { property: 'questions', label: 'entity.category.questions' }
+                sort: ['id', 'ASC']
+            form:
                 fields:
                     - { property: 'name', label: 'entity.category.name' }
-                    - { property: 'themes', label: 'entity.category.themes' }
-                    - { property: 'questions', label: 'entity.category.questions' }
         Question:
             class: App\Entity\Question
-            show:
+            list:
+                fields:
+                    - { property: 'id', label: 'entity.question.id' }
+                    - { property: 'question', label: 'entity.question.question' }
+                    - { property: 'category', label: 'entity.question.category' }
+                sort: ['id', 'ASC']
+            form:
                 fields:
                     - { property: 'question', label: 'entity.question.question' }
                     - { property: 'category', label: 'entity.question.category' }
@@ -56,11 +78,6 @@ easy_admin:
                     - { property: 'smiley', label: 'entity.answer.smiley', type: 'text', template: 'easy_admin_overrides/field_smiley.html.twig' }
                     - { property: 'note', label: 'entity.answer.note', type: 'text' }
                 sort: ['id', 'ASC']
-            show:
-                fields:
-                    - { property: 'question', label: 'entity.answer.question' }
-                    - { property: 'smiley', label: 'entity.answer.smiley', type: 'text', template: 'easy_admin_overrides/field_smiley.html.twig' }
-                    - { property: 'note', label: 'entity.answer.note', type: 'text' }
             form:
                 fields:
                     - { property: 'question', label: 'entity.answer.question', type_options: { required: false, disabled: disabled } }
@@ -193,6 +210,7 @@ easy_admin:
                     - { property: 'name', label: 'entity.system.name' }
                     - { property: 'text', label: 'entity.system.text', type: 'raw' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
+                    - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'raw' }
                     - { property: 'sys_id', label: 'entity.system.sys_id', type: 'raw' }
                     - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }

@@ -870,7 +870,6 @@ class Report
         return $this;
     }
 
-
     /**
      * Virtual property.
      */

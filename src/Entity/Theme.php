@@ -51,6 +51,7 @@ class Theme
     {
         $this->systems = new ArrayCollection();
         $this->reports = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId()

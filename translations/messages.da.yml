@@ -1,7 +1,18 @@
 entity:
+    category:
+        id: ID
+        name: Navn
+        questions: Antal spørgsmål
+    question:
+        id: ID
+        question: Spørgsmål
+        category: Kategori
     theme:
+        id: ID
         categories: Kategorier
         name: Navn
+        systems: Systemer
+        reports: Anmeldelser
     answer:
         id: ID
         note: Notat
@@ -17,6 +28,7 @@ entity:
         name: Internt navn
         text: Noter
         theme: Tema
+        answers: Smileys
         sys_id: Id
         sys_id_as_link: Link til systemportalen
         sys_title: Systemnavn
@@ -139,3 +151,7 @@ answers_show:
     question: Spørgsmål
     smiley: Smiley
     actions: Handlinger
+'Created by': Oprettet af
+'Updated by': Opdateret af
+'Created at': Oprettet
+'Updated at': Opdateret
