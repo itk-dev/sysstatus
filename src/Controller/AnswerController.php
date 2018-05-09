@@ -44,7 +44,9 @@ class AnswerController extends Controller
         }
 
         if (isset($reportId)) {
-            $answer = $answerRepository->findOneBy(['question' => $questionId, 'report' => $reportId]);
+            $answer = $answerRepository->findOneBy(
+                ['question' => $questionId, 'report' => $reportId]
+            );
 
             if (!$answer) {
                 $answer = new Answer();
@@ -54,7 +56,9 @@ class AnswerController extends Controller
             }
         }
         if (isset($systemId)) {
-            $answer = $answerRepository->findOneBy(['question' => $questionId, 'system' => $systemId]);
+            $answer = $answerRepository->findOneBy(
+                ['question' => $questionId, 'system' => $systemId]
+            );
 
             if (!$answer) {
                 $answer = new Answer();
@@ -66,11 +70,14 @@ class AnswerController extends Controller
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('easyadmin', array(
-            'action' => 'edit',
-            'id' => $answer->getId(),
-            'entity' => 'Answer',
-            'referer' => $request->query->get('referer'),
-        ));
+        return $this->redirectToRoute(
+            'easyadmin',
+            array(
+                'action' => 'edit',
+                'id' => $answer->getId(),
+                'entity' => 'Answer',
+                'referer' => $request->query->get('referer'),
+            )
+        );
     }
 }

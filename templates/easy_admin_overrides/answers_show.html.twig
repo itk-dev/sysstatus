@@ -1,3 +1,4 @@
+{% set itemClass = getclass(item) | split('\\') | last %}
 {% set alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R'] %}
 {% set numberOfCategories = 0 %}
 {% if value and value.categories %}
@@ -32,7 +33,7 @@
             {% if answer in item.answers %}
               {% set numberOfAnswers = numberOfAnswers + 1 %}
               <td>
-                <a href="?entity=Answer&id={{ answer.id }}&action=edit&referer=%252F%253Fentity%253DReport%2526action%253Dshow%2526id%253D{{ item.id }}">
+                <a href="?entity=Answer&id={{ answer.id }}&action=edit&referer=%252F%253Fentity%253D{{ itemClass }}%2526action%253Dshow%2526id%253D{{ item.id }}">
                   <i class="fa fa-edit edit-icon"></i>
                 </a>
               </td>
@@ -41,7 +42,7 @@
           {% if numberOfAnswers == 0 %}
             <td></td>
             <td>
-              <a href="answer/new?question={{ question.id }}&report={{ item.id }}&referer=%252F%253Fentity%253DReport%2526action%253Dshow%2526id%253D{{ item.id }}">
+              <a href="answer/new?question={{ question.id }}&{{ itemClass | lower }}={{ item.id }}&referer=%252F%253Fentity%253D{{ itemClass }}%2526action%253Dshow%2526id%253D{{ item.id }}">
                 <i class="fa fa-edit edit-icon"></i>
               </a>
             </td>

@@ -32,7 +32,7 @@ class Theme
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="themes")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="themes")
      */
     private $categories;
 

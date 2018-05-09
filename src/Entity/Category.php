@@ -32,7 +32,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", inversedBy="categories")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", mappedBy="categories")
      */
     private $themes;
 
@@ -43,7 +43,6 @@ class Category
 
     public function __construct()
     {
-        $this->themes = new ArrayCollection();
         $this->questions = new ArrayCollection();
     }
 
