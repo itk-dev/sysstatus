@@ -23,17 +23,31 @@ easy_admin:
             - { entity: 'Theme', icon: 'th-large', label: 'menu.themes' }
             - { entity: 'Category', icon: 'list', label: 'menu.categories' }
             - { entity: 'Question', icon: 'question', label: 'menu.questions' }
-            - { entity: 'Answer', icon: 'comment', label: 'menu.answers' }
+#            - { entity: 'Answer', icon: 'comment', label: 'menu.answers' }
         assets:
             css:
                 - ckeditor_styles.css
+                - styles.css
     entities:
         Theme:
             class: App\Entity\Theme
+            show:
+                fields:
+                    - { property: 'name', label: 'entity.theme.name' }
+                    - { property: 'categories', label: 'entity.theme.categories' }
         Category:
             class: App\Entity\Category
+            show:
+                fields:
+                    - { property: 'name', label: 'entity.category.name' }
+                    - { property: 'themes', label: 'entity.category.themes' }
+                    - { property: 'questions', label: 'entity.category.questions' }
         Question:
             class: App\Entity\Question
+            show:
+                fields:
+                    - { property: 'question', label: 'entity.question.question' }
+                    - { property: 'category', label: 'entity.question.category' }
         Answer:
             class: App\Entity\Answer
             list:
@@ -44,8 +58,14 @@ easy_admin:
                 sort: ['id', 'ASC']
             show:
                 fields:
+                    - { property: 'question', label: 'entity.answer.question' }
                     - { property: 'smiley', label: 'entity.answer.smiley', type: 'text', template: 'easy_admin_overrides/field_smiley.html.twig' }
                     - { property: 'note', label: 'entity.answer.note', type: 'text' }
+            form:
+                fields:
+                    - { property: 'question', label: 'entity.answer.question', type_options: { required: false, disabled: disabled } }
+                    - { property: 'smiley', label: 'entity.answer.smiley', type_options: { required: false } }
+                    - { property: 'note', label: 'entity.answer.text', type: 'textarea', type_options: { required: false} }
         Note:
             class: App\Entity\Note
             list:

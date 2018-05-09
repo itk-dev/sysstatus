@@ -4,13 +4,13 @@
   {% for category in value.categories %}
     {% set numberOfCategories = numberOfCategories + 1 %}
     <h2>{{ category.name }}</h2>
-    <table>
+    <table class="smiley-table">
       <thead>
       <tr>
-        <th>ID</th>
-        <th>Spørgsmål</th>
-        <th>Smiley</th>
-        <th>Actions</th>
+        <th>{{ 'answers_show.id' | trans }}</th>
+        <th>{{ 'answers_show.question' | trans }}</th>
+        <th>{{ 'answers_show.smiley' | trans }}</th>
+        <th>{{ 'answers_show.actions' | trans }}</th>
       </tr>
       </thead>
       {% set numberOfQuestions = 0 %}
@@ -26,14 +26,14 @@
           {% for answer in question.answers %}
             {% if answer in item.answers %}
               <td>
-                {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley } %}
+                {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note } %}
               </td>
             {% endif %}
             {% if answer in item.answers %}
               {% set numberOfAnswers = numberOfAnswers + 1 %}
               <td>
                 <a href="?entity=Answer&id={{ answer.id }}&action=edit&referer=%252F%253Fentity%253DReport%2526action%253Dshow%2526id%253D{{ item.id }}">
-                  {{ 'entity.report.answers_remarks' | trans }}
+                  <i class="fa fa-edit edit-icon"></i>
                 </a>
               </td>
             {% endif %}
@@ -42,7 +42,7 @@
             <td></td>
             <td>
               <a href="answer/new?question={{ question.id }}&report={{ item.id }}&referer=%252F%253Fentity%253DReport%2526action%253Dshow%2526id%253D{{ item.id }}">
-                {{ 'entity.report.answers_remarks_create' | trans }}
+                <i class="fa fa-edit edit-icon"></i>
               </a>
             </td>
           {% endif %}
@@ -50,16 +50,6 @@
         </tr>
       {% endfor %}
     </table>
-    <style>
-      table {
-        width: 100%;
-      }
-
-      td, th {
-        border: 1px solid #2A3CA2;
-        padding: 1em;
-      }
-    </style>
     <br><br>
   {% endfor %}
 {% endif %}

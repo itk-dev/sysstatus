@@ -2,15 +2,21 @@
 
 namespace App\Entity;
 
-use App\DBAL\Types\SmileyType;
 use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnswerRepository")
+ * @Gedmo\Loggable
  */
 class Answer
 {
+    use BlameableEntity;
+    use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -26,12 +32,14 @@ class Answer
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Gedmo\Versioned
      */
     private $note;
 
     /**
      * @ORM\Column(type="SmileyType", nullable=true)
      * @DoctrineAssert\Enum(entity="App\DBAL\Types\SmileyType")
+     * @Gedmo\Versioned
      */
     private $smiley;
 

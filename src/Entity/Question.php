@@ -5,12 +5,19 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
+ * @Gedmo\Loggable
  */
 class Question
 {
+    use BlameableEntity;
+    use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -20,6 +27,7 @@ class Question
 
     /**
      * @ORM\Column(type="text")
+     * @Gedmo\Versioned
      */
     private $question;
 

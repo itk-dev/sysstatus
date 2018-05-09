@@ -1,8 +1,13 @@
 entity:
+    theme:
+        categories: Kategorier
+        name: Navn
     answer:
         id: ID
         note: Notat
         smiley: Smiley
+        question: Spørgsmål
+        text: Bemærkninger
     note:
         id: ID
         name: Navn
@@ -103,10 +108,17 @@ System: System
 Systems: Systemer
 User: Bruger
 Report: Anmeldelse
+Reports: Anmeldelser
 Note: Notat
-Question: Spørgsmål
-Smiley: Smiley
 Answer: Svar
+Answers: Svar
+Category: Kategori
+Categories: Kategorier
+Question: Spørgsmål
+Questions: Spørgsmål
+Theme: Tema
+Themes: Temaer
+Smiley: Smiley
 Username: Brugernavn
 Email: Email
 Enabled: Aktiveret
@@ -119,3 +131,11 @@ Green: Grøn
 Yellow: Gul
 Red: Rød
 Blue: Blue
+ID: ID
+Actions: Handlinger
+Name: Navn
+answers_show:
+    id: ID
+    question: Spørgsmål
+    smiley: Smiley
+    actions: Handlinger
