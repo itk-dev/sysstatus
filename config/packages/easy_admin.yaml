@@ -1,5 +1,5 @@
 easy_admin:
-    site_name: 'IT Styringsværktøj'
+    site_name: 'Systemstatus'
     formats:
         date:     'd/m/Y'
         time:     'H:i'
@@ -17,13 +17,11 @@ easy_admin:
             - { entity: 'Note', icon: 'edit', label: 'menu.notes' }
             - { label: 'menu.separator' }
             - { label: 'menu.separator' }
-            - { label: 'menu.separator' }
             - { label: 'menu.admin' }
             - { entity: 'User', icon: 'users', label: 'menu.users'  }
             - { entity: 'Theme', icon: 'th-large', label: 'menu.themes' }
             - { entity: 'Category', icon: 'list', label: 'menu.categories' }
             - { entity: 'Question', icon: 'question', label: 'menu.questions' }
-#            - { entity: 'Answer', icon: 'comment', label: 'menu.answers' }
         assets:
             css:
                 - ckeditor_styles.css
@@ -40,6 +38,8 @@ easy_admin:
                     - { property: 'id', label: 'entity.theme.id' }
                     - { property: 'name', label: 'entity.theme.name' }
                     - { property: 'categories', label: 'entity.theme.categories' }
+                    - { property: 'systems', label: 'entity.theme.systems' }
+                    - { property: 'reports', label: 'entity.theme.reports' }
                 sort: ['id', 'ASC']
             form:
                 fields:
