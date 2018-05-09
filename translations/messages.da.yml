@@ -113,9 +113,10 @@ menu:
     questions: Spørgsmål
     categories: Kategorier
     themes: Temaer
-    admin: Admin
+    admin: Administration
     sysstatus: Systemstatus
     separator: ''
+    dashboards: Dashboards
 System: System
 Systems: Systemer
 User: Bruger
@@ -147,7 +148,7 @@ ID: ID
 Actions: Handlinger
 Name: Navn
 answers_show:
-    id: ID
+    id: ''
     question: Spørgsmål
     smiley: Smiley
     actions: Handlinger

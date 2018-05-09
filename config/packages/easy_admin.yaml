@@ -11,6 +11,9 @@ easy_admin:
     design:
         brand_color: '#2A3CA2'
         menu:
+            - { label: 'menu.dashboards' }
+            - { label: 'menu.separator' }
+            - { label: 'menu.separator' }
             - { label: 'menu.sysstatus' }
             - { entity: 'Report', icon: 'file', label: 'menu.reports', default: true }
             - { entity: 'System', icon: 'cogs', label: 'menu.systems' }
@@ -70,6 +73,14 @@ easy_admin:
                 fields:
                     - { property: 'question', label: 'entity.question.question' }
                     - { property: 'category', label: 'entity.question.category' }
+            show:
+                fields:
+                    - { property: 'question' }
+                    - { property: 'category' }
+                    - { property: 'created_by' }
+                    - { property: 'updated_by' }
+                    - { property: 'created_at', type: 'datetime' }
+                    - { property: 'updated_at', type: 'datetime' }
         Answer:
             class: App\Entity\Answer
             list:
