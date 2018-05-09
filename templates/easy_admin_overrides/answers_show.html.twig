@@ -5,7 +5,7 @@
   {% for category in value.categories %}
     {% set numberOfCategories = numberOfCategories + 1 %}
     <h2>{{ category.name }}</h2>
-    <table class="smiley-table">
+    <table class="smiley-table table">
       <thead>
       <tr>
         <th>{{ 'answers_show.id' | trans }}</th>
@@ -34,7 +34,7 @@
               {% set numberOfAnswers = numberOfAnswers + 1 %}
               <td>
                 <a href="?entity=Answer&id={{ answer.id }}&action=edit&referer=%252F%253Fentity%253D{{ itemClass }}%2526action%253Dshow%2526id%253D{{ item.id }}">
-                  <i class="fa fa-edit edit-icon"></i>
+                  <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
                 </a>
               </td>
             {% endif %}
@@ -43,7 +43,7 @@
             <td></td>
             <td>
               <a href="answer/new?question={{ question.id }}&{{ itemClass | lower }}={{ item.id }}&referer=%252F%253Fentity%253D{{ itemClass }}%2526action%253Dshow%2526id%253D{{ item.id }}">
-                <i class="fa fa-edit edit-icon"></i>
+                <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
               </a>
             </td>
           {% endif %}
