@@ -15,3 +15,7 @@
 .smiley-table .smiley-icon {
   width: 30px;
 }
+
+.easyadmin-override--show-actions {
+  float: right;
+}

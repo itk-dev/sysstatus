@@ -1,0 +1,27 @@
+{% extends "@EasyAdmin/default/layout.html.twig" %}
+
+{% block main %}
+  <script>
+    var sites = [];
+
+    {% for entity in entities %}
+      var smileys = [];
+
+      {% for answer in entity.answers %}
+        smileys.push({
+          smiley: "{{ answer.smiley }}",
+          note: "{{ answer.note }}"
+        });
+      {% endfor %}
+
+      sites.push({
+        id: "{{ entity.id }}",
+        name: "{{ entity.name }}",
+        smileys: smileys
+      });
+    {% endfor %}
+
+    console.log(sites);
+  </script>
+
+{% endblock %}
