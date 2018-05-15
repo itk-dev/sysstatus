@@ -153,6 +153,7 @@ answers_show:
     smiley: Smiley
     actions: Handlinger
     edit: Ret
+    no_active_theme: Intet tilkoblet tema.
 'Created by': Oprettet af
 'Updated by': Opdateret af
 'Created at': Oprettet

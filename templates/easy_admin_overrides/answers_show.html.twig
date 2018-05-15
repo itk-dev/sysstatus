@@ -53,4 +53,6 @@
     </table>
     <br><br>
   {% endfor %}
+{% else %}
+  {{ 'answers_show.no_active_theme' | trans }}
 {% endif %}
