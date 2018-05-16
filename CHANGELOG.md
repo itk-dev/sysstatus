@@ -1,5 +1,8 @@
 # ITStyr CHANGELOG
 
+## 1.1.0
+* Added themes, categories, questions, answers.
+
 ## 1.0.2
 * Added .htaccess file.
 
