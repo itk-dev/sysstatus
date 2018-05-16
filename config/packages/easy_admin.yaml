@@ -11,11 +11,11 @@ easy_admin:
     design:
         brand_color: '#2A3CA2'
         menu:
-            - { label: 'menu.dashboards' }
-            - { label: 'menu.dashboard.reports', route: 'dashboard_reports', rel: 'index' }
-            - { label: 'menu.dashboard.systems', route: 'dashboard_systems', rel: 'index' }
-            - { label: 'menu.separator' }
-            - { label: 'menu.separator' }
+#            - { label: 'menu.dashboards' }
+#            - { label: 'menu.dashboard.reports', route: 'dashboard_reports', rel: 'index' }
+#            - { label: 'menu.dashboard.systems', route: 'dashboard_systems', rel: 'index' }
+#            - { label: 'menu.separator' }
+#            - { label: 'menu.separator' }
             - { label: 'menu.sysstatus' }
             - { entity: 'Report', icon: 'file', label: 'menu.reports', default: true }
             - { entity: 'System', icon: 'cogs', label: 'menu.systems' }
