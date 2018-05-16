@@ -1,0 +1,58 @@
+{% set itemClass = getclass(item) | split('\\') | last %}
+{% set alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'] %}
+{% set numberOfCategories = 0 %}
+{% if value and value.categories %}
+  {% for category in value.categories %}
+    {% set numberOfCategories = numberOfCategories + 1 %}
+    <h2>{{ category.name }}</h2>
+    <table class="smiley-table table table-hover">
+      <thead>
+      <tr>
+        <th>{{ 'answers_show.id' | trans }}</th>
+        <th>{{ 'answers_show.question' | trans }}</th>
+        <th>{{ 'answers_show.smiley' | trans }}</th>
+        <th>{{ 'answers_show.actions' | trans }}</th>
+      </tr>
+      </thead>
+      {% set numberOfQuestions = 0 %}
+      {% for question in category.questions %}
+        {% set numberOfQuestions = numberOfQuestions + 1 %}
+        <tr>
+          <td>{{ alphabet[numberOfCategories - 1] }}{{ numberOfQuestions }}</td>
+          <td>
+            <a href="?entity=Question&id={{ question.id }}&action=show">{{ question.question }}</a>
+          </td>
+          {% set numberOfAnswers = 0 %}
+
+          {% for answer in question.answers %}
+            {% if answer in item.answers %}
+              <td>
+                {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note } %}
+              </td>
+            {% endif %}
+            {% if answer in item.answers %}
+              {% set numberOfAnswers = numberOfAnswers + 1 %}
+              <td>
+                <a href="?entity=Answer&id={{ answer.id }}&action=edit&referer=%252F%253Fentity%253D{{ itemClass }}%2526action%253Dshow%2526id%253D{{ item.id }}">
+                  <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
+                </a>
+              </td>
+            {% endif %}
+          {% endfor %}
+          {% if numberOfAnswers == 0 %}
+            <td></td>
+            <td>
+              <a href="answer/new?question={{ question.id }}&{{ itemClass | lower }}={{ item.id }}&referer=%252F%253Fentity%253D{{ itemClass }}%2526action%253Dshow%2526id%253D{{ item.id }}">
+                <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
+              </a>
+            </td>
+          {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+    <br><br>
+  {% endfor %}
+{% else %}
+  {{ 'answers_show.no_active_theme' | trans }}
+{% endif %}
