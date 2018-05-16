@@ -1,4 +1,24 @@
 entity:
+    category:
+        id: ID
+        name: Navn
+        questions: Antal spørgsmål
+    question:
+        id: ID
+        question: Spørgsmål
+        category: Kategori
+    theme:
+        id: ID
+        categories: Kategorier
+        name: Navn
+        systems: Systemer
+        reports: Anmeldelser
+    answer:
+        id: ID
+        note: Notat
+        smiley: Smiley
+        question: Spørgsmål
+        text: Bemærkninger
     note:
         id: ID
         name: Navn
@@ -7,6 +27,8 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
+        theme: Tema
+        answers: Smileys
         sys_id: Id
         sys_id_as_link: Link til systemportalen
         sys_title: Systemnavn
@@ -40,6 +62,10 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
+        theme: Tema
+        answers: Smileys
+        answers_remarks: Rediger
+        answers_remarks_create: Opret
         sys_id: Id
         sys_id_as_link: Link til anmeldelsesportalen
         sys_title: Navn
@@ -83,11 +109,29 @@ menu:
     reports: Anmeldelser
     systems: Systemer
     users: Brugere
+    answers: Svar
+    questions: Spørgsmål
+    categories: Kategorier
+    themes: Temaer
+    admin: Administration
+    sysstatus: Systemstatus
+    separator: ''
+    dashboards: Dashboards
 System: System
 Systems: Systemer
 User: Bruger
 Report: Anmeldelse
+Reports: Anmeldelser
 Note: Notat
+Answer: Svar
+Answers: Svar
+Category: Kategori
+Categories: Kategorier
+Question: Spørgsmål
+Questions: Spørgsmål
+Theme: Tema
+Themes: Temaer
+Smiley: Smiley
 Username: Brugernavn
 Email: Email
 Enabled: Aktiveret
@@ -96,3 +140,21 @@ Roles: Roller
 'Plain password': Ubeskyttet kodeord
 ROLE_USER: ROLE_USER
 ROLE_ADMIN: ROLE_ADMIN
+Green: Grøn
+Yellow: Gul
+Red: Rød
+Blue: Blue
+ID: ID
+Actions: Handlinger
+Name: Navn
+answers_show:
+    id: ''
+    question: Spørgsmål
+    smiley: Smiley
+    actions: Handlinger
+    edit: Ret
+    no_active_theme: Intet tilkoblet tema.
+'Created by': Oprettet af
+'Updated by': Opdateret af
+'Created at': Oprettet
+'Updated at': Opdateret

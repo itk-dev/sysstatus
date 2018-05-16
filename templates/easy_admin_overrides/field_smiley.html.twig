@@ -1,0 +1,7 @@
+{% set title = (title is defined ? title : item.note) %}
+
+{% if value != '' %}
+  <img class="smiley-icon" src="icons/smiley/{{ value }}.png" width="50px" {% if title is defined %}title="{{ title }}"{% endif %}>
+{% else %}
+  <div class="field-smiley--title-hover" {% if title is defined %}title="{{ title }}"{% endif %}>N/A</div>
+{% endif %}

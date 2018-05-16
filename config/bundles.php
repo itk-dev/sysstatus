@@ -18,4 +18,5 @@ return [
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
     Hillrange\CKEditor\HillrangeCKEditorBundle::class => ['all' => true],
+    Fresh\DoctrineEnumBundle\FreshDoctrineEnumBundle::class => ['all' => true],
 ];
