@@ -28,7 +28,7 @@
   margin-bottom: .5em;
 }
 
-select.form-control {
+.custom-filters select.form-control {
   -webkit-appearance: none;
   -moz-appearance: none;
   -webkit-border-radius: 0;
@@ -38,11 +38,11 @@ select.form-control {
   background-size: 16px;
 }
 
-select:-moz-focusring {
+.custom-filters select:-moz-focusring {
   color: transparent;
   text-shadow: 0 0 0 #000;
 }
 
-option:not(:checked) {
+.custom-filters option:not(:checked) {
   color: black;
 }
