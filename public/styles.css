@@ -27,3 +27,22 @@
 .custom-filters {
   margin-bottom: .5em;
 }
+
+select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-border-radius: 0;
+  background-image: url("icons/arrow-down.svg");
+  background-position: 95% 50%;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
+option:not(:checked) {
+  color: black;
+}
