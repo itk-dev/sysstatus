@@ -19,3 +19,11 @@
 .easyadmin-override--show-actions {
   float: right;
 }
+
+.custom-filters button[type=submit] {
+  display: none;
+}
+
+.custom-filters {
+  margin-bottom: .5em;
+}

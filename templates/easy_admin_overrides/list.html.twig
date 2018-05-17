@@ -1,0 +1,69 @@
+{% extends 'bundles/EasyAdminBundle/default/list.html.twig' %}
+
+{% set requestFilters = app.request.get('filters', {}) %}
+{% set _request_parameters = _request_parameters|default({})|merge({
+    filters: requestFilters
+}) %}
+
+{% block content_title_wrapper %}
+  <h1 class="title">
+    {{ block('content_title') }}
+  </h1>
+{% endblock %}
+
+{% block content_header_filters %}
+  {{ parent() }}
+  {% if filters is defined and filters is not null %}
+    <div class="custom-filters">
+      {{ form(filters, {'attr': {'id': 'filters', 'class': 'form-action'}}) }}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block body_javascript %}
+  {{ parent() }}
+
+  <script type="text/javascript">
+      // without jQuery (doesn't work in older IEs)
+      document.addEventListener('DOMContentLoaded', function(){
+          document.getElementById("filter_group").addEventListener('input', function (evt) {
+              document.getElementById("filters").submit();
+          });
+      }, false);
+  </script>
+
+{% endblock %}
+
+{# Do not display SEARCH form if not granted #}
+{% block search_action %}
+  {% if is_easyadmin_granted(_entity_config, 'search') %}
+    {{ parent() }}
+  {% endif %}
+{% endblock %}
+
+{# Do not display NEW button if not granted #}
+{% block new_action %}
+  {% if is_easyadmin_granted(_entity_config, 'new') %}
+    {{ parent() }}
+  {% endif %}
+{% endblock %}
+
+{# Do not display list action items if not granted #}
+{% block item_actions %}
+  {% set _list_item_actions = _list_item_actions|prune_item_actions(_entity_config) %}
+  {{ parent() }}
+{% endblock %}
+
+{# Adds request filters to the search form #}
+{% block search_form %}
+  {% for field, value in requestFilters %}
+    {% if value is iterable %}
+      {% for val in value %}
+        <input type="hidden" name="filters[{{ field }}][]" value="{{ val }}">
+      {% endfor %}
+    {% else %}
+      <input type="hidden" name="filters[{{ field }}]" value="{{ value }}">
+    {% endif %}
+  {% endfor %}
+  {{ parent() }}
+{% endblock %}

@@ -126,6 +126,10 @@ easy_admin:
                     - { property: 'theme', label: 'entity.report.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.report.text', type: 'boolean' }
                 sort: ['id', 'ASC']
+                filters:
+                    -
+                      property: group
+                      type: entity
             show:
                 fields:
                     - { property: 'name', label: 'entity.report.name' }
@@ -223,6 +227,10 @@ easy_admin:
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
+                filters:
+                    -
+                      property: group
+                      type: entity
             show:
                 fields:
                     - { property: 'name', label: 'entity.system.name' }
@@ -314,6 +322,7 @@ easy_admin:
                     - lastLogin
                     - roles
             form:
+                role: ROLE_ADMIN
                 fields:
                     - username
                     - email

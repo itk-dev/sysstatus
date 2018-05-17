@@ -161,3 +161,5 @@ answers_show:
 'Updated by': Opdateret af
 'Created at': Oprettet
 'Updated at': Opdateret
+custom_filters:
+    none: Alle grupper

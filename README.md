@@ -16,7 +16,7 @@ $ bin/console doctrine:migrations:migrate
 bin/console fos:user:create --super-admin
 ```
 
-### Running server
+### Running local server
 https://symfony.com/doc/current/setup/built_in_web_server.html
 
 Start the PHP development server with
@@ -25,6 +25,12 @@ bin/console server:run
 ```
 
 Access the site at http://127.0.0.1:8000
+
+## Debugging
+
+```
+./debug.sh
+```
 
 ## Setup on server
 https://symfony.com/doc/current/setup/web_server_configuration.html
