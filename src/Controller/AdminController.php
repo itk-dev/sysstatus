@@ -14,6 +14,38 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AdminController extends BaseAdminController
 {
+
+    /**
+     * The method that is executed when the user performs a 'show' action on an entity.
+     *
+     * @return Response
+     */
+    protected function showAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_SHOW);
+
+        $id = $this->request->query->get('id');
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $entity = $easyadmin['item'];
+
+        $fields = $this->entity['show']['fields'];
+        $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
+
+        $this->dispatch(EasyAdminEvents::POST_SHOW, array(
+            'deleteForm' => $deleteForm,
+            'fields' => $fields,
+            'entity' => $entity,
+        ));
+
+        $parameters = array(
+            'entity' => $entity,
+            'fields' => $fields,
+            'delete_form' => $deleteForm->createView(),
+        );
+
+        return $this->executeDynamicMethod('render<EntityName>Template', array('show', 'easy_admin_overrides/show.html.twig', $parameters));
+    }
+
     /**
      * The method that is executed when the user performs a 'list' action on an entity.
      *
