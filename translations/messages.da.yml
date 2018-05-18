@@ -27,6 +27,7 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
+        responsible: Ansvarlig
         theme: Tema
         group: Gruppe
         answers: Smileys
@@ -63,6 +64,7 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
+        responsible: Ansvarlig
         theme: Tema
         group: Gruppe
         answers: Smileys

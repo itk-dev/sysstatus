@@ -43,6 +43,11 @@ class System
     protected $group;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    protected $responsible;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $sysId;
@@ -782,6 +787,22 @@ class System
         $this->theme = $theme;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponsible()
+    {
+        return $this->responsible;
+    }
+
+    /**
+     * @param mixed $responsible
+     */
+    public function setResponsible($responsible): void
+    {
+        $this->responsible = $responsible;
     }
 
     /**
