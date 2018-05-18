@@ -10,6 +10,10 @@ easy_admin:
             - show
     design:
         brand_color: '#2A3CA2'
+        templates:
+            label_null: 'easy_admin_overrides/label_null.html.twig'
+            show: 'easy_admin_overrides/show.html.twig'
+            list: 'easy_admin_overrides/list.html.twig'
         menu:
 #            - { label: 'menu.dashboards' }
 #            - { label: 'menu.dashboard.reports', route: 'dashboard_reports', rel: 'index' }

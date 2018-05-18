@@ -165,3 +165,7 @@ answers_show:
 'Updated at': Opdateret
 custom_filters:
     none: Alle grupper
+Apply: Udfør
+Group: Gruppe
+label:
+    'null': ''
