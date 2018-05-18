@@ -14,6 +14,93 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class AdminController extends BaseAdminController
 {
     /**
+     * @Route("/", name="easyadmin")
+     */
+    public function indexAction(Request $request)
+    {
+        return parent::indexAction($request);
+    }
+
+    protected function dashboardAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_LIST);
+
+        $query = trim($this->request->query->get('query'));
+        // if the search query is empty, show list of all.
+        if ('' === $query) {
+            $this->dispatch(EasyAdminEvents::PRE_LIST);
+
+            $fields = $this->entity['list']['fields'];
+            $paginator = $this->findAll(
+                $this->entity['class'],
+                $this->request->query->get('page', 1),
+                $this->config['list']['max_results'],
+                $this->request->query->get('sortField'),
+                $this->request->query->get('sortDirection'),
+                $this->entity['list']['dql_filter']
+            );
+
+            $this->dispatch(
+                EasyAdminEvents::POST_LIST,
+                array('paginator' => $paginator)
+            );
+
+            return $this->render(
+                'easy_admin_overrides/dashboard.html.twig',
+                array(
+                    'paginator' => $paginator,
+                    'fields' => $fields,
+                    'filters' => isset($this->entity['list']['filters']) ? $this->createFilterForm(
+                        $this->entity['list']['filters'],
+                        $this->request->query->get('filters', []),
+                        $this->generateUrl(
+                            'filter',
+                            $this->request->query->all()
+                        )
+                    )->createView() : null,
+                )
+            );
+        }
+
+        $searchableFields = $this->entity['search']['fields'];
+        $paginator = $this->findBy(
+            $this->entity['class'],
+            $query,
+            $searchableFields,
+            $this->request->query->get('page', 1),
+            $this->entity['list']['max_results'],
+            isset($this->entity['search']['sort']['field']) ? $this->entity['search']['sort']['field'] : $this->request->query->get(
+                'sortField'
+            ),
+            'ASC',
+            $this->entity['search']['dql_filter']
+        );
+        $fields = $this->entity['list']['fields'];
+
+        $this->dispatch(
+            EasyAdminEvents::POST_LIST,
+            array(
+                'fields' => $fields,
+                'paginator' => $paginator,
+            )
+        );
+
+        $parameters = array(
+            'paginator' => $paginator,
+            'fields' => $fields,
+        );
+
+        return $this->executeDynamicMethod(
+            'render<EntityName>Template',
+            array(
+                'dashboard',
+                'easy_admin_overrides/dashboard.html.twig',
+                $parameters,
+            )
+        );
+    }
+
+    /**
      * The method that is executed when the user performs a 'list' action on an entity.
      *
      * Modified version of: https://github.com/alterphp/EasyAdminExtensionBundle/issues/29
@@ -72,10 +159,15 @@ class AdminController extends BaseAdminController
         $query = trim($this->request->query->get('query'));
         // if the search query is empty, redirect to the 'list' action
         if ('' === $query) {
-            $queryParameters = array_replace($this->request->query->all(), array('action' => 'list', 'query' => null));
+            $queryParameters = array_replace(
+                $this->request->query->all(),
+                array('action' => 'list', 'query' => null)
+            );
             $queryParameters = array_filter($queryParameters);
 
-            return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
+            return $this->redirect(
+                $this->get('router')->generate('easyadmin', $queryParameters)
+            );
         }
 
         $searchableFields = $this->entity['search']['fields'];
@@ -85,32 +177,45 @@ class AdminController extends BaseAdminController
             $searchableFields,
             $this->request->query->get('page', 1),
             $this->entity['list']['max_results'],
-            isset($this->entity['search']['sort']['field']) ? $this->entity['search']['sort']['field'] : $this->request->query->get('sortField'),
-            isset($this->entity['search']['sort']['direction']) ? $this->entity['search']['sort']['direction'] : $this->request->query->get('sortDirection'),
+            isset($this->entity['search']['sort']['field']) ? $this->entity['search']['sort']['field'] : $this->request->query->get(
+                'sortField'
+            ),
+            isset($this->entity['search']['sort']['direction']) ? $this->entity['search']['sort']['direction'] : $this->request->query->get(
+                'sortDirection'
+            ),
             $this->entity['search']['dql_filter']
         );
         $fields = $this->entity['list']['fields'];
 
-        $this->dispatch(EasyAdminEvents::POST_SEARCH, array(
-            'fields' => $fields,
-            'paginator' => $paginator,
-        ));
+        $this->dispatch(
+            EasyAdminEvents::POST_SEARCH,
+            array(
+                'fields' => $fields,
+                'paginator' => $paginator,
+            )
+        );
 
         $parameters = array(
             'paginator' => $paginator,
             'fields' => $fields,
-            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
+            'delete_form_template' => $this->createDeleteForm(
+                $this->entity['name'],
+                '__id__'
+            )->createView(),
             'filters' => isset($this->entity['list']['filters']) ? $this->createFilterForm(
-                    $this->entity['list']['filters'],
-                    $this->request->query->get('filters', []),
-                    $this->generateUrl(
-                        'filter',
-                        $this->request->query->all()
-                    )
-                )->createView() : null,
+                $this->entity['list']['filters'],
+                $this->request->query->get('filters', []),
+                $this->generateUrl(
+                    'filter',
+                    $this->request->query->all()
+                )
+            )->createView() : null,
         );
 
-        return $this->executeDynamicMethod('render<EntityName>Template', array('search', $this->entity['templates']['list'], $parameters));
+        return $this->executeDynamicMethod(
+            'render<EntityName>Template',
+            array('search', $this->entity['templates']['list'], $parameters)
+        );
     }
 
     /**
@@ -241,7 +346,8 @@ class AdminController extends BaseAdminController
      */
     public function getClassByName($name)
     {
-        $backendConfig = $this->get('easyadmin.config.manager')->getBackendConfig();
+        $backendConfig = $this->get('easyadmin.config.manager')
+            ->getBackendConfig();
         foreach ($backendConfig['entities'] as $entityName => $entityConfig) {
             if ($entityName === $name) {
                 return $entityConfig;

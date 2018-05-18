@@ -121,6 +121,8 @@ menu:
     sysstatus: Systemstatus
     separator: ''
     dashboards: Dashboards
+    dashboard:
+        reports: Anmeldelse
     groups: Grupper
 System: System
 Systems: Systemer
@@ -169,3 +171,5 @@ Apply: Udfør
 Group: Gruppe
 label:
     'null': ''
+dashboard:
+    title_prefix: 'Dashboard: '
