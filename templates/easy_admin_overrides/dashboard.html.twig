@@ -71,21 +71,26 @@
     <th></th>
     {% for item in results %}
       <th class="rotate">
-        <div><span><a
-                href="{{ path('easyadmin', _request_parameters|merge({ action: 'show', id: item.id })) }}"
-                title="{{ item.name }}">{{ item.name }}</a></span></div>
+        <div>
+          <span>
+            <a href="{{ path('easyadmin', _request_parameters|merge({ action: 'show', id: item.id })) }}"
+                title="{{ item.name }}">
+            {{ breakintolines(item.name, 28, 2) | raw }}
+            </a>
+          </span>
+        </div>
       </th>
     {% endfor %}
-    <th colspan="4"></th>
+      <th></th>
     </thead>
     <tbody>
     {% for category in categories %}
       <tr>
         <td><h3><strong>{{ category.name }}</strong></h3></td>
         {% for result in results %}
-          <td></td>
+        <td></td>
         {% endfor %}
-        <td colspan="4"></td>
+        <td></td>
       </tr>
       {% for question in category.questions %}
         <tr>
@@ -98,20 +103,20 @@
               {% endif %}
             </td>
           {% endfor %}
-          <td colspan="4"></td>
+          <td></td>
         </tr>
       {% endfor %}
       {% if not loop.last %}
       <tr>
         <td class="dashboard--table-spacing"
-            colspan="{{ (results|length) + 5 }}"></td>
+            colspan="{{ (results|length) + 2 }}">&nbsp;</td>
       </tr>
       {% endif %}
     {% endfor %}
 
     {% if categories|length == 0 %}
       <tr>
-        <td colspan="{{ (results|length) + 5 }}">{{ 'dashboard.no_categories_for_result' | trans }}</td>
+        <td colspan="{{ (results|length) + 2 }}">{{ 'dashboard.no_categories_for_result' | trans }}</td>
       </tr>
     {% endif %}
     </tbody>

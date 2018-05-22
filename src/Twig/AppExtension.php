@@ -11,6 +11,7 @@ class AppExtension extends AbstractExtension
         return array(
             new TwigFunction('getclass', array($this, 'getClass')),
             new TwigFunction('getanswer', array($this, 'getAnswer')),
+            new TwigFunction('breakintolines', array($this, 'breakIntoLines')),
         );
     }
 
@@ -33,5 +34,58 @@ class AppExtension extends AbstractExtension
         }
 
         return null;
+    }
+
+    /**
+     * String split for unicode.
+     * From: http://php.net/manual/en/function.str-split.php#107658
+     *
+     * @param $str
+     * @param int $l
+     * @return array|array[]|false|string[]
+     */
+    private function str_split_unicode($str, $l = 0) {
+        if ($l > 0) {
+            $ret = array();
+            $len = mb_strlen($str, "UTF-8");
+            for ($i = 0; $i < $len; $i += $l) {
+                $ret[] = mb_substr($str, $i, $l, "UTF-8");
+            }
+            return $ret;
+        }
+        return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
+    }
+
+    /**
+     * Break the text into $numberOfLines of $chuckSize length. Prepends with
+     *   empty lines.
+     *
+     * @param $text
+     * @param $chuckSize
+     * @param $numberOfLines
+     * @return string
+     */
+    public function breakIntoLines($text, $chuckSize, $numberOfLines)
+    {
+        $split = $this->str_split_unicode($text, $chuckSize);
+        $numberOfSplits = count($split);
+
+        $render = [];
+
+        $addedEmptyLines = 0;
+        for ($addedEmptyLines; $addedEmptyLines < $numberOfLines - min($numberOfSplits, $numberOfLines); $addedEmptyLines++) {
+            $render[] = '';
+        }
+        for ($i = 0; $i < $numberOfLines - $addedEmptyLines; $i++) {
+            $render[] = $split[$i];
+        }
+
+        $result = implode("<br/>", $render);
+
+        if ($numberOfSplits > $numberOfLines) {
+            $result .= "...";
+        }
+
+        return $result;
     }
 }

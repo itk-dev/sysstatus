@@ -26,82 +26,39 @@ class AdminController extends BaseAdminController
         $this->dispatch(EasyAdminEvents::PRE_LIST);
 
         $query = trim($this->request->query->get('query'));
-        // if the search query is empty, show list of all.
-        if ('' === $query) {
-            $this->dispatch(EasyAdminEvents::PRE_LIST);
 
+        $paginator = null;
+
+        $maxNumberOfResults = 15;
+
+        if ('' === $query) {
             $paginator = $this->findAll(
                 $this->entity['class'],
                 $this->request->query->get('page', 1),
-                15,
+                $maxNumberOfResults,
                 'id',
                 'ASC',
                 $this->entity['list']['dql_filter']
             );
+        }
+        else {
+            $this->entity['search']['fields'] = ['name' => $this->entity['search']['fields']['name']];
 
-            $this->dispatch(
-                EasyAdminEvents::POST_LIST,
-                array('paginator' => $paginator)
-            );
+            $searchableFields = $this->entity['search']['fields'];
 
-            $it = $paginator->getCurrentPageResults();
-
-            $themes = [];
-            $categories = [];
-
-            while( $it->valid() )
-            {
-                $entity = $it->current();
-
-                $theme = $entity->getTheme();
-
-                if (isset($theme) && !array_key_exists($theme->getId(), $themes)) {
-                    $themes[$theme->getId()] = $theme;
-
-                    foreach ($theme->getCategories() as $category) {
-                        if (!array_key_exists($category->getId(), $categories)) {
-                            $categories[$category->getId()] = $category;
-                        }
-                    }
-                }
-
-                $it->next();
-            }
-
-            return $this->render(
-                'easy_admin_overrides/dashboard.html.twig',
-                array(
-                    'paginator' => $paginator,
-                    'themes' => $themes,
-                    'categories' => $categories,
-                    'filters' => isset($this->entity['list']['filters']) ? $this->createFilterForm(
-                        $this->entity['list']['filters'],
-                        $this->request->query->get('filters', []),
-                        $this->generateUrl(
-                            'filter',
-                            $this->request->query->all()
-                        )
-                    )->createView() : null,
-                )
+            $paginator = $this->findBy(
+                $this->entity['class'],
+                $query,
+                $searchableFields,
+                $this->request->query->get('page', 1),
+                $maxNumberOfResults,
+                isset($this->entity['search']['sort']['field']) ? $this->entity['search']['sort']['field'] : $this->request->query->get(
+                    'sortField'
+                ),
+                'ASC',
+                $this->entity['search']['dql_filter']
             );
         }
-
-        $this->entity['search']['fields'] = ['name' => $this->entity['search']['fields']['name']];
-
-        $searchableFields = $this->entity['search']['fields'];
-
-        $paginator = $this->findBy(
-            $this->entity['class'],
-            $query,
-            $searchableFields,
-            $this->request->query->get('page', 1),
-            15,
-            isset($this->entity['search']['sort']['field']) ? $this->entity['search']['sort']['field'] : $this->request->query->get(
-                'sortField'
-            ),
-            'ASC',
-            $this->entity['search']['dql_filter']
-        );
         $fields = $this->entity['list']['fields'];
 
         $this->dispatch(
