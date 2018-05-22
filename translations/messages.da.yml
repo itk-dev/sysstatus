@@ -123,6 +123,7 @@ menu:
     dashboards: Dashboards
     dashboard:
         reports: Anmeldelse
+        systems: System
     groups: Grupper
 System: System
 Systems: Systemer
@@ -173,3 +174,4 @@ label:
     'null': ''
 dashboard:
     title_prefix: 'Dashboard: '
+    no_categories_for_result: Ingen kategorier koblet på resultaterne.

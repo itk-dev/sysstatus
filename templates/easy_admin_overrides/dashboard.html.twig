@@ -63,7 +63,7 @@
 {% block main %}
   {% set _list_item_actions = easyadmin_get_actions_for_list_item(_entity_config.name) %}
 
-<div class="table-responsive dashboard--table">
+<div class="table-responsive dashboard--table table-sm">
   {% set results = paginator.currentPageResults() %}
 
   <table class="table table-bordered">
@@ -76,6 +76,7 @@
                 title="{{ item.name }}">{{ item.name }}</a></span></div>
       </th>
     {% endfor %}
+    <th colspan="4"></th>
     </thead>
     <tbody>
     {% for category in categories %}
@@ -84,6 +85,7 @@
         {% for result in results %}
           <td></td>
         {% endfor %}
+        <td colspan="4"></td>
       </tr>
       {% for question in category.questions %}
         <tr>
@@ -92,19 +94,37 @@
             <td class="dashboard--table-answer">
               {% set answer = getanswer(result, question) %}
               {% if answer is not null %}
-                {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note } %}
+                {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note, 'width': 25 } %}
               {% endif %}
             </td>
           {% endfor %}
+          <td colspan="4"></td>
         </tr>
       {% endfor %}
+      {% if not loop.last %}
       <tr>
         <td class="dashboard--table-spacing"
-            colspan="{{ (results|length) + 1 }}"></td>
+            colspan="{{ (results|length) + 5 }}"></td>
       </tr>
+      {% endif %}
     {% endfor %}
+
+    {% if categories|length == 0 %}
+      <tr>
+        <td colspan="{{ (results|length) + 5 }}">{{ 'dashboard.no_categories_for_result' | trans }}</td>
+      </tr>
+    {% endif %}
     </tbody>
   </table>
+
+  {% if results|length == 0 %}
+    <tr>
+      <td class="no-results"
+          colspan="{{ _list_item_actions|length > 0 ? fields|length + 1 : fields|length }}">
+        {{ 'search.no_results'|trans(_trans_parameters, 'EasyAdminBundle') }}
+      </td>
+    </tr>
+  {% endif %}
 </div>
 
   {% block paginator %}

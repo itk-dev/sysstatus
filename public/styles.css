@@ -48,7 +48,7 @@
 }
 
 th.rotate {
-  height: 140px;
+  height: 200px;
   white-space: nowrap;
 }
 th.rotate > div {
@@ -75,5 +75,4 @@ body.list table thead th a:hover {
 }
 
 .dashboard--table {
-  overflow: hidden;
 }

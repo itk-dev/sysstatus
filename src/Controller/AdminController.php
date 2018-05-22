@@ -33,7 +33,7 @@ class AdminController extends BaseAdminController
             $paginator = $this->findAll(
                 $this->entity['class'],
                 $this->request->query->get('page', 1),
-                $this->config['list']['max_results'],
+                15,
                 'id',
                 'ASC',
                 $this->entity['list']['dql_filter']
@@ -86,13 +86,16 @@ class AdminController extends BaseAdminController
             );
         }
 
+        $this->entity['search']['fields'] = ['name' => $this->entity['search']['fields']['name']];
+
         $searchableFields = $this->entity['search']['fields'];
+
         $paginator = $this->findBy(
             $this->entity['class'],
             $query,
             $searchableFields,
             $this->request->query->get('page', 1),
-            $this->entity['list']['max_results'],
+            15,
             isset($this->entity['search']['sort']['field']) ? $this->entity['search']['sort']['field'] : $this->request->query->get(
                 'sortField'
             ),
@@ -109,9 +112,43 @@ class AdminController extends BaseAdminController
             )
         );
 
+        $it = $paginator->getCurrentPageResults();
+
+        $themes = [];
+        $categories = [];
+
+        while( $it->valid() )
+        {
+            $entity = $it->current();
+
+            $theme = $entity->getTheme();
+
+            if (isset($theme) && !array_key_exists($theme->getId(), $themes)) {
+                $themes[$theme->getId()] = $theme;
+
+                foreach ($theme->getCategories() as $category) {
+                    if (!array_key_exists($category->getId(), $categories)) {
+                        $categories[$category->getId()] = $category;
+                    }
+                }
+            }
+
+            $it->next();
+        }
+
         $parameters = array(
             'paginator' => $paginator,
             'fields' => $fields,
+            'themes' => $themes,
+            'categories' => $categories,
+            'filters' => isset($this->entity['list']['filters']) ? $this->createFilterForm(
+                $this->entity['list']['filters'],
+                $this->request->query->get('filters', []),
+                $this->generateUrl(
+                    'filter',
+                    $this->request->query->all()
+                )
+            )->createView() : null,
         );
 
         return $this->executeDynamicMethod(

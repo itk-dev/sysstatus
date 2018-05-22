@@ -18,6 +18,7 @@ easy_admin:
         menu:
             - { label: 'menu.dashboards' }
             - { entity: 'Report', label: 'menu.dashboard.reports', action: 'dashboard' }
+            - { entity: 'System', label: 'menu.dashboard.systems', action: 'dashboard' }
             - { label: 'menu.separator' }
             - { label: 'menu.separator' }
             - { label: 'menu.sysstatus' }
