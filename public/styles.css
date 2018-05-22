@@ -46,3 +46,34 @@
 .custom-filters option:not(:checked) {
   color: black;
 }
+
+th.rotate {
+  height: 140px;
+  white-space: nowrap;
+}
+th.rotate > div {
+  transform: translate(5px, 20px) rotate(315deg);
+  max-width: 20px;
+}
+th.rotate > div > span {
+  padding: 5px 10px;
+}
+body.list table thead th a {
+  color: #337ab7;
+}
+body.list table thead th a:hover {
+  background: transparent;
+}
+
+.dashboard--table-answer {
+  min-width: 80px;
+}
+
+.dashboard--table-spacing {
+  background-color: #EEE;
+  height: 30px;
+}
+
+.dashboard--table {
+  overflow: hidden;
+}

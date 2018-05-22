@@ -10,6 +10,7 @@ class AppExtension extends AbstractExtension
     public function getFunctions() {
         return array(
             new TwigFunction('getclass', array($this, 'getClass')),
+            new TwigFunction('getanswer', array($this, 'getAnswer')),
         );
     }
 
@@ -22,4 +23,15 @@ class AppExtension extends AbstractExtension
         return get_class($instance);
     }
 
+    public function getAnswer($entity, $question) {
+        $answers = $entity->getAnswers();
+
+        foreach ($answers as $answer) {
+            if ($answer->getQuestion()->getId() == $question->getId()) {
+                return $answer;
+            }
+        }
+
+        return null;
+    }
 }

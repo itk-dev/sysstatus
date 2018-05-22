@@ -30,13 +30,12 @@ class AdminController extends BaseAdminController
         if ('' === $query) {
             $this->dispatch(EasyAdminEvents::PRE_LIST);
 
-            $fields = $this->entity['list']['fields'];
             $paginator = $this->findAll(
                 $this->entity['class'],
                 $this->request->query->get('page', 1),
                 $this->config['list']['max_results'],
-                $this->request->query->get('sortField'),
-                $this->request->query->get('sortDirection'),
+                'id',
+                'ASC',
                 $this->entity['list']['dql_filter']
             );
 
@@ -45,11 +44,36 @@ class AdminController extends BaseAdminController
                 array('paginator' => $paginator)
             );
 
+            $it = $paginator->getCurrentPageResults();
+
+            $themes = [];
+            $categories = [];
+
+            while( $it->valid() )
+            {
+                $entity = $it->current();
+
+                $theme = $entity->getTheme();
+
+                if (isset($theme) && !array_key_exists($theme->getId(), $themes)) {
+                    $themes[$theme->getId()] = $theme;
+
+                    foreach ($theme->getCategories() as $category) {
+                        if (!array_key_exists($category->getId(), $categories)) {
+                            $categories[$category->getId()] = $category;
+                        }
+                    }
+                }
+
+                $it->next();
+            }
+
             return $this->render(
                 'easy_admin_overrides/dashboard.html.twig',
                 array(
                     'paginator' => $paginator,
-                    'fields' => $fields,
+                    'themes' => $themes,
+                    'categories' => $categories,
                     'filters' => isset($this->entity['list']['filters']) ? $this->createFilterForm(
                         $this->entity['list']['filters'],
                         $this->request->query->get('filters', []),
