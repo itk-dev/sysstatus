@@ -71,8 +71,8 @@ body.list table thead th.rotate a:hover {
   background: transparent;
 }
 
-.dashboard--table-answer {
-  min-width: 80px;
+body.list table tbody td.dashboard--table-answer {
+  text-align: center;
 }
 
 .dashboard--table-spacing {
