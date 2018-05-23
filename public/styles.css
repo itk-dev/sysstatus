@@ -62,12 +62,12 @@ th.rotate > div > span {
   padding: 5px 10px;
 }
 
-body.list table thead th a {
+body.list table thead th.rotate a {
   color: #337ab7;
   padding: 0;
 }
 
-body.list table thead th a:hover {
+body.list table thead th.rotate a:hover {
   background: transparent;
 }
 

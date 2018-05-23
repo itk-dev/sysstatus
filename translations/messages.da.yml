@@ -7,6 +7,7 @@ entity:
         id: ID
         question: Spørgsmål
         category: Kategori
+        answers: Svar
     theme:
         id: ID
         categories: Kategorier

@@ -75,6 +75,7 @@ easy_admin:
                 fields:
                     - { property: 'id', label: 'entity.question.id' }
                     - { property: 'question', label: 'entity.question.question' }
+                    - { property: 'answers', label: 'entity.question.answers' }
                     - { property: 'category', label: 'entity.question.category' }
                 sort: ['id', 'ASC']
             form:
