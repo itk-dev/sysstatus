@@ -18,6 +18,16 @@ class Group extends BaseGroup
      */
     protected $id;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\System", mappedBy="group")
+     */
+    private $systems;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="group")
+     */
+    private $reports;
+
     public function __construct()
     {
         parent::__construct(NULL, ['ROLE_USER']);
@@ -26,5 +36,37 @@ class Group extends BaseGroup
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSystems()
+    {
+        return $this->systems;
+    }
+
+    /**
+     * @param mixed $systems
+     */
+    public function setSystems($systems): void
+    {
+        $this->systems = $systems;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReports()
+    {
+        return $this->reports;
+    }
+
+    /**
+     * @param mixed $reports
+     */
+    public function setReports($reports): void
+    {
+        $this->reports = $reports;
     }
 }

@@ -348,6 +348,8 @@ easy_admin:
             list:
                 fields:
                     - name
+                    - reports
+                    - systems
             form:
                 fields:
                     - name

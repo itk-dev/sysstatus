@@ -38,7 +38,7 @@ class System
     private $text;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="systems")
      */
     protected $group;
 

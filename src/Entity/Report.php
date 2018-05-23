@@ -38,7 +38,7 @@ class Report
     private $text;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="reports")
      */
     protected $group;
 
@@ -919,4 +919,6 @@ class Report
     {
         return $this->getTheme();
     }
+
+
 }
