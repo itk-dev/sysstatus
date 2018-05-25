@@ -7,6 +7,7 @@ entity:
         id: ID
         question: Spørgsmål
         category: Kategori
+        answers: Svar
     theme:
         id: ID
         categories: Kategorier
@@ -27,7 +28,9 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
+        responsible: Ansvarlig
         theme: Tema
+        group: Gruppe
         answers: Smileys
         sys_id: Id
         sys_id_as_link: Link til systemportalen
@@ -62,7 +65,9 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
+        responsible: Ansvarlig
         theme: Tema
+        group: Gruppe
         answers: Smileys
         answers_remarks: Rediger
         answers_remarks_create: Opret
@@ -117,6 +122,10 @@ menu:
     sysstatus: Systemstatus
     separator: ''
     dashboards: Dashboards
+    dashboard:
+        reports: Anmeldelse
+        systems: System
+    groups: Grupper
 System: System
 Systems: Systemer
 User: Bruger
@@ -158,3 +167,12 @@ answers_show:
 'Updated by': Opdateret af
 'Created at': Oprettet
 'Updated at': Opdateret
+custom_filters:
+    none: Alle grupper
+Apply: Udfør
+Group: Gruppe
+label:
+    'null': ''
+dashboard:
+    title_prefix: 'Dashboard: '
+    no_categories_for_result: Ingen kategorier koblet på resultaterne.

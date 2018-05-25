@@ -14,9 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 class AnswerController extends Controller
 {
     /**
+     * Create a new answer for the given report/system and question.
+     *
      * @Route("/answer/new", name="report")
      */
-    public function index(
+    public function newAnswer(
         Request $request,
         ReportRepository $reportRepository,
         SystemRepository $systemRepository,
