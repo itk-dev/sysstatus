@@ -2,6 +2,8 @@
 
 ## in develop
 
+## 1.2.0
+
 * Added groups, to users, systems, reports.
 * Added group filter to lists.
 * Added responsible user to systems and reports.
