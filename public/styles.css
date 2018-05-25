@@ -19,3 +19,71 @@
 .easyadmin-override--show-actions {
   float: right;
 }
+
+.custom-filters button[type=submit] {
+  display: none;
+}
+
+.custom-filters {
+  margin-bottom: .5em;
+}
+
+.custom-filters select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-border-radius: 0;
+  background-image: url("icons/arrow-down.svg");
+  background-position: 95% 50%;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+
+.custom-filters select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
+.custom-filters option:not(:checked) {
+  color: black;
+}
+
+th.rotate {
+  height: 200px;
+  white-space: nowrap;
+}
+
+th.rotate > div {
+  transform: translate(0px, -13px) rotate(315deg);
+  max-width: 80px;
+  max-height: 100px;
+}
+
+th.rotate > div > span {
+  padding: 5px 10px;
+}
+
+body.list table thead th.rotate a {
+  color: #337ab7;
+  padding: 0;
+}
+
+body.list table thead th.rotate a:hover {
+  background: transparent;
+}
+
+body.list table tbody td.dashboard--table-answer {
+  text-align: center;
+}
+
+.dashboard--table-spacing {
+  background-color: #EEE;
+  height: 30px;
+}
+
+.dashboard--table {
+  overflow-x: auto;
+}
+
+.dashboard--last-column {
+  width: 30px;
+}

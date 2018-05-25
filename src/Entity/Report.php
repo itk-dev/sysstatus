@@ -38,6 +38,16 @@ class Report
     private $text;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="reports")
+     */
+    protected $group;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    protected $responsible;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $sysId;
@@ -853,6 +863,22 @@ class Report
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param mixed $group
+     */
+    public function setGroup($group): void
+    {
+        $this->group = $group;
+    }
+
     public function __toString()
     {
         return $this->getName();
@@ -871,10 +897,28 @@ class Report
     }
 
     /**
+     * @return mixed
+     */
+    public function getResponsible()
+    {
+        return $this->responsible;
+    }
+
+    /**
+     * @param mixed $responsible
+     */
+    public function setResponsible($responsible): void
+    {
+        $this->responsible = $responsible;
+    }
+
+    /**
      * Virtual property.
      */
     public function getAnswerArea()
     {
         return $this->getTheme();
     }
+
+
 }

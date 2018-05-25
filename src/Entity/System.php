@@ -38,6 +38,16 @@ class System
     private $text;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="systems")
+     */
+    protected $group;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    protected $responsible;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $sysId;
@@ -746,6 +756,22 @@ class System
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param mixed $group
+     */
+    public function setGroup($group): void
+    {
+        $this->group = $group;
+    }
+
     public function __toString()
     {
         return $this->getName();
@@ -761,6 +787,22 @@ class System
         $this->theme = $theme;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponsible()
+    {
+        return $this->responsible;
+    }
+
+    /**
+     * @param mixed $responsible
+     */
+    public function setResponsible($responsible): void
+    {
+        $this->responsible = $responsible;
     }
 
     /**
