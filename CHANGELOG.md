@@ -2,6 +2,8 @@
 
 ## in develop
 
+* Updated bundles.
+
 ## 1.2.0
 
 * Added groups, to users, systems, reports.
