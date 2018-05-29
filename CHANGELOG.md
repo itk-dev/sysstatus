@@ -2,6 +2,11 @@
 
 ## in develop
 
+## 1.2.2
+
+* Fixed issues with IE select.
+* Moved icons to root of public folder.
+
 ## 1.2.1
 
 * Updated bundles.
