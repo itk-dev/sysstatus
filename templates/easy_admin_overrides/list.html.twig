@@ -46,7 +46,7 @@
 {# Change layout to include filters #}
 {% block content_header %}
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
       {% block content_title_wrapper %}
         <h1 class="title">
           {{ block('content_title') }}
@@ -54,12 +54,10 @@
       {% endblock %}
     </div>
 
-    <div class="col-sm-2">
+    <div class="col-sm-3">
       {% block content_header_filters %}
         {% if filters is defined and filters is not null %}
-          <div class="custom-filters">
-            {{ form(filters, {'attr': {'id': 'filters', 'class': 'form-action'}}) }}
-          </div>
+          {{ form(filters, {'attr': {'id': 'filters', 'class': 'form-action custom-filters'}}) }}
         {% endif %}
       {% endblock %}
     </div>
@@ -73,20 +71,6 @@
     </div>
   </div>
 {% endblock content_header %}
-
-{# Add submit on click for filters #}
-{% block body_javascript %}
-  {{ parent() }}
-
-  <script type="text/javascript">
-      // without jQuery (doesn't work in older IEs)
-      document.addEventListener('DOMContentLoaded', function(){
-          document.getElementById("filter_group").addEventListener('input', function (evt) {
-              document.getElementById("filters").submit();
-          });
-      }, false);
-  </script>
-{% endblock %}
 
 {# Do not display SEARCH form if not granted #}
 {% block search_action %}
