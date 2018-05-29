@@ -81,8 +81,8 @@
   <script type="text/javascript">
       // without jQuery (doesn't work in older IEs)
       document.addEventListener('DOMContentLoaded', function(){
-          document.getElementById("filter_group").addEventListener('input', function (evt) {
-              document.getElementById("filter_submit").click();
+          document.getElementById("filter_group").addEventListener('input', function () {
+              document.getElementById("filters").submit();
           });
       }, false);
   </script>
