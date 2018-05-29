@@ -31,6 +31,10 @@
   display: flex;
 }
 
+.custom-filters > div:first-child {
+  flex-grow: 1;
+}
+
 .custom-filters {
   margin-bottom: .5em;
 }
@@ -52,6 +56,10 @@
 
 .custom-filters option:not(:checked) {
   color: black;
+}
+
+.custom-filters select::-ms-expand {
+  display: none;
 }
 
 th.rotate {
