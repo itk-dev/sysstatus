@@ -20,8 +20,15 @@
   float: right;
 }
 
-.custom-filters button[type=submit] {
-  display: none;
+.custom-filters--submit-button,
+.custom-filters--submit-button:hover,
+.custom-filters--submit-button:focus {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.custom-filters .form-action {
+  display: flex;
 }
 
 .custom-filters {

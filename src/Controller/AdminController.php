@@ -316,7 +316,10 @@ class AdminController extends BaseAdminController
             'submit',
             SubmitType::class,
             [
-                'label' => 'Apply',
+                'label' => 'Filter',
+                'attr' => [
+                    'class' => 'btn custom-filters--submit-button'
+                ]
             ]
         );
 
@@ -344,6 +347,7 @@ class AdminController extends BaseAdminController
         $params = $request->query->all();
 
         $params['filters'] = null;
+        $params['page'] = 1;
 
         return $this->redirectToRoute(
             'easyadmin',
