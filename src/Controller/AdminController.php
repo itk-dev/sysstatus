@@ -21,6 +21,11 @@ class AdminController extends BaseAdminController
         return parent::indexAction($request);
     }
 
+    /**
+     * Serves dashboard.
+     *
+     * @return mixed
+     */
     protected function dashboardAction()
     {
         $this->dispatch(EasyAdminEvents::PRE_LIST);
