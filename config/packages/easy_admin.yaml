@@ -238,7 +238,6 @@ easy_admin:
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
-                dql_filter: entity.sysStatus = 'Aktiv'
                 filters:
                     -
                       property: group
