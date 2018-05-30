@@ -2,6 +2,8 @@
 
 ## in develop
 
+* Changed from Hillrange/CKEditor to FOS/CKEditor.
+
 ## 1.2.2
 
 * Fixed issues with IE select.
