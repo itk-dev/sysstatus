@@ -3,6 +3,7 @@
 ## in develop
 
 * Changed from Hillrange/CKEditor to FOS/CKEditor.
+* Filtered out inactive systems.
 
 ## 1.2.2
 
