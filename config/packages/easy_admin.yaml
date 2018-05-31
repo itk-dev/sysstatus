@@ -31,6 +31,7 @@ easy_admin:
             - { entity: 'User', icon: 'user', label: 'menu.users' }
             - { entity: 'Group', icon: 'users', label: 'menu.groups' }
             - { entity: 'Theme', icon: 'th-large', label: 'menu.themes' }
+            - { entity: 'ThemeCategory', icon: 'arrows-v', label: 'menu.theme_category' }
             - { entity: 'Category', icon: 'list', label: 'menu.categories' }
             - { entity: 'Question', icon: 'question', label: 'menu.questions' }
         assets:
@@ -44,9 +45,9 @@ easy_admin:
                 fields:
                     - { property: 'sort_order', label: 'entity.theme_category.sort_order' }
                     - { property: 'category', label: 'entity.theme_category.category' }
+                    - { property: 'theme', label: 'entity.theme_category.theme' }
                 sort: ['sortOrder', 'ASC']
                 actions:
-                    - edit
         Theme:
             class: App\Entity\Theme
             show:

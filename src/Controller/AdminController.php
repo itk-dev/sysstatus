@@ -32,6 +32,36 @@ class AdminController extends BaseAdminController
         return parent::indexAction($request);
     }
 
+    protected function embeddedListAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_LIST);
+
+        $fields = $this->entity['list']['fields'];
+        $paginator = $this->findAll(
+            $this->entity['class'],
+            $this->request->query->get('page', 1),
+            $this->config['list']['max_results'],
+            $this->request->query->get('sortField'),
+            $this->request->query->get('sortDirection')
+        );
+
+        $this->dispatch(
+            EasyAdminEvents::POST_LIST,
+            array('paginator' => $paginator)
+        );
+
+        // Override template
+        return $this->render(
+            'easy_admin_overrides/embedded_list.html.twig',
+            array(
+                'paginator' => $paginator,
+                'fields' => $fields,
+                'masterRequest' => $this->get('request_stack')
+                    ->getMasterRequest(),
+            )
+        );
+    }
+
     /**
      * Serves dashboard.
      *

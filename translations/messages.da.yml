@@ -1,4 +1,8 @@
 entity:
+    theme_category:
+        sort_order: Vægt
+        category: Kategori
+        theme: Tema
     category:
         id: ID
         name: Navn
@@ -14,6 +18,7 @@ entity:
         name: Navn
         systems: Systemer
         reports: Anmeldelser
+        theme_categories: Kategorier
     answer:
         id: ID
         note: Notat
@@ -126,6 +131,7 @@ menu:
         reports: Anmeldelse
         systems: System
     groups: Grupper
+    theme_category: Tema-Kategori koblinger
 System: System
 Systems: Systemer
 User: Bruger
@@ -177,3 +183,8 @@ dashboard:
     title_prefix: 'Dashboard: '
     no_categories_for_result: Ingen kategorier koblet på resultaterne.
 Filter: Filtrér
+embedded_list:
+    open:
+        new_tab: Redigér
+'Sort order': Vægt
+ThemeCategory: Tema-Kategori
