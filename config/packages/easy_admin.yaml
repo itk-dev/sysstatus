@@ -38,26 +38,36 @@ easy_admin:
                 - ckeditor_styles.css
                 - styles.css
     entities:
+        ThemeCategory:
+            class: App\Entity\ThemeCategory
+            list:
+                fields:
+                    - { property: 'sort_order', label: 'entity.theme_category.sort_order' }
+                    - { property: 'category', label: 'entity.theme_category.category' }
+                sort: ['sortOrder', 'ASC']
+                actions:
+                    - edit
         Theme:
             class: App\Entity\Theme
             show:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
-                    - { property: 'categories', label: 'entity.theme.categories' }
+                    - { property: 'themeCategories', label: 'entity.theme.categories' }
             list:
                 fields:
                     - { property: 'id', label: 'entity.theme.id' }
                     - { property: 'name', label: 'entity.theme.name' }
-                    - { property: 'categories', label: 'entity.theme.categories' }
+                    - { property: 'themeCategories', label: 'entity.theme.categories' }
                     - { property: 'systems', label: 'entity.theme.systems' }
                     - { property: 'reports', label: 'entity.theme.reports' }
                 sort: ['id', 'ASC']
             form:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
-                    - { property: 'categories', label: 'entity.theme.categories' }
                     - { property: 'systems', label: 'entity.theme.systems' }
                     - { property: 'reports', label: 'entity.theme.reports' }
+                    - { type: group, label: 'entity.theme.theme_categories', css_class: 'col-sm-12', icon: list }
+                    - { property: 'theme_categories', label: 'entity.theme.theme_categories', type: embedded_list, type_options: { filters: { 'entity.theme': 'form:parent.data.id' } } }
         Category:
             class: App\Entity\Category
             list:

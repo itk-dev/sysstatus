@@ -32,18 +32,19 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", mappedBy="categories")
-     */
-    private $themes;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="category")
      */
     private $questions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ThemeCategory", mappedBy="category", orphanRemoval=true)
+     */
+    private $themeCategories;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->themeCategories = new ArrayCollection();
     }
 
     public function getId()
@@ -123,5 +124,36 @@ class Category
     public function __toString()
     {
         return $this->getName() ?: $this->getId();
+    }
+
+    /**
+     * @return Collection|ThemeCategory[]
+     */
+    public function getThemeCategories(): Collection
+    {
+        return $this->themeCategories;
+    }
+
+    public function addThemeCategory(ThemeCategory $themeCategory): self
+    {
+        if (!$this->themeCategories->contains($themeCategory)) {
+            $this->themeCategories[] = $themeCategory;
+            $themeCategory->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThemeCategory(ThemeCategory $themeCategory): self
+    {
+        if ($this->themeCategories->contains($themeCategory)) {
+            $this->themeCategories->removeElement($themeCategory);
+            // set the owning side to null (unless already changed)
+            if ($themeCategory->getCategory() === $this) {
+                $themeCategory->setCategory(null);
+            }
+        }
+
+        return $this;
     }
 }
