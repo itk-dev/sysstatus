@@ -35,13 +35,7 @@ class AppExtension extends AbstractExtension
     public function getAnswer($entity, $question) {
         $answers = $entity->getAnswers();
 
-        $theme = $entity->getTheme();
-
-        $p1 = 1;
-
         foreach ($answers as $answer) {
-            $themes = $question->getCategory()->getThemes();
-
             if ($answer->getQuestion()->getId() == $question->getId()) {
                 return $answer;
             }
