@@ -65,32 +65,6 @@ class Category
     }
 
     /**
-     * @return Collection|Theme[]
-     */
-    public function getThemes(): Collection
-    {
-        return $this->themes;
-    }
-
-    public function addTheme(Theme $theme): self
-    {
-        if (!$this->themes->contains($theme)) {
-            $this->themes[] = $theme;
-        }
-
-        return $this;
-    }
-
-    public function removeTheme(Theme $theme): self
-    {
-        if ($this->themes->contains($theme)) {
-            $this->themes->removeElement($theme);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Question[]
      */
     public function getQuestions(): Collection
@@ -155,5 +129,19 @@ class Category
         }
 
         return $this;
+    }
+
+    /**
+     * Virtual.
+     */
+    public function getThemes() {
+        $list = [];
+        $iterator = $this->themeCategories->getIterator();
+
+        foreach($iterator as $i => $item) {
+            $list[$item->getTheme()->getId()] = $item->getTheme();
+        }
+
+        return $list;
     }
 }

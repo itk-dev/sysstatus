@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController as BaseAdminController;
 use App\Repository\CategoryRepository;
+use App\Repository\ThemeCategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,51 +16,15 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class AdminController extends BaseAdminController
 {
     private $categoryRepository;
+    private $themeCategoryRepository;
 
     /**
      * AdminController constructor.
      */
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(CategoryRepository $categoryRepository, ThemeCategoryRepository $themeCategoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
-    }
-
-    /**
-     * @Route("/", name="easyadmin")
-     */
-    public function indexAction(Request $request)
-    {
-        return parent::indexAction($request);
-    }
-
-    protected function embeddedListAction()
-    {
-        $this->dispatch(EasyAdminEvents::PRE_LIST);
-
-        $fields = $this->entity['list']['fields'];
-        $paginator = $this->findAll(
-            $this->entity['class'],
-            $this->request->query->get('page', 1),
-            $this->config['list']['max_results'],
-            $this->request->query->get('sortField'),
-            $this->request->query->get('sortDirection')
-        );
-
-        $this->dispatch(
-            EasyAdminEvents::POST_LIST,
-            array('paginator' => $paginator)
-        );
-
-        // Override template
-        return $this->render(
-            'easy_admin_overrides/embedded_list.html.twig',
-            array(
-                'paginator' => $paginator,
-                'fields' => $fields,
-                'masterRequest' => $this->get('request_stack')
-                    ->getMasterRequest(),
-            )
-        );
+        $this->themeCategoryRepository = $themeCategoryRepository;
     }
 
     /**
@@ -128,9 +93,7 @@ class AdminController extends BaseAdminController
                 $themes[$theme->getId()] = $theme;
 
                 foreach ($theme->getOrderedCategories() as $category) {
-                    if (!array_key_exists($category->getId(), $categories)) {
-                        $categories[$category->getId()] = $category;
-                    }
+                  $categories[$category->getId()] = $category;
                 }
             }
 

@@ -85,16 +85,19 @@ easy_admin:
             list:
                 fields:
                     - { property: 'id', label: 'entity.question.id' }
+                    - { property: 'sortOrder', label: 'entity.question.sort_order' }
                     - { property: 'question', label: 'entity.question.question' }
                     - { property: 'answers', label: 'entity.question.answers' }
                     - { property: 'category', label: 'entity.question.category' }
                 sort: ['id', 'ASC']
             form:
                 fields:
+                    - { property: 'sortOrder', label: 'entity.question.sort_order' }
                     - { property: 'question', label: 'entity.question.question' }
                     - { property: 'category', label: 'entity.question.category' }
             show:
                 fields:
+                    - { property: 'sortOrder' }
                     - { property: 'question' }
                     - { property: 'category' }
                     - { property: 'created_by' }
