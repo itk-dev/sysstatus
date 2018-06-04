@@ -1,3 +1,7 @@
+.wrapper {
+  overflow: auto;
+}
+
 .field-smiley--title-hover {
   cursor: default;
 }
