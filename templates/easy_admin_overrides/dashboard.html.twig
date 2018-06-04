@@ -77,7 +77,7 @@
         {% endfor %}
         <td></td>
       </tr>
-      {% for question in category.questions %}
+      {% for question in (category.questions)|sort_order %}
         <tr>
           <td>{{ question.question }}</td>
           {% for result in results %}

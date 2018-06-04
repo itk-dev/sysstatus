@@ -32,11 +32,6 @@ class Theme
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="themes")
-     */
-    private $categories;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\System", mappedBy="theme")
      */
     private $systems;
@@ -46,12 +41,22 @@ class Theme
      */
     private $reports;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ThemeCategory", mappedBy="theme", orphanRemoval=true)
+     */
+    private $themeCategories;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $categories;
 
     public function __construct()
     {
         $this->systems = new ArrayCollection();
         $this->reports = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->themeCategories = new ArrayCollection();
     }
 
     public function getId()
@@ -67,34 +72,6 @@ class Theme
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Category[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addTheme($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-            $category->removeTheme($this);
-        }
 
         return $this;
     }
@@ -164,5 +141,55 @@ class Theme
     public function __toString()
     {
         return $this->getName() ?: $this->getId();
+    }
+
+    /**
+     * @return Collection|ThemeCategory[]
+     */
+    public function getThemeCategories(): Collection
+    {
+        return $this->themeCategories;
+    }
+
+    public function addThemeCategory(ThemeCategory $themeCategory): self
+    {
+        if (!$this->themeCategories->contains($themeCategory)) {
+            $this->themeCategories[] = $themeCategory;
+            $themeCategory->setTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThemeCategory(ThemeCategory $themeCategory): self
+    {
+        if ($this->themeCategories->contains($themeCategory)) {
+            $this->themeCategories->removeElement($themeCategory);
+            // set the owning side to null (unless already changed)
+            if ($themeCategory->getTheme() === $this) {
+                $themeCategory->setTheme(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Virtual.
+     */
+    public function getOrderedCategories() {
+        $list = [];
+
+        $themeCategories = $this->themeCategories;
+        $iterator = $themeCategories->getIterator();
+        $iterator->uasort(function ($first, $second) {
+            return (int) $first->getSortOrder() < (int) $second->getSortOrder() ? 1 : -1;
+        });
+
+        foreach($iterator as $i => $item) {
+            $list[] = $item->getCategory();
+        }
+
+        return $list;
     }
 }

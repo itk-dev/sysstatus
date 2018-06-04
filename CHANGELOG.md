@@ -2,6 +2,12 @@
 
 ## in develop
 
+## 1.3.0
+
+* Changed from Hillrange/CKEditor to FOS/CKEditor.
+* Filtered out inactive systems.
+* Added Theme-Category.
+
 ## 1.2.2
 
 * Fixed issues with IE select.

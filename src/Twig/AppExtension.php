@@ -4,6 +4,8 @@ namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Twig\TwigFilter;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class AppExtension extends AbstractExtension
 {
@@ -12,6 +14,12 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getclass', array($this, 'getClass')),
             new TwigFunction('getanswer', array($this, 'getAnswer')),
             new TwigFunction('breakintolines', array($this, 'breakIntoLines')),
+        );
+    }
+
+    public function getFilters() {
+        return array(
+            new TwigFilter('sort_order', array($this, 'sortOrder')),
         );
     }
 
@@ -87,5 +95,21 @@ class AppExtension extends AbstractExtension
         }
 
         return $result;
+    }
+
+    /**
+     * Sort by sortOrder
+     *
+     * @param $item
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function sortOrder($item){
+        $iterator = $item->getIterator();
+
+        $iterator->uasort(function ($a, $b) {
+            return ($a->getSortOrder() > $b->getSortOrder()) ? -1 : 1;
+        });
+
+        return new ArrayCollection(iterator_to_array($iterator));
     }
 }
