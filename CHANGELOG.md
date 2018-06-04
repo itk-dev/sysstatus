@@ -2,6 +2,10 @@
 
 ## in develop
 
+## 1.3.2
+
+* Fixed issue with template override for EasyAdminExtensionBundle.
+
 ## 1.3.1
 
 * Fixed primary key constraint issue with migration.
