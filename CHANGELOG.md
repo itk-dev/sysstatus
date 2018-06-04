@@ -2,6 +2,11 @@
 
 ## in develop
 
+## 1.3.1
+
+* Fixed primary key constraint issue with migration.
+* Added scrollable to menu.
+
 ## 1.3.0
 
 * Changed from Hillrange/CKEditor to FOS/CKEditor.
