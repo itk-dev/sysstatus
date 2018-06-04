@@ -189,3 +189,5 @@ embedded_list:
         new_tab: Redigér
 'Sort order': Vægt
 ThemeCategory: Tema-Kategori
+easyadmin_embedded_list_row:
+    no_entity: Vises først efter der er gemt første gang.

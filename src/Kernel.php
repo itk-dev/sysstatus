@@ -2,14 +2,17 @@
 
 namespace App;
 
+use AlterPHP\EasyAdminExtensionBundle\EasyAdminExtensionBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
-class Kernel extends BaseKernel
+
+class Kernel extends BaseKernel implements CompilerPassInterface
 {
     use MicroKernelTrait;
 
@@ -57,5 +60,23 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
+    }
+
+    public function process(ContainerBuilder $container)
+    {
+        $twigLoaderFilesystemId = $container->getAlias('twig.loader')->__toString();
+        $twigLoaderFilesystemDefinition = $container->getDefinition($twigLoaderFilesystemId);
+
+        $r = $this->getRootDir();
+
+        // Replaces native EasyAdmin templates
+        $easyAdminExtensionTwigPath = $r.'/../templates/easy_admin_extension_overrides/';
+        $twigLoaderFilesystemDefinition->addMethodCall('prependPath', array($easyAdminExtensionTwigPath, 'EasyAdmin'));
+
+        $nativeEasyAdminBundleRefl = new \ReflectionClass(EasyAdminExtensionBundle::class);
+        $nativeEasyAdminBundlePath = dirname($nativeEasyAdminBundleRefl->getFileName());
+        $nativeEasyAdminTwigPath = $nativeEasyAdminBundlePath.'/Resources/views';
+        // Defines a namespace from native EasyAdmin templates
+        $twigLoaderFilesystemDefinition->addMethodCall('addPath', array($nativeEasyAdminTwigPath, 'BaseEasyAdminExtension'));
     }
 }

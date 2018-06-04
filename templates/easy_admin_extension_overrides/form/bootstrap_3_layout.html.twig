@@ -1,4 +1,4 @@
-{% use '@EasyAdminExtensionBundle:form:bootstrap_3_layout.html.twig' %}
+{% use '@BaseEasyAdminExtension/form/bootstrap_3_layout.html.twig' %}
 
 {% block easyadmin_embedded_list_row %}
   {% if entity %}
@@ -8,6 +8,6 @@
     {% endif %}
     {{ render(path('easyadmin', action_params)) }}
   {% else %}
-    <p>{{ 'No entity created yet.' | trans }}</p>
+    <p>{{ 'easyadmin_embedded_list_row.no_entity' | trans }}</p>
   {% endif %}
 {% endblock %}
