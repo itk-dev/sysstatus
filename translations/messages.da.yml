@@ -12,6 +12,7 @@ entity:
         question: Spørgsmål
         category: Kategori
         answers: Svar
+        sort_order: Vægt
     theme:
         id: ID
         categories: Kategorier
