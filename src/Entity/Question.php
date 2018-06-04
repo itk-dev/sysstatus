@@ -37,6 +37,11 @@ class Question
     private $category;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $sortOrder;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question", orphanRemoval=true)
      */
     private $answers;
@@ -109,5 +114,21 @@ class Question
     public function __toString()
     {
         return $this->getQuestion() ?: $this->getId();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param mixed $sortOrder
+     */
+    public function setSortOrder($sortOrder): void
+    {
+        $this->sortOrder = $sortOrder;
     }
 }

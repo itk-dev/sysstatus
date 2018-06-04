@@ -1,8 +1,10 @@
 {% set itemClass = getclass(item) | split('\\') | last %}
 {% set alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'] %}
 {% set numberOfCategories = 0 %}
-{% if value and value.categories %}
-  {% for category in value.categories %}
+
+{% if value is defined and value.themeCategories is defined %}
+  {% for themeCategory in value.themeCategories|sort_order %}
+    {% set category = themeCategory.category %}
     {% set numberOfCategories = numberOfCategories + 1 %}
     <h2>{{ category.name }}</h2>
     <table class="smiley-table table table-hover">
@@ -15,7 +17,7 @@
       </tr>
       </thead>
       {% set numberOfQuestions = 0 %}
-      {% for question in category.questions %}
+      {% for question in category.questions|sort_order %}
         {% set numberOfQuestions = numberOfQuestions + 1 %}
         <tr>
           <td>{{ alphabet[numberOfCategories - 1] }}{{ numberOfQuestions }}</td>

@@ -1,0 +1,13 @@
+{% use '@EasyAdminExtensionBundle:form:bootstrap_3_layout.html.twig' %}
+
+{% block easyadmin_embedded_list_row %}
+  {% if entity %}
+    {% set action_params = { entity: entity, action: 'embeddedList', filters: filters } %}
+    {% if sort is defined %}
+      {% set action_params = action_params|merge({ sortField: sort.field, sortDirection: sort.direction}) %}
+    {% endif %}
+    {{ render(path('easyadmin', action_params)) }}
+  {% else %}
+    <p>{{ 'No entity created yet.' | trans }}</p>
+  {% endif %}
+{% endblock %}

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
+use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController as BaseAdminController;
+use App\Repository\CategoryRepository;
+use App\Repository\ThemeCategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,12 +15,16 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AdminController extends BaseAdminController
 {
+    private $categoryRepository;
+    private $themeCategoryRepository;
+
     /**
-     * @Route("/", name="easyadmin")
+     * AdminController constructor.
      */
-    public function indexAction(Request $request)
+    public function __construct(CategoryRepository $categoryRepository, ThemeCategoryRepository $themeCategoryRepository)
     {
-        return parent::indexAction($request);
+        $this->categoryRepository = $categoryRepository;
+        $this->themeCategoryRepository = $themeCategoryRepository;
     }
 
     /**
@@ -45,8 +51,7 @@ class AdminController extends BaseAdminController
                 'ASC',
                 $this->entity['list']['dql_filter']
             );
-        }
-        else {
+        } else {
             $this->entity['search']['fields'] = ['name' => $this->entity['search']['fields']['name']];
 
             $searchableFields = $this->entity['search']['fields'];
@@ -79,8 +84,7 @@ class AdminController extends BaseAdminController
         $themes = [];
         $categories = [];
 
-        while( $it->valid() )
-        {
+        while ($it->valid()) {
             $entity = $it->current();
 
             $theme = $entity->getTheme();
@@ -88,10 +92,8 @@ class AdminController extends BaseAdminController
             if (isset($theme) && !array_key_exists($theme->getId(), $themes)) {
                 $themes[$theme->getId()] = $theme;
 
-                foreach ($theme->getCategories() as $category) {
-                    if (!array_key_exists($category->getId(), $categories)) {
-                        $categories[$category->getId()] = $category;
-                    }
+                foreach ($theme->getOrderedCategories() as $category) {
+                  $categories[$category->getId()] = $category;
                 }
             }
 
@@ -323,8 +325,8 @@ class AdminController extends BaseAdminController
             [
                 'label' => 'Filter',
                 'attr' => [
-                    'class' => 'btn custom-filters--submit-button'
-                ]
+                    'class' => 'btn custom-filters--submit-button',
+                ],
             ]
         );
 

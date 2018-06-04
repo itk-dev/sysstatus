@@ -31,6 +31,7 @@ easy_admin:
             - { entity: 'User', icon: 'user', label: 'menu.users' }
             - { entity: 'Group', icon: 'users', label: 'menu.groups' }
             - { entity: 'Theme', icon: 'th-large', label: 'menu.themes' }
+            - { entity: 'ThemeCategory', icon: 'arrows-v', label: 'menu.theme_category' }
             - { entity: 'Category', icon: 'list', label: 'menu.categories' }
             - { entity: 'Question', icon: 'question', label: 'menu.questions' }
         assets:
@@ -38,26 +39,36 @@ easy_admin:
                 - ckeditor_styles.css
                 - styles.css
     entities:
+        ThemeCategory:
+            class: App\Entity\ThemeCategory
+            list:
+                fields:
+                    - { property: 'sort_order', label: 'entity.theme_category.sort_order' }
+                    - { property: 'category', label: 'entity.theme_category.category' }
+                    - { property: 'theme', label: 'entity.theme_category.theme' }
+                sort: ['sortOrder', 'ASC']
+                actions:
         Theme:
             class: App\Entity\Theme
             show:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
-                    - { property: 'categories', label: 'entity.theme.categories' }
+                    - { property: 'themeCategories', label: 'entity.theme.categories' }
             list:
                 fields:
                     - { property: 'id', label: 'entity.theme.id' }
                     - { property: 'name', label: 'entity.theme.name' }
-                    - { property: 'categories', label: 'entity.theme.categories' }
+                    - { property: 'themeCategories', label: 'entity.theme.categories' }
                     - { property: 'systems', label: 'entity.theme.systems' }
                     - { property: 'reports', label: 'entity.theme.reports' }
                 sort: ['id', 'ASC']
             form:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
-                    - { property: 'categories', label: 'entity.theme.categories' }
                     - { property: 'systems', label: 'entity.theme.systems' }
                     - { property: 'reports', label: 'entity.theme.reports' }
+                    - { type: group, label: 'entity.theme.theme_categories', css_class: 'col-sm-12', icon: list }
+                    - { property: 'theme_categories', label: 'entity.theme.theme_categories', type: embedded_list, type_options: { filters: { 'entity.theme': 'form:parent.data.id' } } }
         Category:
             class: App\Entity\Category
             list:
@@ -74,16 +85,19 @@ easy_admin:
             list:
                 fields:
                     - { property: 'id', label: 'entity.question.id' }
+                    - { property: 'sortOrder', label: 'entity.question.sort_order' }
                     - { property: 'question', label: 'entity.question.question' }
                     - { property: 'answers', label: 'entity.question.answers' }
                     - { property: 'category', label: 'entity.question.category' }
                 sort: ['id', 'ASC']
             form:
                 fields:
+                    - { property: 'sortOrder', label: 'entity.question.sort_order' }
                     - { property: 'question', label: 'entity.question.question' }
                     - { property: 'category', label: 'entity.question.category' }
             show:
                 fields:
+                    - { property: 'sortOrder' }
                     - { property: 'question' }
                     - { property: 'category' }
                     - { property: 'created_by' }
