@@ -202,6 +202,11 @@ class System
      */
     private $theme;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysOwnerSub;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -803,6 +808,22 @@ class System
     public function setResponsible($responsible): void
     {
         $this->responsible = $responsible;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSysOwnerSub()
+    {
+        return $this->sysOwnerSub;
+    }
+
+    /**
+     * @param mixed $sysOwnerSub
+     */
+    public function setSysOwnerSub($sysOwnerSub): void
+    {
+        $this->sysOwnerSub = $sysOwnerSub;
     }
 
     /**

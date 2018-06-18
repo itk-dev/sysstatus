@@ -227,6 +227,11 @@ class Report
      */
     private $theme;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysOwnerSub;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -913,12 +918,26 @@ class Report
     }
 
     /**
+     * @return mixed
+     */
+    public function getSysOwnerSub()
+    {
+        return $this->sysOwnerSub;
+    }
+
+    /**
+     * @param mixed $sysOwnerSub
+     */
+    public function setSysOwnerSub($sysOwnerSub): void
+    {
+        $this->sysOwnerSub = $sysOwnerSub;
+    }
+
+    /**
      * Virtual property.
      */
     public function getAnswerArea()
     {
         return $this->getTheme();
     }
-
-
 }
