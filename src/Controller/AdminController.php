@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController as BaseAdminController;
 use App\Repository\CategoryRepository;
+use App\Repository\SystemRepository;
 use App\Repository\ThemeCategoryRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,14 +20,16 @@ class AdminController extends BaseAdminController
 {
     private $categoryRepository;
     private $themeCategoryRepository;
+    private $entityManager;
 
     /**
      * AdminController constructor.
      */
-    public function __construct(CategoryRepository $categoryRepository, ThemeCategoryRepository $themeCategoryRepository)
+    public function __construct(CategoryRepository $categoryRepository, ThemeCategoryRepository $themeCategoryRepository, EntityManagerInterface $entityManager)
     {
         $this->categoryRepository = $categoryRepository;
         $this->themeCategoryRepository = $themeCategoryRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -294,12 +299,37 @@ class AdminController extends BaseAdminController
                             'placeholder' => 'custom_filters.none',
                             'data' => $selected,
                             'attr' => array(
-                                'class' => 'form-control',
+                                'class' => 'form-control custom-filter-select',
                             ),
                         )
                     );
                     break;
                 case 'choice':
+                    if (isset($filter['extract_from_property']) &&
+                        isset($filter['parent_filter']) &&
+                        !isset($requestFilters[$filter['parent_filter']])) {
+                        break;
+                    }
+
+                    if (isset($filter['extract_from_property']) && !isset($filter['choices'])) {
+                        $query = "SELECT DISTINCT u.".$filter['extract_from_property']." FROM ".$this->entity['class']." u";
+                        if (isset($filter['parent_filter']) && !empty($requestFilters[$filter['parent_filter']])) {
+                            $query .= ' WHERE u.' . $filter['parent_filter'] . ' = ' . $requestFilters[$filter['parent_filter']];
+                        }
+
+                        $query = $this->entityManager->createQuery($query);
+                        $results =  $query->getResult();
+
+                        $choices = [];
+                        $choices['All'] = '';
+
+                        foreach ($results as $result) {
+                            $choices[$result['sysOwnerSub']] = $result['sysOwnerSub'];
+                        }
+
+                        $filter['choices'] = $choices;
+                    }
+
                     $formBuilder->add(
                         $filter['property'],
                         ChoiceType::class,
@@ -307,11 +337,11 @@ class AdminController extends BaseAdminController
                             'label' => false,
                             'translation_domain' => 'messages',
                             'required' => false,
-                            'placeholder' => $filter['property'],
+                            'placeholder' => null,
                             'data' => $requestFilters[$filter['property']] ?? null,
                             'choices' => $filter['choices'],
                             'attr' => array(
-                                'class' => 'form-control',
+                                'class' => 'form-control custom-filter-select',
                             ),
                         )
                     );

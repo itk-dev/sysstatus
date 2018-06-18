@@ -247,6 +247,7 @@ easy_admin:
                     - { property: 'showable_name', label: 'entity.system.sys_title' }
                     - { property: 'responsible', label: 'entity.system.responsible' }
                     - { property: 'sys_owner', label: 'entity.system.sys_owner' }
+                    - { property: 'sys_owner_sub', label: 'entity.system.sys_owner_sub' }
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
                     - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
@@ -254,8 +255,13 @@ easy_admin:
                 sort: ['id', 'ASC']
                 filters:
                     -
-                      property: group
-                      type: entity
+                        property: group
+                        type: entity
+                    -
+                        property: sysOwnerSub
+                        type: choice
+                        extract_from_property: sysOwnerSub
+                        parent_filter: group
             show:
                 fields:
                     - { property: 'name', label: 'entity.system.name' }

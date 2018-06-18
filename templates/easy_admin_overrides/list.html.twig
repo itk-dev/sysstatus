@@ -2,7 +2,7 @@
 
 {% set requestFilters = app.request.get('filters', {}) %}
 {% set _request_parameters = _request_parameters|default({})|merge({
-    filters: requestFilters
+  filters: requestFilters
 }) %}
 
 {# The change to this block is that a table row is clickable with a link to the show action of the given entity #}
@@ -46,7 +46,7 @@
 {# Change layout to include filters #}
 {% block content_header %}
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-2">
       {% block content_title_wrapper %}
         <h1 class="title">
           {{ block('content_title') }}
@@ -54,7 +54,7 @@
       {% endblock %}
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-4">
       {% block content_header_filters %}
         {% if filters is defined and filters is not null %}
           {{ form(filters, {'attr': {'id': 'filters', 'class': 'form-action custom-filters'}}) }}
@@ -97,5 +97,23 @@
       <input type="hidden" name="filters[{{ field }}]" value="{{ value }}">
     {% endif %}
   {% endfor %}
+
   {{ parent() }}
+{% endblock %}
+
+{% block body_javascript %}
+  {{ parent() }}
+
+  <script type="text/javascript">
+      // Does not work with old IE.
+      document.addEventListener('DOMContentLoaded', function () {
+          var elements = document.getElementsByClassName('custom-filter-select');
+
+          for (var i = 0; i < elements.length; i++) {
+              elements[i].addEventListener('input', function () {
+                  document.getElementById('filters').submit();
+              });
+          }
+      }, false);
+  </script>
 {% endblock %}
