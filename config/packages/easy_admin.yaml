@@ -150,8 +150,8 @@ easy_admin:
                 dql_filter: entity.sysStatus = 'Aktiv'
                 filters:
                     -
-                      property: group
-                      type: entity
+                        property: group
+                        type: entity
                     -
                         property: sysOwnerSub
                         type: choice
