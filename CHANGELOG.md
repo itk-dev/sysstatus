@@ -2,6 +2,8 @@
 
 ## in develop
 
+* Added sub owner filter.
+
 ## 1.3.2
 
 * Fixed issue with template override for EasyAdminExtensionBundle.

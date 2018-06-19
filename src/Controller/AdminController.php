@@ -108,6 +108,7 @@ class AdminController extends BaseAdminController
         $parameters = array(
             'paginator' => $paginator,
             'fields' => $fields,
+            'icon' => $this->getIconForEntity($this->entity['name']),
             'themes' => $themes,
             'categories' => $categories,
             'filters' => isset($this->entity['list']['filters']) ? $this->createFilterForm(
@@ -158,9 +159,10 @@ class AdminController extends BaseAdminController
 
         return $this->render(
             $this->entity['templates']['list'],
-            array(
+            [
                 'paginator' => $paginator,
                 'fields' => $fields,
+                'icon' => $this->getIconForEntity($this->entity['name']),
                 'delete_form_template' => $this->createDeleteForm(
                     $this->entity['name'],
                     '__id__'
@@ -173,7 +175,7 @@ class AdminController extends BaseAdminController
                         $this->request->query->all()
                     )
                 )->createView() : null,
-            )
+            ]
         );
     }
 
@@ -228,6 +230,7 @@ class AdminController extends BaseAdminController
         $parameters = array(
             'paginator' => $paginator,
             'fields' => $fields,
+            'icon' => $this->getIconForEntity($this->entity['name']),
             'delete_form_template' => $this->createDeleteForm(
                 $this->entity['name'],
                 '__id__'
@@ -349,17 +352,6 @@ class AdminController extends BaseAdminController
             }
         }
 
-        $formBuilder->add(
-            'submit',
-            SubmitType::class,
-            [
-                'label' => 'Filter',
-                'attr' => [
-                    'class' => 'btn custom-filters--submit-button',
-                ],
-            ]
-        );
-
         $form = $formBuilder->getForm();
 
         return $form;
@@ -382,6 +374,16 @@ class AdminController extends BaseAdminController
         unset($filters['filters']['submit']);
 
         $params = $request->query->all();
+
+        // Change in group filter, resets all other filters.
+        if (isset($params['filters']) && isset($filters['filters']) &&
+            $params['filters']['group'] != $filters['filters']['group']) {
+            foreach($filters['filters'] as $key => $filter) {
+                if ($key != 'group') {
+                    unset($filters['filters'][$key]);
+                }
+            }
+        }
 
         $params['filters'] = null;
         $params['page'] = 1;
@@ -414,5 +416,36 @@ class AdminController extends BaseAdminController
         }
 
         return null;
+    }
+
+    /**
+     * Get font-awesome icon for $entity
+     *
+     * @param $entity
+     * @return string
+     */
+    private function getIconForEntity($entity) {
+        switch ($entity) {
+            case 'Report':
+                return 'file';
+            case 'System':
+                return 'cogs';
+            case 'Note':
+                return 'edit';
+            case 'User':
+                return 'user';
+            case 'Group':
+                return 'users';
+            case 'Theme':
+                return 'th-large';
+            case 'ThemeCategory':
+                return 'arrows-v';
+            case 'Category':
+                return 'list';
+            case 'Question':
+                return 'question';
+            default:
+                return 'chevron-circle-right';
+        }
     }
 }

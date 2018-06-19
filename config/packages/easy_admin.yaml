@@ -152,6 +152,11 @@ easy_admin:
                     -
                       property: group
                       type: entity
+                    -
+                        property: sysOwnerSub
+                        type: choice
+                        extract_from_property: sysOwnerSub
+                        parent_filter: group
             show:
                 fields:
                     - { property: 'name', label: 'entity.report.name' }
