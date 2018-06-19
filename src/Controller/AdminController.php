@@ -308,10 +308,12 @@ class AdminController extends BaseAdminController
                     );
                     break;
                 case 'choice':
+                    $disableFilter = false;
+
                     if (isset($filter['extract_from_property']) &&
                         isset($filter['parent_filter']) &&
-                        !isset($requestFilters[$filter['parent_filter']])) {
-                        break;
+                        (!isset($requestFilters[$filter['parent_filter']]) || $requestFilters[$filter['parent_filter']] == '')) {
+                        $disableFilter = true;
                     }
 
                     if (isset($filter['extract_from_property']) && !isset($filter['choices'])) {
@@ -333,20 +335,26 @@ class AdminController extends BaseAdminController
                         $filter['choices'] = $choices;
                     }
 
+                    $renderArray = [
+                        'label' => false,
+                        'translation_domain' => 'messages',
+                        'required' => false,
+                        'placeholder' => null,
+                        'data' => $requestFilters[$filter['property']] ?? null,
+                        'choices' => $filter['choices'],
+                        'attr' => array(
+                            'class' => 'form-control custom-filter-select',
+                        ),
+                    ];
+
+                    if ($disableFilter) {
+                        $renderArray['attr']['disabled'] = 'disabled';
+                    }
+
                     $formBuilder->add(
                         $filter['property'],
                         ChoiceType::class,
-                        array(
-                            'label' => false,
-                            'translation_domain' => 'messages',
-                            'required' => false,
-                            'placeholder' => null,
-                            'data' => $requestFilters[$filter['property']] ?? null,
-                            'choices' => $filter['choices'],
-                            'attr' => array(
-                                'class' => 'form-control custom-filter-select',
-                            ),
-                        )
+                        $renderArray
                     );
                     break;
             }
