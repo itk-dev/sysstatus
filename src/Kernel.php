@@ -71,12 +71,12 @@ class Kernel extends BaseKernel implements CompilerPassInterface
 
         // Replaces native EasyAdmin templates
         $easyAdminExtensionTwigPath = $r.'/../templates/easy_admin_extension_overrides/';
-        $twigLoaderFilesystemDefinition->addMethodCall('prependPath', array($easyAdminExtensionTwigPath, 'EasyAdmin'));
+        $twigLoaderFilesystemDefinition->addMethodCall('prependPath', [$easyAdminExtensionTwigPath, 'EasyAdmin']);
 
         $nativeEasyAdminBundleRefl = new \ReflectionClass(EasyAdminExtensionBundle::class);
         $nativeEasyAdminBundlePath = dirname($nativeEasyAdminBundleRefl->getFileName());
         $nativeEasyAdminTwigPath = $nativeEasyAdminBundlePath.'/Resources/views';
         // Defines a namespace from native EasyAdmin templates
-        $twigLoaderFilesystemDefinition->addMethodCall('addPath', array($nativeEasyAdminTwigPath, 'BaseEasyAdminExtension'));
+        $twigLoaderFilesystemDefinition->addMethodCall('addPath', [$nativeEasyAdminTwigPath, 'BaseEasyAdminExtension']);
     }
 }

@@ -2,6 +2,10 @@
   overflow: auto;
 }
 
+.header-icon {
+  font-size: 2.5em;
+}
+
 .field-smiley--title-hover {
   cursor: default;
 }

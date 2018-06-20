@@ -3,14 +3,28 @@
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ReportRepository;
+use App\Repository\SystemRepository;
+use App\Repository\GroupRepository;
 
 class BaseImporter
 {
     protected $entityManager;
+    protected $reportRepository;
+    protected $systemRepository;
+    protected $groupRepository;
     protected $url;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+
+    public function __construct(
+        ReportRepository $reportRepository,
+        SystemRepository $systemRepository,
+        GroupRepository $groupRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->reportRepository = $reportRepository;
+        $this->systemRepository = $systemRepository;
+        $this->groupRepository = $groupRepository;
         $this->entityManager = $entityManager;
 
         $this->url = getenv('SYSTEM_URL');

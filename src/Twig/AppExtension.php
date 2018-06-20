@@ -10,17 +10,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 class AppExtension extends AbstractExtension
 {
     public function getFunctions() {
-        return array(
-            new TwigFunction('getclass', array($this, 'getClass')),
-            new TwigFunction('getanswer', array($this, 'getAnswer')),
-            new TwigFunction('breakintolines', array($this, 'breakIntoLines')),
-        );
+        return [
+            new TwigFunction('getclass', [$this, 'getClass']),
+            new TwigFunction('getanswer', [$this, 'getAnswer']),
+            new TwigFunction('breakintolines', [$this, 'breakIntoLines']),
+        ];
     }
 
     public function getFilters() {
-        return array(
-            new TwigFilter('sort_order', array($this, 'sortOrder')),
-        );
+        return [
+            new TwigFilter('sort_order', [$this, 'sortOrder']),
+        ];
     }
 
     /**
@@ -54,7 +54,7 @@ class AppExtension extends AbstractExtension
      */
     private function str_split_unicode($str, $l = 0) {
         if ($l > 0) {
-            $ret = array();
+            $ret = [];
             $len = mb_strlen($str, "UTF-8");
             for ($i = 0; $i < $len; $i += $l) {
                 $ret[] = mb_substr($str, $i, $l, "UTF-8");
