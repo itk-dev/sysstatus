@@ -75,7 +75,9 @@ class SystemImporter extends BaseImporter
                     $system->setGroup($findGroup);
                 }
 
-                $system->setSysOwnerSub($subGroupName);
+                if ($subGroupName) {
+                    $system->setSysOwnerSub($subGroupName);
+                }
             }
         };
 

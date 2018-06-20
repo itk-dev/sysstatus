@@ -78,10 +78,10 @@ class AdminController extends BaseAdminController
 
         $this->dispatch(
             EasyAdminEvents::POST_LIST,
-            array(
+            [
                 'fields' => $fields,
                 'paginator' => $paginator,
-            )
+            ]
         );
 
         $it = $paginator->getCurrentPageResults();
@@ -105,7 +105,7 @@ class AdminController extends BaseAdminController
             $it->next();
         }
 
-        $parameters = array(
+        $parameters = [
             'paginator' => $paginator,
             'fields' => $fields,
             'icon' => $this->getIconForEntity($this->entity['name']),
@@ -119,15 +119,15 @@ class AdminController extends BaseAdminController
                     $this->request->query->all()
                 )
             )->createView() : null,
-        );
+        ];
 
         return $this->executeDynamicMethod(
             'render<EntityName>Template',
-            array(
+            [
                 'dashboard',
                 'easy_admin_overrides/dashboard.html.twig',
                 $parameters,
-            )
+            ]
         );
     }
 
@@ -154,7 +154,7 @@ class AdminController extends BaseAdminController
 
         $this->dispatch(
             EasyAdminEvents::POST_LIST,
-            array('paginator' => $paginator)
+            ['paginator' => $paginator]
         );
 
         return $this->render(
@@ -193,7 +193,7 @@ class AdminController extends BaseAdminController
         if ('' === $query) {
             $queryParameters = array_replace(
                 $this->request->query->all(),
-                array('action' => 'list', 'query' => null)
+                ['action' => 'list', 'query' => null]
             );
             $queryParameters = array_filter($queryParameters);
 
@@ -221,13 +221,13 @@ class AdminController extends BaseAdminController
 
         $this->dispatch(
             EasyAdminEvents::POST_SEARCH,
-            array(
+            [
                 'fields' => $fields,
                 'paginator' => $paginator,
-            )
+            ]
         );
 
-        $parameters = array(
+        $parameters = [
             'paginator' => $paginator,
             'fields' => $fields,
             'icon' => $this->getIconForEntity($this->entity['name']),
@@ -243,11 +243,11 @@ class AdminController extends BaseAdminController
                     $this->request->query->all()
                 )
             )->createView() : null,
-        );
+        ];
 
         return $this->executeDynamicMethod(
             'render<EntityName>Template',
-            array('search', $this->entity['templates']['list'], $parameters)
+            ['search', $this->entity['templates']['list'], $parameters]
         );
     }
 
@@ -294,17 +294,17 @@ class AdminController extends BaseAdminController
                     $formBuilder->add(
                         $filter['property'],
                         EntityType::class,
-                        array(
+                        [
                             'label' => false,
                             'class' => $entityConfig['class'],
                             'translation_domain' => 'messages',
                             'required' => false,
                             'placeholder' => 'custom_filters.none',
                             'data' => $selected,
-                            'attr' => array(
+                            'attr' => [
                                 'class' => 'form-control custom-filter-select',
-                            ),
-                        )
+                            ],
+                        ]
                     );
                     break;
                 case 'choice':
@@ -317,19 +317,30 @@ class AdminController extends BaseAdminController
                     }
 
                     if (isset($filter['extract_from_property']) && !isset($filter['choices'])) {
-                        $query = "SELECT DISTINCT u.".$filter['extract_from_property']." FROM ".$this->entity['class']." u";
+                        $builder = $this->entityManager->getRepository($this->entity['class'])->createQueryBuilder('en');
+
+                        $field = 'en.'.$filter['extract_from_property'];
+
+                        $builder
+                            ->select($field)
+                            ->distinct($field);
+
                         if (isset($filter['parent_filter']) && !empty($requestFilters[$filter['parent_filter']])) {
-                            $query .= ' WHERE u.' . $filter['parent_filter'] . ' = ' . $requestFilters[$filter['parent_filter']];
+                            $builder
+                                ->andWhere('en.'.$filter['parent_filter'] . ' = :parent_filter')
+                                ->setParameter('parent_filter', $requestFilters[$filter['parent_filter']]);
                         }
 
-                        $query = $this->entityManager->createQuery($query);
+                        $query = $builder->getQuery();
+
                         $results =  $query->getResult();
 
-                        $choices = [];
-                        $choices['All'] = '';
+                        $choices = ['All' => ''];
 
                         foreach ($results as $result) {
-                            $choices[$result['sysOwnerSub']] = $result['sysOwnerSub'];
+                            if ($result[$filter['extract_from_property']]) {
+                                $choices[$result[$filter['extract_from_property']]] = $result[$filter['extract_from_property']];
+                            }
                         }
 
                         $filter['choices'] = $choices;
@@ -342,9 +353,9 @@ class AdminController extends BaseAdminController
                         'placeholder' => null,
                         'data' => $requestFilters[$filter['property']] ?? null,
                         'choices' => $filter['choices'],
-                        'attr' => array(
+                        'attr' => [
                             'class' => 'form-control custom-filter-select',
-                        ),
+                        ],
                     ];
 
                     if ($disableFilter) {

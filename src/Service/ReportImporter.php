@@ -80,7 +80,9 @@ class ReportImporter extends BaseImporter
                     $report->setGroup($findGroup);
                 }
 
-                $report->setSysOwnerSub($subGroupName);
+                if ($subGroupName) {
+                    $report->setSysOwnerSub($subGroupName);
+                }
             }
         }
 

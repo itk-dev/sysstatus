@@ -74,12 +74,12 @@ class AnswerController extends Controller
 
         return $this->redirectToRoute(
             'easyadmin',
-            array(
+            [
                 'action' => 'edit',
                 'id' => $answer->getId(),
                 'entity' => 'Answer',
                 'referer' => $request->query->get('referer'),
-            )
+            ]
         );
     }
 }
