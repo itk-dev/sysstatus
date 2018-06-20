@@ -1,6 +1,6 @@
 # ITStyr CHANGELOG
 
-## in develop
+## 1.4.0
 
 * Added sub owner filter.
 * Added extraction of sub owner for sysOwner field.
