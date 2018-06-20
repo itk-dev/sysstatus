@@ -16,7 +16,7 @@ class ReportImporter extends BaseImporter
         }
 
         foreach ($xml->xpath('//sys:entry') as $entry) {
-            $report = $this->entityManager->getRepository('App:Report')->findOneBy(['sysId' => $entry->id]);
+            $report = $this->reportRepository->findOneBy(['sysId' => $entry->id]);
 
             if (!$report) {
                 $report = new Report();
@@ -62,7 +62,27 @@ class ReportImporter extends BaseImporter
             $report->setSysImpactAnalysis($this->sanitizeText($properties->KonsekvensanalyseValue));
             $report->setSysAuthorizationProcedure($this->sanitizeText($properties->Autorisationsprocedure));
             $report->setSysVersion($this->sanitizeText($properties->Version));
-        };
+
+            // Set group and subGroup.
+            if (!is_null($report->getSysOwner())) {
+                $e = $report->getSysOwner();
+                $e = str_replace('–', '-', $e);
+                $extract = explode('-', $e, 2);
+                $groupName = trim($extract[0]);
+
+                $subGroupName = trim($extract[1]);
+
+                $findGroup = $this->groupRepository->findOneBy(
+                    ['name' => $groupName]
+                );
+
+                if ($findGroup && is_null($report->getGroup())) {
+                    $report->setGroup($findGroup);
+                }
+
+                $report->setSysOwnerSub($subGroupName);
+            }
+        }
 
         $this->entityManager->flush();
     }

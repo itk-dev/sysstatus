@@ -16,7 +16,7 @@ class SystemImporter extends BaseImporter
         }
 
         foreach ($xml->xpath('//sys:entry') as $entry) {
-            $system = $this->entityManager->getRepository('App:System')->findOneBy(['sysId' => $entry->id]);
+            $system = $this->systemRepository->findOneBy(['sysId' => $entry->id]);
 
             if (!$system) {
                 $system = new System();
@@ -57,6 +57,26 @@ class SystemImporter extends BaseImporter
             $system->setSysTotalTransactionsPrYear($this->sanitizeText($properties->AntalTotaleTransaktionerPrÅr));
             $system->setSysSelfServiceURL($this->sanitizeText($properties->SelvbetjeningsURL));
             $system->setSysVersion($this->sanitizeText($properties->Version));
+
+            // Set group and subGroup.
+            if (!is_null($system->getSysOwner())) {
+                $e = $system->getSysOwner();
+                $e = str_replace('–', '-', $e);
+                $extract = explode('-', $e, 2);
+                $groupName = trim($extract[0]);
+
+                $subGroupName = trim($extract[1]);
+
+                $findGroup = $this->groupRepository->findOneBy(
+                    ['name' => $groupName]
+                );
+
+                if ($findGroup && is_null($system->getGroup())) {
+                    $system->setGroup($findGroup);
+                }
+
+                $system->setSysOwnerSub($subGroupName);
+            }
         };
 
         $this->entityManager->flush();
