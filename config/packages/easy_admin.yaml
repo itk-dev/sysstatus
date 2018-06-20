@@ -140,9 +140,9 @@ easy_admin:
                 fields:
                     - { property: 'id', label: 'entity.report.id' }
                     - { property: 'showable_name', label: 'entity.report.sys_title' }
-                    - { property: 'responsible', label: 'entity.report.responsible' }
-                    - { property: 'sys_owner', label: 'entity.report.sys_owner' }
                     - { property: 'group', label: 'entity.report.group', type: 'text' }
+                    - { property: 'sys_owner_sub', label: 'entity.report.sys_owner_sub' }
+                    - { property: 'responsible', label: 'entity.report.responsible' }
                     - { property: 'sys_id_as_link', label: 'entity.report.sys_id_as_link', type: 'file' }
                     - { property: 'theme', label: 'entity.report.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.report.text', type: 'boolean' }
@@ -150,8 +150,13 @@ easy_admin:
                 dql_filter: entity.sysStatus = 'Aktiv'
                 filters:
                     -
-                      property: group
-                      type: entity
+                        property: group
+                        type: entity
+                    -
+                        property: sysOwnerSub
+                        type: choice
+                        extract_from_property: sysOwnerSub
+                        parent_filter: group
             show:
                 fields:
                     - { property: 'name', label: 'entity.report.name' }
@@ -245,17 +250,22 @@ easy_admin:
                 fields:
                     - { property: 'id', label: 'entity.system.id' }
                     - { property: 'showable_name', label: 'entity.system.sys_title' }
-                    - { property: 'responsible', label: 'entity.system.responsible' }
-                    - { property: 'sys_owner', label: 'entity.system.sys_owner' }
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
+                    - { property: 'sys_owner_sub', label: 'entity.system.sys_owner_sub' }
+                    - { property: 'responsible', label: 'entity.system.responsible' }
                     - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
                 filters:
                     -
-                      property: group
-                      type: entity
+                        property: group
+                        type: entity
+                    -
+                        property: sysOwnerSub
+                        type: choice
+                        extract_from_property: sysOwnerSub
+                        parent_filter: group
             show:
                 fields:
                     - { property: 'name', label: 'entity.system.name' }

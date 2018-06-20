@@ -44,6 +44,7 @@ entity:
         sys_updated: Opdateret
         sys_description: Beskrivelse
         sys_owner: Systemejerskab
+        sys_owner_sub: Afdeling
         sys_owner_subdepartment: SystemejerskabUnderafdeling
         sys_emergency_setup: Driftsberedskab
         sys_contractor: Systemleverandør
@@ -83,6 +84,7 @@ entity:
         sys_alternative_title: SystemetsKaldenavn
         sys_updated: Opdateret
         sys_owner: Systemejerskab
+        sys_owner_sub: Afdeling
         sys_confidential_information: Fortrolige oplysninger
         sys_purpose: Formål
         sys_classification: Systemets klassifikation
@@ -191,3 +193,4 @@ embedded_list:
 ThemeCategory: Tema-Kategori
 easyadmin_embedded_list_row:
     no_entity: Vises først efter der er gemt første gang.
+All: Alle

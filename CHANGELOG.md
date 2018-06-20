@@ -2,6 +2,9 @@
 
 ## in develop
 
+* Added sub owner filter.
+* Added extraction of sub owner for sysOwner field.
+
 ## 1.3.2
 
 * Fixed issue with template override for EasyAdminExtensionBundle.

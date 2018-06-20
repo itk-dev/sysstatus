@@ -41,23 +41,32 @@ class AssignGroupsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $reports = $this->reportRepository->findBy(['group' => null]);
-        $systems = $this->systemRepository->findBy(['group' => null]);
+        $reports = $this->reportRepository->findAll();
+        $systems = $this->systemRepository->findAll();
 
         foreach ($reports as $report) {
             if (!is_null($report->getSysOwner())) {
-                $e = str_replace(' ', '', $report->getSysOwner());
+                $e = $report->getSysOwner();
                 $e = str_replace('–', '-', $e);
-                $extract = explode('-', $e);
-                $groupName = $extract[0];
+                $extract = explode('-', $e, 2);
+                $groupName = trim($extract[0]);
+
+                $subGroupName = trim($extract[1]);
 
                 $findGroup = $this->groupRepository->findOneBy(
                     ['name' => $groupName]
                 );
 
                 if ($findGroup) {
-                    $report->setGroup($findGroup);
-                    $output->writeln($report->getName()." set group ".$groupName);
+                    if (is_null($report->getGroup())) {
+                        $report->setGroup($findGroup);
+                    }
+
+                    if (is_null($report->getSysOwnerSub())) {
+                        $report->setSysOwnerSub($subGroupName);
+                    }
+
+                    $output->writeln('"'.$report->getName().'" set group "'.$groupName.'" and subGroup: "'.$subGroupName.'"');
                 }
                 else {
                     $output->writeln($groupName . " not found, ignored.");
@@ -71,18 +80,27 @@ class AssignGroupsCommand extends Command
 
         foreach ($systems as $system) {
             if (!is_null($system->getSysOwner())) {
-                $e = str_replace(' ', '', $system->getSysOwner());
+                $e = $system->getSysOwner();
                 $e = str_replace('–', '-', $e);
-                $extract = explode('-', $e);
-                $groupName = $extract[0];
+                $extract = explode('-', $e, 2);
+                $groupName = trim($extract[0]);
+
+                $subGroupName = trim($extract[1]);
 
                 $findGroup = $this->groupRepository->findOneBy(
                     ['name' => $groupName]
                 );
 
                 if ($findGroup) {
-                    $system->setGroup($findGroup);
-                    $output->writeln($system->getName()." set group ".$groupName);
+                    if (is_null($system->getGroup())) {
+                        $system->setGroup($findGroup);
+                    }
+
+                    if (is_null($system->getSysOwnerSub())) {
+                        $system->setSysOwnerSub($subGroupName);
+                    }
+
+                    $output->writeln('"'.$system->getName().'" set group "'.$groupName.'" and subGroup: "'.$subGroupName.'"');
                 }
                 else {
                     $output->writeln($groupName . " not found, ignored.");

@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController as BaseAdminController;
 use App\Repository\CategoryRepository;
+use App\Repository\SystemRepository;
 use App\Repository\ThemeCategoryRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,14 +20,16 @@ class AdminController extends BaseAdminController
 {
     private $categoryRepository;
     private $themeCategoryRepository;
+    private $entityManager;
 
     /**
      * AdminController constructor.
      */
-    public function __construct(CategoryRepository $categoryRepository, ThemeCategoryRepository $themeCategoryRepository)
+    public function __construct(CategoryRepository $categoryRepository, ThemeCategoryRepository $themeCategoryRepository, EntityManagerInterface $entityManager)
     {
         $this->categoryRepository = $categoryRepository;
         $this->themeCategoryRepository = $themeCategoryRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -73,10 +78,10 @@ class AdminController extends BaseAdminController
 
         $this->dispatch(
             EasyAdminEvents::POST_LIST,
-            array(
+            [
                 'fields' => $fields,
                 'paginator' => $paginator,
-            )
+            ]
         );
 
         $it = $paginator->getCurrentPageResults();
@@ -100,9 +105,10 @@ class AdminController extends BaseAdminController
             $it->next();
         }
 
-        $parameters = array(
+        $parameters = [
             'paginator' => $paginator,
             'fields' => $fields,
+            'icon' => $this->getIconForEntity($this->entity['name']),
             'themes' => $themes,
             'categories' => $categories,
             'filters' => isset($this->entity['list']['filters']) ? $this->createFilterForm(
@@ -113,15 +119,15 @@ class AdminController extends BaseAdminController
                     $this->request->query->all()
                 )
             )->createView() : null,
-        );
+        ];
 
         return $this->executeDynamicMethod(
             'render<EntityName>Template',
-            array(
+            [
                 'dashboard',
                 'easy_admin_overrides/dashboard.html.twig',
                 $parameters,
-            )
+            ]
         );
     }
 
@@ -148,14 +154,15 @@ class AdminController extends BaseAdminController
 
         $this->dispatch(
             EasyAdminEvents::POST_LIST,
-            array('paginator' => $paginator)
+            ['paginator' => $paginator]
         );
 
         return $this->render(
             $this->entity['templates']['list'],
-            array(
+            [
                 'paginator' => $paginator,
                 'fields' => $fields,
+                'icon' => $this->getIconForEntity($this->entity['name']),
                 'delete_form_template' => $this->createDeleteForm(
                     $this->entity['name'],
                     '__id__'
@@ -168,7 +175,7 @@ class AdminController extends BaseAdminController
                         $this->request->query->all()
                     )
                 )->createView() : null,
-            )
+            ]
         );
     }
 
@@ -186,7 +193,7 @@ class AdminController extends BaseAdminController
         if ('' === $query) {
             $queryParameters = array_replace(
                 $this->request->query->all(),
-                array('action' => 'list', 'query' => null)
+                ['action' => 'list', 'query' => null]
             );
             $queryParameters = array_filter($queryParameters);
 
@@ -214,15 +221,16 @@ class AdminController extends BaseAdminController
 
         $this->dispatch(
             EasyAdminEvents::POST_SEARCH,
-            array(
+            [
                 'fields' => $fields,
                 'paginator' => $paginator,
-            )
+            ]
         );
 
-        $parameters = array(
+        $parameters = [
             'paginator' => $paginator,
             'fields' => $fields,
+            'icon' => $this->getIconForEntity($this->entity['name']),
             'delete_form_template' => $this->createDeleteForm(
                 $this->entity['name'],
                 '__id__'
@@ -235,11 +243,11 @@ class AdminController extends BaseAdminController
                     $this->request->query->all()
                 )
             )->createView() : null,
-        );
+        ];
 
         return $this->executeDynamicMethod(
             'render<EntityName>Template',
-            array('search', $this->entity['templates']['list'], $parameters)
+            ['search', $this->entity['templates']['list'], $parameters]
         );
     }
 
@@ -286,49 +294,82 @@ class AdminController extends BaseAdminController
                     $formBuilder->add(
                         $filter['property'],
                         EntityType::class,
-                        array(
+                        [
                             'label' => false,
                             'class' => $entityConfig['class'],
                             'translation_domain' => 'messages',
                             'required' => false,
                             'placeholder' => 'custom_filters.none',
                             'data' => $selected,
-                            'attr' => array(
-                                'class' => 'form-control',
-                            ),
-                        )
+                            'attr' => [
+                                'class' => 'form-control custom-filter-select',
+                            ],
+                        ]
                     );
                     break;
                 case 'choice':
+                    $disableFilter = false;
+
+                    if (isset($filter['extract_from_property']) &&
+                        isset($filter['parent_filter']) &&
+                        (!isset($requestFilters[$filter['parent_filter']]) || $requestFilters[$filter['parent_filter']] == '')) {
+                        $disableFilter = true;
+                    }
+
+                    if (isset($filter['extract_from_property']) && !isset($filter['choices'])) {
+                        $builder = $this->entityManager->getRepository($this->entity['class'])->createQueryBuilder('en');
+
+                        $field = 'en.'.$filter['extract_from_property'];
+
+                        $builder
+                            ->select($field)
+                            ->distinct($field);
+
+                        if (isset($filter['parent_filter']) && !empty($requestFilters[$filter['parent_filter']])) {
+                            $builder
+                                ->andWhere('en.'.$filter['parent_filter'] . ' = :parent_filter')
+                                ->setParameter('parent_filter', $requestFilters[$filter['parent_filter']]);
+                        }
+
+                        $query = $builder->getQuery();
+
+                        $results =  $query->getResult();
+
+                        $choices = ['All' => ''];
+
+                        foreach ($results as $result) {
+                            if ($result[$filter['extract_from_property']]) {
+                                $choices[$result[$filter['extract_from_property']]] = $result[$filter['extract_from_property']];
+                            }
+                        }
+
+                        $filter['choices'] = $choices;
+                    }
+
+                    $renderArray = [
+                        'label' => false,
+                        'translation_domain' => 'messages',
+                        'required' => false,
+                        'placeholder' => null,
+                        'data' => $requestFilters[$filter['property']] ?? null,
+                        'choices' => $filter['choices'],
+                        'attr' => [
+                            'class' => 'form-control custom-filter-select',
+                        ],
+                    ];
+
+                    if ($disableFilter) {
+                        $renderArray['attr']['disabled'] = 'disabled';
+                    }
+
                     $formBuilder->add(
                         $filter['property'],
                         ChoiceType::class,
-                        array(
-                            'label' => false,
-                            'translation_domain' => 'messages',
-                            'required' => false,
-                            'placeholder' => $filter['property'],
-                            'data' => $requestFilters[$filter['property']] ?? null,
-                            'choices' => $filter['choices'],
-                            'attr' => array(
-                                'class' => 'form-control',
-                            ),
-                        )
+                        $renderArray
                     );
                     break;
             }
         }
-
-        $formBuilder->add(
-            'submit',
-            SubmitType::class,
-            [
-                'label' => 'Filter',
-                'attr' => [
-                    'class' => 'btn custom-filters--submit-button',
-                ],
-            ]
-        );
 
         $form = $formBuilder->getForm();
 
@@ -352,6 +393,16 @@ class AdminController extends BaseAdminController
         unset($filters['filters']['submit']);
 
         $params = $request->query->all();
+
+        // Change in group filter, resets all other filters.
+        if (isset($params['filters']) && isset($filters['filters']) &&
+            $params['filters']['group'] != $filters['filters']['group']) {
+            foreach($filters['filters'] as $key => $filter) {
+                if ($key != 'group') {
+                    unset($filters['filters'][$key]);
+                }
+            }
+        }
 
         $params['filters'] = null;
         $params['page'] = 1;
@@ -384,5 +435,36 @@ class AdminController extends BaseAdminController
         }
 
         return null;
+    }
+
+    /**
+     * Get font-awesome icon for $entity
+     *
+     * @param $entity
+     * @return string
+     */
+    private function getIconForEntity($entity) {
+        switch ($entity) {
+            case 'Report':
+                return 'file';
+            case 'System':
+                return 'cogs';
+            case 'Note':
+                return 'edit';
+            case 'User':
+                return 'user';
+            case 'Group':
+                return 'users';
+            case 'Theme':
+                return 'th-large';
+            case 'ThemeCategory':
+                return 'arrows-v';
+            case 'Category':
+                return 'list';
+            case 'Question':
+                return 'question';
+            default:
+                return 'chevron-circle-right';
+        }
     }
 }
