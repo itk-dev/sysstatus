@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.4.1
+
+* Update to symfony 4.1.3.
+
 ## 1.4.0
 
 * Added sub owner filter.
