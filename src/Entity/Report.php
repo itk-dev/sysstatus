@@ -232,6 +232,11 @@ class Report
      */
     private $sysOwnerSub;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysInternalInformation;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -939,5 +944,17 @@ class Report
     public function getAnswerArea()
     {
         return $this->getTheme();
+    }
+
+    public function getSysInternalInformation(): ?string
+    {
+        return $this->sysInternalInformation;
+    }
+
+    public function setSysInternalInformation(?string $sysInternalInformation): self
+    {
+        $this->sysInternalInformation = $sysInternalInformation;
+
+        return $this;
     }
 }
