@@ -33,7 +33,7 @@ class ReportImporter extends BaseImporter
 
             $report->setSysAlternativeTitle($this->sanitizeText($properties->SystemetsKaldenavn));
             $report->setSysOwner($this->sanitizeText($properties->SystemejerskabValue));
-            $report->setSysConfidentialInformation($this->convertBoolean($properties->FortroligeOplysninger));
+            $report->setSysConfidentialInformation($this->convertBoolean($properties->FølsommeOplysninger));
             $report->setSysPurpose($this->sanitizeText($properties->Formål));
             $report->setSysClassification($this->sanitizeText($properties->SystemetsKlassifikationValue));
             $report->setSysDateForRevision($this->convertDate($properties->DatoForRevision));
