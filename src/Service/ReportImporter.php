@@ -62,6 +62,7 @@ class ReportImporter extends BaseImporter
             $report->setSysImpactAnalysis($this->sanitizeText($properties->KonsekvensanalyseValue));
             $report->setSysAuthorizationProcedure($this->sanitizeText($properties->Autorisationsprocedure));
             $report->setSysVersion($this->sanitizeText($properties->Version));
+            $report->setSysInternalInformation($this->sanitizeText($properties->IndsigtInterneOplysninger));
 
             // Set group and subGroup.
             if (!is_null($report->getSysOwner())) {

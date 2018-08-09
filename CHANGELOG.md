@@ -3,6 +3,7 @@
 ## in develop
 
 * Adjusted fields for report importing.
+* Fixed boolean types in system/report importing.
 
 ## 1.4.1
 
