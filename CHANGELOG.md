@@ -1,6 +1,6 @@
 # ITStyr CHANGELOG
 
-## in develop
+## 1.4.2
 
 * Adjusted fields for report importing.
 * Fixed boolean types in system/report importing.
