@@ -50,6 +50,6 @@ class BaseImporter
     }
 
     protected function convertBoolean(string $str) {
-        return $str == true;
+        return $str == 'true';
     }
 }

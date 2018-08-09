@@ -33,7 +33,7 @@ class ReportImporter extends BaseImporter
 
             $report->setSysAlternativeTitle($this->sanitizeText($properties->SystemetsKaldenavn));
             $report->setSysOwner($this->sanitizeText($properties->SystemejerskabValue));
-            $report->setSysConfidentialInformation($this->convertBoolean($properties->FortroligeOplysninger));
+            $report->setSysConfidentialInformation($this->convertBoolean($properties->FølsommeOplysninger));
             $report->setSysPurpose($this->sanitizeText($properties->Formål));
             $report->setSysClassification($this->sanitizeText($properties->SystemetsKlassifikationValue));
             $report->setSysDateForRevision($this->convertDate($properties->DatoForRevision));
@@ -62,6 +62,7 @@ class ReportImporter extends BaseImporter
             $report->setSysImpactAnalysis($this->sanitizeText($properties->KonsekvensanalyseValue));
             $report->setSysAuthorizationProcedure($this->sanitizeText($properties->Autorisationsprocedure));
             $report->setSysVersion($this->sanitizeText($properties->Version));
+            $report->setSysInternalInformation($this->sanitizeText($properties->IndsigtInterneOplysninger));
 
             // Set group and subGroup.
             if (!is_null($report->getSysOwner())) {

@@ -1,5 +1,10 @@
 # ITStyr CHANGELOG
 
+## in develop
+
+* Adjusted fields for report importing.
+* Fixed boolean types in system/report importing.
+
 ## 1.4.1
 
 * Update to symfony 4.1.3.

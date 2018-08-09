@@ -85,7 +85,7 @@ entity:
         sys_updated: Opdateret
         sys_owner: Systemejerskab
         sys_owner_sub: Afdeling
-        sys_confidential_information: Fortrolige oplysninger
+        sys_confidential_information: Følsomme oplysninger
         sys_purpose: Formål
         sys_classification: Systemets klassifikation
         sys_date_for_revision: Dato for Revision
@@ -114,6 +114,7 @@ entity:
         sys_impact_analysis: Konsekvensanalyse
         sys_authorization_procedure: Autorisationsprocedure
         sys_version: Version
+        sys_internal_information: Indsigt – interne oplysninger til sysstatus
 menu:
     notes: Notater
     systemportal: Fra systemportalen
