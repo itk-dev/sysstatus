@@ -242,6 +242,11 @@ class Report
      */
     private $sysDataToScience;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysImpactAnalysisLink;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -941,6 +946,18 @@ class Report
     public function setSysDataToScience(?string $sysDataToScience): self
     {
         $this->sysDataToScience = $sysDataToScience;
+
+        return $this;
+    }
+
+    public function getSysImpactAnalysisLink(): ?string
+    {
+        return $this->sysImpactAnalysisLink;
+    }
+
+    public function setSysImpactAnalysisLink(?string $sysImpactAnalysisLink): self
+    {
+        $this->sysImpactAnalysisLink = $sysImpactAnalysisLink;
 
         return $this;
     }

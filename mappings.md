@@ -35,9 +35,9 @@ Version: SysVersion
 IndsigtInterneOplysninger: SysInternalInformation
 IndeholderSystemetBevaringsværdigeDataValue: SysDataWorthSaving
 VideregivelseAfOplysningerTilForskningValue: SysDataToScience
+LinkTilKonsekvensanalyse: SysImpactAnalysisLink
 
 ### Not in Itstyr
-LinkTilKonsekvensanalyse
 DatoForRevisorerklæringTilsyn
 Oprettet
 Indholdstype

@@ -64,6 +64,7 @@ class ReportImporter extends BaseImporter
             $report->setSysLegalBasis($this->sanitizeText($properties->RetligtGrundlag));
             $report->setSysConsent($this->sanitizeText($properties->SamtykkeValue));
             $report->setSysImpactAnalysis($this->sanitizeText($properties->KonsekvensanalyseValue));
+            $report->setSysImpactAnalysisLink($this->sanitizeText($properties->LinkTilKonsekvensanalyse));
             $report->setSysAuthorizationProcedure($this->sanitizeText($properties->Autorisationsprocedure));
             $report->setSysVersion($this->sanitizeText($properties->Version));
             $report->setSysInternalInformation($this->sanitizeText($properties->IndsigtInterneOplysninger));

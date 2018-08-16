@@ -113,6 +113,7 @@ entity:
         sys_legal_basis: Retligt grundlag
         sys_consent: SamtykkeValue
         sys_impact_analysis: Konsekvensanalyse
+        sys_impact_analysis_link: Link til konsekvensanalyse
         sys_authorization_procedure: Autorisationsprocedure
         sys_version: Version
         sys_internal_information: Indsigt – interne oplysninger
