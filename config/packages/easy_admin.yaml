@@ -159,15 +159,15 @@ easy_admin:
                         parent_filter: group
             show:
                 fields:
+                    - { property: 'sys_title', label: 'entity.report.sys_title', type: 'raw' }
+                    - { property: 'sys_internal_id', label: 'entity.report.sys_internal_id', type: 'raw' }
+                    - { property: 'sys_link', label: 'entity.report.sys_link', type: 'file', filename: 'Link til anmeldelse' }
                     - { property: 'name', label: 'entity.report.name' }
                     - { property: 'text', label: 'entity.report.text', type: 'raw' }
                     - { property: 'responsible', label: 'entity.report.responsible' }
                     - { property: 'theme', label: 'entity.report.theme', type: 'text' }
                     - { property: 'group', label: 'entity.report.group', type: 'text' }
                     - { property: 'answerarea', label: 'entity.report.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
-                    - { property: 'sys_id', label: 'entity.report.sys_id', type: 'raw' }
-                    - { property: 'sys_id_as_link', label: 'entity.report.sys_id_as_link', type: 'file' }
-                    - { property: 'sys_title', label: 'entity.report.sys_title', type: 'raw' }
                     - { property: 'sys_alternative_title', label: 'entity.report.sys_alternative_title', type: 'raw' }
                     - { property: 'sys_updated', label: 'entity.report.sys_updated', type: 'datetime' }
                     - { property: 'sys_owner', label: 'entity.report.sys_owner', type: 'raw' }
@@ -253,7 +253,7 @@ easy_admin:
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
                     - { property: 'sys_owner_sub', label: 'entity.system.sys_owner_sub' }
                     - { property: 'responsible', label: 'entity.system.responsible' }
-                    - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
+                    - { property: 'sys_link', label: 'entity.system.sys_id_as_link', type: 'file' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
@@ -275,8 +275,8 @@ easy_admin:
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'raw' }
-                    - { property: 'sys_id', label: 'entity.system.sys_id', type: 'raw' }
-                    - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
+                    - { property: 'sys_internal_id', label: 'entity.system.sys_id', type: 'text' }
+                    - { property: 'sys_link', label: 'entity.system.sys_id_as_link', type: 'file' }
                     - { property: 'sys_updated', label: 'entity.system.sys_updated', type: 'datetime' }
                     - { property: 'sys_description', label: 'entity.system.sys_description', type: 'raw' }
                     - { property: 'sys_owner', label: 'entity.system.sys_owner', type: 'raw' }

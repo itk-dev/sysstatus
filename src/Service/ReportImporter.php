@@ -8,6 +8,8 @@ class ReportImporter extends BaseImporter
 {
     public function import($src)
     {
+        $systemURL = getenv('SYSTEM_URL');
+
         $xml = simplexml_load_file($src);
 
         foreach ($xml->getDocNamespaces() as $strPrefix => $strNamespace) {
@@ -31,6 +33,11 @@ class ReportImporter extends BaseImporter
 
             $properties = $entry->content->children('m', TRUE)->children('d', TRUE);
 
+            // Set link to Anmeldelsesportalen.
+            $report->setSysLink($systemURL . $this->sanitizeText($properties->Sti) . '/DispForm.aspx?ID=' . $this->sanitizeText($properties->Id));
+
+            // Set properties 1:1
+            $report->setSysInternalId($this->sanitizeText($properties->Id));
             $report->setSysAlternativeTitle($this->sanitizeText($properties->SystemetsKaldenavn));
             $report->setSysOwner($this->sanitizeText($properties->SystemejerskabValue));
             $report->setSysConfidentialInformation($this->convertBoolean($properties->FølsommeOplysninger));

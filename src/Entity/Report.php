@@ -232,6 +232,16 @@ class Report
      */
     private $sysInternalInformation;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sysLink;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $sysInternalId;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -800,14 +810,6 @@ class Report
     /**
      * Virtual property.
      */
-    public function getSysIdAsLink()
-    {
-        return $this->getSysId();
-    }
-
-    /**
-     * Virtual property.
-     */
     public function getShowableName()
     {
         return isset($this->sysTitle) ? $this->sysTitle : $this->getName();
@@ -933,6 +935,30 @@ class Report
     public function setSysInternalInformation(?string $sysInternalInformation): self
     {
         $this->sysInternalInformation = $sysInternalInformation;
+
+        return $this;
+    }
+
+    public function getSysLink(): ?string
+    {
+        return $this->sysLink;
+    }
+
+    public function setSysLink(string $sysLink): self
+    {
+        $this->sysLink = $sysLink;
+
+        return $this;
+    }
+
+    public function getSysInternalId(): ?int
+    {
+        return $this->sysInternalId;
+    }
+
+    public function setSysInternalId(?int $sysInternalId): self
+    {
+        $this->sysInternalId = $sysInternalId;
 
         return $this;
     }

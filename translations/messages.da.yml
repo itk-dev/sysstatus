@@ -79,9 +79,11 @@ entity:
         answers_remarks: Rediger
         answers_remarks_create: Opret
         sys_id: Id
+        sys_internal_id: Id i anmeldelsesportalen
+        sys_link: Link til anmeldelse
         sys_id_as_link: Link til anmeldelsesportalen
         sys_title: Navn
-        sys_alternative_title: SystemetsKaldenavn
+        sys_alternative_title: Systemets kaldenavn
         sys_updated: Opdateret
         sys_owner: Systemejerskab
         sys_owner_sub: Afdeling
