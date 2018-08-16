@@ -207,6 +207,16 @@ class System
      */
     private $sysOwnerSub;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sysLink;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $sysInternalId;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -832,5 +842,29 @@ class System
     public function getAnswerArea()
     {
         return $this->getTheme();
+    }
+
+    public function getSysLink(): ?string
+    {
+        return $this->sysLink;
+    }
+
+    public function setSysLink(string $sysLink): self
+    {
+        $this->sysLink = $sysLink;
+
+        return $this;
+    }
+
+    public function getSysInternalId(): ?int
+    {
+        return $this->sysInternalId;
+    }
+
+    public function setSysInternalId(?int $sysInternalId): self
+    {
+        $this->sysInternalId = $sysInternalId;
+
+        return $this;
     }
 }

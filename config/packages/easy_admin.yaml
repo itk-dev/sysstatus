@@ -255,7 +255,7 @@ easy_admin:
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
                     - { property: 'sys_owner_sub', label: 'entity.system.sys_owner_sub' }
                     - { property: 'responsible', label: 'entity.system.responsible' }
-                    - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
+                    - { property: 'sys_link', label: 'entity.system.sys_link', type: 'file', filename: 'Link' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
@@ -278,7 +278,7 @@ easy_admin:
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'raw' }
                     - { property: 'sys_internal_id', label: 'entity.system.sys_id', type: 'text' }
-                    - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
+                    - { property: 'sys_link', label: 'entity.system.sys_id_as_link', type: 'file', filename: 'Link til system' }
                     - { property: 'sys_updated', label: 'entity.system.sys_updated', type: 'datetime' }
                     - { property: 'sys_description', label: 'entity.system.sys_description', type: 'raw' }
                     - { property: 'sys_owner', label: 'entity.system.sys_owner', type: 'raw' }
@@ -316,6 +316,8 @@ easy_admin:
                     - { type: 'divider' }
                     - { type: 'group' , label: 'menu.systemportal', icon: 'cogs' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'text', type_options: { required: false, disabled: disabled } }
+                    - { property: 'sys_internal_id', label: 'entity.system.sys_internal_id', type: 'text', type_options: { required: false, disabled: disabled } }
+                    - { property: 'sys_link', label: 'entity.system.sys_id_as_link', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_alternative_title', label: 'entity.system.sys_alternative_title', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_id', label: 'entity.system.sys_id', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_updated', label: 'entity.system.sys_updated', type: 'datetime', type_options: { required: false, disabled: disabled } }

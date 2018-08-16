@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.5.2
+
+* Fixed id and link in system.
+
 ## 1.5.1
 
 * Fixed links in lists.
