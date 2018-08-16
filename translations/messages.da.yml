@@ -114,7 +114,7 @@ entity:
         sys_impact_analysis: Konsekvensanalyse
         sys_authorization_procedure: Autorisationsprocedure
         sys_version: Version
-        sys_internal_information: Indsigt – interne oplysninger til sysstatus
+        sys_internal_information: Indsigt – interne oplysninger
 menu:
     notes: Notater
     systemportal: Fra systemportalen
