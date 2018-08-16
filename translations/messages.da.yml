@@ -97,8 +97,7 @@ entity:
         sys_data_come_from: Hvor kommer data fra?
         sys_data_location: Placering af data
         sys_latest_deletion_date: Hvornår slettes oplysningerne senest
-        sys_data_worth_saving: Bevaringsværdige data
-        sys_data_worth_saving_via: Bevaringsværdige data via
+        sys_data_worth_saving: Indeholder systemet bevaringsværdige data
         sys_data_processors: Databehandler
         sys_data_processing_agreement: Databehandleraftale
         sys_data_processing_agreement_link: Link til databehandleraftale

@@ -113,16 +113,6 @@ class Report
     private $sysLatestDeletionDate;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $sysDataWorthSaving;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataWorthSavingVia;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $sysDataProcessors;
@@ -241,6 +231,11 @@ class Report
      * @ORM\Column(type="text", nullable=true)
      */
     private $sysDataComeFrom;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysDataWorthSaving;
 
     public function __construct()
     {
@@ -482,38 +477,6 @@ class Report
     public function setSysLatestDeletionDate($sysLatestDeletionDate)
     {
         $this->sysLatestDeletionDate = $sysLatestDeletionDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysDataWorthSaving()
-    {
-        return $this->sysDataWorthSaving;
-    }
-
-    /**
-     * @param mixed $sysDataWorthSaving
-     */
-    public function setSysDataWorthSaving($sysDataWorthSaving)
-    {
-        $this->sysDataWorthSaving = $sysDataWorthSaving;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysDataWorthSavingVia()
-    {
-        return $this->sysDataWorthSavingVia;
-    }
-
-    /**
-     * @param mixed $sysDataWorthSavingVia
-     */
-    public function setSysDataWorthSavingVia($sysDataWorthSavingVia)
-    {
-        $this->sysDataWorthSavingVia = $sysDataWorthSavingVia;
     }
 
     /**
@@ -949,6 +912,18 @@ class Report
     public function setSysDataComeFrom(?string $sysDataComeFrom): self
     {
         $this->sydDataComeFrom = $sysDataComeFrom;
+
+        return $this;
+    }
+
+    public function getSysDataWorthSaving(): ?string
+    {
+        return $this->sysDataWorthSaving;
+    }
+
+    public function setSysDataWorthSaving(?string $sysDataWorthSaving): self
+    {
+        $this->sysDataWorthSaving = $sysDataWorthSaving;
 
         return $this;
     }

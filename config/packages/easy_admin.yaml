@@ -181,8 +181,7 @@ easy_admin:
                     - { property: 'sys_data_come_from', label: 'entity.report.sys_data_come_from', type: 'raw' }
                     - { property: 'sys_data_location', label: 'entity.report.sys_data_location', type: 'raw' }
                     - { property: 'sys_latest_deletion_date', label: 'entity.report.sys_latest_deletion_date', type: 'raw' }
-                    - { property: 'sys_data_worth_saving', label: 'entity.report.sys_data_worth_saving', type: 'boolean' }
-                    - { property: 'sys_data_worth_saving_via', label: 'entity.report.sys_data_worth_saving_via', type: 'raw' }
+                    - { property: 'sys_data_worth_saving', label: 'entity.report.sys_data_worth_saving', type: 'raw' }
                     - { property: 'sys_data_processors', label: 'entity.report.sys_data_processors', type: 'raw' }
                     - { property: 'sys_data_processing_agreement', label: 'entity.report.sys_data_processing_agreement', type: 'raw' }
                     - { property: 'sys_data_processing_agreement_link', label: 'entity.report.sys_data_processing_agreement_link', type: 'raw' }
@@ -225,8 +224,7 @@ easy_admin:
                     - { property: 'sys_data_come_from', label: 'entity.report.sys_data_come_from', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_data_location', label: 'entity.report.sys_data_location', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_latest_deletion_date', label: 'entity.report.sys_latest_deletion_date', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_data_worth_saving', label: 'entity.report.sys_data_worth_saving', type: 'checkbox', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_data_worth_saving_via', label: 'entity.report.sys_data_worth_saving_via', type: 'text', type_options: { required: false, disabled: disabled } }
+                    - { property: 'sys_data_worth_saving', label: 'entity.report.sys_data_worth_saving', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_data_processors', label: 'entity.report.sys_data_processors', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_data_processing_agreement', label: 'entity.report.sys_data_processing_agreement', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_data_processing_agreement_link', label: 'entity.report.sys_data_processing_agreement_link', type: 'text', type_options: { required: false, disabled: disabled } }

@@ -38,9 +38,9 @@ class ReportImporter extends BaseImporter
 
             // Set properties 1:1
             $report->setSysInternalId($this->sanitizeText($properties->Id));
+            $report->setSysConfidentialInformation($this->convertBoolean($properties->FølsommeOplysninger));
             $report->setSysAlternativeTitle($this->sanitizeText($properties->SystemetsKaldenavn));
             $report->setSysOwner($this->sanitizeText($properties->SystemejerskabValue));
-            $report->setSysConfidentialInformation($this->convertBoolean($properties->FølsommeOplysninger));
             $report->setSysPurpose($this->sanitizeText($properties->Formål));
             $report->setSysClassification($this->sanitizeText($properties->SystemetsKlassifikationValue));
             $report->setSysDateForRevision($this->convertDate($properties->DatoForRevision));
@@ -50,8 +50,6 @@ class ReportImporter extends BaseImporter
             $report->setSysDataComeFrom($this->sanitizeText($properties->HvorKommerDataFra));
             $report->setSysDataLocation($this->sanitizeText($properties->PlaceringAfData));
             $report->setSysLatestDeletionDate($this->sanitizeText($properties->HvornårSlettesOplysningerneSenest));
-            $report->setSysDataWorthSaving($this->convertBoolean($properties->BevaringsværdigeData));
-            $report->setSysDataWorthSavingVia($this->sanitizeText($properties->BevaringsværdigeDataVia));
             $report->setSysDataProcessors($this->sanitizeText($properties->Databehandler));
             $report->setSysDataProcessingAgreement($this->sanitizeText($properties->DatabehandleraftaleValue));
             $report->setSysDataProcessingAgreementLink($this->sanitizeText($properties->LinkTilDatabehandleraftale));
@@ -69,6 +67,7 @@ class ReportImporter extends BaseImporter
             $report->setSysAuthorizationProcedure($this->sanitizeText($properties->Autorisationsprocedure));
             $report->setSysVersion($this->sanitizeText($properties->Version));
             $report->setSysInternalInformation($this->sanitizeText($properties->IndsigtInterneOplysninger));
+            $report->setSysDataWorthSaving($this->sanitizeText($properties->IndeholderSystemetBevaringsværdigeDataValue));
 
             // Set group and subGroup.
             if (!is_null($report->getSysOwner())) {
