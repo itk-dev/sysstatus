@@ -105,32 +105,12 @@ class Report
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $sysDatoToPreviousInternalSystemDependencies;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDatoFromPreviousExternalSystemDependencies;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     private $sysDataLocation;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $sysLatestDeletionDate;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $sysDataWorthSaving;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataWorthSavingVia;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -185,11 +165,6 @@ class Report
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $sysVideoSuveillance;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     private $sysObligationToInform;
 
     /**
@@ -236,6 +211,41 @@ class Report
      * @ORM\Column(type="text", nullable=true)
      */
     private $sysInternalInformation;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sysLink;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $sysInternalId;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysDataSentTo;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysDataComeFrom;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysDataWorthSaving;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysDataToScience;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysImpactAnalysisLink;
 
     public function __construct()
     {
@@ -450,40 +460,6 @@ class Report
     /**
      * @return mixed
      */
-    public function getSysDatoToPreviousInternalSystemDependencies()
-    {
-        return $this->sysDatoToPreviousInternalSystemDependencies;
-    }
-
-    /**
-     * @param mixed $sysDatoToPreviousInternalSystemDependencies
-     */
-    public function setSysDatoToPreviousInternalSystemDependencies(
-        $sysDatoToPreviousInternalSystemDependencies
-    ) {
-        $this->sysDatoToPreviousInternalSystemDependencies = $sysDatoToPreviousInternalSystemDependencies;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysDatoFromPreviousExternalSystemDependencies()
-    {
-        return $this->sysDatoFromPreviousExternalSystemDependencies;
-    }
-
-    /**
-     * @param mixed $sysDatoFromPreviousExternalSystemDependencies
-     */
-    public function setSysDatoFromPreviousExternalSystemDependencies(
-        $sysDatoFromPreviousExternalSystemDependencies
-    ) {
-        $this->sysDatoFromPreviousExternalSystemDependencies = $sysDatoFromPreviousExternalSystemDependencies;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getSysDataLocation()
     {
         return $this->sysDataLocation;
@@ -511,38 +487,6 @@ class Report
     public function setSysLatestDeletionDate($sysLatestDeletionDate)
     {
         $this->sysLatestDeletionDate = $sysLatestDeletionDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysDataWorthSaving()
-    {
-        return $this->sysDataWorthSaving;
-    }
-
-    /**
-     * @param mixed $sysDataWorthSaving
-     */
-    public function setSysDataWorthSaving($sysDataWorthSaving)
-    {
-        $this->sysDataWorthSaving = $sysDataWorthSaving;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysDataWorthSavingVia()
-    {
-        return $this->sysDataWorthSavingVia;
-    }
-
-    /**
-     * @param mixed $sysDataWorthSavingVia
-     */
-    public function setSysDataWorthSavingVia($sysDataWorthSavingVia)
-    {
-        $this->sysDataWorthSavingVia = $sysDataWorthSavingVia;
     }
 
     /**
@@ -709,22 +653,6 @@ class Report
     /**
      * @return mixed
      */
-    public function getSysVideoSuveillance()
-    {
-        return $this->sysVideoSuveillance;
-    }
-
-    /**
-     * @param mixed $sysVideoSuveillance
-     */
-    public function setSysVideoSuveillance($sysVideoSuveillance)
-    {
-        $this->sysVideoSuveillance = $sysVideoSuveillance;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getSysObligationToInform()
     {
         return $this->sysObligationToInform;
@@ -816,14 +744,6 @@ class Report
     public function setSysVersion($sysVersion)
     {
         $this->sysVersion = $sysVersion;
-    }
-
-    /**
-     * Virtual property.
-     */
-    public function getSysIdAsLink()
-    {
-        return $this->getSysId();
     }
 
     /**
@@ -954,6 +874,90 @@ class Report
     public function setSysInternalInformation(?string $sysInternalInformation): self
     {
         $this->sysInternalInformation = $sysInternalInformation;
+
+        return $this;
+    }
+
+    public function getSysLink(): ?string
+    {
+        return $this->sysLink;
+    }
+
+    public function setSysLink(string $sysLink): self
+    {
+        $this->sysLink = $sysLink;
+
+        return $this;
+    }
+
+    public function getSysInternalId(): ?int
+    {
+        return $this->sysInternalId;
+    }
+
+    public function setSysInternalId(?int $sysInternalId): self
+    {
+        $this->sysInternalId = $sysInternalId;
+
+        return $this;
+    }
+
+    public function getSysDataSentTo(): ?string
+    {
+        return $this->sysDataSentTo;
+    }
+
+    public function setSysDataSentTo(?string $sysDataSentTo): self
+    {
+        $this->sysDataSentTo = $sysDataSentTo;
+
+        return $this;
+    }
+
+    public function getSysDataComeFrom(): ?string
+    {
+        return $this->sysDataComeFrom;
+    }
+
+    public function setSysDataComeFrom(?string $sysDataComeFrom): self
+    {
+        $this->sydDataComeFrom = $sysDataComeFrom;
+
+        return $this;
+    }
+
+    public function getSysDataWorthSaving(): ?string
+    {
+        return $this->sysDataWorthSaving;
+    }
+
+    public function setSysDataWorthSaving(?string $sysDataWorthSaving): self
+    {
+        $this->sysDataWorthSaving = $sysDataWorthSaving;
+
+        return $this;
+    }
+
+    public function getSysDataToScience(): ?string
+    {
+        return $this->sysDataToScience;
+    }
+
+    public function setSysDataToScience(?string $sysDataToScience): self
+    {
+        $this->sysDataToScience = $sysDataToScience;
+
+        return $this;
+    }
+
+    public function getSysImpactAnalysisLink(): ?string
+    {
+        return $this->sysImpactAnalysisLink;
+    }
+
+    public function setSysImpactAnalysisLink(?string $sysImpactAnalysisLink): self
+    {
+        $this->sysImpactAnalysisLink = $sysImpactAnalysisLink;
 
         return $this;
     }
