@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.5.0
+
+* Fixed various report mappings.
+
 ## 1.4.2
 
 * Adjusted fields for report importing.
