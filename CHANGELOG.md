@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.5.1
+
+* Fixed links in lists.
+
 ## 1.5.0
 
 * Fixed various report mappings.

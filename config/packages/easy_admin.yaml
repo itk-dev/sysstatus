@@ -143,7 +143,7 @@ easy_admin:
                     - { property: 'group', label: 'entity.report.group', type: 'text' }
                     - { property: 'sys_owner_sub', label: 'entity.report.sys_owner_sub' }
                     - { property: 'responsible', label: 'entity.report.responsible' }
-                    - { property: 'sys_id_as_link', label: 'entity.report.sys_id_as_link', type: 'file' }
+                    - { property: 'sys_link', label: 'entity.report.sys_link', type: 'file', filename: 'Link' }
                     - { property: 'theme', label: 'entity.report.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.report.text', type: 'boolean' }
                 sort: ['id', 'ASC']
@@ -255,7 +255,7 @@ easy_admin:
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
                     - { property: 'sys_owner_sub', label: 'entity.system.sys_owner_sub' }
                     - { property: 'responsible', label: 'entity.system.responsible' }
-                    - { property: 'sys_link', label: 'entity.system.sys_id_as_link', type: 'file' }
+                    - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
@@ -278,7 +278,7 @@ easy_admin:
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'raw' }
                     - { property: 'sys_internal_id', label: 'entity.system.sys_id', type: 'text' }
-                    - { property: 'sys_link', label: 'entity.system.sys_id_as_link', type: 'file' }
+                    - { property: 'sys_id_as_link', label: 'entity.system.sys_id_as_link', type: 'file' }
                     - { property: 'sys_updated', label: 'entity.system.sys_updated', type: 'datetime' }
                     - { property: 'sys_description', label: 'entity.system.sys_description', type: 'raw' }
                     - { property: 'sys_owner', label: 'entity.system.sys_owner', type: 'raw' }
