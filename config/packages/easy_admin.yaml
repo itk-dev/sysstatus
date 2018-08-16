@@ -193,7 +193,6 @@ easy_admin:
                     - { property: 'sys_date_use', label: 'entity.report.sys_date_use', type: 'datetime' }
                     - { property: 'sys_status', label: 'entity.report.sys_status', type: 'raw' }
                     - { property: 'sys_remarks', label: 'entity.report.sys_remarks', type: 'raw' }
-                    - { property: 'sys_video_suveillance', label: 'entity.report.sys_video_suveillance', type: 'raw' }
                     - { property: 'sys_internal_information', label: 'entity.report.sys_internal_information', type: 'raw' }
                     - { property: 'sys_obligation_to_inform', label: 'entity.report.sys_obligation_to_inform', type: 'raw' }
                     - { property: 'sys_legal_basis', label: 'entity.report.sys_legal_basis', type: 'raw' }
@@ -238,7 +237,6 @@ easy_admin:
                     - { property: 'sys_date_use', label: 'entity.report.sys_date_use', type: 'datetime', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_status', label: 'entity.report.sys_status', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_remarks', label: 'entity.report.sys_remarks', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_video_suveillance', label: 'entity.report.sys_video_suveillance', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_internal_information', label: 'entity.report.sys_internal_information',  type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_obligation_to_inform', label: 'entity.report.sys_obligation_to_inform', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_legal_basis', label: 'entity.report.sys_legal_basis', type: 'text', type_options: { required: false, disabled: disabled } }

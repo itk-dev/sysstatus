@@ -185,11 +185,6 @@ class Report
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $sysVideoSuveillance;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     private $sysObligationToInform;
 
     /**
@@ -704,22 +699,6 @@ class Report
     public function setSysRemarks($sysRemarks)
     {
         $this->sysRemarks = $sysRemarks;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysVideoSuveillance()
-    {
-        return $this->sysVideoSuveillance;
-    }
-
-    /**
-     * @param mixed $sysVideoSuveillance
-     */
-    public function setSysVideoSuveillance($sysVideoSuveillance)
-    {
-        $this->sysVideoSuveillance = $sysVideoSuveillance;
     }
 
     /**
