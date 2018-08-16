@@ -55,7 +55,6 @@ class ReportImporter extends BaseImporter
             $report->setSysDateUse($this->convertDate($properties->Ibrugtagning));
             $report->setSysStatus($this->sanitizeText($properties->StatusValue));
             $report->setSysRemarks($this->sanitizeText($properties->Bemærkninger));
-            $report->setSysVideoSuveillance($this->sanitizeText($properties->HvorTvOvervågesDerHenne));
             $report->setSysObligationToInform($this->sanitizeText($properties->Oplysningspligten));
             $report->setSysLegalBasis($this->sanitizeText($properties->RetligtGrundlag));
             $report->setSysConsent($this->sanitizeText($properties->SamtykkeValue));
