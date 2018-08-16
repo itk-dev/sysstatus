@@ -187,6 +187,7 @@ easy_admin:
                     - { property: 'sys_data_processing_agreement_link', label: 'entity.report.sys_data_processing_agreement_link', type: 'raw' }
                     - { property: 'sys_auditor_statement', label: 'entity.report.sys_auditor_statement', type: 'raw' }
                     - { property: 'sys_auditor_statement_link', label: 'entity.report.sys_auditor_statement_link', type: 'raw' }
+                    - { property: 'sys_data_to_science', label: 'entity.report.sys_data_to_science', type: 'raw' }
                     - { property: 'sys_usage', label: 'entity.report.sys_usage', type: 'raw' }
                     - { property: 'sys_request_for_insight', label: 'entity.report.sys_request_for_insight', type: 'raw' }
                     - { property: 'sys_date_use', label: 'entity.report.sys_date_use', type: 'datetime' }
@@ -230,6 +231,7 @@ easy_admin:
                     - { property: 'sys_data_processing_agreement_link', label: 'entity.report.sys_data_processing_agreement_link', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_auditor_statement', label: 'entity.report.sys_auditor_statement', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_auditor_statement_link', label: 'entity.report.sys_auditor_statement_link', type: 'text', type_options: { required: false, disabled: disabled } }
+                    - { property: 'sys_data_to_science', label: 'entity.report.sys_data_to_science', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_usage', label: 'entity.report.sys_usage', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_request_for_insight', label: 'entity.report.sys_request_for_insight', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_date_use', label: 'entity.report.sys_date_use', type: 'datetime', type_options: { required: false, disabled: disabled } }

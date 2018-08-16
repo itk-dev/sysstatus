@@ -237,6 +237,11 @@ class Report
      */
     private $sysDataWorthSaving;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysDataToScience;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -924,6 +929,18 @@ class Report
     public function setSysDataWorthSaving(?string $sysDataWorthSaving): self
     {
         $this->sysDataWorthSaving = $sysDataWorthSaving;
+
+        return $this;
+    }
+
+    public function getSysDataToScience(): ?string
+    {
+        return $this->sysDataToScience;
+    }
+
+    public function setSysDataToScience(?string $sysDataToScience): self
+    {
+        $this->sysDataToScience = $sysDataToScience;
 
         return $this;
     }

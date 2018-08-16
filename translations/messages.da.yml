@@ -99,8 +99,8 @@ entity:
         sys_latest_deletion_date: Hvornår slettes oplysningerne senest
         sys_data_worth_saving: Indeholder systemet bevaringsværdige data
         sys_data_processors: Databehandler
-        sys_data_processing_agreement: Databehandleraftale
-        sys_data_processing_agreement_link: Link til databehandleraftale
+        sys_data_processing_agreement: Databehandleaftale/fortrolighedsaftale
+        sys_data_processing_agreement_link: Link til databehandleraftale/fortrolighedsaftale
         sys_auditor_statement: Revisorerklæring tilsyn
         sys_auditor_statement_link: Link til revisorerklæring
         sys_usage: Systembrug
@@ -110,12 +110,13 @@ entity:
         sys_remarks: Bemærkninger
         sys_video_suveillance: Hvor tv overvåges der henne
         sys_obligation_to_inform: Oplysningspligten
-        sys_legal_basis: RetligtGrundlag
+        sys_legal_basis: Retligt grundlag
         sys_consent: SamtykkeValue
         sys_impact_analysis: Konsekvensanalyse
         sys_authorization_procedure: Autorisationsprocedure
         sys_version: Version
         sys_internal_information: Indsigt – interne oplysninger
+        sys_data_to_science: Videregivelse af oplysninger til forskning
 menu:
     notes: Notater
     systemportal: Fra systemportalen

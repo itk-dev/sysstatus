@@ -51,8 +51,8 @@ class ReportImporter extends BaseImporter
             $report->setSysDataLocation($this->sanitizeText($properties->PlaceringAfData));
             $report->setSysLatestDeletionDate($this->sanitizeText($properties->HvornårSlettesOplysningerneSenest));
             $report->setSysDataProcessors($this->sanitizeText($properties->Databehandler));
-            $report->setSysDataProcessingAgreement($this->sanitizeText($properties->DatabehandleraftaleValue));
-            $report->setSysDataProcessingAgreementLink($this->sanitizeText($properties->LinkTilDatabehandleraftale));
+            $report->setSysDataProcessingAgreement($this->sanitizeText($properties->DatabehandleraftaleFortrolighedsaftaleValue));
+            $report->setSysDataProcessingAgreementLink($this->sanitizeText($properties->LinkTilDatabehandleraftaleFortrolighedsaftale));
             $report->setSysAuditorStatement($this->sanitizeText($properties->RevisorerklæringTilsynValue));
             $report->setSysAuditorStatementLink($this->sanitizeText($properties->LinkTilRevisorerklæring));
             $report->setSysUsage($this->sanitizeText($properties->Systembrug));
@@ -68,6 +68,7 @@ class ReportImporter extends BaseImporter
             $report->setSysVersion($this->sanitizeText($properties->Version));
             $report->setSysInternalInformation($this->sanitizeText($properties->IndsigtInterneOplysninger));
             $report->setSysDataWorthSaving($this->sanitizeText($properties->IndeholderSystemetBevaringsværdigeDataValue));
+            $report->setSysDataToScience($this->sanitizeText($properties->VideregivelseAfOplysningerTilForskningValue));
 
             // Set group and subGroup.
             if (!is_null($report->getSysOwner())) {
