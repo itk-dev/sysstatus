@@ -177,8 +177,8 @@ easy_admin:
                     - { property: 'sys_date_for_revision', label: 'entity.report.sys_date_for_revision', type: 'datetime' }
                     - { property: 'sys_persons', label: 'entity.report.sys_persons', type: 'raw' }
                     - { property: 'sys_information_types', label: 'entity.report.sys_information_types', type: 'raw' }
-                    - { property: 'sys_dato_to_previous_internal_system_dependencies', label: 'entity.report.sys_dato_to_previous_internal_system_dependencies', type: 'raw' }
-                    - { property: 'sys_dato_from_previous_external_system_dependencies', label: 'entity.report.sys_dato_from_previous_external_system_dependencies', type: 'raw' }
+                    - { property: 'sys_data_sent_to', label: 'entity.report.sys_data_sent_to', type: 'raw' }
+                    - { property: 'sys_data_come_from', label: 'entity.report.sys_data_come_from', type: 'raw' }
                     - { property: 'sys_data_location', label: 'entity.report.sys_data_location', type: 'raw' }
                     - { property: 'sys_latest_deletion_date', label: 'entity.report.sys_latest_deletion_date', type: 'raw' }
                     - { property: 'sys_data_worth_saving', label: 'entity.report.sys_data_worth_saving', type: 'boolean' }
@@ -221,8 +221,8 @@ easy_admin:
                     - { property: 'sys_date_for_revision', label: 'entity.report.sys_date_for_revision', type: 'datetime', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_persons', label: 'entity.report.sys_persons', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_information_types', label: 'entity.report.sys_information_types', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_dato_to_previous_internal_system_dependencies', label: 'entity.report.sys_dato_to_previous_internal_system_dependencies', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_dato_from_previous_external_system_dependencies', label: 'entity.report.sys_dato_from_previous_external_system_dependencies', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
+                    - { property: 'sys_data_sent_to', label: 'entity.report.sys_data_sent_to', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
+                    - { property: 'sys_data_come_from', label: 'entity.report.sys_data_come_from', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_data_location', label: 'entity.report.sys_data_location', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_latest_deletion_date', label: 'entity.report.sys_latest_deletion_date', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
                     - { property: 'sys_data_worth_saving', label: 'entity.report.sys_data_worth_saving', type: 'checkbox', type_options: { required: false, disabled: disabled } }

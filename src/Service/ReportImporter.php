@@ -46,8 +46,8 @@ class ReportImporter extends BaseImporter
             $report->setSysDateForRevision($this->convertDate($properties->DatoForRevision));
             $report->setSysPersons($this->sanitizeText($properties->Personkreds));
             $report->setSysInformationTypes($this->sanitizeText($properties->Oplysningstyper));
-            $report->setSysDatoToPreviousInternalSystemDependencies($this->sanitizeText($properties->HvorOverføresDataTilTidligereInterneSystemafhængigheder));
-            $report->setSysDatoFromPreviousExternalSystemDependencies($this->sanitizeText($properties->HvorKommerDataFraTidligereEksterneSystemafhængigheder));
+            $report->setSysDataSentTo($this->sanitizeText($properties->HvorOverføresDataTil));
+            $report->setSysDataComeFrom($this->sanitizeText($properties->HvorKommerDataFra));
             $report->setSysDataLocation($this->sanitizeText($properties->PlaceringAfData));
             $report->setSysLatestDeletionDate($this->sanitizeText($properties->HvornårSlettesOplysningerneSenest));
             $report->setSysDataWorthSaving($this->convertBoolean($properties->BevaringsværdigeData));

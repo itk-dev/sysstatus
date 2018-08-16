@@ -105,16 +105,6 @@ class Report
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $sysDatoToPreviousInternalSystemDependencies;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDatoFromPreviousExternalSystemDependencies;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     private $sysDataLocation;
 
     /**
@@ -241,6 +231,16 @@ class Report
      * @ORM\Column(type="integer", nullable=true)
      */
     private $sysInternalId;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysDataSentTo;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $sysDataComeFrom;
 
     public function __construct()
     {
@@ -450,40 +450,6 @@ class Report
     public function setSysInformationTypes($sysInformationTypes)
     {
         $this->sysInformationTypes = $sysInformationTypes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysDatoToPreviousInternalSystemDependencies()
-    {
-        return $this->sysDatoToPreviousInternalSystemDependencies;
-    }
-
-    /**
-     * @param mixed $sysDatoToPreviousInternalSystemDependencies
-     */
-    public function setSysDatoToPreviousInternalSystemDependencies(
-        $sysDatoToPreviousInternalSystemDependencies
-    ) {
-        $this->sysDatoToPreviousInternalSystemDependencies = $sysDatoToPreviousInternalSystemDependencies;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysDatoFromPreviousExternalSystemDependencies()
-    {
-        return $this->sysDatoFromPreviousExternalSystemDependencies;
-    }
-
-    /**
-     * @param mixed $sysDatoFromPreviousExternalSystemDependencies
-     */
-    public function setSysDatoFromPreviousExternalSystemDependencies(
-        $sysDatoFromPreviousExternalSystemDependencies
-    ) {
-        $this->sysDatoFromPreviousExternalSystemDependencies = $sysDatoFromPreviousExternalSystemDependencies;
     }
 
     /**
@@ -959,6 +925,30 @@ class Report
     public function setSysInternalId(?int $sysInternalId): self
     {
         $this->sysInternalId = $sysInternalId;
+
+        return $this;
+    }
+
+    public function getSysDataSentTo(): ?string
+    {
+        return $this->sysDataSentTo;
+    }
+
+    public function setSysDataSentTo(?string $sysDataSentTo): self
+    {
+        $this->sysDataSentTo = $sysDataSentTo;
+
+        return $this;
+    }
+
+    public function getSysDataComeFrom(): ?string
+    {
+        return $this->sysDataComeFrom;
+    }
+
+    public function setSysDataComeFrom(?string $sysDataComeFrom): self
+    {
+        $this->sydDataComeFrom = $sysDataComeFrom;
 
         return $this;
     }

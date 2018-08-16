@@ -93,8 +93,8 @@ entity:
         sys_date_for_revision: Dato for Revision
         sys_persons: Personkreds
         sys_information_types: Oplysningstyper
-        sys_dato_to_previous_internal_system_dependencies: Hvor overføres data til tidligere interne systemafhængigheder
-        sys_dato_from_previous_external_system_dependencies: Hvor kommer data fra tidligere eksterne systemafhængigheder
+        sys_data_sent_to: Hvor overføres data til?
+        sys_data_come_from: Hvor kommer data fra?
         sys_data_location: Placering af data
         sys_latest_deletion_date: Hvornår slettes oplysningerne senest
         sys_data_worth_saving: Bevaringsværdige data
