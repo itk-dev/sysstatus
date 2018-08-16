@@ -68,6 +68,8 @@ entity:
         sys_self_service_url: Selvbetjenings-URL
         sys_alternative_title: Kaldenavn
         sys_version: Version
+        sys_internal_id: Id i systemportalen
+        sys_link: Link til system
     report:
         id: ID
         name: Internt navn
