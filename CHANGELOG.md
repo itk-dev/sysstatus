@@ -1,5 +1,10 @@
 # ITStyr CHANGELOG
 
+## 1.5.4
+
+* Changed fos user bundle templates.
+* Fixed IE smiley styling.
+
 ## 1.5.3
 
 * Added system.sysStatus field.
