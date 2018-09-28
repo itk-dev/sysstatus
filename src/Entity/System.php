@@ -217,6 +217,11 @@ class System
      */
     private $sysInternalId;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sysStatus;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -864,6 +869,18 @@ class System
     public function setSysInternalId(?int $sysInternalId): self
     {
         $this->sysInternalId = $sysInternalId;
+
+        return $this;
+    }
+
+    public function getSysStatus(): ?string
+    {
+        return $this->sysStatus;
+    }
+
+    public function setSysStatus(?string $sysStatus): self
+    {
+        $this->sysStatus = $sysStatus;
 
         return $this;
     }

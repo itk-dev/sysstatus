@@ -70,6 +70,7 @@ entity:
         sys_version: Version
         sys_internal_id: Id i systemportalen
         sys_link: Link til system
+        sys_status: Status
     report:
         id: ID
         name: Internt navn
