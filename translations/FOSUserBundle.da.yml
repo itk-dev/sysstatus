@@ -1,3 +1,7 @@
 itstyr:
     fosuserbundle:
         login-header: IT Styringsværktøj
+resetting:
+    reset:
+        forgot: Glemt kodeord
+'Back to sign in': Tilbage

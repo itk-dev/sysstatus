@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.5.4
+
+* Changed fos user bundle templates.
+
 ## 1.5.3
 
 * Added system.sysStatus field.
