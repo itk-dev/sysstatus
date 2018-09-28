@@ -259,7 +259,7 @@ easy_admin:
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
-                dql_filter: entity.sysStatus = 'Systemet er i drift, under implementering, mv.' OR entity.sysStatus = 'Systemet er under udvikling/anskaffelse'
+                dql_filter: "entity.sysStatus <> 'Systemet bruges ikke længere'"
                 filters:
                     -
                         property: group
