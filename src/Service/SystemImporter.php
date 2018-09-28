@@ -54,7 +54,6 @@ class SystemImporter extends BaseImporter
             $system->setSysLinkToSecurityReview($this->sanitizeText($properties->LinkTilSikkerhedsanmeldelse));
             $system->setSysLinkToContract($this->sanitizeText($properties->LinkTilKontrakt));
             $system->setSysEndOfContract($this->convertDate($properties->Kontraktudløbsdato));
-            $system->setSysArchiving($this->sanitizeText($properties->ArkiveringValue));
             $system->setSysOpenData($this->sanitizeText($properties->OpenDataValue));
             $system->setSysOpenSource($this->sanitizeText($properties->OpenSourceValue));
             $system->setSysDigitalPost($this->sanitizeText($properties->DigitalPostValue));

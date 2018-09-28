@@ -150,11 +150,6 @@ class System
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $sysArchiving;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     private $sysOpenData;
 
     /**
@@ -558,22 +553,6 @@ class System
     public function setSysEndOfContract($sysEndOfContract)
     {
         $this->sysEndOfContract = $sysEndOfContract;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysArchiving()
-    {
-        return $this->sysArchiving;
-    }
-
-    /**
-     * @param mixed $sysArchiving
-     */
-    public function setSysArchiving($sysArchiving)
-    {
-        $this->sysArchiving = $sysArchiving;
     }
 
     /**

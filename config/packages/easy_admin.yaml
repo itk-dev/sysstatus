@@ -296,7 +296,6 @@ easy_admin:
                     - { property: 'sys_link_to_security_review', label: 'entity.system.sys_link_to_security_review', type: 'raw' }
                     - { property: 'sys_link_to_contract', label: 'entity.system.sys_link_to_contract', type: 'raw' }
                     - { property: 'sys_end_of_contract', label: 'entity.system.sys_end_of_contract', type: 'datetime' }
-                    - { property: 'sys_archiving', label: 'entity.system.sys_archiving', type: 'raw' }
                     - { property: 'sys_status', label: 'entity.system.sys_status', type: 'raw' }
                     - { property: 'sys_open_data', label: 'entity.system.sys_open_data', type: 'raw' }
                     - { property: 'sys_open_source', label: 'entity.system.sys_open_source', type: 'raw' }
@@ -338,7 +337,6 @@ easy_admin:
                     - { property: 'sys_link_to_security_review', label: 'entity.system.sys_link_to_security_review', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_link_to_contract', label: 'entity.system.sys_link_to_contract', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_end_of_contract', label: 'entity.system.sys_end_of_contract', type: 'datetime', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_archiving', label: 'entity.system.sys_archiving', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_status', label: 'entity.system.sys_status', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_open_data', label: 'entity.system.sys_open_data', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_open_source', label: 'entity.system.sys_open_source', type: 'text', type_options: { required: false, disabled: disabled } }
