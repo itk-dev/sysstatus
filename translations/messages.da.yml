@@ -58,7 +58,6 @@ entity:
         sys_link_to_security_review: Link til sikkerhedsanmeldelse
         sys_link_to_contract: Link til kontrakt
         sys_end_of_contract: Kontraktudløbsdato
-        sys_archiving: Arkivering
         sys_open_data: Open data
         sys_open_source: Open source
         sys_digital_post: Digital Post
@@ -70,6 +69,7 @@ entity:
         sys_version: Version
         sys_internal_id: Id i systemportalen
         sys_link: Link til system
+        sys_status: Status
     report:
         id: ID
         name: Internt navn

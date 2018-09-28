@@ -1,8 +1,31 @@
 {% set title = (title is defined ? title : item.note) %}
-{% set width = (width is defined ? width : '50') %}
+{% set width = (width is defined ? width : '40') %}
+{% set id = random() %}
 
-{% if value != '' %}
-  <img class="smiley-icon" src="smiley-{{ value }}.png" width="{{ width }}px" {% if title is defined %}title="{{ title }}"{% endif %}>
-{% else %}
-  <div class="field-smiley--title-hover" {% if title is defined %}title="{{ title }}"{% endif %}>N/A</div>
+{% if value == '' %}
+  <div class="smiley-icon smiley-icon-grey smiley-icon-{{ id }}" style="width: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+    {{ source('svg/question-circle-solid.svg') }}
+  </div>
+{% elseif value == 'BLUE' %}
+  <div class="smiley-icon smiley-icon-blue smiley-icon-{{ id }}" style="width: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+    {{ source('svg/info-circle-solid.svg') }}
+  </div>
+{% elseif value == 'GREEN' %}
+  <div class="smiley-icon smiley-icon-green smiley-icon-{{ id }}" style="width: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+    {{ source('svg/check-circle-solid.svg') }}
+  </div>
+{% elseif value == 'YELLOW' %}
+  <div class="smiley-icon smiley-icon-yellow smiley-icon-{{ id }}" style="width: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+    {{ source('svg/check-circle-solid.svg') }}
+  </div>
+{% elseif value == 'RED' %}
+  <div class="smiley-icon smiley-icon-red smiley-icon-{{ id }}" style="width: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+    {{ source('svg/exclamation-circle-solid.svg') }}
+  </div>
 {% endif %}
+
+<script type="text/javascript">
+    $(function () {
+        $('.smiley-icon-{{ id }}[data-toggle="tooltip"]').tooltip();
+    })
+</script>

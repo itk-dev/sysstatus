@@ -54,7 +54,6 @@ class SystemImporter extends BaseImporter
             $system->setSysLinkToSecurityReview($this->sanitizeText($properties->LinkTilSikkerhedsanmeldelse));
             $system->setSysLinkToContract($this->sanitizeText($properties->LinkTilKontrakt));
             $system->setSysEndOfContract($this->convertDate($properties->Kontraktudløbsdato));
-            $system->setSysArchiving($this->sanitizeText($properties->ArkiveringValue));
             $system->setSysOpenData($this->sanitizeText($properties->OpenDataValue));
             $system->setSysOpenSource($this->sanitizeText($properties->OpenSourceValue));
             $system->setSysDigitalPost($this->sanitizeText($properties->DigitalPostValue));
@@ -63,6 +62,7 @@ class SystemImporter extends BaseImporter
             $system->setSysTotalTransactionsPrYear($this->sanitizeText($properties->AntalTotaleTransaktionerPrÅr));
             $system->setSysSelfServiceURL($this->sanitizeText($properties->SelvbetjeningsURL));
             $system->setSysVersion($this->sanitizeText($properties->Version));
+            $system->setSysStatus($this->sanitizeText($properties->StatusValue));
 
             // Set group and subGroup.
             if (!is_null($system->getSysOwner())) {

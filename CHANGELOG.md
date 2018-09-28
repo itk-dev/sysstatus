@@ -1,5 +1,12 @@
 # ITStyr CHANGELOG
 
+## 1.5.3
+
+* Added system.sysStatus field.
+* Changed smileys.
+* Changed title of smileys to bootstrap tooltip.
+* Removed system.sysArchiving field.
+
 ## 1.5.2
 
 * Fixed id and link in system.

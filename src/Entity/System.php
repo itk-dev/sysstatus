@@ -150,11 +150,6 @@ class System
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $sysArchiving;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     private $sysOpenData;
 
     /**
@@ -216,6 +211,11 @@ class System
      * @ORM\Column(type="integer", nullable=true)
      */
     private $sysInternalId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sysStatus;
 
     public function __construct()
     {
@@ -558,22 +558,6 @@ class System
     /**
      * @return mixed
      */
-    public function getSysArchiving()
-    {
-        return $this->sysArchiving;
-    }
-
-    /**
-     * @param mixed $sysArchiving
-     */
-    public function setSysArchiving($sysArchiving)
-    {
-        $this->sysArchiving = $sysArchiving;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getSysOpenData()
     {
         return $this->sysOpenData;
@@ -864,6 +848,18 @@ class System
     public function setSysInternalId(?int $sysInternalId): self
     {
         $this->sysInternalId = $sysInternalId;
+
+        return $this;
+    }
+
+    public function getSysStatus(): ?string
+    {
+        return $this->sysStatus;
+    }
+
+    public function setSysStatus(?string $sysStatus): self
+    {
+        $this->sysStatus = $sysStatus;
 
         return $this;
     }
