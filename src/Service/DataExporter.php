@@ -105,7 +105,7 @@ class DataExporter
             }
 
             $writer->addRow(array_merge([
-                $report->getSysId(),
+                $report->getSysInternalId(),
                 $report->getSysTitle(),
                 $report->getSysStatus(),
                 $report->getGroup()->getName(),
@@ -129,7 +129,7 @@ class DataExporter
     public function exportSystem() {
         $writer = WriterFactory::create(Type::XLSX); // for XLSX files
 
-        $writer->openToBrowser('systems-'.date("Y-m-d-H:i:s"));
+        $writer->openToBrowser('systems-'.date("Y-m-d-H:i:s").'.xlsx');
 
         $systems = $this->systemRepository->findAll();
 
@@ -197,7 +197,7 @@ class DataExporter
             }
 
             $writer->addRow(array_merge([
-                $system->getSysId(),
+                $system->getSysInternalId(),
                 $system->getSysTitle(),
                 $system->getSysStatus(),
                 $system->getGroup()->getName(),

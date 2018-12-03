@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.6.0
+
+* Added excel export of all systems and reports.
+
 ## 1.5.4
 
 * Changed fos user bundle templates.
