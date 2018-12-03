@@ -5,6 +5,9 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
+    "box/spout": {
+        "version": "v2.7.3"
+    },
     "composer/ca-bundle": {
         "version": "1.1.1"
     },
