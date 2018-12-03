@@ -34,6 +34,7 @@ easy_admin:
             - { entity: 'ThemeCategory', icon: 'arrows-v', label: 'menu.theme_category' }
             - { entity: 'Category', icon: 'list', label: 'menu.categories' }
             - { entity: 'Question', icon: 'question', label: 'menu.questions' }
+            - { label: 'menu.exports', icon: 'file-excel-o', route: 'export_page' }
         assets:
             css:
                 - ckeditor_styles.css

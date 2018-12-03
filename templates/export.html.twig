@@ -1,0 +1,12 @@
+{% extends '@EasyAdmin/default/layout.html.twig' %}
+
+{% block main %}
+  <h1>{{ 'export.headline' | trans }}</h1>
+
+  <div>
+    <p>{{ 'export.description' | trans }}</p>
+
+    <a class="btn" href="{{ path('export_report') }}" target="_blank">{{ 'export.reports' | trans }}</a>
+    <a class="btn" href="{{ path('export_system') }}" target="_blank">{{ 'export.systems' | trans }}</a>
+  </div>
+{% endblock %}
