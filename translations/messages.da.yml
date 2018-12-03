@@ -141,6 +141,7 @@ menu:
         systems: System
     groups: Grupper
     theme_category: Tema-Kategori
+    exports: Eksport
 System: System
 Systems: Systemer
 User: Bruger
@@ -200,3 +201,8 @@ ThemeCategory: Tema-Kategori
 easyadmin_embedded_list_row:
     no_entity: Vises først efter der er gemt første gang.
 All: Alle
+export:
+    description: Eksporter alle anmeldelser eller systemer til Excel.
+    headline: Eksport
+    reports: Eksporter anmeldelser
+    systems: Eksporter systemer
