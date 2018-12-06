@@ -5,6 +5,7 @@ namespace App\Service;
 use App\DBAL\Types\SmileyType;
 use App\Entity\Report;
 use App\Entity\System;
+use App\Kernel;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use App\Repository\ThemeRepository;
@@ -13,12 +14,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 class DataExporter
 {
     protected $reportRepository;
     protected $systemRepository;
     protected $themeRepository;
+    protected $basePath;
 
     /**
      * DataExporter constructor.
@@ -26,15 +31,20 @@ class DataExporter
      * @param \App\Repository\ReportRepository $reportRepository
      * @param \App\Repository\SystemRepository $systemRepository
      * @param \App\Repository\ThemeRepository $themeRepository
+     * @param \Symfony\Component\DependencyInjection\Container $container
+     * @throws \Exception
      */
     public function __construct(
         ReportRepository $reportRepository,
         SystemRepository $systemRepository,
-        ThemeRepository $themeRepository
+        ThemeRepository $themeRepository,
+        ContainerInterface $container
     ) {
         $this->reportRepository = $reportRepository;
         $this->systemRepository = $systemRepository;
         $this->themeRepository = $themeRepository;
+
+        $this->basePath = $container->get('kernel')->getProjectDir();
     }
 
     public function export(
@@ -70,13 +80,14 @@ class DataExporter
                     $workSheet = $spreadsheet->getActiveSheet();
                 }
                 $workSheet->setTitle($key ?: 'No subowner');
-                $spreadsheet->setActiveSheetIndex($sheetNr);
 
                 $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type, $entities);
 
                 $sheetNr++;
             }
         }
+
+        $spreadsheet->setActiveSheetIndex(0);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
@@ -88,7 +99,7 @@ class DataExporter
         exit;
     }
 
-    private function writeSheet($spreadsheet, $sheet, $page, $type, $entities) {
+    private function writeSheet($spreadsheet, Worksheet $sheet, $page, $type, $entities) {
         $spreadsheet->setActiveSheetIndex($page);
 
         $themesThatApply = [];
@@ -186,8 +197,10 @@ class DataExporter
             ],
         ];
 
-        $sheet->getStyle('A1:'. $this->getColumnLetter(count($categoryRow) + 1) . '1')->applyFromArray($styleArray)->getAlignment()->setTextRotation(45);
-        $sheet->getStyle('A2:'. $this->getColumnLetter(count($headings) + 1) . '2')->applyFromArray($styleArray)->getAlignment()->setTextRotation(45);
+        Coordinate::stringFromColumnIndex(count($categoryRow) + 1);
+
+        $sheet->getStyle('A1:'. Coordinate::stringFromColumnIndex(count($categoryRow) + 1) . '1')->applyFromArray($styleArray)->getAlignment()->setTextRotation(45);
+        $sheet->getStyle('A2:'. Coordinate::stringFromColumnIndex(count($headings) + 1) . '2')->applyFromArray($styleArray)->getAlignment()->setTextRotation(45);
 
         $rowNr = 2;
 
@@ -245,12 +258,20 @@ class DataExporter
                 }
             }
 
-            $calculationColumns = [
-                '=SUM(' . $this->getColumnLetter(count($metaDataColumnHeadings)) . $rowNr . ':' .
-                $this->getColumnLetter($columnNr - 1) . $rowNr . ')',
-                $cellsThatApply,
-                '=((' . $this->getColumnLetter($columnNr) . $rowNr . ' / 2)/' . $this->getColumnLetter($columnNr + 1) . $rowNr . ')* 100'
-            ];
+            $calculationColumns = [];
+
+
+
+            if (count($metaDataColumnHeadings) < $columnNr - 1) {
+                $range = $this->getColumnLetter(count($metaDataColumnHeadings)) . $rowNr . ':' .
+                    $this->getColumnLetter($columnNr - 1) . $rowNr;
+
+                $calculationColumns = [
+                    '=SUM(' . $range . ')',
+                    '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)',
+                    '=((' . $this->getColumnLetter($columnNr) . $rowNr . ' / 2)/' . $this->getColumnLetter($columnNr + 1) . $rowNr . ')* 100'
+                ];
+            }
 
             foreach (array_merge(
                          [
@@ -267,6 +288,37 @@ class DataExporter
                 $sheet->setCellValueByColumnAndRow($key + 1, $rowNr, $cell);
             }
         }
+
+        // foreach column after meta data rows.
+        // add number of cells with value
+        // add calculation of
+        $nrOfQuestions = 0;
+        foreach ($categories as $category) {
+            $nrOfQuestions = $nrOfQuestions + count($category->getQuestions());
+        }
+
+        if ($nrOfQuestions > 0) {
+            $columnRange = range(count($metaDataColumnHeadings) + 1, count($metaDataColumnHeadings) + 1 + $nrOfQuestions);
+            $rowNr = 2 + count($entities) + 2;
+
+            $sheet->setCellValueByColumnAndRow(1, $rowNr, $calculationColumnHeadings[0]);
+            $sheet->setCellValueByColumnAndRow(1, $rowNr+1, $calculationColumnHeadings[1]);
+            $sheet->setCellValueByColumnAndRow(1, $rowNr+2, $calculationColumnHeadings[2]);
+
+            foreach ($columnRange as $column) {
+                $range = Coordinate::stringFromColumnIndex($column) . 3 . ':' . Coordinate::stringFromColumnIndex($column) . ($rowNr - 2);
+                $sheet->setCellValueByColumnAndRow($column, $rowNr, '=SUM(' . $range . ')');
+                $sheet->setCellValueByColumnAndRow($column, $rowNr + 1, '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)');
+                $sheet->setCellValueByColumnAndRow($column, $rowNr + 2, '=((' .Coordinate::stringFromColumnIndex($column).($rowNr). ' / 2)/' .Coordinate::stringFromColumnIndex($column).($rowNr+1). ')* 100');
+            }
+        }
+
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('Values');
+        $drawing->setDescription('Values');
+        $drawing->setPath($this->basePath . '/public/excel_values.jpg');
+        $drawing->setCoordinates('A'. ($rowNr + 4));
+        $drawing->setWorksheet($sheet);
     }
 
     /**
