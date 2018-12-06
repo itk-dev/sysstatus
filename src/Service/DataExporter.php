@@ -9,10 +9,10 @@ use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use App\Repository\ThemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class DataExporter
 {
@@ -38,30 +38,81 @@ class DataExporter
     }
 
     public function export(
-        EntityRepository $entityRepository,
         $typeString,
-        $type
+        $type,
+        $entities,
+        $splitIntoSubOwners = false
     ) {
         $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        $spreadsheet->setActiveSheetIndex(0);
 
         $filename = $typeString.'-'.date("Y-m-d-H_i_s");
 
-        $entities = $entityRepository->findAll();
+        if (!$splitIntoSubOwners) {
+            $sheet = $spreadsheet->getActiveSheet();
+            $this->writeSheet($spreadsheet, $sheet, 0 ,$type, $entities);
+        }
+        else {
+            $subOwnerEntities = [];
+
+            foreach ($entities as $entity) {
+                $subOwner = $entity->getSysOwnerSub();
+                $subOwnerEntities[$subOwner][] = $entity;
+            }
+
+            $sheetNr = 0;
+
+            foreach ($subOwnerEntities as $key => $entities) {
+                $workSheet = null;
+                if ($sheetNr > 0) {
+                    $workSheet = $spreadsheet->addSheet(new Worksheet());
+                }
+                else {
+                    $workSheet = $spreadsheet->getActiveSheet();
+                }
+                $workSheet->setTitle($key ?: 'No subowner');
+                $spreadsheet->setActiveSheetIndex($sheetNr);
+
+                $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type, $entities);
+
+                $sheetNr++;
+            }
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+
+        $writer->save('php://output');
+        exit;
+    }
+
+    private function writeSheet($spreadsheet, $sheet, $page, $type, $entities) {
+        $spreadsheet->setActiveSheetIndex($page);
 
         $themesThatApply = [];
 
+        // Find themes that is attached to the entities.
         $themes = $this->themeRepository->findAll();
         foreach ($themes as $theme) {
             if ($type == Report::class) {
-                if (count($theme->getReports()) > 0) {
+                if (count($theme->getReports()) > 0 &&
+                    count(array_intersect(
+                        $theme->getReports()->toArray(),
+                        $entities
+                    )) > 0
+                ) {
                     $themesThatApply[] = $theme;
                 }
             } else {
                 if ($type == System::class) {
-                    if (count($theme->getSystems()) > 0) {
+                    if (count($theme->getSystems()) > 0 &&
+                        count(array_intersect(
+                            $theme->getSystems()->toArray(),
+                            $entities->toArray()
+                        )) > 0
+                    ) {
                         $themesThatApply[] = $theme;
                     }
                 }
@@ -216,15 +267,6 @@ class DataExporter
                 $sheet->setCellValueByColumnAndRow($key + 1, $rowNr, $cell);
             }
         }
-
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
-        header('Cache-Control: max-age=0');
-
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-
-        $writer->save('php://output');
-        exit;
     }
 
     /**
@@ -274,24 +316,53 @@ class DataExporter
 
     /**
      * Export reports.
+     *
+     * @param null $groupId
      */
-    public function exportReport()
+    public function exportReport($groupId = null, $splitIntoSubOwners = false)
     {
-        $this->export( $this->reportRepository,
+        $entities = null;
+
+        if (isset($groupId)) {
+            $entities = $this->reportRepository->findBy(['group' => $groupId, 'sysStatus' => 'Aktiv']);
+        }
+        else {
+            $entities = $this->reportRepository->findAll();
+        }
+
+        $this->export(
             'reports',
-            Report::class
+            Report::class,
+            $entities,
+            $splitIntoSubOwners
         );
     }
 
     /**
      * Export systems.
      */
-    public function exportSystem()
+    public function exportSystem($groupId = null, $splitIntoSubOwners = false)
     {
+        $entities = null;
+
+        if (isset($groupId)) {
+            $entities = $this->systemRepository->createQueryBuilder('s')
+            ->where('s.group = :group')
+            ->setParameter('group', $groupId)
+            ->andWhere('s.sysStatus != \'Systemet bruges ikke længere\'')
+            ->getQuery()->getResult();
+
+            //$entities = $this->systemRepository->findBy(['group' => $groupId, 'sysStatus' => 'Systemet bruges ikke længere']);
+        }
+        else {
+            $entities = $this->systemRepository->findAll();
+        }
+
         $this->export(
-            $this->systemRepository,
             'systems',
-            System::class
+            System::class,
+            $entities,
+            $splitIntoSubOwners
         );
     }
 }
