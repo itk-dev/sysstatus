@@ -119,7 +119,7 @@ class DataExporter
                     if (count($theme->getSystems()) > 0 &&
                         count(array_intersect(
                             $theme->getSystems()->toArray(),
-                            $entities->toArray()
+                            $entities
                         )) > 0
                     ) {
                         $themesThatApply[] = $theme;
