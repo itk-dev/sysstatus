@@ -5,7 +5,6 @@ namespace App\Service;
 use App\DBAL\Types\SmileyType;
 use App\Entity\Report;
 use App\Entity\System;
-use App\Kernel;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use App\Repository\ThemeRepository;
@@ -16,7 +15,6 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
 
 class DataExporter
 {
@@ -31,7 +29,7 @@ class DataExporter
      * @param \App\Repository\ReportRepository $reportRepository
      * @param \App\Repository\SystemRepository $systemRepository
      * @param \App\Repository\ThemeRepository $themeRepository
-     * @param \Symfony\Component\DependencyInjection\Container $container
+     * @param \Psr\Container\ContainerInterface $container
      * @throws \Exception
      */
     public function __construct(
@@ -289,14 +287,13 @@ class DataExporter
             }
         }
 
-        // foreach column after meta data rows.
-        // add number of cells with value
-        // add calculation of
+        // Count the number of questions.
         $nrOfQuestions = 0;
         foreach ($categories as $category) {
             $nrOfQuestions = $nrOfQuestions + count($category->getQuestions());
         }
 
+        // Add bottom summations if questions have been set for the given entities.
         if ($nrOfQuestions > 0) {
             $columnRange = range(count($metaDataColumnHeadings) + 1, count($metaDataColumnHeadings) + 1 + $nrOfQuestions);
             $rowNr = 2 + count($entities) + 2;
@@ -313,6 +310,7 @@ class DataExporter
             }
         }
 
+        // Add image describing values to the bottom of the excel sheet.
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName('Values');
         $drawing->setDescription('Values');
