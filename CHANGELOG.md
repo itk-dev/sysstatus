@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.6.1
+
+* Changed export function.
+
 ## 1.6.0
 
 * Added excel export of all systems and reports.

@@ -3,10 +3,16 @@
 {% block main %}
   <h1>{{ 'export.headline' | trans }}</h1>
 
-  <div>
-    <p>{{ 'export.description' | trans }}</p>
+  <div class="export-section">
+    <h4>{{ 'export.description' | trans }}</h4>
 
     <a class="btn" href="{{ path('export_report') }}" target="_blank">{{ 'export.reports' | trans }}</a>
     <a class="btn" href="{{ path('export_system') }}" target="_blank">{{ 'export.systems' | trans }}</a>
+  </div>
+
+  <div class="export-section">
+    <h4>{{ 'export.filtered.description' | trans }}</h4>
+
+    {{ form(sort_form) }}
   </div>
 {% endblock %}
