@@ -149,3 +149,7 @@ body.list table tbody td.dashboard--table-answer {
   fill: #666666;
 }
 
+.export-section {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}

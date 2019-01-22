@@ -206,3 +206,5 @@ export:
     headline: Eksport
     reports: Eksporter anmeldelser
     systems: Eksporter systemer
+    filtered:
+        description: Eksporter anmeldelser eller systemer fra en given gruppe.
