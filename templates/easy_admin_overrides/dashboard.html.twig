@@ -58,8 +58,8 @@
         <div>
           <span>
             <a href="{{ path('easyadmin', _request_parameters|merge({ action: 'show', id: item.id })) }}"
-                title="{{ item.name }}">
-            {{ breakintolines(item.name, 28, 2) | raw }}
+                title="{{ item.showableName }}">
+            {{ breakintolines(item.showableName, 28, 2) | raw }}
             </a>
           </span>
         </div>
@@ -124,4 +124,3 @@
   {% endblock delete_form %}
 
 {% endblock main %}
-
