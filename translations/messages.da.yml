@@ -65,6 +65,7 @@ entity:
         sys_digital_transactions_pr_year: Antal digitale transaktioner pr år
         sys_total_transactions_pr_year: Antal totale transaktioner pr år
         sys_self_service_url: Selvbetjenings-URL
+        selfServiceAvailableFromItems: Selvbetjening tilgængelig fra
         sys_alternative_title: Kaldenavn
         sys_version: Version
         sys_internal_id: Id i systemportalen
