@@ -271,16 +271,10 @@ easy_admin:
                         type: choice
                         extract_from_property: sysOwnerSub
                         parent_filter: group
-                    # -
-                    #     property: sysSelfServiceAvailableFrom
-                    #     type: choice
-                    #     choices:
-                    #       'andet (app, andre websider, osv.)': 'andet (app, andre websider, osv.)'
-                    #       'aarhus.dk': 'aarhus.dk'
-                    #       'borger.dk': 'borger.dk'
-
-                form_filters:
-                    - { property: selfServiceAvailableFromItems }
+                    -
+                        property: selfServiceAvailableFromItems
+                        type: entity
+                        class: App\Entity\SelfServiceAvailableFromItem
 
             show:
                 fields:

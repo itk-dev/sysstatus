@@ -282,6 +282,9 @@ class AdminController extends BaseAdminController
                     $entityConfig = $this->getClassByName(
                         $filter['class'] ?? ucfirst($filter['property'])
                     );
+                    if (null === $entityConfig && $filter['class']) {
+                      $entityConfig = ['class' => $filter['class']];
+                    }
                     $selected = null;
                     if (isset($requestFilters[$filter['property']])) {
                         $selected = $this->getDoctrine()
