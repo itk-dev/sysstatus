@@ -209,3 +209,7 @@ export:
     systems: Eksporter systemer
     filtered:
         description: Eksporter anmeldelser eller systemer fra en given gruppe.
+
+group.placeholder: Magistrat
+sysOwnerSub.placeholder: Afdeling
+selfServiceAvailableFromItems.placeholder: Selvbetjeningsløsning

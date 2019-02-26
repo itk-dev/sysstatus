@@ -266,15 +266,18 @@ easy_admin:
                     -
                         property: group
                         type: entity
+                        placeholder: group.placeholder
                     -
                         property: sysOwnerSub
                         type: choice
                         extract_from_property: sysOwnerSub
                         parent_filter: group
+                        placeholder: sysOwnerSub.placeholder
                     -
                         property: selfServiceAvailableFromItems
                         type: entity
                         class: App\Entity\SelfServiceAvailableFromItem
+                        placeholder: selfServiceAvailableFromItems.placeholder
 
             show:
                 fields:
