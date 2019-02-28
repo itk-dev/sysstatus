@@ -34,7 +34,6 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
-        responsible: Ansvarlig
         theme: Tema
         group: Gruppe
         answers: Smileys
@@ -70,11 +69,11 @@ entity:
         sys_internal_id: Id i systemportalen
         sys_link: Link til system
         sys_status: Status
+        sys_system_owner: Systemejer
     report:
         id: ID
         name: Internt navn
         text: Noter
-        responsible: Ansvarlig
         theme: Tema
         group: Gruppe
         answers: Smileys
@@ -120,6 +119,7 @@ entity:
         sys_version: Version
         sys_internal_information: Indsigt – interne oplysninger
         sys_data_to_science: Videregivelse af oplysninger til forskning
+        sys_system_owner: Systemejer
 menu:
     notes: Notater
     systemportal: Fra systemportalen

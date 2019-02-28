@@ -17,7 +17,8 @@ class SystemImporter extends BaseImporter
             $xml->registerXPathNamespace($strPrefix, $strNamespace);
         }
 
-        foreach ($xml->xpath('//sys:entry') as $entry) {
+        foreach ($xml->xpath('/sys:feed/sys:entry') as $entry) {
+            $entry->registerXPathNamespace('sys', 'http://www.w3.org/2005/Atom');
             $system = $this->systemRepository->findOneBy(['sysId' => $entry->id]);
 
             if (!$system) {
@@ -63,6 +64,14 @@ class SystemImporter extends BaseImporter
             $system->setSysSelfServiceURL($this->sanitizeText($properties->SelvbetjeningsURL));
             $system->setSysVersion($this->sanitizeText($properties->Version));
             $system->setSysStatus($this->sanitizeText($properties->StatusValue));
+
+            $sysSystemOwner = '';
+            $content = $entry->xpath('sys:link[@title="Systemejer"]//sys:entry/sys:content');
+            if (\count($content) > 0) {
+              $systemOwner = $content[0]->children('m', TRUE)->children('d', TRUE);
+              $sysSystemOwner = (string)$systemOwner->Navn;
+            }
+            $system->setSysSystemOwner($sysSystemOwner);
 
             // Set group and subGroup.
             if (!is_null($system->getSysOwner())) {

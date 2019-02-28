@@ -143,7 +143,7 @@ easy_admin:
                     - { property: 'showable_name', label: 'entity.report.sys_title' }
                     - { property: 'group', label: 'entity.report.group', type: 'text' }
                     - { property: 'sys_owner_sub', label: 'entity.report.sys_owner_sub' }
-                    - { property: 'responsible', label: 'entity.report.responsible' }
+                    - { property: 'sys_system_owner', label: 'entity.report.sys_system_owner' }
                     - { property: 'sys_link', label: 'entity.report.sys_link', type: 'file', filename: 'Link' }
                     - { property: 'theme', label: 'entity.report.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.report.text', type: 'boolean' }
@@ -165,7 +165,7 @@ easy_admin:
                     - { property: 'sys_link', label: 'entity.report.sys_link', type: 'file', filename: 'Link til anmeldelse' }
                     - { property: 'name', label: 'entity.report.name' }
                     - { property: 'text', label: 'entity.report.text', type: 'raw' }
-                    - { property: 'responsible', label: 'entity.report.responsible' }
+                    - { property: 'sys_system_owner', label: 'entity.report.sys_system_owner' }
                     - { property: 'theme', label: 'entity.report.theme', type: 'text' }
                     - { property: 'group', label: 'entity.report.group', type: 'text' }
                     - { property: 'answerarea', label: 'entity.report.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
@@ -207,7 +207,6 @@ easy_admin:
                     - { type: 'group', label: 'menu.general', icon: 'cog' }
                     - { property: 'name', label: 'entity.report.name', type: 'text', type_options: { required: false } }
                     - { property: 'text', label: 'entity.report.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
-                    - { property: 'responsible', label: 'entity.report.responsible', type_options: { required: false } }
                     - { property: 'theme', label: 'entity.report.theme', type_options: { required: false } }
                     - { property: 'group', label: 'entity.report.group', type_options: { required: false } }
                     - { type: 'divider' }
@@ -255,7 +254,7 @@ easy_admin:
                     - { property: 'showable_name', label: 'entity.system.sys_title' }
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
                     - { property: 'sys_owner_sub', label: 'entity.system.sys_owner_sub' }
-                    - { property: 'responsible', label: 'entity.system.responsible' }
+                    - { property: 'sys_system_owner', label: 'entity.system.sys_system_owner' }
                     - { property: 'sys_link', label: 'entity.system.sys_link', type: 'file', filename: 'Link' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
@@ -274,7 +273,6 @@ easy_admin:
                 fields:
                     - { property: 'name', label: 'entity.system.name' }
                     - { property: 'text', label: 'entity.system.text', type: 'raw' }
-                    - { property: 'responsible', label: 'entity.system.responsible' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
@@ -312,7 +310,6 @@ easy_admin:
                     - { type: 'group', label: 'menu.general', icon: 'cog' }
                     - { property: 'name', label: 'entity.system.name', type: 'text', type_options: { required: false } }
                     - { property: 'text', label: 'entity.system.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
-                    - { property: 'responsible', label: 'entity.system.responsible', type_options: { required: false } }
                     - { property: 'theme', label: 'entity.system.theme', type_options: { required: false } }
                     - { property: 'group', label: 'entity.system.group', type_options: { required: false } }
                     - { type: 'divider' }
