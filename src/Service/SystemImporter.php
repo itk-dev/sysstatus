@@ -37,7 +37,9 @@ class SystemImporter extends BaseImporter
             $xml->registerXPathNamespace($strPrefix, $strNamespace);
         }
 
-        foreach ($xml->xpath('//sys:entry') as $entry) {
+        foreach ($xml->xpath('/sys:feed/sys:entry') as $entry) {
+            $entry->registerXPathNamespace('sys', 'http://www.w3.org/2005/Atom');
+
             $system = $this->systemRepository->findOneBy(['sysId' => $entry->id]);
 
             if (!$system) {
@@ -84,15 +86,14 @@ class SystemImporter extends BaseImporter
             $system->setSysVersion($this->sanitizeText($properties->Version));
             $system->setSysStatus($this->sanitizeText($properties->StatusValue));
 
-            $allNames = ['andet (app, andre websider, osv.)', 'aarhus.dk', 'borger.dk'];
-            shuffle($allNames);
-            $selectedNames = array_slice($allNames, 0, random_int(0, \count($allNames)));
-            sort($selectedNames);
-
             $system->clearSelfServiceAvailableFromItems();
-            foreach ($selectedNames as $name) {
+            $selfServiceAvailableFromTitles = $entry->xpath('sys:link[@title="SelvbetjeningTilgængeligFra"]//sys:entry/sys:title');
+            if ($selfServiceAvailableFromTitles) {
+              foreach ($selfServiceAvailableFromTitles as $title) {
+                $name = (string)$title;
                 $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
                 $system->addSelfServiceAvailableFromItem($item);
+              }
             }
 
             // Set group and subGroup.
