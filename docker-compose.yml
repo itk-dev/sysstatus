@@ -59,15 +59,3 @@ services:
       - "8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock  # So that Traefik can listen to the Docker events
-
-  # varnish:
-  #   image: 'wodby/varnish:4'
-  #   depends_on:
-  #     - nginx
-  #   ports:
-  #     - '6081'
-  #   environment:
-  #     VARNISHD_VCL_SCRIPT: /etc/varnish/ereolen.vcl
-  #     VARNISH_SECRET: eca2b7c263eae74c0d746f147691e7ce
-  #   volumes:
-  #     - ./.docker/ereolen.vcl:/etc/varnish/ereolen.vcl:ro
