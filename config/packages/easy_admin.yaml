@@ -148,7 +148,7 @@ easy_admin:
                     - { property: 'theme', label: 'entity.report.theme', type: 'text' }
                     - { property: 'text_set', label: 'entity.report.text', type: 'boolean' }
                 sort: ['id', 'ASC']
-                dql_filter: entity.sysStatus = 'Aktiv'
+                dql_filter: "entity.sysStatus = 'Aktiv' AND entity.archivedAt IS NULL"
                 filters:
                     -
                         property: group
@@ -260,7 +260,7 @@ easy_admin:
                     - { property: 'selfServiceAvailableFromItems', label: 'entity.system.selfServiceAvailableFromItems', template: 'easy_admin_overrides/System/list/selfServiceAvailableFromItems.html.twig' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
-                dql_filter: "entity.sysStatus <> 'Systemet bruges ikke længere'"
+                dql_filter: "entity.sysStatus <> 'Systemet bruges ikke længere' AND entity.archivedAt IS NULL"
                 filters:
                     -
                         property: group

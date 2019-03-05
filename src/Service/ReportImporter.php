@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Report;
+use Doctrine\DBAL\Types\Type;
 
 class ReportImporter extends BaseImporter
 {
@@ -17,10 +18,21 @@ class ReportImporter extends BaseImporter
             $xml->registerXPathNamespace($strPrefix, $strNamespace);
         }
 
-        foreach ($xml->xpath('/sys:feed/sys:entry') as $entry) {
-            $entry->registerXPathNamespace('sys', 'http://www.w3.org/2005/Atom');
-            $report = $this->reportRepository->findOneBy(['sysId' => $entry->id]);
+        $entries = $xml->xpath('/sys:feed/sys:entry');
 
+        // Don't do anything if the feed is empty.
+        if (0 === \count($entries)) {
+            return;
+        }
+
+        // List of ids from Anmeldelsesportalen.
+        $sysIds = [];
+
+        foreach ($entries as $entry) {
+            $entry->registerXPathNamespace('sys', 'http://www.w3.org/2005/Atom');
+            $sysIds[] = $entry->id;
+
+            $report = $this->reportRepository->findOneBy(['sysId' => $entry->id]);
             if (!$report) {
                 $report = new Report();
                 $report->setSysId($entry->id);
@@ -28,6 +40,8 @@ class ReportImporter extends BaseImporter
 
                 $this->entityManager->persist($report);
             }
+            // Un-archive the report.
+            $report->setArchivedAt(null);
 
             $report->setSysUpdated($this->convertDate($entry->updated));
             $report->setSysTitle($this->sanitizeText($entry->title));
@@ -102,6 +116,16 @@ class ReportImporter extends BaseImporter
                 }
             }
         }
+
+        // Archive reports that no longer exist in Systemportalen.
+        $this->reportRepository->createQueryBuilder('e')
+            ->update()
+            ->set('e.archivedAt', ':now')
+            ->setParameter('now', new \DateTime(), Type::DATETIME)
+            ->where('e.sysId NOT IN (:sysIds)')
+            ->setParameter('sysIds', $sysIds)
+            ->getQuery()
+            ->execute();
 
         $this->entityManager->flush();
     }
