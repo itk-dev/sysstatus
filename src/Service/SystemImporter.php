@@ -7,6 +7,7 @@ use App\Repository\GroupRepository;
 use App\Repository\ReportRepository;
 use App\Repository\SelfServiceAvailableFromItemRepository;
 use App\Repository\SystemRepository;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SystemImporter extends BaseImporter
@@ -37,8 +38,19 @@ class SystemImporter extends BaseImporter
             $xml->registerXPathNamespace($strPrefix, $strNamespace);
         }
 
-        foreach ($xml->xpath('/sys:feed/sys:entry') as $entry) {
+        $entries = $xml->xpath('/sys:feed/sys:entry');
+
+        // Don't do anything if the feed is empty.
+        if (0 === \count($entries)) {
+            return;
+        }
+
+        // List of ids from Systemoversigten.
+        $sysIds = [];
+
+        foreach ($entries as $entry) {
             $entry->registerXPathNamespace('sys', 'http://www.w3.org/2005/Atom');
+            $sysIds[] = (string)$entry->id;
 
             $system = $this->systemRepository->findOneBy(['sysId' => $entry->id]);
 
@@ -49,6 +61,8 @@ class SystemImporter extends BaseImporter
 
                 $this->entityManager->persist($system);
             }
+            // Un-archive the system.
+            $system->setArchivedAt(null);
 
             $system->setSysUpdated($this->convertDate($entry->updated));
             $system->setSysTitle($this->sanitizeText($entry->title));
@@ -126,6 +140,16 @@ class SystemImporter extends BaseImporter
                 }
             }
         };
+
+        // Archive systems that no longer exist in Systemoversigten.
+        $this->systemRepository->createQueryBuilder('e')
+            ->update()
+            ->set('e.archivedAt', ':now')
+            ->setParameter('now', new \DateTime(), Type::DATETIME)
+            ->where('e.sysId NOT IN (:sysIds)')
+            ->setParameter('sysIds', $sysIds)
+            ->getQuery()
+            ->execute();
 
         $this->entityManager->flush();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Traits\ArchivableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,6 +18,7 @@ class Report
 {
     use BlameableEntity;
     use TimestampableEntity;
+    use ArchivableEntity;
 
     /**
      * @ORM\Id()
