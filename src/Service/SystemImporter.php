@@ -86,6 +86,14 @@ class SystemImporter extends BaseImporter
             $system->setSysVersion($this->sanitizeText($properties->Version));
             $system->setSysStatus($this->sanitizeText($properties->StatusValue));
 
+            $sysSystemOwner = '';
+            $content = $entry->xpath('sys:link[@title="Systemejer"]//sys:entry/sys:content');
+            if (\count($content) > 0) {
+              $systemOwner = $content[0]->children('m', TRUE)->children('d', TRUE);
+              $sysSystemOwner = (string)$systemOwner->Navn;
+            }
+            $system->setSysSystemOwner($sysSystemOwner);
+
             $system->clearSelfServiceAvailableFromItems();
             $selfServiceAvailableFromTitles = $entry->xpath('sys:link[@title="SelvbetjeningTilgængeligFra"]//sys:entry/sys:title');
             if ($selfServiceAvailableFromTitles) {

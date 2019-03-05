@@ -43,9 +43,10 @@ class System
     protected $group;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Versioned
      */
-    protected $responsible;
+    protected $sysSystemOwner;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -797,17 +798,17 @@ class System
     /**
      * @return mixed
      */
-    public function getResponsible()
+    public function getSysSystemOwner()
     {
-        return $this->responsible;
+        return $this->sysSystemOwner;
     }
 
     /**
-     * @param mixed $responsible
+     * @param mixed $sysSystemOwner
      */
-    public function setResponsible($responsible): void
+    public function setSysSystemOwner($sysSystemOwner): void
     {
-        $this->responsible = $responsible;
+        $this->sysSystemOwner = $sysSystemOwner;
     }
 
     /**

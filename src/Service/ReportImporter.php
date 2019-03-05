@@ -17,7 +17,8 @@ class ReportImporter extends BaseImporter
             $xml->registerXPathNamespace($strPrefix, $strNamespace);
         }
 
-        foreach ($xml->xpath('//sys:entry') as $entry) {
+        foreach ($xml->xpath('/sys:feed/sys:entry') as $entry) {
+            $entry->registerXPathNamespace('sys', 'http://www.w3.org/2005/Atom');
             $report = $this->reportRepository->findOneBy(['sysId' => $entry->id]);
 
             if (!$report) {
@@ -70,6 +71,14 @@ class ReportImporter extends BaseImporter
             $report->setSysInternalInformation($this->sanitizeText($properties->IndsigtInterneOplysninger));
             $report->setSysDataWorthSaving($this->sanitizeText($properties->IndeholderSystemetBevaringsværdigeDataValue));
             $report->setSysDataToScience($this->sanitizeText($properties->VideregivelseAfOplysningerTilForskningValue));
+
+            $sysSystemOwner = '';
+            $content = $entry->xpath('sys:link[@title="SystemejerProjektejer"]//sys:entry/sys:content');
+            if (\count($content) > 0) {
+              $systemOwner = $content[0]->children('m', TRUE)->children('d', TRUE);
+              $sysSystemOwner = (string)$systemOwner->Navn;
+            }
+            $report->setSysSystemOwner($sysSystemOwner);
 
             // Set group and subGroup.
             if (!is_null($report->getSysOwner())) {
