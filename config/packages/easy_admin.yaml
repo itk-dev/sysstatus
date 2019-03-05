@@ -257,6 +257,7 @@ easy_admin:
                     - { property: 'sys_system_owner', label: 'entity.system.sys_system_owner' }
                     - { property: 'sys_link', label: 'entity.system.sys_link', type: 'file', filename: 'Link' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
+                    - { property: 'selfServiceAvailableFromItems', label: 'entity.system.selfServiceAvailableFromItems', template: 'easy_admin_overrides/System/list/selfServiceAvailableFromItems.html.twig' }
                     - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
                 sort: ['id', 'ASC']
                 dql_filter: "entity.sysStatus <> 'Systemet bruges ikke længere'"
@@ -264,11 +265,19 @@ easy_admin:
                     -
                         property: group
                         type: entity
+                        placeholder: group.placeholder
                     -
                         property: sysOwnerSub
                         type: choice
                         extract_from_property: sysOwnerSub
                         parent_filter: group
+                        placeholder: sysOwnerSub.placeholder
+                    -
+                        property: selfServiceAvailableFromItems
+                        type: entity
+                        class: App\Entity\SelfServiceAvailableFromItem
+                        placeholder: selfServiceAvailableFromItems.placeholder
+
             show:
                 fields:
                     - { property: 'name', label: 'entity.system.name' }
@@ -303,6 +312,7 @@ easy_admin:
                     - { property: 'sys_digital_transactions_pr_year', label: 'entity.system.sys_digital_transactions_pr_year', type: 'raw' }
                     - { property: 'sys_total_transactions_pr_year', label: 'entity.system.sys_total_transactions_pr_year', type: 'raw' }
                     - { property: 'sys_self_service_url', label: 'entity.system.sys_self_service_url', type: 'raw' }
+                    - { property: 'selfServiceAvailableFromItems', label: 'entity.system.selfServiceAvailableFromItems' }
                     - { property: 'sys_alternative_title', label: 'entity.system.sys_alternative_title', type: 'raw' }
                     - { property: 'sys_version', label: 'entity.system.sys_version', type: 'text', type_options: { required: false, disabled: disabled } }
             form:

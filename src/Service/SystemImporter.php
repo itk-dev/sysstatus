@@ -3,9 +3,29 @@
 namespace App\Service;
 
 use App\Entity\System;
+use App\Repository\GroupRepository;
+use App\Repository\ReportRepository;
+use App\Repository\SelfServiceAvailableFromItemRepository;
+use App\Repository\SystemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SystemImporter extends BaseImporter
 {
+    /** @var \App\Repository\SelfServiceAvailableFromItemRepository */
+    private $selfServiceAvailableFromItemRepository;
+
+    public function __construct(
+      ReportRepository $reportRepository,
+      SystemRepository $systemRepository,
+      GroupRepository $groupRepository,
+      SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
+      EntityManagerInterface $entityManager
+    ) {
+        parent::__construct( $reportRepository, $systemRepository, $groupRepository, $entityManager);
+
+        $this->selfServiceAvailableFromItemRepository = $selfServiceAvailableFromItemRepository;
+    }
+
     public function import($src)
     {
         $systemURL = getenv('SYSTEM_URL');
@@ -19,6 +39,7 @@ class SystemImporter extends BaseImporter
 
         foreach ($xml->xpath('/sys:feed/sys:entry') as $entry) {
             $entry->registerXPathNamespace('sys', 'http://www.w3.org/2005/Atom');
+
             $system = $this->systemRepository->findOneBy(['sysId' => $entry->id]);
 
             if (!$system) {
@@ -72,6 +93,16 @@ class SystemImporter extends BaseImporter
               $sysSystemOwner = (string)$systemOwner->Navn;
             }
             $system->setSysSystemOwner($sysSystemOwner);
+
+            $system->clearSelfServiceAvailableFromItems();
+            $selfServiceAvailableFromTitles = $entry->xpath('sys:link[@title="SelvbetjeningTilgængeligFra"]//sys:entry/sys:title');
+            if ($selfServiceAvailableFromTitles) {
+              foreach ($selfServiceAvailableFromTitles as $title) {
+                $name = (string)$title;
+                $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
+                $system->addSelfServiceAvailableFromItem($item);
+              }
+            }
 
             // Set group and subGroup.
             if (!is_null($system->getSysOwner())) {

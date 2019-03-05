@@ -282,6 +282,9 @@ class AdminController extends BaseAdminController
                     $entityConfig = $this->getClassByName(
                         $filter['class'] ?? ucfirst($filter['property'])
                     );
+                    if (null === $entityConfig && $filter['class']) {
+                      $entityConfig = ['class' => $filter['class']];
+                    }
                     $selected = null;
                     if (isset($requestFilters[$filter['property']])) {
                         $selected = $this->getDoctrine()
@@ -299,7 +302,7 @@ class AdminController extends BaseAdminController
                             'class' => $entityConfig['class'],
                             'translation_domain' => 'messages',
                             'required' => false,
-                            'placeholder' => 'custom_filters.none',
+                            'placeholder' => $filter['placeholder'] ?? 'custom_filters.none',
                             'data' => $selected,
                             'attr' => [
                                 'class' => 'form-control custom-filter-select',
@@ -335,7 +338,7 @@ class AdminController extends BaseAdminController
 
                         $results =  $query->getResult();
 
-                        $choices = ['All' => ''];
+                        $choices = [($filter['placeholder'] ?? 'All') => ''];
 
                         foreach ($results as $result) {
                             if ($result[$filter['extract_from_property']]) {
@@ -350,7 +353,7 @@ class AdminController extends BaseAdminController
                         'label' => false,
                         'translation_domain' => 'messages',
                         'required' => false,
-                        'placeholder' => null,
+                        'placeholder' => $filter['placeholder'] ?? null,
                         'data' => $requestFilters[$filter['property']] ?? null,
                         'choices' => $filter['choices'],
                         'attr' => [

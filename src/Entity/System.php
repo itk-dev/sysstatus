@@ -218,9 +218,15 @@ class System
      */
     private $sysStatus;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\SelfServiceAvailableFromItem", mappedBy="systems")
+     */
+    private $selfServiceAvailableFromItems;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->selfServiceAvailableFromItems = new ArrayCollection();
     }
 
     public function getId()
@@ -632,7 +638,7 @@ class System
      * @param mixed $sysDigitalTransactionsPrYear
      */
     public function setSysDigitalTransactionsPrYear(
-        $sysDigitalTransactionsPrYear
+      $sysDigitalTransactionsPrYear
     ) {
         $this->sysDigitalTransactionsPrYear = $sysDigitalTransactionsPrYear;
     }
@@ -864,4 +870,43 @@ class System
 
         return $this;
     }
+
+    /**
+     * @return Collection|SelfServiceAvailableFromItem[]
+     */
+    public function getSelfServiceAvailableFromItems(): Collection
+    {
+        return $this->selfServiceAvailableFromItems;
+    }
+
+    public function addSelfServiceAvailableFromItem(SelfServiceAvailableFromItem $selfServiceAvailableFromItem): self
+    {
+        if (!$this->selfServiceAvailableFromItems->contains($selfServiceAvailableFromItem)) {
+            $this->selfServiceAvailableFromItems[] = $selfServiceAvailableFromItem;
+            $selfServiceAvailableFromItem->addSystem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSelfServiceAvailableFromItem(SelfServiceAvailableFromItem $selfServiceAvailableFromItem): self
+    {
+        if ($this->selfServiceAvailableFromItems->contains($selfServiceAvailableFromItem)) {
+            $this->selfServiceAvailableFromItems->removeElement($selfServiceAvailableFromItem);
+            $selfServiceAvailableFromItem->removeSystem($this);
+        }
+
+        return $this;
+    }
+
+    public function clearSelfServiceAvailableFromItems(): self
+    {
+        while ($this->selfServiceAvailableFromItems->count() > 0) {
+            $this->removeSelfServiceAvailableFromItem($this->selfServiceAvailableFromItems->first());
+        }
+
+        return $this;
+    }
+
 }
+
