@@ -34,7 +34,6 @@ entity:
         id: ID
         name: Internt navn
         text: Noter
-        responsible: Ansvarlig
         theme: Tema
         group: Gruppe
         answers: Smileys
@@ -65,16 +64,17 @@ entity:
         sys_digital_transactions_pr_year: Antal digitale transaktioner pr år
         sys_total_transactions_pr_year: Antal totale transaktioner pr år
         sys_self_service_url: Selvbetjenings-URL
+        selfServiceAvailableFromItems: Selvbetjening tilgængelig fra
         sys_alternative_title: Kaldenavn
         sys_version: Version
         sys_internal_id: Id i systemportalen
         sys_link: Link til system
         sys_status: Status
+        sys_system_owner: Systemejer
     report:
         id: ID
         name: Internt navn
         text: Noter
-        responsible: Ansvarlig
         theme: Tema
         group: Gruppe
         answers: Smileys
@@ -120,6 +120,7 @@ entity:
         sys_version: Version
         sys_internal_information: Indsigt – interne oplysninger
         sys_data_to_science: Videregivelse af oplysninger til forskning
+        sys_system_owner: Systemejer
 menu:
     notes: Notater
     systemportal: Fra systemportalen
@@ -208,3 +209,7 @@ export:
     systems: Eksporter systemer
     filtered:
         description: Eksporter anmeldelser eller systemer fra en given gruppe.
+
+group.placeholder: Magistrat
+sysOwnerSub.placeholder: Afdeling
+selfServiceAvailableFromItems.placeholder: Selvbetjeningsløsning

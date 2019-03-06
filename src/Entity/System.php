@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Traits\ArchivableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,6 +18,7 @@ class System
 {
     use BlameableEntity;
     use TimestampableEntity;
+    use ArchivableEntity;
 
     /**
      * @ORM\Id()
@@ -43,9 +45,10 @@ class System
     protected $group;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Versioned
      */
-    protected $responsible;
+    protected $sysSystemOwner;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -217,9 +220,15 @@ class System
      */
     private $sysStatus;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\SelfServiceAvailableFromItem", mappedBy="systems")
+     */
+    private $selfServiceAvailableFromItems;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->selfServiceAvailableFromItems = new ArrayCollection();
     }
 
     public function getId()
@@ -631,7 +640,7 @@ class System
      * @param mixed $sysDigitalTransactionsPrYear
      */
     public function setSysDigitalTransactionsPrYear(
-        $sysDigitalTransactionsPrYear
+      $sysDigitalTransactionsPrYear
     ) {
         $this->sysDigitalTransactionsPrYear = $sysDigitalTransactionsPrYear;
     }
@@ -791,17 +800,17 @@ class System
     /**
      * @return mixed
      */
-    public function getResponsible()
+    public function getSysSystemOwner()
     {
-        return $this->responsible;
+        return $this->sysSystemOwner;
     }
 
     /**
-     * @param mixed $responsible
+     * @param mixed $sysSystemOwner
      */
-    public function setResponsible($responsible): void
+    public function setSysSystemOwner($sysSystemOwner): void
     {
-        $this->responsible = $responsible;
+        $this->sysSystemOwner = $sysSystemOwner;
     }
 
     /**
@@ -863,4 +872,42 @@ class System
 
         return $this;
     }
+
+    /**
+     * @return Collection|SelfServiceAvailableFromItem[]
+     */
+    public function getSelfServiceAvailableFromItems(): Collection
+    {
+        return $this->selfServiceAvailableFromItems;
+    }
+
+    public function addSelfServiceAvailableFromItem(SelfServiceAvailableFromItem $selfServiceAvailableFromItem): self
+    {
+        if (!$this->selfServiceAvailableFromItems->contains($selfServiceAvailableFromItem)) {
+            $this->selfServiceAvailableFromItems[] = $selfServiceAvailableFromItem;
+            $selfServiceAvailableFromItem->addSystem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSelfServiceAvailableFromItem(SelfServiceAvailableFromItem $selfServiceAvailableFromItem): self
+    {
+        if ($this->selfServiceAvailableFromItems->contains($selfServiceAvailableFromItem)) {
+            $this->selfServiceAvailableFromItems->removeElement($selfServiceAvailableFromItem);
+            $selfServiceAvailableFromItem->removeSystem($this);
+        }
+
+        return $this;
+    }
+
+    public function clearSelfServiceAvailableFromItems(): self
+    {
+        while ($this->selfServiceAvailableFromItems->count() > 0) {
+            $this->removeSelfServiceAvailableFromItem($this->selfServiceAvailableFromItems->first());
+        }
+
+        return $this;
+    }
+
 }
