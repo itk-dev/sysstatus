@@ -10,6 +10,7 @@ use App\Repository\SystemRepository;
 use App\Repository\ThemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -77,7 +78,7 @@ class DataExporter
                 else {
                     $workSheet = $spreadsheet->getActiveSheet();
                 }
-                $workSheet->setTitle($key ?: 'No subowner');
+                $workSheet->setTitle(StringHelper::substring($key ?: 'No subowner', 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH));
 
                 $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type, $entities);
 
