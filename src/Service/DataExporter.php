@@ -375,10 +375,13 @@ class DataExporter
         $entities = null;
 
         if (isset($groupId)) {
-            $entities = $this->reportRepository->findBy(['group' => $groupId, 'sysStatus' => 'Aktiv']);
-        }
-        else {
-            $entities = $this->reportRepository->findAll();
+            $entities = $this->reportRepository->findBy(
+                ['group' => $groupId, 'sysStatus' => 'Aktiv', 'archivedAt' == null]
+            );
+        } else {
+            $entities = $this->reportRepository->findBy([
+                'archivedAt' == null
+            ]);
         }
 
         $this->export(
@@ -398,15 +401,15 @@ class DataExporter
 
         if (isset($groupId)) {
             $entities = $this->systemRepository->createQueryBuilder('s')
-            ->where('s.group = :group')
-            ->setParameter('group', $groupId)
-            ->andWhere('s.sysStatus != \'Systemet bruges ikke længere\'')
-            ->getQuery()->getResult();
-
-            //$entities = $this->systemRepository->findBy(['group' => $groupId, 'sysStatus' => 'Systemet bruges ikke længere']);
-        }
-        else {
-            $entities = $this->systemRepository->findAll();
+                ->where('s.group = :group')
+                ->setParameter('group', $groupId)
+                ->andWhere('s.archivedAt == null')
+                ->andWhere('s.sysStatus != \'Systemet bruges ikke længere\'')
+                ->getQuery()->getResult();
+        } else {
+            $entities = $this->systemRepository->findBy([
+                'archivedAt' == null
+            ]);
         }
 
         $this->export(
