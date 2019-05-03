@@ -376,11 +376,11 @@ class DataExporter
 
         if (isset($groupId)) {
             $entities = $this->reportRepository->findBy(
-                ['group' => $groupId, 'sysStatus' => 'Aktiv', 'archivedAt' == null]
+                ['group' => $groupId, 'sysStatus' => 'Aktiv', 'archivedAt' => null]
             );
         } else {
             $entities = $this->reportRepository->findBy([
-                'archivedAt' == null
+                'archivedAt' => null
             ]);
         }
 
@@ -408,7 +408,7 @@ class DataExporter
                 ->getQuery()->getResult();
         } else {
             $entities = $this->systemRepository->findBy([
-                'archivedAt' == null
+                'archivedAt' => null
             ]);
         }
 
