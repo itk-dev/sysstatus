@@ -78,7 +78,8 @@ class DataExporter
                 else {
                     $workSheet = $spreadsheet->getActiveSheet();
                 }
-                $workSheet->setTitle(StringHelper::substring($key ?: 'No subowner', 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH));
+                $nameKey = str_replace(['*', ':', '/', '\\', '?', '[', ']'], '', $key);
+                $workSheet->setTitle(StringHelper::substring($nameKey ?: 'No subowner', 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH));
 
                 $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type, $entities);
 
@@ -372,14 +373,15 @@ class DataExporter
      */
     public function exportReport($groupId = null, $splitIntoSubOwners = false)
     {
-        $entities = null;
+        $qb = $this->reportRepository->createQueryBuilder('e');
+        $qb->where($qb->expr()->isNull('e.archivedAt'))
+            ->andWhere($qb->expr()->eq('e.sysStatus', $qb->expr()->literal('Aktiv')));
 
         if (isset($groupId)) {
-            $entities = $this->reportRepository->findBy(['group' => $groupId, 'sysStatus' => 'Aktiv']);
+            $qb->andWhere($qb->expr()->eq('e.group', ':group'))->setParameter('group', $groupId);
         }
-        else {
-            $entities = $this->reportRepository->findAll();
-        }
+
+        $entities = $qb->getQuery()->execute();
 
         $this->export(
             'reports',
@@ -394,20 +396,15 @@ class DataExporter
      */
     public function exportSystem($groupId = null, $splitIntoSubOwners = false)
     {
-        $entities = null;
+        $qb = $this->systemRepository->createQueryBuilder('e');
+        $qb->where($qb->expr()->isNull('e.archivedAt'))
+            ->andWhere($qb->expr()->neq('e.sysStatus', $qb->expr()->literal('Systemet bruges ikke længere')));
 
         if (isset($groupId)) {
-            $entities = $this->systemRepository->createQueryBuilder('s')
-            ->where('s.group = :group')
-            ->setParameter('group', $groupId)
-            ->andWhere('s.sysStatus != \'Systemet bruges ikke længere\'')
-            ->getQuery()->getResult();
+            $qb->andWhere($qb->expr()->eq('e.group', ':group'))->setParameter('group', $groupId);
+        }
 
-            //$entities = $this->systemRepository->findBy(['group' => $groupId, 'sysStatus' => 'Systemet bruges ikke længere']);
-        }
-        else {
-            $entities = $this->systemRepository->findAll();
-        }
+        $entities = $qb->getQuery()->execute();
 
         $this->export(
             'systems',
