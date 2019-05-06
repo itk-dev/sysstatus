@@ -1,6 +1,6 @@
 # ITStyr CHANGELOG
 
-## 1.6.3
+## 1.7.1
 
 * Added ignore to archived systems and reports in exports.
 
