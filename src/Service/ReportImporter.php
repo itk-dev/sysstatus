@@ -42,8 +42,9 @@ class ReportImporter extends BaseImporter
             $report->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $report->setSysTitle($this->sanitizeText($entry->{'Titel'}));
 
-            // Set link to Anmeldelsesportalen.
-            $report->setSysLink('-- TODO --');
+            // @TODO: Fix link.
+            //$report->setSysLink('');
+
             $report->setSysConfidentialInformation($this->convertBoolean($entry->{'Følsomme oplysninger'}));
             $report->setSysAlternativeTitle($this->sanitizeText($entry->{'Systemnavn'}));
             $report->setSysOwner($this->sanitizeText($entry->{'Systemejerskab'}));
@@ -72,8 +73,6 @@ class ReportImporter extends BaseImporter
             $report->setSysImpactAnalysis($this->sanitizeText($entry->{'Konsekvensanalyse'}));
             $report->setSysImpactAnalysisLink($this->sanitizeText($entry->{'Link til konsekvensanalyse'}));
             $report->setSysAuthorizationProcedure($this->sanitizeText($entry->{'Autorisationsprocedure'}));
-            // Does not exist in feed anymore:
-            //            $report->setSysVersion($this->sanitizeText($entry->Version));
             $report->setSysInternalInformation($this->sanitizeText($entry->{'Indsigt - interne oplysninger'}));
             $report->setSysDataWorthSaving($this->sanitizeText($entry->{'Indeholder systemet bevaringsværdige data?'}));
             $report->setSysDataToScience($this->sanitizeText($entry->{'Videregivelse af oplysninger til forskning'}));
