@@ -93,17 +93,16 @@ class SystemImporter extends BaseImporter
             $system->setSysStatus($this->sanitizeText($entry->{'Status'}));
             $system->setSysSystemOwner($this->sanitizeText($entry->{'Systemejer'}));
 
-            /* @TODO: Handle this.
-            $system->clearSelfServiceAvailableFromItems();
-            $selfServiceAvailableFromTitles = $entry->xpath('sys:link[@title="SelvbetjeningTilgængeligFra"]//sys:entry/sys:title');
-            if ($selfServiceAvailableFromTitles) {
-              foreach ($selfServiceAvailableFromTitles as $title) {
-                $name = (string)$title;
-                $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
-                $system->addSelfServiceAvailableFromItem($item);
-              }
+            $selfServiceAvailableFromText = $this->sanitizeText($entry->{'Selvbetjening tilgængelig fra'});
+            if (isset($selfServiceAvailableFromText)) {
+                $selfServiceAvailableFromTitles = explode(';#', $selfServiceAvailableFromText);
+
+                foreach ($selfServiceAvailableFromTitles as $title) {
+                    $name = (string)$title;
+                    $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
+                    $system->addSelfServiceAvailableFromItem($item);
+                }
             }
-            */
 
             // Set group and subGroup.
             if (!is_null($system->getSysOwner())) {
