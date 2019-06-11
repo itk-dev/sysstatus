@@ -62,8 +62,7 @@ class SystemImporter extends BaseImporter
             $system->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $system->setSysTitle($this->sanitizeText($entry->{'Titel'}));
 
-            // @TODO: Fix link
-            //$system->setSysLink('');
+            $system->setSysLink($systemURL . '/' .  $entry->{'Sti'} . '/DispForm.aspx?ID=' . $entry->{'Id'});
 
             $system->setSysAlternativeTitle($this->sanitizeText($entry->{'Kaldenavn'}));
             $system->setSysDescription($this->sanitizeText($entry->{'Beskrivelse'}));

@@ -42,8 +42,7 @@ class ReportImporter extends BaseImporter
             $report->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $report->setSysTitle($this->sanitizeText($entry->{'Titel'}));
 
-            // @TODO: Fix link.
-            //$report->setSysLink('');
+            $report->setSysLink($systemURL . '/' .  $entry->{'Sti'} . '/DispForm.aspx?ID=' . $entry->{'Id'});
 
             $report->setSysConfidentialInformation($this->convertBoolean($entry->{'Følsomme oplysninger'}));
             $report->setSysAlternativeTitle($this->sanitizeText($entry->{'Systemnavn'}));
