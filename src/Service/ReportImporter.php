@@ -20,12 +20,13 @@ class ReportImporter extends BaseImporter
         }
 
         // List of ids from Anmeldelsesportalen.
-        $sysIds = [];
+        $sysInternalIds = [];
 
         foreach ($entries as $entry) {
-            $sysIds[] = $entry->{'Id'};
+            $sysInternalId = $this->sanitizeText($entry->{'Id'});
+            $sysInternalIds[] = $sysInternalId;
 
-            $report = $this->reportRepository->findOneBy(['sysInternalId' => $entry->{'Id'}]);
+            $report = $this->reportRepository->findOneBy(['sysInternalId' => $sysInternalId]);
             if (!$report) {
                 $report = new Report();
                 $report->setSysId($entry->{'Id'});
@@ -37,7 +38,7 @@ class ReportImporter extends BaseImporter
             $report->setArchivedAt(null);
 
             $report->setSysId($entry->{'Id'});
-            $report->setSysInternalId($this->sanitizeText($entry->{'Id'}));
+            $report->setSysInternalId($sysInternalId);
 
             $report->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $report->setSysTitle($this->sanitizeText($entry->{'Titel'}));
@@ -106,8 +107,8 @@ class ReportImporter extends BaseImporter
             ->update()
             ->set('e.archivedAt', ':now')
             ->setParameter('now', new \DateTime(), Type::DATETIME)
-            ->where('e.sysInternalId NOT IN (:sysIds)')
-            ->setParameter('sysIds', $sysIds)
+            ->where('e.sysInternalId NOT IN (:sysInternalIds)')
+            ->setParameter('sysInternalIds', $sysInternalIds)
             ->getQuery()
             ->execute();
 

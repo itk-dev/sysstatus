@@ -40,10 +40,11 @@ class SystemImporter extends BaseImporter
         }
 
         // List of ids from Systemoversigten.
-        $sysIds = [];
+        $sysInternalIds = [];
 
         foreach ($entries as $entry) {
-            $sysIds[] = $entry->{'Id'};
+            $sysInternalId = $this->sanitizeText($entry->{'Id'});
+            $sysInternalIds[] = $sysInternalId;
 
             $system = $this->systemRepository->findOneBy(['sysInternalId' => $entry->{'Id'}]);
 
@@ -57,7 +58,7 @@ class SystemImporter extends BaseImporter
             $system->setArchivedAt(null);
 
             $system->setSysId($entry->{'Id'});
-            $system->setSysInternalId($this->sanitizeText($entry->{'Id'}));
+            $system->setSysInternalId($sysInternalId);
 
             $system->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $system->setSysTitle($this->sanitizeText($entry->{'Titel'}));
@@ -131,8 +132,8 @@ class SystemImporter extends BaseImporter
             ->update()
             ->set('e.archivedAt', ':now')
             ->setParameter('now', new \DateTime(), Type::DATETIME)
-            ->where('e.sysInternalId NOT IN (:sysIds)')
-            ->setParameter('sysIds', $sysIds)
+            ->where('e.sysInternalId NOT IN (:sysInternalIds)')
+            ->setParameter('sysInternalIds', $sysInternalIds)
             ->getQuery()
             ->execute();
 
