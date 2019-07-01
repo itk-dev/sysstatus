@@ -31,14 +31,8 @@ class SystemImporter extends BaseImporter
     {
         $systemURL = getenv('SYSTEM_URL');
 
-        $xml = simplexml_load_file($src);
-
-        foreach ($xml->getDocNamespaces() as $strPrefix => $strNamespace) {
-            $strPrefix = "sys";
-            $xml->registerXPathNamespace($strPrefix, $strNamespace);
-        }
-
-        $entries = $xml->xpath('/sys:feed/sys:entry');
+        $json = file_get_contents($src);
+        $entries = json_decode($json);
 
         // Don't do anything if the feed is empty.
         if (0 === \count($entries)) {
@@ -46,76 +40,68 @@ class SystemImporter extends BaseImporter
         }
 
         // List of ids from Systemoversigten.
-        $sysIds = [];
+        $sysInternalIds = [];
 
         foreach ($entries as $entry) {
-            $entry->registerXPathNamespace('sys', 'http://www.w3.org/2005/Atom');
-            $sysIds[] = (string)$entry->id;
+            $sysInternalId = $this->sanitizeText($entry->{'Id'});
+            $sysInternalIds[] = $sysInternalId;
 
-            $system = $this->systemRepository->findOneBy(['sysId' => $entry->id]);
+            $system = $this->systemRepository->findOneBy(['sysInternalId' => $entry->{'Id'}]);
 
             if (!$system) {
                 $system = new System();
-                $system->setSysId($entry->id);
-                $system->setName($this->sanitizeText($entry->title));
+                $system->setName($this->sanitizeText($entry->{'Titel'}));
 
                 $this->entityManager->persist($system);
             }
             // Un-archive the system.
             $system->setArchivedAt(null);
 
-            $system->setSysUpdated($this->convertDate($entry->updated));
-            $system->setSysTitle($this->sanitizeText($entry->title));
+            $system->setSysId($entry->{'Id'});
+            $system->setSysInternalId($sysInternalId);
 
-            $properties = $entry->content->children('m', TRUE)->children('d', TRUE);
+            $system->setSysUpdated($this->convertDate($entry->{'Ændret'}));
+            $system->setSysTitle($this->sanitizeText($entry->{'Titel'}));
 
-            // Set link to Anmeldelsesportalen.
-            $system->setSysLink($systemURL . $this->sanitizeText($properties->Sti) . '/DispForm.aspx?ID=' . $this->sanitizeText($properties->Id));
+            $system->setSysLink($systemURL . '/' .  $entry->{'Sti'} . '/DispForm.aspx?ID=' . $entry->{'Id'});
 
-            $system->setSysInternalId($this->sanitizeText($properties->Id));
-            $system->setSysAlternativeTitle($this->sanitizeText($properties->Kaldenavn));
-            $system->setSysDescription($this->sanitizeText($properties->Beskrivelse));
-            $system->setSysOwner($this->sanitizeText($properties->SystemejerskabValue));
-            $system->setSysOwnerSubdepartment($this->sanitizeText($properties->SystemejerskabUnderafdeling));
-            $system->setSysEmergencySetup($this->sanitizeText($properties->Driftsberedskab));
-            $system->setSysContractor($this->sanitizeText($properties->Systemleverandør));
-            $system->setSysUrgencyRating($this->sanitizeText($properties->UrgencyRatingValue));
-            $system->setSysNumberOfUsers($this->sanitizeText($properties->AntalBrugereValue));
-            $system->setSysTechnicalDocumentation($this->sanitizeText($properties->TekniskDokumentation));
-            $system->setSysExternalDependencies($this->sanitizeText($properties->EksterneSystemafhængigheder));
-            $system->setSysImportantInformation($this->sanitizeText($properties->VigtigeSupplerendeOplysninger));
-            $system->setSysEmergencySetup($this->sanitizeText($properties->Driftsberedskab));
-            $system->setSysSuperuserOrganization($this->sanitizeText($properties->Superbrugerorganisation));
-            $system->setSysITSecurityCategory($this->sanitizeText($properties->ITSikkerhedskategoriValue));
-            $system->setSysLinkToSecurityReview($this->sanitizeText($properties->LinkTilSikkerhedsanmeldelse));
-            $system->setSysLinkToContract($this->sanitizeText($properties->LinkTilKontrakt));
-            $system->setSysEndOfContract($this->convertDate($properties->Kontraktudløbsdato));
-            $system->setSysOpenData($this->sanitizeText($properties->OpenDataValue));
-            $system->setSysOpenSource($this->sanitizeText($properties->OpenSourceValue));
-            $system->setSysDigitalPost($this->sanitizeText($properties->DigitalPostValue));
-            $system->setSysSystemCategory($this->sanitizeText($properties->SystemkategoriValue));
-            $system->setSysDigitalTransactionsPrYear($this->sanitizeText($properties->AntalDigitaleTransaktionerPrÅr));
-            $system->setSysTotalTransactionsPrYear($this->sanitizeText($properties->AntalTotaleTransaktionerPrÅr));
-            $system->setSysSelfServiceURL($this->sanitizeText($properties->SelvbetjeningsURL));
-            $system->setSysVersion($this->sanitizeText($properties->Version));
-            $system->setSysStatus($this->sanitizeText($properties->StatusValue));
+            $system->setSysAlternativeTitle($this->sanitizeText($entry->{'Kaldenavn'}));
+            $system->setSysDescription($this->sanitizeText($entry->{'Beskrivelse'}));
+            $system->setSysOwner($this->sanitizeText($entry->{'Systemejerskab'}));
+            $system->setSysOwnerSubdepartment($this->sanitizeText($entry->{'Systemejerskab - underafdeling'}));
+            $system->setSysEmergencySetup($this->sanitizeText($entry->{'Driftsberedskab'}));
+            $system->setSysContractor($this->sanitizeText($entry->{'Systemleverandør'}));
+            $system->setSysUrgencyRating($this->sanitizeText($entry->{'Urgency rating'}));
+            $system->setSysNumberOfUsers($this->sanitizeText($entry->{'Antal brugere'}));
+            $system->setSysTechnicalDocumentation($this->sanitizeText($entry->{'Teknisk dokumentation'}));
+            $system->setSysExternalDependencies($this->sanitizeText($entry->{'Eksterne systemafhængigheder'}));
+            $system->setSysImportantInformation($this->sanitizeText($entry->{'Vigtige supplerende oplysninger'}));
+            $system->setSysEmergencySetup($this->sanitizeText($entry->{'Driftsberedskab'}));
+            $system->setSysSuperuserOrganization($this->sanitizeText($entry->{'Superbrugerorganisation'}));
+            $system->setSysITSecurityCategory($this->sanitizeText($entry->{'IT-sikkerhedskategori'}));
+            $system->setSysLinkToSecurityReview($this->sanitizeText($entry->{'Link til sikkerhedsanmeldelse'}));
+            $system->setSysLinkToContract($this->sanitizeText($entry->{'Link til kontrakt'}));
+            $system->setSysEndOfContract($this->convertDate($entry->{'Kontraktudløbsdato'}));
+            $system->setSysOpenData($this->sanitizeText($entry->{'Open Data'}));
+            $system->setSysOpenSource($this->sanitizeText($entry->{'Open Source'}));
+            $system->setSysDigitalPost($this->sanitizeText($entry->{'Digital post'}));
+            $system->setSysSystemCategory($this->sanitizeText($entry->{'Systemkategori'}));
+            $system->setSysDigitalTransactionsPrYear($this->sanitizeText($entry->{'Antal digitale transaktioner pr. år'}));
+            $system->setSysTotalTransactionsPrYear($this->sanitizeText($entry->{'Antal totale transaktioner pr. år'}));
+            $system->setSysSelfServiceURL($this->sanitizeText($entry->{'Selvbetjenings-URL'}));
+            $system->setSysVersion($this->sanitizeText($entry->{'Versions nummer/release nummer'}));
+            $system->setSysStatus($this->sanitizeText($entry->{'Status'}));
+            $system->setSysSystemOwner($this->sanitizeText($entry->{'Systemejer'}));
 
-            $sysSystemOwner = '';
-            $content = $entry->xpath('sys:link[@title="Systemejer"]//sys:entry/sys:content');
-            if (\count($content) > 0) {
-              $systemOwner = $content[0]->children('m', TRUE)->children('d', TRUE);
-              $sysSystemOwner = (string)$systemOwner->Navn;
-            }
-            $system->setSysSystemOwner($sysSystemOwner);
+            $selfServiceAvailableFromText = $this->sanitizeText($entry->{'Selvbetjening tilgængelig fra'});
+            if (isset($selfServiceAvailableFromText)) {
+                $selfServiceAvailableFromTitles = explode(';#', $selfServiceAvailableFromText);
 
-            $system->clearSelfServiceAvailableFromItems();
-            $selfServiceAvailableFromTitles = $entry->xpath('sys:link[@title="SelvbetjeningTilgængeligFra"]//sys:entry/sys:title');
-            if ($selfServiceAvailableFromTitles) {
-              foreach ($selfServiceAvailableFromTitles as $title) {
-                $name = (string)$title;
-                $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
-                $system->addSelfServiceAvailableFromItem($item);
-              }
+                foreach ($selfServiceAvailableFromTitles as $title) {
+                    $name = (string)$title;
+                    $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
+                    $system->addSelfServiceAvailableFromItem($item);
+                }
             }
 
             // Set group and subGroup.
@@ -146,8 +132,8 @@ class SystemImporter extends BaseImporter
             ->update()
             ->set('e.archivedAt', ':now')
             ->setParameter('now', new \DateTime(), Type::DATETIME)
-            ->where('e.sysId NOT IN (:sysIds)')
-            ->setParameter('sysIds', $sysIds)
+            ->where('e.sysInternalId NOT IN (:sysInternalIds)')
+            ->setParameter('sysInternalIds', $sysInternalIds)
             ->getQuery()
             ->execute();
 
