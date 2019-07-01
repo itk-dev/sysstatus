@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.8.0
+
+* Switched to JSON feeds.
+
 ## 1.7.1
 
 * Added ignore to archived systems and reports in exports.
