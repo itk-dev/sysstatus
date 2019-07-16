@@ -37,6 +37,7 @@ entity:
         theme: Tema
         group: Gruppe
         answers: Smileys
+        edoc_url: Link til systemdokumentation
         sys_id: Id
         sys_id_as_link: Link til systemportalen
         sys_title: Systemnavn

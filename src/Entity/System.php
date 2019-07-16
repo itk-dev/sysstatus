@@ -225,6 +225,11 @@ class System
      */
     private $selfServiceAvailableFromItems;
 
+    /**
+     * @ORM\Column(name="edoc_url", type="string", length=255, nullable=true)
+     */
+    private $eDocUrl;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -906,6 +911,18 @@ class System
         while ($this->selfServiceAvailableFromItems->count() > 0) {
             $this->removeSelfServiceAvailableFromItem($this->selfServiceAvailableFromItems->first());
         }
+
+        return $this;
+    }
+
+    public function getEDocUrl(): ?string
+    {
+        return $this->eDocUrl;
+    }
+
+    public function setEDocUrl(?string $eDocUrl): self
+    {
+        $this->eDocUrl = $eDocUrl;
 
         return $this;
     }
