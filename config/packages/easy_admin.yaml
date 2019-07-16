@@ -162,6 +162,7 @@ easy_admin:
                 fields:
                     - { property: 'sys_title', label: 'entity.report.sys_title', type: 'raw' }
                     - { property: 'sys_internal_id', label: 'entity.report.sys_internal_id', type: 'raw' }
+                    - { property: 'edoc_url', label: 'entity.report.edoc_url', type: 'url' }
                     - { property: 'sys_link', label: 'entity.report.sys_link', type: 'file', filename: 'Link til anmeldelse' }
                     - { property: 'name', label: 'entity.report.name' }
                     - { property: 'text', label: 'entity.report.text', type: 'raw' }
@@ -209,6 +210,7 @@ easy_admin:
                     - { property: 'text', label: 'entity.report.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
                     - { property: 'theme', label: 'entity.report.theme', type_options: { required: false } }
                     - { property: 'group', label: 'entity.report.group', type_options: { required: false } }
+                    - { property: 'edoc_url', label: 'entity.report.edoc_url', type: 'text', type_options: { required: false } }
                     - { type: 'divider' }
                     - { type: 'group' , label: 'menu.reportportal', icon: 'cogs' }
                     - { property: 'sys_id', label: 'entity.report.sys_id', type: 'text', type_options: { required: false, disabled: disabled } }
@@ -287,6 +289,7 @@ easy_admin:
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'raw' }
                     - { property: 'sys_internal_id', label: 'entity.system.sys_id', type: 'text' }
+                    - { property: 'edoc_url', label: 'entity.system.edoc_url', type: 'url' }
                     - { property: 'sys_link', label: 'entity.system.sys_id_as_link', type: 'file', filename: 'Link til system' }
                     - { property: 'sys_updated', label: 'entity.system.sys_updated', type: 'datetime' }
                     - { property: 'sys_description', label: 'entity.system.sys_description', type: 'raw' }
@@ -322,6 +325,7 @@ easy_admin:
                     - { property: 'text', label: 'entity.system.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
                     - { property: 'theme', label: 'entity.system.theme', type_options: { required: false } }
                     - { property: 'group', label: 'entity.system.group', type_options: { required: false } }
+                    - { property: 'edoc_url', label: 'entity.system.edoc_url', type: 'text', type_options: { required: false } }
                     - { type: 'divider' }
                     - { type: 'group' , label: 'menu.systemportal', icon: 'cogs' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'text', type_options: { required: false, disabled: disabled } }
