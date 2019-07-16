@@ -72,6 +72,7 @@ entity:
         sys_status: Status
         sys_system_owner: Systemejer
     report:
+        edoc_url: Link til systemdokumentation
         id: ID
         name: Internt navn
         text: Noter

@@ -1,5 +1,9 @@
 # ITStyr CHANGELOG
 
+## 1.9.0
+
+* Added eDoc url to Report.
+
 ## 1.8.0
 
 * Switched to JSON feeds.

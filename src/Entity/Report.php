@@ -250,6 +250,11 @@ class Report
      */
     private $sysImpactAnalysisLink;
 
+    /**
+     * @ORM\Column(name="edoc_url", type="string", length=255, nullable=true)
+     */
+    private $eDocUrl;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -961,6 +966,18 @@ class Report
     public function setSysImpactAnalysisLink(?string $sysImpactAnalysisLink): self
     {
         $this->sysImpactAnalysisLink = $sysImpactAnalysisLink;
+
+        return $this;
+    }
+
+    public function getEDocUrl(): ?string
+    {
+        return $this->eDocUrl;
+    }
+
+    public function setEDocUrl(?string $eDocUrl): self
+    {
+        $this->eDocUrl = $eDocUrl;
 
         return $this;
     }
