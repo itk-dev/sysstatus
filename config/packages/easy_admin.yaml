@@ -284,6 +284,7 @@ easy_admin:
                 fields:
                     - { property: 'name', label: 'entity.system.name' }
                     - { property: 'text', label: 'entity.system.text', type: 'raw' }
+                    - { property: 'sys_system_owner', label: 'entity.system.sys_system_owner' }
                     - { property: 'theme', label: 'entity.system.theme', type: 'text' }
                     - { property: 'group', label: 'entity.system.group', type: 'text' }
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
