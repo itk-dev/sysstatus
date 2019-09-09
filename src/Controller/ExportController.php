@@ -13,29 +13,46 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
-
+/**
+ * Class ExportController
+ * @package App\Controller
+ */
 class ExportController extends Controller
 {
     /**
      * @Route("/export/report", name="export_report")
+     *
+     * @param \App\Service\DataExporter $dataExporter
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportReports(
         DataExporter $dataExporter
     ) {
-        $dataExporter->exportReport(null, false, false, true);
+        $dataExporter->exportReport();
     }
 
     /**
      * @Route("/export/system", name="export_system")
+     *
+     * @param \App\Service\DataExporter $dataExporter
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportSystems(
         DataExporter $dataExporter
     ) {
-        $dataExporter->exportSystem(null, false, false, true);
+        $dataExporter->exportSystem();
     }
 
     /**
      * @Route("/export", name="export_page")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \App\Service\DataExporter $dataExporter
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportPage(Request $request, DataExporter $dataExporter)
     {

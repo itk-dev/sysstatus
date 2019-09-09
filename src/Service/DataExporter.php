@@ -19,6 +19,10 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use Psr\Container\ContainerInterface;
 
+/**
+ * Class DataExporter.
+ * @package App\Service
+ */
 class DataExporter
 {
     protected $reportRepository;
@@ -48,8 +52,20 @@ class DataExporter
         $this->basePath = $container->get('kernel')->getProjectDir();
     }
 
+    /**
+     * Export reports or systems.
+     *
+     * @param string $filenamePrefix The filename prefix.
+     * @param string $type The type of the entities that are exported.
+     * @param array $entities The entities to export.
+     * @param bool $splitIntoSubOwners Should the results be split into subowners?
+     * @param bool $onlyComments Should the answer notes be displayed instead of results?
+     * @param bool $withColor Whether or not colors should be displayed for answers.
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
     public function export(
-        $typeString,
+        $filenamePrefix,
         $type,
         $entities,
         $splitIntoSubOwners = false,
@@ -58,13 +74,15 @@ class DataExporter
     ) {
         $spreadsheet = new Spreadsheet();
 
-        $filename = $typeString.'-'.date("Y-m-d-H_i_s");
+        $filename = $filenamePrefix.'-'.date("Y-m-d-H_i_s");
 
+        // If $splitIntoSubOwners is true, each entity that belongs to a subowner
+        // will be gathered in its own work sheet in the spreadsheet.
         if (!$splitIntoSubOwners) {
             $sheet = $spreadsheet->getActiveSheet();
-            $this->writeSheet($spreadsheet, $sheet, 0 ,$type, $entities, $onlyComments, $withColor);
-        }
-        else {
+            $this->writeSheet($spreadsheet, $sheet, 0, $type, $entities,
+                $onlyComments, $withColor);
+        } else {
             $subOwnerEntities = [];
 
             foreach ($entities as $entity) {
@@ -74,18 +92,21 @@ class DataExporter
 
             $sheetNr = 0;
 
+            // Create a WorkSheet for each subowner.
             foreach ($subOwnerEntities as $key => $entities) {
                 $workSheet = null;
                 if ($sheetNr > 0) {
                     $workSheet = $spreadsheet->addSheet(new Worksheet());
-                }
-                else {
+                } else {
                     $workSheet = $spreadsheet->getActiveSheet();
                 }
-                $nameKey = str_replace(['*', ':', '/', '\\', '?', '[', ']'], '', $key);
-                $workSheet->setTitle(StringHelper::substring($nameKey ?: 'No subowner', 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH));
+                $nameKey = str_replace(['*', ':', '/', '\\', '?', '[', ']'], '',
+                    $key);
+                $workSheet->setTitle(StringHelper::substring($nameKey ?: 'No subowner',
+                    0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH));
 
-                $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type, $entities, $onlyComments, $withColor);
+                $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type,
+                    $entities, $onlyComments, $withColor);
 
                 $sheetNr++;
             }
@@ -103,8 +124,28 @@ class DataExporter
         exit;
     }
 
-    private function writeSheet($spreadsheet, Worksheet $sheet, $page, $type, $entities, $onlyComments = false, $withColor = false) {
-        $spreadsheet->setActiveSheetIndex($page);
+    /**
+     * Write $entities to a $sheet in the $spreadsheet.
+     *
+     * @param Spreadsheet $spreadsheet The spreadsheet.
+     * @param Worksheet $sheet The worksheet to write to.
+     * @param int $sheetIndex The index of the worksheet.
+     * @param string $type Classname of the entities to export.
+     * @param array $entities The entities.
+     * @param bool $onlyComments If true only export comments for each answer.
+     * @param bool $withColor If true set the answer color as background to each answer.
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    private function writeSheet(
+        Spreadsheet $spreadsheet,
+        Worksheet $sheet,
+        int $sheetIndex,
+        string $type,
+        array $entities,
+        bool $onlyComments = false,
+        bool $withColor = false
+    ) {
+        $spreadsheet->setActiveSheetIndex($sheetIndex);
 
         $themesThatApply = [];
 
@@ -184,13 +225,13 @@ class DataExporter
             $answerColumns
         );
 
-        if (!$onlyComments) {
-            $calculationColumnHeadings = [
-                'Sum af svar',
-                'Antal besvarede spørgsmål',
-                'Resultat %'
-            ];
+        $calculationColumnHeadings = [
+            'Sum af svar',
+            'Antal besvarede spørgsmål',
+            'Resultat %',
+        ];
 
+        if (!$onlyComments) {
             $headings = array_merge(
                 $headings,
                 $calculationColumnHeadings
@@ -209,8 +250,14 @@ class DataExporter
 
         Coordinate::stringFromColumnIndex(count($categoryRow) + 1);
 
-        $sheet->getStyle('A1:'. Coordinate::stringFromColumnIndex(count($categoryRow) + 1) . '1')->applyFromArray($styleArray)->getAlignment()->setTextRotation(45);
-        $sheet->getStyle('A2:'. Coordinate::stringFromColumnIndex(count($headings) + 1) . '2')->applyFromArray($styleArray)->getAlignment()->setTextRotation(45);
+        $sheet->getStyle('A1:'.Coordinate::stringFromColumnIndex(count($categoryRow) + 1).'1')
+            ->applyFromArray($styleArray)
+            ->getAlignment()
+            ->setTextRotation(45);
+        $sheet->getStyle('A2:'.Coordinate::stringFromColumnIndex(count($headings) + 1).'2')
+            ->applyFromArray($styleArray)
+            ->getAlignment()
+            ->setTextRotation(45);
 
         $rowNr = 2;
 
@@ -220,12 +267,13 @@ class DataExporter
 
             $answers = $entity->getAnswers();
 
+            $cellsThatApply = 0;
+
+            // For each question, see if the entity has answer, and add it to
+            // the row data.
             $questionColumns = [];
             $noteColumns = [];
             $colorColumns = [];
-
-            $cellsThatApply = 0;
-
             foreach ($categories as $category) {
                 $categoryApplies = $this->categoryAppliesToEntity($entity, $category);
 
@@ -238,8 +286,8 @@ class DataExporter
 
                     if ($categoryApplies) {
                         foreach ($answers as $answer) {
-                            if ($answer->getQuestion()->getId() == $question->getId(
-                                )) {
+                            if ($answer->getQuestion()
+                                    ->getId() == $question->getId()) {
                                 $value = $this->getAnswerValue($answer);
                                 $note = $answer->getNote() ?: '';
                                 $color = $this->getAnswerColor($answer);
@@ -256,47 +304,63 @@ class DataExporter
                 }
             }
 
+            // Calculation columns for the entity row.
             $calculationColumns = [];
-
             if (!$onlyComments) {
                 if (count($metaDataColumnHeadings) < $columnNr - 1) {
-                    $range = $this->getColumnLetter(count($metaDataColumnHeadings)) . $rowNr . ':' .
-                        $this->getColumnLetter($columnNr - 1) . $rowNr;
+                    $range = $this->getColumnLetter(count($metaDataColumnHeadings)).$rowNr.':'.
+                        $this->getColumnLetter($columnNr - 1).$rowNr;
 
                     $calculationColumns = [
-                        '=SUM(' . $range . ')',
+                        '=SUM('.$range.')',
                         '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)',
-                        '=((' . $this->getColumnLetter($columnNr) . $rowNr . ' / 2)/' . $this->getColumnLetter($columnNr + 1) . $rowNr . ')* 100'
+                        '=(('.$this->getColumnLetter($columnNr).$rowNr.' / 2)/'.$this->getColumnLetter($columnNr + 1).$rowNr.')* 100',
                     ];
                 }
             }
 
+            // Data about the entity.
+            $metaColumns = [
+                $entity->getSysInternalId(),
+                $entity->getSysTitle(),
+                $entity->getSysStatus(),
+                $entity->getGroup()->getName(),
+                $entity->getSysOwnerSub(),
+                $entity->getTheme(),
+            ];
+
+            // Insert each cell for the entity row.
             foreach (array_merge(
-                         [
-                             $entity->getSysInternalId(),
-                             $entity->getSysTitle(),
-                             $entity->getSysStatus(),
-                             $entity->getGroup()->getName(),
-                             $entity->getSysOwnerSub(),
-                             $entity->getTheme(),
-                         ],
+                         $metaColumns,
                          $onlyComments ? $noteColumns : $questionColumns,
                          $calculationColumns
                      ) as $key => $cell) {
                 $sheet->setCellValueByColumnAndRow($key + 1, $rowNr, $cell);
-                $sheet->getStyleByColumnAndRow($key + 1, $rowNr)->getAlignment()->setWrapText(true);
+                $sheet->getStyleByColumnAndRow($key + 1, $rowNr)
+                    ->getAlignment()
+                    ->setWrapText(true);
 
-                if ($withColor && $key + 1 > 6 && $key < count($questionColumns) + 6) {
-                    $color = $colorColumns[$key - 6];
+                // Set color of cell.
+                if ($withColor && $key >= count($metaColumns) && $key < count($questionColumns) + count($metaColumns)) {
+                    $color = $colorColumns[$key - count($metaColumns)];
 
                     if ($color != null) {
-                        $sheet->getStyleByColumnAndRow($key + 1, $rowNr, $cell)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB($color);
-                        $sheet->getStyleByColumnAndRow($key + 1, $rowNr, $cell)->getFont()->getColor()->setARGB('ffffff');
+                        $sheet->getStyleByColumnAndRow($key + 1, $rowNr, $cell)
+                            ->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()
+                            ->setARGB($color);
+                        $sheet->getStyleByColumnAndRow($key + 1, $rowNr, $cell)
+                            ->getFont()
+                            ->getColor()
+                            ->setARGB('ffffff');
                     }
                 }
             }
         }
 
+        // If the export is not for comments only, create summation rows in
+        // the bottom of the worksheet.
         if (!$onlyComments) {
             // Count the number of questions.
             $nrOfQuestions = 0;
@@ -306,18 +370,26 @@ class DataExporter
 
             // Add bottom summations if questions have been set for the given entities.
             if ($nrOfQuestions > 0) {
-                $columnRange = range(count($metaDataColumnHeadings) + 1, count($metaDataColumnHeadings) + 1 + $nrOfQuestions - 1);
+                $columnRange = range(count($metaDataColumnHeadings) + 1,
+                    count($metaDataColumnHeadings) + $nrOfQuestions);
                 $rowNr = 2 + count($entities) + 2;
 
-                $sheet->setCellValueByColumnAndRow(1, $rowNr, $calculationColumnHeadings[0]);
-                $sheet->setCellValueByColumnAndRow(1, $rowNr+1, $calculationColumnHeadings[1]);
-                $sheet->setCellValueByColumnAndRow(1, $rowNr+2, $calculationColumnHeadings[2]);
+                // Insert row titles.
+                $sheet->setCellValueByColumnAndRow(1, $rowNr,
+                    $calculationColumnHeadings[0]);
+                $sheet->setCellValueByColumnAndRow(1, $rowNr + 1,
+                    $calculationColumnHeadings[1]);
+                $sheet->setCellValueByColumnAndRow(1, $rowNr + 2,
+                    $calculationColumnHeadings[2]);
 
                 foreach ($columnRange as $column) {
-                    $range = Coordinate::stringFromColumnIndex($column) . 3 . ':' . Coordinate::stringFromColumnIndex($column) . ($rowNr - 2);
-                    $sheet->setCellValueByColumnAndRow($column, $rowNr, '=SUM(' . $range . ')');
-                    $sheet->setCellValueByColumnAndRow($column, $rowNr + 1, '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)');
-                    $sheet->setCellValueByColumnAndRow($column, $rowNr + 2, '=IF('.Coordinate::stringFromColumnIndex($column).($rowNr+1).'>0, ((' .Coordinate::stringFromColumnIndex($column).($rowNr). ' / 2)/' .Coordinate::stringFromColumnIndex($column).($rowNr+1). ')* 100, 0)');
+                    $range = Coordinate::stringFromColumnIndex($column). 3 .':'.Coordinate::stringFromColumnIndex($column).($rowNr - 2);
+                    $sheet->setCellValueByColumnAndRow($column, $rowNr,
+                        '=SUM('.$range.')');
+                    $sheet->setCellValueByColumnAndRow($column, $rowNr + 1,
+                        '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)');
+                    $sheet->setCellValueByColumnAndRow($column, $rowNr + 2,
+                        '=IF('.Coordinate::stringFromColumnIndex($column).($rowNr + 1).'>0, (('.Coordinate::stringFromColumnIndex($column).($rowNr).' / 2)/'.Coordinate::stringFromColumnIndex($column).($rowNr + 1).')* 100, 0)');
                 }
             }
 
@@ -327,8 +399,8 @@ class DataExporter
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName('Values');
         $drawing->setDescription('Values');
-        $drawing->setPath($this->basePath . '/public/excel_values.jpg');
-        $drawing->setCoordinates('A'. ($rowNr + 4));
+        $drawing->setPath($this->basePath.'/public/excel_values.jpg');
+        $drawing->setCoordinates('A'.($rowNr + 4));
         $drawing->setWorksheet($sheet);
     }
 
@@ -339,7 +411,8 @@ class DataExporter
      * @param $category
      * @return bool
      */
-    private function categoryAppliesToEntity($entity, $category) {
+    private function categoryAppliesToEntity($entity, $category)
+    {
         $theme = $entity->getTheme();
 
         if (is_null($theme)) {
@@ -351,6 +424,7 @@ class DataExporter
                 return true;
             }
         }
+
         return false;
     }
 
@@ -360,10 +434,11 @@ class DataExporter
      * @param $columnNr
      * @return string
      */
-    private function getColumnLetter($columnNr) {
+    private function getColumnLetter($columnNr)
+    {
         $res = '';
 
-        $range = range('A','Z');
+        $range = range('A', 'Z');
         $countRange = count($range);
 
         if ($columnNr > $countRange) {
@@ -374,22 +449,33 @@ class DataExporter
 
         $lastLetter = $range[$p];
 
-        return $res . $lastLetter;
+        return $res.$lastLetter;
     }
 
     /**
      * Export reports.
      *
-     * @param null $groupId
+     * @param int|null $groupId The group id.
+     * @param bool $splitIntoSubOwners Split the report into subowner worksheets.
+     * @param bool $onlyComments Only export comments for each answer.
+     * @param bool $withColor Show answer color as cell background.
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportReport($groupId = null, $splitIntoSubOwners = false, $onlyComments = false, $withColor = false)
-    {
+    public function exportReport(
+        $groupId = null,
+        $splitIntoSubOwners = false,
+        $onlyComments = false,
+        $withColor = false
+    ) {
         $qb = $this->reportRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
-            ->andWhere($qb->expr()->eq('e.sysStatus', $qb->expr()->literal('Aktiv')));
+            ->andWhere($qb->expr()
+                ->eq('e.sysStatus', $qb->expr()->literal('Aktiv')));
 
         if (isset($groupId)) {
-            $qb->andWhere($qb->expr()->eq('e.group', ':group'))->setParameter('group', $groupId);
+            $qb->andWhere($qb->expr()->eq('e.group', ':group'))
+                ->setParameter('group', $groupId);
         }
 
         $entities = $qb->getQuery()->execute();
@@ -406,15 +492,29 @@ class DataExporter
 
     /**
      * Export systems.
+     *
+     * @param int|null $groupId The group id.
+     * @param bool $splitIntoSubOwners Split the report into subowner worksheets.
+     * @param bool $onlyComments Only export comments for each answer.
+     * @param bool $withColor Show answer color as cell background.
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportSystem($groupId = null, $splitIntoSubOwners = false, $onlyComments = false, $withColor = false)
-    {
+    public function exportSystem(
+        $groupId = null,
+        $splitIntoSubOwners = false,
+        $onlyComments = false,
+        $withColor = false
+    ) {
         $qb = $this->systemRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
-            ->andWhere($qb->expr()->neq('e.sysStatus', $qb->expr()->literal('Systemet bruges ikke længere')));
+            ->andWhere($qb->expr()
+                ->neq('e.sysStatus',
+                    $qb->expr()->literal('Systemet bruges ikke længere')));
 
         if (isset($groupId)) {
-            $qb->andWhere($qb->expr()->eq('e.group', ':group'))->setParameter('group', $groupId);
+            $qb->andWhere($qb->expr()->eq('e.group', ':group'))
+                ->setParameter('group', $groupId);
         }
 
         $entities = $qb->getQuery()->execute();
@@ -429,18 +529,22 @@ class DataExporter
         );
     }
 
-
-    private function getAnswerValue(Answer $answer) {
+    /**
+     * Get a value corresponding to answer smiley selected.
+     *
+     * @param \App\Entity\Answer $answer
+     * @return int
+     */
+    private function getAnswerValue(Answer $answer)
+    {
         if ($answer->getSmiley() == SmileyType::BLUE ||
             $answer->getSmiley() == SmileyType::GREEN) {
             return 2;
         } else {
-            if ($answer->getSmiley(
-                ) == SmileyType::YELLOW) {
+            if ($answer->getSmiley() == SmileyType::YELLOW) {
                 return 1;
             } else {
-                if ($answer->getSmiley(
-                    ) == SmileyType::RED ||
+                if ($answer->getSmiley() == SmileyType::RED ||
                     is_null($answer->getSmiley())
                 ) {
                     return 0;
@@ -451,7 +555,14 @@ class DataExporter
         return 0;
     }
 
-    private function getAnswerColor(Answer $answer) {
+    /**
+     * Get color depending on answer smiley value.
+     *
+     * @param \App\Entity\Answer $answer
+     * @return string|null
+     */
+    private function getAnswerColor(Answer $answer)
+    {
         switch ($answer->getSmiley()) {
             case SmileyType::BLUE:
                 return '3661D8';
