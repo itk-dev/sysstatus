@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\DBAL\Types\SmileyType;
+use App\Entity\Answer;
 use App\Entity\Report;
 use App\Entity\System;
 use App\Repository\ReportRepository;
@@ -13,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use Psr\Container\ContainerInterface;
@@ -50,7 +52,9 @@ class DataExporter
         $typeString,
         $type,
         $entities,
-        $splitIntoSubOwners = false
+        $splitIntoSubOwners = false,
+        $onlyComments = false,
+        $withColor = false
     ) {
         $spreadsheet = new Spreadsheet();
 
@@ -58,7 +62,7 @@ class DataExporter
 
         if (!$splitIntoSubOwners) {
             $sheet = $spreadsheet->getActiveSheet();
-            $this->writeSheet($spreadsheet, $sheet, 0 ,$type, $entities);
+            $this->writeSheet($spreadsheet, $sheet, 0 ,$type, $entities, $onlyComments, $withColor);
         }
         else {
             $subOwnerEntities = [];
@@ -81,7 +85,7 @@ class DataExporter
                 $nameKey = str_replace(['*', ':', '/', '\\', '?', '[', ']'], '', $key);
                 $workSheet->setTitle(StringHelper::substring($nameKey ?: 'No subowner', 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH));
 
-                $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type, $entities);
+                $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type, $entities, $onlyComments, $withColor);
 
                 $sheetNr++;
             }
@@ -99,7 +103,7 @@ class DataExporter
         exit;
     }
 
-    private function writeSheet($spreadsheet, Worksheet $sheet, $page, $type, $entities) {
+    private function writeSheet($spreadsheet, Worksheet $sheet, $page, $type, $entities, $onlyComments = false, $withColor = false) {
         $spreadsheet->setActiveSheetIndex($page);
 
         $themesThatApply = [];
@@ -175,17 +179,23 @@ class DataExporter
             'Tema',
         ];
 
-        $calculationColumnHeadings = [
-            'Sum af svar',
-            'Antal spørgsmål',
-            'Resultat %'
-        ];
-
         $headings = array_merge(
             $metaDataColumnHeadings,
-            $answerColumns,
-            $calculationColumnHeadings
+            $answerColumns
         );
+
+        if (!$onlyComments) {
+            $calculationColumnHeadings = [
+                'Sum af svar',
+                'Antal spørgsmål',
+                'Resultat %'
+            ];
+
+            $headings = array_merge(
+                $headings,
+                $calculationColumnHeadings
+            );
+        }
 
         foreach ($headings as $key => $cell) {
             $sheet->setCellValueByColumnAndRow($key + 1, 2, $cell);
@@ -211,6 +221,8 @@ class DataExporter
             $answers = $entity->getAnswers();
 
             $questionColumns = [];
+            $noteColumns = [];
+            $colorColumns = [];
 
             $cellsThatApply = 0;
 
@@ -220,57 +232,43 @@ class DataExporter
                 foreach ($category->getQuestions() as $question) {
                     $columnNr++;
 
-                    $value = '';
+                    $value = 0;
+                    $note = '';
+                    $color = null;
 
                     if ($categoryApplies) {
                         foreach ($answers as $answer) {
                             if ($answer->getQuestion()->getId() == $question->getId(
                                 )) {
-                                if ($answer->getSmiley() == SmileyType::BLUE ||
-                                    $answer->getSmiley() == SmileyType::GREEN) {
-                                    $value = 2;
-                                } else {
-                                    if ($answer->getSmiley(
-                                        ) == SmileyType::YELLOW) {
-                                        $value = 1;
-                                    } else {
-                                        if ($answer->getSmiley(
-                                            ) == SmileyType::RED ||
-                                            is_null($answer->getSmiley())
-                                        ) {
-                                            $value = 0;
-                                        }
-                                    }
-                                }
-
+                                $value = $this->getAnswerValue($answer);
+                                $note = $answer->getNote() ?: '';
+                                $color = $this->getAnswerColor($answer);
                                 break;
                             }
-                        }
-
-                        if ($value == '') {
-                            $value = 0;
                         }
 
                         $cellsThatApply++;
                     }
 
                     $questionColumns[] = $value;
+                    $noteColumns[] = $note;
+                    $colorColumns[] = $color;
                 }
             }
 
             $calculationColumns = [];
 
+            if (!$onlyComments) {
+                if (count($metaDataColumnHeadings) < $columnNr - 1) {
+                    $range = $this->getColumnLetter(count($metaDataColumnHeadings)) . $rowNr . ':' .
+                        $this->getColumnLetter($columnNr - 1) . $rowNr;
 
-
-            if (count($metaDataColumnHeadings) < $columnNr - 1) {
-                $range = $this->getColumnLetter(count($metaDataColumnHeadings)) . $rowNr . ':' .
-                    $this->getColumnLetter($columnNr - 1) . $rowNr;
-
-                $calculationColumns = [
-                    '=SUM(' . $range . ')',
-                    '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)',
-                    '=((' . $this->getColumnLetter($columnNr) . $rowNr . ' / 2)/' . $this->getColumnLetter($columnNr + 1) . $rowNr . ')* 100'
-                ];
+                    $calculationColumns = [
+                        '=SUM(' . $range . ')',
+                        '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)',
+                        '=((' . $this->getColumnLetter($columnNr) . $rowNr . ' / 2)/' . $this->getColumnLetter($columnNr + 1) . $rowNr . ')* 100'
+                    ];
+                }
             }
 
             foreach (array_merge(
@@ -282,34 +280,48 @@ class DataExporter
                              $entity->getSysOwnerSub(),
                              $entity->getTheme(),
                          ],
-                         $questionColumns,
+                         $onlyComments ? $noteColumns : $questionColumns,
                          $calculationColumns
                      ) as $key => $cell) {
                 $sheet->setCellValueByColumnAndRow($key + 1, $rowNr, $cell);
+                $sheet->getStyleByColumnAndRow($key + 1, $rowNr)->getAlignment()->setWrapText(true);
+
+                if ($withColor && $key + 1 > 6 && $key < count($questionColumns) + 6) {
+                    $color = $colorColumns[$key - 6];
+
+                    if ($color != null) {
+                        $sheet->getStyleByColumnAndRow($key + 1, $rowNr, $cell)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB($color);
+                        $sheet->getStyleByColumnAndRow($key + 1, $rowNr, $cell)->getFont()->getColor()->setARGB('ffffff');
+                    }
+                }
             }
         }
 
-        // Count the number of questions.
-        $nrOfQuestions = 0;
-        foreach ($categories as $category) {
-            $nrOfQuestions = $nrOfQuestions + count($category->getQuestions());
-        }
-
-        // Add bottom summations if questions have been set for the given entities.
-        if ($nrOfQuestions > 0) {
-            $columnRange = range(count($metaDataColumnHeadings) + 1, count($metaDataColumnHeadings) + 1 + $nrOfQuestions);
-            $rowNr = 2 + count($entities) + 2;
-
-            $sheet->setCellValueByColumnAndRow(1, $rowNr, $calculationColumnHeadings[0]);
-            $sheet->setCellValueByColumnAndRow(1, $rowNr+1, $calculationColumnHeadings[1]);
-            $sheet->setCellValueByColumnAndRow(1, $rowNr+2, $calculationColumnHeadings[2]);
-
-            foreach ($columnRange as $column) {
-                $range = Coordinate::stringFromColumnIndex($column) . 3 . ':' . Coordinate::stringFromColumnIndex($column) . ($rowNr - 2);
-                $sheet->setCellValueByColumnAndRow($column, $rowNr, '=SUM(' . $range . ')');
-                $sheet->setCellValueByColumnAndRow($column, $rowNr + 1, '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)');
-                $sheet->setCellValueByColumnAndRow($column, $rowNr + 2, '=((' .Coordinate::stringFromColumnIndex($column).($rowNr). ' / 2)/' .Coordinate::stringFromColumnIndex($column).($rowNr+1). ')* 100');
+        if (!$onlyComments) {
+            // Count the number of questions.
+            $nrOfQuestions = 0;
+            foreach ($categories as $category) {
+                $nrOfQuestions = $nrOfQuestions + count($category->getQuestions());
             }
+
+            // Add bottom summations if questions have been set for the given entities.
+            if ($nrOfQuestions > 0) {
+                $columnRange = range(count($metaDataColumnHeadings) + 1, count($metaDataColumnHeadings) + 1 + $nrOfQuestions);
+                $rowNr = 2 + count($entities) + 2;
+
+                $sheet->setCellValueByColumnAndRow(1, $rowNr, $calculationColumnHeadings[0]);
+                $sheet->setCellValueByColumnAndRow(1, $rowNr+1, $calculationColumnHeadings[1]);
+                $sheet->setCellValueByColumnAndRow(1, $rowNr+2, $calculationColumnHeadings[2]);
+
+
+                foreach ($columnRange as $column) {
+                    $range = Coordinate::stringFromColumnIndex($column) . 3 . ':' . Coordinate::stringFromColumnIndex($column) . ($rowNr - 2);
+                    $sheet->setCellValueByColumnAndRow($column, $rowNr, '=SUM(' . $range . ')');
+                    $sheet->setCellValueByColumnAndRow($column, $rowNr + 1, '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)');
+                    $sheet->setCellValueByColumnAndRow($column, $rowNr + 2, '=((' .Coordinate::stringFromColumnIndex($column).($rowNr). ' / 2)/' .Coordinate::stringFromColumnIndex($column).($rowNr+1). ')* 100');
+                }
+            }
+
         }
 
         // Add image describing values to the bottom of the excel sheet.
@@ -371,7 +383,7 @@ class DataExporter
      *
      * @param null $groupId
      */
-    public function exportReport($groupId = null, $splitIntoSubOwners = false)
+    public function exportReport($groupId = null, $splitIntoSubOwners = false, $onlyComments = false, $withColor = false)
     {
         $qb = $this->reportRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
@@ -387,14 +399,16 @@ class DataExporter
             'reports',
             Report::class,
             $entities,
-            $splitIntoSubOwners
+            $splitIntoSubOwners,
+            $onlyComments,
+            $withColor
         );
     }
 
     /**
      * Export systems.
      */
-    public function exportSystem($groupId = null, $splitIntoSubOwners = false)
+    public function exportSystem($groupId = null, $splitIntoSubOwners = false, $onlyComments = false, $withColor = false)
     {
         $qb = $this->systemRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
@@ -410,7 +424,46 @@ class DataExporter
             'systems',
             System::class,
             $entities,
-            $splitIntoSubOwners
+            $splitIntoSubOwners,
+            $onlyComments,
+            $withColor
         );
+    }
+
+
+    private function getAnswerValue(Answer $answer) {
+        if ($answer->getSmiley() == SmileyType::BLUE ||
+            $answer->getSmiley() == SmileyType::GREEN) {
+            return 2;
+        } else {
+            if ($answer->getSmiley(
+                ) == SmileyType::YELLOW) {
+                return 1;
+            } else {
+                if ($answer->getSmiley(
+                    ) == SmileyType::RED ||
+                    is_null($answer->getSmiley())
+                ) {
+                    return 0;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private function getAnswerColor(Answer $answer) {
+        switch ($answer->getSmiley()) {
+            case SmileyType::BLUE:
+                return '3661D8';
+            case SmileyType::GREEN:
+                return '008855';
+            case SmileyType::RED:
+                return 'D32F2F';
+            case SmileyType::YELLOW:
+                return 'F6BD1D';
+            default:
+                return null;
+        }
     }
 }

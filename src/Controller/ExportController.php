@@ -22,7 +22,7 @@ class ExportController extends Controller
     public function exportReports(
         DataExporter $dataExporter
     ) {
-        $dataExporter->exportReport();
+        $dataExporter->exportReport(null, false, true);
     }
 
     /**
@@ -31,7 +31,7 @@ class ExportController extends Controller
     public function exportSystems(
         DataExporter $dataExporter
     ) {
-        $dataExporter->exportSystem();
+        $dataExporter->exportSystem(null, false, true);
     }
 
     /**
@@ -53,6 +53,20 @@ class ExportController extends Controller
                 'system' => 'system',
             ]))
             ->add('group', ChoiceType::class, array('label' => 'Gruppe', 'choices' => $choices))
+            ->add('export_type', ChoiceType::class, [
+                'label' => 'Eksport type',
+                'choices' => [
+                    'Resultater' => 'results',
+                    'Kommentarer' => 'comments',
+                ]
+            ])
+            ->add('color', ChoiceType::class, [
+                'label' => 'Farve',
+                'choices' => [
+                    'Uden farver' => false,
+                    'Med farver' => true,
+                ],
+            ])
             ->add('submit', SubmitType::class, array('label' => 'Hent'))
             ->getForm();
 
@@ -62,12 +76,14 @@ class ExportController extends Controller
             $data = $form->getData();
             $selectedGroupId = $data['group'];
             $selectedEntity = $data['entity'];
+            $selectedExportType = $data['export_type'];
+            $withColor = $data['color'];
 
             if ($selectedEntity == 'report') {
-                return $dataExporter->exportReport($selectedGroupId, true);
+                $dataExporter->exportReport($selectedGroupId, true, $selectedExportType === 'comments', $withColor);
             }
             else if ($selectedEntity == 'system') {
-                return $dataExporter->exportSystem($selectedGroupId, true);
+                $dataExporter->exportSystem($selectedGroupId, true, $selectedExportType === 'comments', $withColor);
             }
         }
 
