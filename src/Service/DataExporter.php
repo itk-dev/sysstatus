@@ -537,22 +537,16 @@ class DataExporter
      */
     private function getAnswerValue(Answer $answer)
     {
-        if ($answer->getSmiley() == SmileyType::BLUE ||
-            $answer->getSmiley() == SmileyType::GREEN) {
-            return 2;
-        } else {
-            if ($answer->getSmiley() == SmileyType::YELLOW) {
+        switch ($answer->getSmiley()) {
+            case SmileyType::BLUE:
+            case SmileyType::GREEN:
+                return 2;
+            case SmileyType::YELLOW:
                 return 1;
-            } else {
-                if ($answer->getSmiley() == SmileyType::RED ||
-                    is_null($answer->getSmiley())
-                ) {
-                    return 0;
-                }
-            }
+            case SmileyType::RED:
+            default:
+                return 0;
         }
-
-        return 0;
     }
 
     /**
