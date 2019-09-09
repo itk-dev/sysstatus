@@ -187,7 +187,7 @@ class DataExporter
         if (!$onlyComments) {
             $calculationColumnHeadings = [
                 'Sum af svar',
-                'Antal spørgsmål',
+                'Antal besvarede spørgsmål',
                 'Resultat %'
             ];
 
@@ -232,7 +232,7 @@ class DataExporter
                 foreach ($category->getQuestions() as $question) {
                     $columnNr++;
 
-                    $value = 0;
+                    $value = '';
                     $note = '';
                     $color = null;
 
@@ -306,19 +306,18 @@ class DataExporter
 
             // Add bottom summations if questions have been set for the given entities.
             if ($nrOfQuestions > 0) {
-                $columnRange = range(count($metaDataColumnHeadings) + 1, count($metaDataColumnHeadings) + 1 + $nrOfQuestions);
+                $columnRange = range(count($metaDataColumnHeadings) + 1, count($metaDataColumnHeadings) + 1 + $nrOfQuestions - 1);
                 $rowNr = 2 + count($entities) + 2;
 
                 $sheet->setCellValueByColumnAndRow(1, $rowNr, $calculationColumnHeadings[0]);
                 $sheet->setCellValueByColumnAndRow(1, $rowNr+1, $calculationColumnHeadings[1]);
                 $sheet->setCellValueByColumnAndRow(1, $rowNr+2, $calculationColumnHeadings[2]);
 
-
                 foreach ($columnRange as $column) {
                     $range = Coordinate::stringFromColumnIndex($column) . 3 . ':' . Coordinate::stringFromColumnIndex($column) . ($rowNr - 2);
                     $sheet->setCellValueByColumnAndRow($column, $rowNr, '=SUM(' . $range . ')');
                     $sheet->setCellValueByColumnAndRow($column, $rowNr + 1, '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)');
-                    $sheet->setCellValueByColumnAndRow($column, $rowNr + 2, '=((' .Coordinate::stringFromColumnIndex($column).($rowNr). ' / 2)/' .Coordinate::stringFromColumnIndex($column).($rowNr+1). ')* 100');
+                    $sheet->setCellValueByColumnAndRow($column, $rowNr + 2, '=IF('.Coordinate::stringFromColumnIndex($column).($rowNr+1).'>0, ((' .Coordinate::stringFromColumnIndex($column).($rowNr). ' / 2)/' .Coordinate::stringFromColumnIndex($column).($rowNr+1). ')* 100, 0)');
                 }
             }
 

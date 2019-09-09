@@ -22,7 +22,7 @@ class ExportController extends Controller
     public function exportReports(
         DataExporter $dataExporter
     ) {
-        $dataExporter->exportReport(null, false, true);
+        $dataExporter->exportReport(null, false, false, true);
     }
 
     /**
@@ -31,7 +31,7 @@ class ExportController extends Controller
     public function exportSystems(
         DataExporter $dataExporter
     ) {
-        $dataExporter->exportSystem(null, false, true);
+        $dataExporter->exportSystem(null, false, false, true);
     }
 
     /**
