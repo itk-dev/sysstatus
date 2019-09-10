@@ -104,7 +104,7 @@ body.list table tbody td.dashboard--table-answer {
 }
 
 .dashboard--table {
-  /* overflow-x: auto; */
+  overflow-x: auto;
 }
 
 .dashboard--last-column {
