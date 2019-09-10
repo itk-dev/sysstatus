@@ -104,7 +104,7 @@ body.list table tbody td.dashboard--table-answer {
 }
 
 .dashboard--table {
-  overflow-x: auto;
+  /* overflow-x: auto; */
 }
 
 .dashboard--last-column {
@@ -152,4 +152,11 @@ body.list table tbody td.dashboard--table-answer {
 .export-section {
   margin-top: 2em;
   margin-bottom: 2em;
+}
+
+
+/* Fix position of table heads while scrolling */
+.affix {
+    top: 0;
+    z-index: 1040;
 }
