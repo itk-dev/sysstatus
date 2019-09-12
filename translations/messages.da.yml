@@ -1,3 +1,19 @@
+actions:
+    show: Vis
+    edit: Rediger
+
+filter:
+    group: Gruppe
+    subowner: Undergruppe
+    theme: Tema
+    category: Kategori
+    search: Søg på navn
+
+list:
+    no_result: Ingen resultater
+    system: Systemer
+    report: Anmeldelser
+
 entity:
     theme_category:
         sort_order: Vægt

@@ -1,0 +1,72 @@
+{% extends '@EasyAdmin/default/layout.html.twig' %}
+
+{% block page_title %}
+  {{ ('list.'~entityType)|trans }}
+{% endblock %}
+
+{% block main %}
+  <div class="dashboard--table">
+    <div class="form-group">
+      {{ form_start(filters) }}
+      <div class="row">
+        <div class="col-lg-2">
+          {{ form_label(filters.group) }}
+          {{ form_widget(filters.group) }}
+        </div>
+        <div class="col-lg-2">
+          {{ form_label(filters.subowner) }}
+          {{ form_widget(filters.subowner) }}
+        </div>
+        <div class="col-lg-6">
+          {{ form_label(filters.search) }}
+          {{ form_widget(filters.search) }}
+        </div>
+      </div>
+      {{ form_end(filters) }}
+    </div>
+
+    <table class="table table-responsive table-striped table-sm table-hover" style="background-color: white;">
+      {% if items|length > 0 %}
+        <thead>
+        {% for key,field in items|first %}
+          <th style="padding: 1em;">{{ key|trans }}</th>
+        {% endfor %}
+          <th></th>
+        </thead>
+        <tbody>
+        {% for itemId,item in items %}
+          <tr>
+            {% for key,field in item %}
+              <td style="padding: 1em;">{{ field|raw }}</td>
+            {% endfor %}
+            <td>
+              <a class="btn btn-sm btn-primary" href="{{ path('easyadmin', { action: 'show', id: itemId, entity: entityType|capitalize }) }}">
+                {{ 'actions.show'|trans }}
+              </a>
+              <a class="btn btn-sm btn-warning" href="{{ path('easyadmin', { action: 'edit', id: itemId, entity: entityType|capitalize }) }}">
+                {{ 'actions.edit'|trans }}
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="{{ (paginator|length) + 2 }}">{{ 'list.no_result' | trans }}</td>
+        </tr>
+      {% endif %}
+      </tbody>
+    </table>
+
+    <div class="navigation">
+      {{ knp_pagination_render(paginator) }}
+    </div>
+  </div>
+{% endblock main %}
+
+{% block body_javascript %}
+  <script type="text/javascript">
+    $('.dashboard--table select').bind('change', function () {
+      $('.dashboard--table form').submit();
+    });
+  </script>
+{% endblock %}

@@ -22,8 +22,8 @@ easy_admin:
             - { label: 'menu.separator' }
             - { label: 'menu.separator' }
             - { label: 'menu.sysstatus' }
-            - { entity: 'Report', icon: 'file', label: 'menu.reports', default: true }
-            - { entity: 'System', icon: 'cogs', label: 'menu.systems' }
+            - { label: 'menu.dashboard.reports', icon: 'file', route: 'list', params: { entityType: 'report' } }
+            - { label: 'menu.dashboard.systems', icon: 'cogs', route: 'list', params: { entityType: 'system' } }
             - { entity: 'Note', icon: 'edit', label: 'menu.notes' }
             - { label: 'menu.separator' }
             - { label: 'menu.separator' }
