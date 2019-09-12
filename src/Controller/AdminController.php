@@ -69,6 +69,7 @@ class AdminController extends BaseAdminController
 
         // Get a query for the entity type.
         $query = $repository->createQueryBuilder('e');
+        $query->andWhere('e.archivedAt IS NULL');
 
         // Get the groups the user is added to.
         $userGroups = $this->getUser()->getGroups();
