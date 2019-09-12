@@ -36,14 +36,14 @@
       <th class="rotate">
         <div>
           <span>
-            <a href="{{ path('easyadmin', { action: 'show', id: item.id }) }}" title="{{ item.showableName }}">
-              {{ breakintolines(item.showableName, 40, 2) | raw }}
+            <a href="{{ path('easyadmin', { action: 'show', id: item.id, entity: entityType|capitalize }) }}" title="{{ item.showableName }}">
+              {{ breakintolines(item.showableName, 35, 2) | raw }}
             </a>
           </span>
         </div>
       </th>
     {% endfor %}
-      <th> </th>
+      <th class="table-right-column"> </th>
     </thead>
     <tbody>
     {% for category in categories %}
@@ -52,7 +52,7 @@
         {% for result in paginator %}
         <td> </td>
         {% endfor %}
-        <td> </td>
+        <td class="table-right-column"> </td>
       </tr>
       {% for question in (category.questions)|sort_order %}
         <tr>
@@ -65,7 +65,7 @@
               {% endif %}
             </td>
           {% endfor %}
-          <td> </td>
+          <td class="table-right-column"> </td>
         </tr>
       {% endfor %}
       {% if not loop.last %}

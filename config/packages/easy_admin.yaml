@@ -17,8 +17,8 @@ easy_admin:
             menu: 'easy_admin_overrides/menu.html.twig'
         menu:
             - { label: 'menu.dashboards' }
-            - { label: 'menu.dashboard.reports', icon: 'file-excel-o', route: 'dashboard', params: { entityType: 'report' } }
-            - { label: 'menu.dashboard.systems', icon: 'file-excel-o', route: 'dashboard', params: { entityType: 'system' } }
+            - { label: 'menu.dashboard.reports', icon: 'file', route: 'dashboard', params: { entityType: 'report' } }
+            - { label: 'menu.dashboard.systems', icon: 'cogs', route: 'dashboard', params: { entityType: 'system' } }
             - { label: 'menu.separator' }
             - { label: 'menu.separator' }
             - { label: 'menu.sysstatus' }

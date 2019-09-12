@@ -154,9 +154,16 @@ body.list table tbody td.dashboard--table-answer {
   margin-bottom: 2em;
 }
 
-
 /* Fix position of table heads while scrolling */
 .affix {
     top: 0;
     z-index: 1040;
+}
+
+.table-right-column {
+  width: 80px;
+}
+
+.dashboard--table {
+  overflow: hidden;
 }

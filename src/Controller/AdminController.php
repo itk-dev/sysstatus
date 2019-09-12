@@ -215,6 +215,7 @@ class AdminController extends BaseAdminController
             'paginator' => $paginator,
             'categories' => $availableCategories,
             'filters' => $filterFormBuilder->getForm()->createView(),
+            'entityType' => $entityType
         ]);
     }
 
