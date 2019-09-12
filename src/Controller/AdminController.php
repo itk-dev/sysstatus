@@ -209,7 +209,6 @@ class AdminController extends BaseAdminController
             'required' => false,
             'data' => isset($formParameters['search']) ? $formParameters['search'] : null,
         ]);
-        $filterFormBuilder->add('submit', SubmitType::class);
         $filterFormBuilder->setMethod('GET')->setAction($this->generateUrl('dashboard', [ 'entityType' => $entityType ]));
 
         return $this->render('dashboard.html.twig', [

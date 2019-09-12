@@ -25,10 +25,6 @@
         {{ form_label(filters.search) }}
         {{ form_widget(filters.search) }}
       </div>
-      <div class="col-lg-2">
-        {{ form_widget(filters.submit) }}
-        {{ form_rest(filters) }}
-      </div>
     </div>
     {{ form_end(filters) }}
   </div>
@@ -92,3 +88,11 @@
   </div>
 </div>
 {% endblock main %}
+
+{% block body_javascript %}
+  <script type="text/javascript">
+    $('.dashboard--table select').bind('change', function () {
+      $('.dashboard--table form').submit();
+    });
+  </script>
+{% endblock %}
