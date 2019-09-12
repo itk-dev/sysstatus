@@ -51,12 +51,18 @@ class Theme
      */
     private $categories;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="themes")
+     */
+    private $groups;
+
     public function __construct()
     {
         $this->systems = new ArrayCollection();
         $this->reports = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->themeCategories = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function getId()
@@ -191,5 +197,31 @@ class Theme
         }
 
         return $list;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroups(Group $groups): self
+    {
+        if (!$this->groups->contains($groups)) {
+            $this->groups[] = $groups;
+        }
+
+        return $this;
+    }
+
+    public function removeGroups(Group $groups): self
+    {
+        if ($this->groups->contains($groups)) {
+            $this->groups->removeElement($groups);
+        }
+
+        return $this;
     }
 }

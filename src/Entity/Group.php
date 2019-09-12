@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,9 +30,15 @@ class Group extends BaseGroup
      */
     private $reports;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", mappedBy="groups")
+     */
+    private $themes;
+
     public function __construct()
     {
         parent::__construct(NULL, ['ROLE_USER']);
+        $this->themes = new ArrayCollection();
     }
 
     public function __toString()
@@ -68,5 +76,33 @@ class Group extends BaseGroup
     public function setReports($reports): void
     {
         $this->reports = $reports;
+    }
+
+    /**
+     * @return Collection|Theme[]
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): self
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes[] = $theme;
+            $theme->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): self
+    {
+        if ($this->themes->contains($theme)) {
+            $this->themes->removeElement($theme);
+            $theme->removeGroup($this);
+        }
+
+        return $this;
     }
 }

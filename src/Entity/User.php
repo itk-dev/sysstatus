@@ -36,4 +36,20 @@ class User extends BaseUser
     {
         parent::__construct();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param mixed $groups
+     */
+    public function setGroups($groups): void
+    {
+        $this->groups = $groups;
+    }
 }

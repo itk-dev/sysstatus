@@ -17,8 +17,8 @@ easy_admin:
             menu: 'easy_admin_overrides/menu.html.twig'
         menu:
             - { label: 'menu.dashboards' }
-            - { entity: 'Report', label: 'menu.dashboard.reports', action: 'dashboard' }
-            - { entity: 'System', label: 'menu.dashboard.systems', action: 'dashboard' }
+            - { label: 'menu.dashboard.reports', icon: 'file-excel-o', route: 'dashboard', params: { entityType: 'report' } }
+            - { label: 'menu.dashboard.systems', icon: 'file-excel-o', route: 'dashboard', params: { entityType: 'system' } }
             - { label: 'menu.separator' }
             - { label: 'menu.separator' }
             - { label: 'menu.sysstatus' }
@@ -55,6 +55,7 @@ easy_admin:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
                     - { property: 'themeCategories', label: 'entity.theme.categories' }
+                    - { property: 'groups', label: 'entity.theme.group' }
             list:
                 fields:
                     - { property: 'id', label: 'entity.theme.id' }
@@ -68,8 +69,7 @@ easy_admin:
                     - { property: 'name', label: 'entity.theme.name' }
                     - { property: 'systems', label: 'entity.theme.systems' }
                     - { property: 'reports', label: 'entity.theme.reports' }
-                    - { type: group, label: 'entity.theme.theme_categories', css_class: 'col-sm-12', icon: list }
-                    - { property: 'theme_categories', label: 'entity.theme.theme_categories', type: embedded_list, type_options: { filters: { 'entity.theme': 'form:parent.data.id' } } }
+                    - { property: 'groups', label: 'entity.theme.groups' }
         Category:
             class: App\Entity\Category
             list:

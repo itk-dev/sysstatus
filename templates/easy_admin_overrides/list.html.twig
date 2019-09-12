@@ -128,24 +128,5 @@
               });
           }
       }, false);
-
-      // Function for setting static size on table heads. We need to do this to keep the same width as the table when setting the theads position to fixed.
-      // One could argue that we should use position sticky instead. But since we manipulate overflow on thead parents that can't be done.
-      function setTheadSize() {
-          // Set width of thaed
-        $("table thead").each(function() {
-            $(this).width($(this).width());
-        });
-        // Set the with of the column headers in thead
-        $("table thead th").each(function() {
-            $(this).width($(this).width());
-        });
-        // Affix table header when this reaches upper borwser edge.
-        $('table thead').affix({
-            offset: 0
-        })
-      }
-      window.addEventListener('resize', setTheadSize);
-      setTheadSize();
   </script>
 {% endblock %}
