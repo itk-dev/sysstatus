@@ -131,6 +131,7 @@ easy_admin:
         Report:
             class: App\Entity\Report
             list:
+                item_permission: ['ROLE_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.report.id' }
                     - { property: 'showable_name', label: 'entity.report.sys_title' }
@@ -244,6 +245,7 @@ easy_admin:
         System:
             class: App\Entity\System
             list:
+                item_permission: ['ROLE_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.system.id' }
                     - { property: 'showable_name', label: 'entity.system.sys_title' }
