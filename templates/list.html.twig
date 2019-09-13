@@ -6,26 +6,28 @@
 
 {% block main %}
   <div class="dashboard--table">
+    {{ form_start(filters) }}
     <div class="form-group">
-      {{ form_start(filters) }}
-      <div class="row">
-        <div class="col-lg-2">
+      <div class="row w-100">
+        <div class="col">
           {{ form_label(filters.group) }}
           {{ form_widget(filters.group) }}
         </div>
-        <div class="col-lg-2">
+        <div class="col">
           {{ form_label(filters.subowner) }}
           {{ form_widget(filters.subowner) }}
         </div>
-        <div class="col-lg-6">
+        <div class="col-4">
           {{ form_label(filters.search) }}
           {{ form_widget(filters.search) }}
         </div>
+        <div class="col-4">
+        </div>
       </div>
-      {{ form_end(filters) }}
     </div>
+    {{ form_end(filters) }}
 
-    <table class="table table-responsive table-striped table-sm table-hover" style="background-color: white;">
+    <table class="table table-striped table-sm table-hover" style="background-color: white;">
       {% if items|length > 0 %}
         <thead>
         {% for key,field in items|first %}

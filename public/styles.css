@@ -1,3 +1,7 @@
+:root {
+  --body-max-width: 100%;
+}
+
 .wrapper {
   overflow: auto;
 }
@@ -154,6 +158,19 @@ body.list table tbody td.dashboard--table-answer {
   margin-bottom: 2em;
 }
 
+.export-form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.login-section {
+  display: flex;
+  justify-content: center;
+}
+
 /* Fix position of table heads while scrolling */
 .affix {
     top: 0;
@@ -166,4 +183,16 @@ body.list table tbody td.dashboard--table-answer {
 
 .dashboard--table {
   overflow: hidden;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard--table-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

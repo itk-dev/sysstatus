@@ -12,21 +12,14 @@ easy_admin:
         brand_color: '#2A3CA2'
         templates:
             label_null: 'easy_admin_overrides/label_null.html.twig'
-            show: 'easy_admin_overrides/show.html.twig'
-            list: 'easy_admin_overrides/list.html.twig'
-            menu: 'easy_admin_overrides/menu.html.twig'
         menu:
             - { label: 'menu.dashboards' }
             - { label: 'menu.dashboard.reports', icon: 'file', route: 'dashboard', params: { entityType: 'report' } }
             - { label: 'menu.dashboard.systems', icon: 'cogs', route: 'dashboard', params: { entityType: 'system' } }
-            - { label: 'menu.separator' }
-            - { label: 'menu.separator' }
             - { label: 'menu.sysstatus' }
             - { label: 'menu.dashboard.reports', icon: 'file', route: 'list', params: { entityType: 'report' } }
             - { label: 'menu.dashboard.systems', icon: 'cogs', route: 'list', params: { entityType: 'system' } }
             - { entity: 'Note', icon: 'edit', label: 'menu.notes' }
-            - { label: 'menu.separator' }
-            - { label: 'menu.separator' }
             - { label: 'menu.admin' }
             - { entity: 'User', icon: 'user', label: 'menu.users' }
             - { entity: 'Group', icon: 'users', label: 'menu.groups' }

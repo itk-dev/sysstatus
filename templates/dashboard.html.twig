@@ -2,34 +2,34 @@
 
 {% block main %}
 <div class="dashboard--table">
+  {{ form_start(filters) }}
   <div class="form-group">
-    {{ form_start(filters) }}
-    <div class="row">
-      <div class="col-lg-2">
+    <div class="row w-100">
+      <div class="col">
         {{ form_label(filters.group) }}
         {{ form_widget(filters.group) }}
       </div>
-      <div class="col-lg-2">
+      <div class="col">
         {{ form_label(filters.subowner) }}
         {{ form_widget(filters.subowner) }}
       </div>
-      <div class="col-lg-2">
+      <div class="col">
         {{ form_label(filters.theme) }}
         {{ form_widget(filters.theme) }}
       </div>
-      <div class="col-lg-2">
+      <div class="col">
         {{ form_label(filters.category) }}
         {{ form_widget(filters.category) }}
       </div>
-      <div class="col-lg-4">
+      <div class="col-4">
         {{ form_label(filters.search) }}
         {{ form_widget(filters.search) }}
       </div>
     </div>
-    {{ form_end(filters) }}
   </div>
+  {{ form_end(filters) }}
 
-  <table class="table table-bordered table-responsive table-striped table-sm">
+  <table class="table table-bordered table-striped table-sm">
     <thead class="">
     <th></th>
     {% for item in paginator %}
@@ -46,7 +46,8 @@
       <th class="table-right-column"> </th>
     </thead>
     <tbody>
-    {% for category in categories %}
+    {% if categories|length > 0 %}
+      {% for category in categories %}
       <tr>
         <td><h3><strong>{{ category.name }}</strong></h3></td>
         {% for result in paginator %}
@@ -59,10 +60,12 @@
           <td>{{ question.question }}</td>
           {% for result in paginator %}
             <td class="dashboard--table-answer">
+              <div class="dashboard--table-cell">
               {% set answer = getanswer(result, question) %}
               {% if answer is not null %}
                 {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note, 'width': 30 } %}
               {% endif %}
+              </div>
             </td>
           {% endfor %}
           <td class="table-right-column"> </td>
@@ -74,16 +77,17 @@
       </tr>
       {% endif %}
     {% endfor %}
-
-    {% if categories|length == 0 %}
+    {% else %}
       <tr>
-        <td colspan="{{ (paginator|length) + 2 }}">{{ 'dashboard.no_categories_for_result' | trans }}</td>
+        <td colspan="100%">
+          <div>{{ 'dashboard.no_categories_for_result' | trans }}</div>
+        </td>
       </tr>
     {% endif %}
     </tbody>
   </table>
 
-  <div class="navigation">
+  <div class="pagination mt-3">
     {{ knp_pagination_render(paginator) }}
   </div>
 </div>

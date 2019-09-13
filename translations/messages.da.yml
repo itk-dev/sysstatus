@@ -223,8 +223,8 @@ All: Alle
 export:
     description: Eksporter alle anmeldelser eller systemer til Excel.
     headline: Eksport
-    reports: Eksporter anmeldelser
-    systems: Eksporter systemer
+    reports: Eksporter alle anmeldelser
+    systems: Eksporter alle systemer
     filtered:
         description: Eksporter anmeldelser eller systemer fra en given gruppe.
 
