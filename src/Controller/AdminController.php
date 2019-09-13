@@ -55,7 +55,7 @@ class AdminController extends EasyAdminController
     public function list(Request $request, $entityType)
     {
         $queryParameters = $request->query;
-        $formParameters =  array_merge([
+        $formParameters = array_merge([
             'group' => '',
             'subowner' => '',
             'search' => '',
@@ -70,7 +70,8 @@ class AdminController extends EasyAdminController
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters, $repository, $userGroups, $subOwnerOptions, $userGroupsThemesAndCategories);
+        $query = $this->applyFilters($query, $formParameters, $repository,
+            $userGroups, $subOwnerOptions, $userGroupsThemesAndCategories);
 
         $paginator = $this->paginator->paginate(
             $query,
@@ -78,7 +79,8 @@ class AdminController extends EasyAdminController
             10
         );
 
-        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subOwnerOptions, false, false);
+        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories,
+            $formParameters, $subOwnerOptions, false, false);
         $filterFormBuilder->setMethod('GET')
             ->setAction($this->generateUrl('list',
                 ['entityType' => $entityType]));
@@ -93,13 +95,17 @@ class AdminController extends EasyAdminController
                     $items[$item->getId()] = [
                         'entity.system.id' => $item->getId(),
                         'entity.system.sys_title' => $item->getSysTitle(),
-                        'entity.system.group' => $item->getGroup() ? $item->getGroup()->getName() : '',
+                        'entity.system.group' => $item->getGroup() ? $item->getGroup()
+                            ->getName() : '',
                         'entity.system.sys_owner_sub' => $item->getSysOwnerSub(),
                         'entity.system.sys_system_owner' => $item->getSysSystemOwner(),
                         'entity.system.sys_link' => '<a href="'.$item->getSysLink().'">Link</a>',
-                        'entity.system.theme' => $item->getTheme() ? $item->getTheme()->getName() : '',
-                        'entity.system.selfServiceAvailableFromItems' => array_reduce($item->getSelfServiceAvailableFromItems()->toArray(), function ($carry, $item) {
+                        'entity.system.theme' => $item->getTheme() ? $item->getTheme()
+                            ->getName() : '',
+                        'entity.system.selfServiceAvailableFromItems' => array_reduce($item->getSelfServiceAvailableFromItems()
+                            ->toArray(), function ($carry, $item) {
                             $carry = (strlen($carry) > 0) ? $carry.', '.$item : $item;
+
                             return $carry;
                         }, ''),
                         'entity.system.text' => $item->getTextSet() ? '<label class="label label-success">Ja</label>' : '',
@@ -112,11 +118,13 @@ class AdminController extends EasyAdminController
                     $items[$item->getId()] = [
                         'entity.report.id' => $item->getId(),
                         'entity.report.sys_title' => $item->getSysTitle(),
-                        'entity.report.group' => $item->getGroup() ? $item->getGroup()->getName() : '',
+                        'entity.report.group' => $item->getGroup() ? $item->getGroup()
+                            ->getName() : '',
                         'entity.report.sys_owner_sub' => $item->getSysOwnerSub(),
                         'entity.report.sys_system_owner' => $item->getSysSystemOwner(),
                         'entity.report.sys_link' => '<a href="'.$item->getSysLink().'">Link</a>',
-                        'entity.report.theme' => $item->getTheme() ? $item->getTheme()->getName() : '',
+                        'entity.report.theme' => $item->getTheme() ? $item->getTheme()
+                            ->getName() : '',
                         'entity.report.text' => $item->getTextSet() ? '<label class="label label-success">Ja</label>' : '',
                     ];
                 }
@@ -141,7 +149,7 @@ class AdminController extends EasyAdminController
     public function dashboard(Request $request, $entityType)
     {
         $queryParameters = $request->query;
-        $formParameters =  array_merge([
+        $formParameters = array_merge([
             'group' => '',
             'subowner' => '',
             'theme' => '',
@@ -158,7 +166,8 @@ class AdminController extends EasyAdminController
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters, $repository, $userGroups, $subOwnerOptions, $userGroupsThemesAndCategories);
+        $query = $this->applyFilters($query, $formParameters, $repository,
+            $userGroups, $subOwnerOptions, $userGroupsThemesAndCategories);
 
         $paginator = $this->paginator->paginate(
             $query,
@@ -168,9 +177,12 @@ class AdminController extends EasyAdminController
 
         $items = $paginator->getItems();
 
-        $availableCategories = $this->getAvailableCategories($items, $formParameters['theme'], $userGroupsThemesAndCategories['groups'], $formParameters['category']);
+        $availableCategories = $this->getAvailableCategories($items,
+            $formParameters['theme'], $userGroupsThemesAndCategories['groups'],
+            $formParameters['category']);
 
-        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subOwnerOptions, true, true);
+        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories,
+            $formParameters, $subOwnerOptions, true, true);
         $filterFormBuilder->setMethod('GET')
             ->setAction($this->generateUrl('dashboard',
                 ['entityType' => $entityType]));
@@ -189,7 +201,8 @@ class AdminController extends EasyAdminController
      * @param $entityType
      * @return \App\Repository\ReportRepository|\App\Repository\SystemRepository|\Doctrine\Common\Persistence\ObjectRepository|null
      */
-    private function getRepository($entityType) {
+    private function getRepository($entityType)
+    {
         switch ($entityType) {
             case 'system':
                 return $this->entityManager->getRepository(System::class);
@@ -211,10 +224,17 @@ class AdminController extends EasyAdminController
      * @param bool $filterCategories
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subownerOptions, bool $filterThemes = false, bool $filterCategories = false) {
+    private function getFilterFormBuilder(
+        $userGroupsThemesAndCategories,
+        $formParameters,
+        $subownerOptions,
+        bool $filterThemes = false,
+        bool $filterCategories = false
+    ) {
         $filterFormBuilder = $this->createFormBuilder();
         $filterFormBuilder->add('group', ChoiceType::class, [
             'label' => 'filter.group',
+            'placeholder' => 'filter.placeholder.group',
             'choices' => array_flip($userGroupsThemesAndCategories['groups']),
             'attr' => [
                 'class' => 'form-control',
@@ -224,6 +244,7 @@ class AdminController extends EasyAdminController
         ]);
         $filterFormBuilder->add('subowner', ChoiceType::class, [
             'label' => 'filter.subowner',
+            'placeholder' => 'filter.placeholder.subowner',
             'choices' => $subownerOptions,
             'attr' => [
                 'class' => 'form-control',
@@ -235,6 +256,7 @@ class AdminController extends EasyAdminController
         if ($filterThemes) {
             $filterFormBuilder->add('theme', ChoiceType::class, [
                 'label' => 'filter.theme',
+                'placeholder' => 'filter.placeholder.theme',
                 'choices' => array_flip($userGroupsThemesAndCategories['themes']),
                 'attr' => [
                     'class' => 'form-control',
@@ -246,6 +268,7 @@ class AdminController extends EasyAdminController
         if ($filterCategories) {
             $filterFormBuilder->add('category', ChoiceType::class, [
                 'label' => 'filter.category',
+                'placeholder' => 'filter.placeholder.category',
                 'choices' => array_flip($userGroupsThemesAndCategories['categories']),
                 'attr' => [
                     'class' => 'form-control',
@@ -254,10 +277,11 @@ class AdminController extends EasyAdminController
                 'data' => isset($formParameters['category']) ? $formParameters['category'] : null,
             ]);
         }
-       $filterFormBuilder->add('search', TextType::class, [
+        $filterFormBuilder->add('search', TextType::class, [
             'label' => 'filter.search',
             'attr' => [
                 'class' => 'form-control',
+                'placeholder' => 'filter.placeholder.search',
             ],
             'required' => false,
             'data' => isset($formParameters['search']) ? $formParameters['search'] : null,
@@ -275,7 +299,12 @@ class AdminController extends EasyAdminController
      * @param $selectedCategory
      * @return array
      */
-    private function getAvailableCategories($items, $selectedTheme, $userGroups, $selectedCategory) {
+    private function getAvailableCategories(
+        $items,
+        $selectedTheme,
+        $userGroups,
+        $selectedCategory
+    ) {
         $availableCategories = [];
 
         foreach ($items as $item) {
@@ -327,7 +356,14 @@ class AdminController extends EasyAdminController
      * @param $subOwnerOptions
      * @return \Doctrine\ORM\QueryBuilder
      */
-    private function applyFilters(QueryBuilder $query, array $formParameters, EntityRepository $repository, Collection $userGroups, &$subOwnerOptions, $userGroupsThemesAndCategories) {
+    private function applyFilters(
+        QueryBuilder $query,
+        array $formParameters,
+        EntityRepository $repository,
+        Collection $userGroups,
+        &$subOwnerOptions,
+        $userGroupsThemesAndCategories
+    ) {
         // @TODO: Add this after test.
         // $query->andWhere('e.archivedAt IS NULL');
 
@@ -344,7 +380,8 @@ class AdminController extends EasyAdminController
             $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
             $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
             $subOwnersQueryBuilder->andWhere('e.group = :group');
-            $subOwnersQueryBuilder->setParameter('group', $formParameters['group']);
+            $subOwnersQueryBuilder->setParameter('group',
+                $formParameters['group']);
             $subOwners = $subOwnersQueryBuilder->getQuery()->getResult();
 
             $subOwnerOptions = array_reduce($subOwners,
@@ -379,7 +416,8 @@ class AdminController extends EasyAdminController
      * @param array $userGroups
      * @return mixed
      */
-    private function getUserGroupsThemesAndCategories(array $userGroups) {
+    private function getUserGroupsThemesAndCategories(array $userGroups)
+    {
         return array_reduce($userGroups,
             function ($carry, Group $group) {
                 $carry['groups'][$group->getId()] = $group->getName();

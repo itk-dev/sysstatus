@@ -3,11 +3,12 @@ actions:
     edit: Rediger
 
 filter:
-    group: Gruppe
-    subowner: Undergruppe
-    theme: Tema
-    category: Kategori
-    search: Søg på navn
+    placeholder:
+        group: -- Vælg gruppe --
+        subowner: -- Vælg undergruppe --
+        theme: -- Vælg tema --
+        category: -- Vælg kategori --
+        search: Søg på navn
 
 list:
     no_result: Ingen resultater
@@ -213,6 +214,8 @@ Group: Gruppe
 label:
     'null': ''
 dashboard:
+    report: Dashboard - Anmeldelser
+    system: Dashboard - Systemer
     title_prefix: 'Dashboard: '
     no_categories_for_result: Ingen kategorier koblet på resultaterne.
 Filter: Filtrér

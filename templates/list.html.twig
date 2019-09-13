@@ -4,59 +4,60 @@
   {{ ('list.'~entityType)|trans }}
 {% endblock %}
 
-{% block global_actions %}
-  <a class="btn btn-primary" href="{{ path('easyadmin', { action: 'new', entity: entityType|capitalize }) }}" title="{{ ('list.action.new.'~entityType)|trans }}">
-    {{ ('list.action.new.'~entityType)|trans }}
-  </a>
+{% block global_actions_wrapper %}
+  <div class="global-actions w-75" style="justify-content: flex-end">
+    {{ form_start(filters, { attr: { class: 'w-100' } }) }}
+    <div class="row w-100 flex-row">
+      <div class="col">
+        {{ form_widget(filters.group) }}
+      </div>
+      <div class="col">
+        {{ form_widget(filters.subowner) }}
+      </div>
+      <div class="col-4">
+        {{ form_widget(filters.search) }}
+      </div>
+      <div>
+        <a class="btn btn-primary" href="{{ path('easyadmin', { action: 'new', entity: entityType|capitalize }) }}"
+           title="{{ ('list.action.new.'~entityType)|trans }}">
+          {{ ('list.action.new.'~entityType)|trans }}
+        </a>
+      </div>
+    </div>
+    {{ form_end(filters) }}
+  </div>
+{% endblock %}
+
+{% block content_title %}
+  {{ ('list.'~entityType)|trans }}
 {% endblock %}
 
 {% block main %}
   <div class="dashboard--table">
-    {{ form_start(filters) }}
-    <div class="form-group">
-      <div class="row w-100">
-        <div class="col">
-          {{ form_label(filters.group) }}
-          {{ form_widget(filters.group) }}
-        </div>
-        <div class="col">
-          {{ form_label(filters.subowner) }}
-          {{ form_widget(filters.subowner) }}
-        </div>
-        <div class="col-4">
-          {{ form_label(filters.search) }}
-          {{ form_widget(filters.search) }}
-        </div>
-        <div class="col-4">
-        </div>
-      </div>
-    </div>
-    {{ form_end(filters) }}
-
     <table class="table table-striped table-sm table-hover" style="background-color: white;">
       {% if items|length > 0 %}
-        <thead>
-        {% for key,field in items|first %}
-          <th style="padding: 1em;">{{ key|trans }}</th>
-        {% endfor %}
-          <th></th>
-        </thead>
-        <tbody>
-        {% for itemId,item in items %}
-          <tr>
-            {% for key,field in item %}
-              <td style="padding: 1em;">{{ field|raw }}</td>
-            {% endfor %}
-            <td>
-              <a class="btn btn-sm btn-primary" href="{{ path('easyadmin', { action: 'show', id: itemId, entity: entityType|capitalize }) }}">
-                {{ 'actions.show'|trans }}
-              </a>
-              <a class="btn btn-sm btn-warning" href="{{ path('easyadmin', { action: 'edit', id: itemId, entity: entityType|capitalize }) }}">
-                {{ 'actions.edit'|trans }}
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
+      <thead>
+      {% for key,field in items|first %}
+        <th style="padding: 1em;">{{ key|trans }}</th>
+      {% endfor %}
+      <th></th>
+      </thead>
+      <tbody>
+      {% for itemId,item in items %}
+        <tr>
+          {% for key,field in item %}
+            <td style="padding: 1em;">{{ field|raw }}</td>
+          {% endfor %}
+          <td>
+            <a class="btn btn-sm btn-primary" href="{{ path('easyadmin', { action: 'show', id: itemId, entity: entityType|capitalize }) }}">
+              {{ 'actions.show'|trans }}
+            </a>
+            <a class="btn btn-sm btn-warning" href="{{ path('easyadmin', { action: 'edit', id: itemId, entity: entityType|capitalize }) }}">
+              {{ 'actions.edit'|trans }}
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
       {% else %}
         <tr>
           <td colspan="{{ (paginator|length) + 2 }}">{{ 'list.no_result' | trans }}</td>

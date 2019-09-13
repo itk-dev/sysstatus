@@ -1,34 +1,39 @@
 {% extends '@EasyAdmin/default/layout.html.twig' %}
 
-{% block main %}
-<div class="dashboard--table">
-  {{ form_start(filters) }}
-  <div class="form-group">
-    <div class="row w-100">
-      <div class="col">
-        {{ form_label(filters.group) }}
-        {{ form_widget(filters.group) }}
-      </div>
-      <div class="col">
-        {{ form_label(filters.subowner) }}
-        {{ form_widget(filters.subowner) }}
-      </div>
-      <div class="col">
-        {{ form_label(filters.theme) }}
-        {{ form_widget(filters.theme) }}
-      </div>
-      <div class="col">
-        {{ form_label(filters.category) }}
-        {{ form_widget(filters.category) }}
-      </div>
-      <div class="col-4">
-        {{ form_label(filters.search) }}
-        {{ form_widget(filters.search) }}
-      </div>
+{% block page_title %}
+  {{ ('dashboard.'~entityType)|trans }}
+{% endblock %}
+
+{% block content_title %}
+  {{ ('dashboard.'~entityType)|trans }}
+{% endblock %}
+
+{% block global_actions_wrapper %}
+<div class="global-actions w-75" style="justify-content: flex-end">
+  {{ form_start(filters, { attr: { class: 'w-100' } }) }}
+  <div class="row w-100 flex-row">
+    <div class="col">
+      {{ form_widget(filters.group) }}
+    </div>
+    <div class="col">
+      {{ form_widget(filters.subowner) }}
+    </div>
+    <div class="col">
+      {{ form_widget(filters.theme) }}
+    </div>
+    <div class="col">
+      {{ form_widget(filters.category) }}
+    </div>
+    <div class="col-4">
+      {{ form_widget(filters.search) }}
     </div>
   </div>
   {{ form_end(filters) }}
+</div>
+{% endblock %}
 
+{% block main %}
+<div class="dashboard--table">
   <table class="table table-bordered table-striped table-sm">
     <thead class="">
     <th></th>
