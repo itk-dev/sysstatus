@@ -17,8 +17,8 @@ easy_admin:
             - { label: 'menu.dashboard.reports', icon: 'file', route: 'dashboard', params: { entityType: 'report' } }
             - { label: 'menu.dashboard.systems', icon: 'cogs', route: 'dashboard', params: { entityType: 'system' } }
             - { label: 'menu.sysstatus' }
-            - { label: 'menu.dashboard.reports', icon: 'file', route: 'list', params: { entityType: 'report' } }
-            - { label: 'menu.dashboard.systems', icon: 'cogs', route: 'list', params: { entityType: 'system' } }
+            - { label: 'menu.list.reports', icon: 'file', route: 'list', params: { entityType: 'report' } }
+            - { label: 'menu.list.systems', icon: 'cogs', route: 'list', params: { entityType: 'system' } }
             - { entity: 'Note', icon: 'edit', label: 'menu.notes' }
             - { label: 'menu.admin' }
             - { entity: 'User', icon: 'user', label: 'menu.users' }

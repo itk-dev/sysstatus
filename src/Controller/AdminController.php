@@ -76,7 +76,7 @@ class AdminController extends EasyAdminController
         $paginator = $this->paginator->paginate(
             $query,
             $queryParameters->get('page', 1),
-            10
+            15
         );
 
         $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories,
@@ -364,8 +364,7 @@ class AdminController extends EasyAdminController
         &$subOwnerOptions,
         $userGroupsThemesAndCategories
     ) {
-        // @TODO: Add this after test.
-        // $query->andWhere('e.archivedAt IS NULL');
+        $query->andWhere('e.archivedAt IS NULL');
 
         $groups = [];
 

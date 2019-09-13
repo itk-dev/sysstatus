@@ -160,9 +160,12 @@ menu:
     sysstatus: Systemstatus
     separator: ''
     dashboards: Dashboards
+    list:
+        reports: Anmeldelser
+        systems: Systemer
     dashboard:
-        reports: Anmeldelse
-        systems: System
+        reports: 'Dashboard - Anmeldelser'
+        systems: 'Dashboard - Systemer'
     groups: Grupper
     theme_category: Tema-Kategori
     exports: Eksport
