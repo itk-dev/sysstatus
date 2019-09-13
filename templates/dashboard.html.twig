@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block global_actions_wrapper %}
-<div class="global-actions w-75" style="justify-content: flex-end">
+<div class="global-actions w-75 dashboard-filters" style="justify-content: flex-end">
   {{ form_start(filters, { attr: { class: 'w-100' } }) }}
   <div class="row w-100 flex-row">
     <div class="col">
@@ -100,8 +100,8 @@
 
 {% block body_javascript %}
   <script type="text/javascript">
-    $('.dashboard--table select').bind('change', function () {
-      $('.dashboard--table form').submit();
+    $('.dashboard-filters select').bind('change', function () {
+      $('.dashboard-filters form').submit();
     });
   </script>
 {% endblock %}
