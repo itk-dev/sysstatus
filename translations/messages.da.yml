@@ -13,6 +13,10 @@ list:
     no_result: Ingen resultater
     system: Systemer
     report: Anmeldelser
+    action:
+        new:
+            report: Opret anmeldelse
+            system: Opret system
 
 entity:
     theme_category:

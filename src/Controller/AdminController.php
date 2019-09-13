@@ -8,7 +8,10 @@ use App\Entity\System;
 use App\Entity\Theme;
 use App\Repository\CategoryRepository;
 use App\Repository\ThemeCategoryRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -52,88 +55,22 @@ class AdminController extends EasyAdminController
     public function list(Request $request, $entityType)
     {
         $queryParameters = $request->query;
-        $formParameters = $queryParameters->get('form') ?: [
+        $formParameters =  array_merge([
             'group' => '',
             'subowner' => '',
-            'theme' => '',
-            'category' => '',
             'search' => '',
-        ];
-
-        $repository = null;
-
-        // Get query builder for entity type.
-        switch ($entityType) {
-            case 'system':
-                $repository = $this->entityManager->getRepository(System::class);
-                break;
-            case 'report':
-            default:
-                $repository = $this->entityManager->getRepository(Report::class);
-                break;
-        }
-
-        // Get a query for the entity type.
-        $query = $repository->createQueryBuilder('e');
-        $query->andWhere('e.archivedAt IS NULL');
+        ], $queryParameters->get('form') ?: []);
 
         // Get the groups the user is added to.
         $userGroups = $this->getUser()->getGroups();
+        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray());
 
-        $userGroupsThemesAndCategories = array_reduce($userGroups->toArray(),
-            function ($carry, Group $group) {
-                $carry['groups'][$group->getId()] = $group->getName();
+        $subOwnerOptions = [];
 
-                foreach ($group->getThemes() as $theme) {
-                    $carry['themes'][$theme->getId()] = $theme->getName();
-
-                    foreach ($theme->getOrderedCategories() as $category) {
-                        $carry['categories'][$category->getId()] = $category->getName();
-                    }
-                }
-
-                return $carry;
-            }, []);
-
-        $groups = [];
-        $subownerOptions = [];
-
-        // Get the groups the user can search in.
-        if (isset($formParameters['group']) && $formParameters['group'] != '') {
-            if (isset($userGroupsThemesAndCategories['groups'][$formParameters['group']])) {
-                $groups[] = $formParameters['group'];
-            }
-
-            // Get subowners if a group has been selected.
-            $subownersQueryBuilder = $repository->createQueryBuilder('e');
-            $subownersQueryBuilder->select('DISTINCT e.sysOwnerSub');
-            $subownersQueryBuilder->andWhere('e.group = :group');
-            $subownersQueryBuilder->setParameter('group',
-                $formParameters['group']);
-            $subowners = $subownersQueryBuilder->getQuery()->getResult();
-
-            $subownerOptions = array_reduce($subowners,
-                function ($carry, $item) {
-                    $carry[$item['sysOwnerSub']] = $item['sysOwnerSub'];
-
-                    return $carry;
-                }, []);
-        } else {
-            $groups = $userGroups;
-        }
-
-        $query->andWhere('e.group IN (:groups)');
-        $query->setParameter('groups', $groups);
-
-        if (isset($formParameters['search']) && $formParameters['search'] != '') {
-            $query->andWhere('e.name LIKE :name');
-            $query->setParameter('name', '%'.$formParameters['search'].'%');
-        }
-
-        if (isset($formParameters['subowner']) && $formParameters['subowner'] != '') {
-            $query->andWhere('e.sysOwnerSub = :subowner');
-            $query->setParameter('subowner', $formParameters['subowner']);
-        }
+        // Get a query for the entity type.
+        $repository = $this->getRepository($entityType);
+        $query = $repository->createQueryBuilder('e');
+        $query = $this->applyFilters($query, $formParameters, $repository, $userGroups, $subOwnerOptions, $userGroupsThemesAndCategories);
 
         $paginator = $this->paginator->paginate(
             $query,
@@ -141,42 +78,16 @@ class AdminController extends EasyAdminController
             10
         );
 
-        $filterFormBuilder = $this->createFormBuilder();
-        $filterFormBuilder->add('group', ChoiceType::class, [
-            'label' => 'filter.group',
-            'choices' => array_flip($userGroupsThemesAndCategories['groups']),
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => false,
-            'data' => isset($formParameters['group']) ? $formParameters['group'] : null,
-        ]);
-        $filterFormBuilder->add('subowner', ChoiceType::class, [
-            'label' => 'filter.subowner',
-            'choices' => $subownerOptions,
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => false,
-            'disabled' => !isset($formParameters['group']) || $formParameters['group'] == '',
-            'data' => isset($formParameters['subowner']) ? $formParameters['subowner'] : null,
-        ]);
-        $filterFormBuilder->add('search', TextType::class, [
-            'label' => 'filter.search',
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => false,
-            'data' => isset($formParameters['search']) ? $formParameters['search'] : null,
-        ]);
+        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subOwnerOptions, false, false);
         $filterFormBuilder->setMethod('GET')
             ->setAction($this->generateUrl('list',
                 ['entityType' => $entityType]));
 
+        $items = [];
+
+        // Generate render array.
         switch ($entityType) {
             case 'system':
-                $items = [];
-
                 /* @var System $item */
                 foreach ($paginator->getItems() as $item) {
                     $items[$item->getId()] = [
@@ -196,9 +107,6 @@ class AdminController extends EasyAdminController
                 }
                 break;
             case 'report':
-            default:
-                $items = [];
-
                 /* @var Report $item */
                 foreach ($paginator->getItems() as $item) {
                     $items[$item->getId()] = [
@@ -233,52 +141,197 @@ class AdminController extends EasyAdminController
     public function dashboard(Request $request, $entityType)
     {
         $queryParameters = $request->query;
-        $formParameters = $queryParameters->get('form') ?: [
+        $formParameters =  array_merge([
             'group' => '',
             'subowner' => '',
             'theme' => '',
             'category' => '',
             'search' => '',
-        ];
-
-        $repository = null;
-
-        // Get query builder for entity type.
-        switch ($entityType) {
-            case 'system':
-                $repository = $this->entityManager->getRepository(System::class);
-                break;
-            case 'report':
-            default:
-                $repository = $this->entityManager->getRepository(Report::class);
-                break;
-        }
-
-        // Get a query for the entity type.
-        $query = $repository->createQueryBuilder('e');
-        // @TODO: Add this to ignore archived entries.
-        //$query->andWhere('e.archivedAt IS NULL');
+        ], $queryParameters->get('form') ?: []);
 
         // Get the groups the user is added to.
         $userGroups = $this->getUser()->getGroups();
+        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray());
 
-        $userGroupsThemesAndCategories = array_reduce($userGroups->toArray(),
-            function ($carry, Group $group) {
-                $carry['groups'][$group->getId()] = $group->getName();
+        $subOwnerOptions = [];
 
-                foreach ($group->getThemes() as $theme) {
-                    $carry['themes'][$theme->getId()] = $theme->getName();
+        // Get a query for the entity type.
+        $repository = $this->getRepository($entityType);
+        $query = $repository->createQueryBuilder('e');
+        $query = $this->applyFilters($query, $formParameters, $repository, $userGroups, $subOwnerOptions, $userGroupsThemesAndCategories);
 
-                    foreach ($theme->getOrderedCategories() as $category) {
-                        $carry['categories'][$category->getId()] = $category->getName();
+        $paginator = $this->paginator->paginate(
+            $query,
+            $queryParameters->get('page', 1),
+            10
+        );
+
+        $items = $paginator->getItems();
+
+        $availableCategories = $this->getAvailableCategories($items, $formParameters['theme'], $userGroupsThemesAndCategories['groups'], $formParameters['category']);
+
+        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subOwnerOptions, true, true);
+        $filterFormBuilder->setMethod('GET')
+            ->setAction($this->generateUrl('dashboard',
+                ['entityType' => $entityType]));
+
+        return $this->render('dashboard.html.twig', [
+            'paginator' => $paginator,
+            'categories' => $availableCategories,
+            'filters' => $filterFormBuilder->getForm()->createView(),
+            'entityType' => $entityType,
+        ]);
+    }
+
+    /**
+     * Get repository for entity type.
+     *
+     * @param $entityType
+     * @return \App\Repository\ReportRepository|\App\Repository\SystemRepository|\Doctrine\Common\Persistence\ObjectRepository|null
+     */
+    private function getRepository($entityType) {
+        switch ($entityType) {
+            case 'system':
+                return $this->entityManager->getRepository(System::class);
+            case 'report':
+                return $this->entityManager->getRepository(Report::class);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get filter form builder.
+     *
+     * @param $userGroupsThemesAndCategories
+     * @param $formParameters
+     * @param $subownerOptions
+     * @param $entityType
+     * @param bool $filterThemes
+     * @param bool $filterCategories
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subownerOptions, bool $filterThemes = false, bool $filterCategories = false) {
+        $filterFormBuilder = $this->createFormBuilder();
+        $filterFormBuilder->add('group', ChoiceType::class, [
+            'label' => 'filter.group',
+            'choices' => array_flip($userGroupsThemesAndCategories['groups']),
+            'attr' => [
+                'class' => 'form-control',
+            ],
+            'required' => false,
+            'data' => isset($formParameters['group']) ? $formParameters['group'] : null,
+        ]);
+        $filterFormBuilder->add('subowner', ChoiceType::class, [
+            'label' => 'filter.subowner',
+            'choices' => $subownerOptions,
+            'attr' => [
+                'class' => 'form-control',
+            ],
+            'required' => false,
+            'disabled' => !isset($formParameters['group']) || $formParameters['group'] == '',
+            'data' => isset($formParameters['subowner']) ? $formParameters['subowner'] : null,
+        ]);
+        if ($filterThemes) {
+            $filterFormBuilder->add('theme', ChoiceType::class, [
+                'label' => 'filter.theme',
+                'choices' => array_flip($userGroupsThemesAndCategories['themes']),
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'required' => false,
+                'data' => isset($formParameters['theme']) ? $formParameters['theme'] : null,
+            ]);
+        }
+        if ($filterCategories) {
+            $filterFormBuilder->add('category', ChoiceType::class, [
+                'label' => 'filter.category',
+                'choices' => array_flip($userGroupsThemesAndCategories['categories']),
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'required' => false,
+                'data' => isset($formParameters['category']) ? $formParameters['category'] : null,
+            ]);
+        }
+       $filterFormBuilder->add('search', TextType::class, [
+            'label' => 'filter.search',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+            'required' => false,
+            'data' => isset($formParameters['search']) ? $formParameters['search'] : null,
+        ]);
+
+        return $filterFormBuilder;
+    }
+
+    /**
+     * Get available categories.
+     *
+     * @param $items
+     * @param $selectedTheme
+     * @param $userGroups
+     * @param $selectedCategory
+     * @return array
+     */
+    private function getAvailableCategories($items, $selectedTheme, $userGroups, $selectedCategory) {
+        $availableCategories = [];
+
+        foreach ($items as $item) {
+            /* @var Theme $theme */
+            $theme = $item->getTheme();
+
+            if ($theme == null) {
+                continue;
+            }
+
+            if ($selectedTheme != '') {
+                if ($theme->getId() != $selectedTheme) {
+                    continue;
+                }
+            }
+
+            $themeGroups = array_reduce($theme->getGroups()->toArray(),
+                function ($carry, Group $item) {
+                    $carry[$item->getId()] = $item->getName();
+
+                    return $carry;
+                }, []);
+
+            $intersect = array_intersect($themeGroups, $userGroups);
+
+            foreach ($theme->getOrderedCategories() as $category) {
+                if ($selectedCategory != '') {
+                    if ($category->getId() != $selectedCategory) {
+                        continue;
                     }
                 }
 
-                return $carry;
-            }, []);
+                if (count($intersect) > 0) {
+                    $availableCategories[$category->getId()] = $category;
+                }
+            }
+        }
+
+        return $availableCategories;
+    }
+
+    /**
+     * Apply common filters for report and system query.
+     *
+     * @param \Doctrine\ORM\QueryBuilder $query
+     * @param array $formParameters
+     * @param \Doctrine\ORM\EntityRepository $repository
+     * @param \Doctrine\Common\Collections\Collection $userGroups
+     * @param $subOwnerOptions
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function applyFilters(QueryBuilder $query, array $formParameters, EntityRepository $repository, Collection $userGroups, &$subOwnerOptions, $userGroupsThemesAndCategories) {
+        // @TODO: Add this after test.
+        // $query->andWhere('e.archivedAt IS NULL');
 
         $groups = [];
-        $subownerOptions = [];
 
         // Get the groups the user can search in.
         if (isset($formParameters['group']) && $formParameters['group'] != '') {
@@ -286,15 +339,15 @@ class AdminController extends EasyAdminController
                 $groups[] = $formParameters['group'];
             }
 
-            // Get subowners if a group has been selected.
-            $subownersQueryBuilder = $repository->createQueryBuilder('e');
-            $subownersQueryBuilder->select('DISTINCT e.sysOwnerSub');
-            $subownersQueryBuilder->andWhere('e.group = :group');
-            $subownersQueryBuilder->setParameter('group',
-                $formParameters['group']);
-            $subowners = $subownersQueryBuilder->getQuery()->getResult();
+            // Get sub owners if a group has been selected.
+            $subOwnersQueryBuilder = $repository->createQueryBuilder('e');
+            $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
+            $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
+            $subOwnersQueryBuilder->andWhere('e.group = :group');
+            $subOwnersQueryBuilder->setParameter('group', $formParameters['group']);
+            $subOwners = $subOwnersQueryBuilder->getQuery()->getResult();
 
-            $subownerOptions = array_reduce($subowners,
+            $subOwnerOptions = array_reduce($subOwners,
                 function ($carry, $item) {
                     $carry[$item['sysOwnerSub']] = $item['sysOwnerSub'];
 
@@ -317,108 +370,29 @@ class AdminController extends EasyAdminController
             $query->setParameter('subowner', $formParameters['subowner']);
         }
 
-        $paginator = $this->paginator->paginate(
-            $query,
-            $queryParameters->get('page', 1),
-            10
-        );
+        return $query;
+    }
 
-        $items = $paginator->getItems();
+    /**
+     * Get array of a users group, themes and categories.
+     *
+     * @param array $userGroups
+     * @return mixed
+     */
+    private function getUserGroupsThemesAndCategories(array $userGroups) {
+        return array_reduce($userGroups,
+            function ($carry, Group $group) {
+                $carry['groups'][$group->getId()] = $group->getName();
 
-        $availableCategories = [];
+                foreach ($group->getThemes() as $theme) {
+                    $carry['themes'][$theme->getId()] = $theme->getName();
 
-        foreach ($items as $item) {
-            /* @var Theme $theme */
-            $theme = $item->getTheme();
-
-            if ($theme == null) {
-                continue;
-            }
-
-            if ($formParameters['theme'] != '') {
-                if ($theme->getId() != $formParameters['theme']) {
-                    continue;
-                }
-            }
-
-            $themeGroups = array_reduce($theme->getGroups()->toArray(),
-                function ($carry, Group $item) {
-                    $carry[$item->getId()] = $item->getName();
-
-                    return $carry;
-                }, []);
-
-            $intersect = array_intersect($themeGroups,
-                $userGroupsThemesAndCategories['groups']);
-
-            foreach ($theme->getOrderedCategories() as $category) {
-                if ($formParameters['category'] != '') {
-                    if ($category->getId() != $formParameters['category']) {
-                        continue;
+                    foreach ($theme->getOrderedCategories() as $category) {
+                        $carry['categories'][$category->getId()] = $category->getName();
                     }
                 }
 
-                if (count($intersect) > 0) {
-                    $availableCategories[$category->getId()] = $category;
-                }
-            }
-        }
-
-        $filterFormBuilder = $this->createFormBuilder();
-        $filterFormBuilder->add('group', ChoiceType::class, [
-            'label' => 'filter.group',
-            'choices' => array_flip($userGroupsThemesAndCategories['groups']),
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => false,
-            'data' => isset($formParameters['group']) ? $formParameters['group'] : null,
-        ]);
-        $filterFormBuilder->add('subowner', ChoiceType::class, [
-            'label' => 'filter.subowner',
-            'choices' => $subownerOptions,
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => false,
-            'disabled' => !isset($formParameters['group']) || $formParameters['group'] == '',
-            'data' => isset($formParameters['subowner']) ?  : null,
-        ]);
-        $filterFormBuilder->add('theme', ChoiceType::class, [
-            'label' => 'filter.theme',
-            'choices' => array_flip($userGroupsThemesAndCategories['themes']),
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => false,
-            'data' => isset($formParameters['theme']) ? $formParameters['theme'] : null,
-        ]);
-        $filterFormBuilder->add('category', ChoiceType::class, [
-            'label' => 'filter.category',
-            'choices' => array_flip($userGroupsThemesAndCategories['categories']),
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => false,
-            'data' => isset($formParameters['category']) ? $formParameters['category'] : null,
-        ]);
-        $filterFormBuilder->add('search', TextType::class, [
-            'label' => 'filter.search',
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => false,
-            'data' => isset($formParameters['search']) ? $formParameters['search'] : null,
-        ]);
-        $filterFormBuilder->setMethod('GET')
-            ->setAction($this->generateUrl('dashboard',
-                ['entityType' => $entityType]));
-
-        return $this->render('dashboard.html.twig', [
-            'paginator' => $paginator,
-            'categories' => $availableCategories,
-            'filters' => $filterFormBuilder->getForm()->createView(),
-            'entityType' => $entityType,
-        ]);
+                return $carry;
+            }, []);
     }
 }

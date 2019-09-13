@@ -80,7 +80,7 @@ th.rotate {
 }
 
 th.rotate > div {
-  transform: translate(0px, -13px) rotate(315deg);
+  transform: translate(0px, -15px) rotate(315deg);
   max-width: 80px;
   max-height: 100px;
 }

@@ -4,6 +4,12 @@
   {{ ('list.'~entityType)|trans }}
 {% endblock %}
 
+{% block global_actions %}
+  <a class="btn btn-primary" href="{{ path('easyadmin', { action: 'new', entity: entityType|capitalize }) }}" title="{{ ('list.action.new.'~entityType)|trans }}">
+    {{ ('list.action.new.'~entityType)|trans }}
+  </a>
+{% endblock %}
+
 {% block main %}
   <div class="dashboard--table">
     {{ form_start(filters) }}
