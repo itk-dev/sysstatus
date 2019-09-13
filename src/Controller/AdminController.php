@@ -65,13 +65,13 @@ class AdminController extends EasyAdminController
         $userGroups = $this->getUser()->getGroups();
         $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray());
 
-        $subOwnerOptions = [];
-
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters, $repository,
-            $userGroups, $subOwnerOptions, $userGroupsThemesAndCategories);
+        $query = $this->applyFilters($query, $formParameters, $repository, $userGroups, $userGroupsThemesAndCategories);
+
+        // Get sub owners if a group has been selected.
+        $subOwnerOptions = $formParameters['group'] != '' ? $this->getSubOwnerOptions($repository, $formParameters['group']) : [];
 
         $paginator = $this->paginator->paginate(
             $query,
@@ -161,13 +161,13 @@ class AdminController extends EasyAdminController
         $userGroups = $this->getUser()->getGroups();
         $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray());
 
-        $subOwnerOptions = [];
-
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters, $repository,
-            $userGroups, $subOwnerOptions, $userGroupsThemesAndCategories);
+        $query = $this->applyFilters($query, $formParameters, $repository, $userGroups, $userGroupsThemesAndCategories);
+
+        // Get sub owners if a group has been selected.
+        $subOwnerOptions = $formParameters['group'] != '' ? $this->getSubOwnerOptions($repository, $formParameters['group']) : [];
 
         $paginator = $this->paginator->paginate(
             $query,
@@ -193,6 +193,29 @@ class AdminController extends EasyAdminController
             'filters' => $filterFormBuilder->getForm()->createView(),
             'entityType' => $entityType,
         ]);
+    }
+
+    /**
+     * Get subowners for selected group.
+     *
+     * @param $repository
+     * @param $selectedGroup
+     * @return mixed
+     */
+    private function getSubOwnerOptions($repository, $selectedGroup) {
+        $subOwnersQueryBuilder = $repository->createQueryBuilder('e');
+        $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
+        $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
+        $subOwnersQueryBuilder->andWhere('e.group = :group');
+        $subOwnersQueryBuilder->setParameter('group', $selectedGroup);
+        $subOwners = $subOwnersQueryBuilder->getQuery()->getResult();
+
+        return array_reduce($subOwners,
+            function ($carry, $item) {
+                $carry[$item['sysOwnerSub']] = $item['sysOwnerSub'];
+
+                return $carry;
+            }, []);
     }
 
     /**
@@ -361,7 +384,6 @@ class AdminController extends EasyAdminController
         array $formParameters,
         EntityRepository $repository,
         Collection $userGroups,
-        &$subOwnerOptions,
         $userGroupsThemesAndCategories
     ) {
         $query->andWhere('e.archivedAt IS NULL');
@@ -373,22 +395,6 @@ class AdminController extends EasyAdminController
             if (isset($userGroupsThemesAndCategories['groups'][$formParameters['group']])) {
                 $groups[] = $formParameters['group'];
             }
-
-            // Get sub owners if a group has been selected.
-            $subOwnersQueryBuilder = $repository->createQueryBuilder('e');
-            $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
-            $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
-            $subOwnersQueryBuilder->andWhere('e.group = :group');
-            $subOwnersQueryBuilder->setParameter('group',
-                $formParameters['group']);
-            $subOwners = $subOwnersQueryBuilder->getQuery()->getResult();
-
-            $subOwnerOptions = array_reduce($subOwners,
-                function ($carry, $item) {
-                    $carry[$item['sysOwnerSub']] = $item['sysOwnerSub'];
-
-                    return $carry;
-                }, []);
         } else {
             $groups = $userGroups;
         }
