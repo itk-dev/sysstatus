@@ -15,6 +15,7 @@ use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,6 +44,21 @@ class AdminController extends EasyAdminController
         $this->themeCategoryRepository = $themeCategoryRepository;
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
+    }
+
+    /**
+     * Overrides
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function listAction()
+    {
+        $entity = $this->entity;
+        if ($entity['class'] == Report::class || $entity['class'] == System::class) {
+            return $this->redirectToRoute('list', ['entityType' => strtolower($entity['name'])]);
+        }
+
+        return parent::listAction();
     }
 
     /**
