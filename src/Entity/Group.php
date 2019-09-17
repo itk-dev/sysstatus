@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\JoinTable;
 use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,12 +36,26 @@ class Group extends BaseGroup
      */
     private $systems;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", inversedBy="systemGroups")
+     * @JoinTable(name="group_system_themes")
+     */
+    private $systemThemes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", inversedBy="reportGroups")
+     * @JoinTable(name="group_report_themes")
+     */
+    private $reportThemes;
+
     public function __construct()
     {
         parent::__construct(NULL, ['ROLE_USER']);
         $this->themes = new ArrayCollection();
         $this->reports = new ArrayCollection();
         $this->systems = new ArrayCollection();
+        $this->systemThemes = new ArrayCollection();
+        $this->reportThemes = new ArrayCollection();
     }
 
     public function __toString()
@@ -127,6 +142,58 @@ class Group extends BaseGroup
         if ($this->systems->contains($system)) {
             $this->systems->removeElement($system);
             $system->removeGroup($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Theme[]
+     */
+    public function getSystemThemes(): Collection
+    {
+        return $this->systemThemes;
+    }
+
+    public function addSystemTheme(Theme $systemTheme): self
+    {
+        if (!$this->systemThemes->contains($systemTheme)) {
+            $this->systemThemes[] = $systemTheme;
+        }
+
+        return $this;
+    }
+
+    public function removeSystemTheme(Theme $systemTheme): self
+    {
+        if ($this->systemThemes->contains($systemTheme)) {
+            $this->systemThemes->removeElement($systemTheme);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Theme[]
+     */
+    public function getReportThemes(): Collection
+    {
+        return $this->reportThemes;
+    }
+
+    public function addReportTheme(Theme $reportTheme): self
+    {
+        if (!$this->reportThemes->contains($reportTheme)) {
+            $this->reportThemes[] = $reportTheme;
+        }
+
+        return $this;
+    }
+
+    public function removeReportTheme(Theme $reportTheme): self
+    {
+        if ($this->reportThemes->contains($reportTheme)) {
+            $this->reportThemes->removeElement($reportTheme);
         }
 
         return $this;

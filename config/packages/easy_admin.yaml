@@ -41,24 +41,32 @@ easy_admin:
                     - { property: 'category', label: 'entity.theme_category.category' }
                     - { property: 'theme', label: 'entity.theme_category.theme' }
                 sort: ['sortOrder', 'ASC']
-                actions:
+                actions: []
+
         Theme:
             class: App\Entity\Theme
             show:
                 fields:
+                    - { property: 'id', label: 'entity.theme.id' }
                     - { property: 'name', label: 'entity.theme.name' }
                     - { property: 'themeCategories', label: 'entity.theme.categories' }
-                    - { property: 'groups', label: 'entity.theme.group' }
+                    - { property: 'systemGroups', label: 'entity.theme.system_groups' }
+                    - { property: 'reportGroups', label: 'entity.theme.report_groups' }
             list:
                 fields:
                     - { property: 'id', label: 'entity.theme.id' }
                     - { property: 'name', label: 'entity.theme.name' }
                     - { property: 'themeCategories', label: 'entity.theme.categories' }
+                    - { property: 'systemGroups', label: 'entity.theme.system_groups' }
+                    - { property: 'reportGroups', label: 'entity.theme.report_groups' }
                 sort: ['id', 'ASC']
             form:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
-                    - { property: 'groups', label: 'entity.theme.groups' }
+                    - { property: 'themeCategories', label: 'entity.theme.categories' }
+                    - { property: 'systemGroups', label: 'entity.theme.system_groups', type_options: { by_reference: false} }
+                    - { property: 'reportGroups', label: 'entity.theme.report_groups', type_options: { by_reference: false} }
+
         Category:
             class: App\Entity\Category
             list:
@@ -70,6 +78,7 @@ easy_admin:
             form:
                 fields:
                     - { property: 'name', label: 'entity.category.name' }
+
         Question:
             class: App\Entity\Question
             list:
@@ -181,43 +190,6 @@ easy_admin:
                     - { property: 'text', label: 'entity.report.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
                     - { property: 'groups', label: 'entity.report.group', type_options: { required: false } }
                     - { property: 'edoc_url', label: 'entity.report.edoc_url', type: 'text', type_options: { required: false } }
-                    - { type: 'divider' }
-                    - { type: 'group' , label: 'menu.reportportal', icon: 'cogs' }
-                    - { property: 'sys_id', label: 'entity.report.sys_id', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_title', label: 'entity.report.sys_title', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_alternative_title', label: 'entity.report.sys_alternative_title', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_updated', label: 'entity.report.sys_updated', type: 'datetime', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_owner', label: 'entity.report.sys_owner', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_confidential_information', label: 'entity.report.sys_confidential_information', type: 'checkbox', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_purpose', label: 'entity.report.sys_purpose', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_classification', label: 'entity.report.sys_classification', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_date_for_revision', label: 'entity.report.sys_date_for_revision', type: 'datetime', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_persons', label: 'entity.report.sys_persons', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_information_types', label: 'entity.report.sys_information_types', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_data_sent_to', label: 'entity.report.sys_data_sent_to', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_data_come_from', label: 'entity.report.sys_data_come_from', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_data_location', label: 'entity.report.sys_data_location', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_latest_deletion_date', label: 'entity.report.sys_latest_deletion_date', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_data_worth_saving', label: 'entity.report.sys_data_worth_saving', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_data_processors', label: 'entity.report.sys_data_processors', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_data_processing_agreement', label: 'entity.report.sys_data_processing_agreement', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_data_processing_agreement_link', label: 'entity.report.sys_data_processing_agreement_link', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_auditor_statement', label: 'entity.report.sys_auditor_statement', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_auditor_statement_link', label: 'entity.report.sys_auditor_statement_link', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_data_to_science', label: 'entity.report.sys_data_to_science', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_usage', label: 'entity.report.sys_usage', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_request_for_insight', label: 'entity.report.sys_request_for_insight', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_date_use', label: 'entity.report.sys_date_use', type: 'datetime', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_status', label: 'entity.report.sys_status', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_remarks', label: 'entity.report.sys_remarks', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_internal_information', label: 'entity.report.sys_internal_information',  type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_obligation_to_inform', label: 'entity.report.sys_obligation_to_inform', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_legal_basis', label: 'entity.report.sys_legal_basis', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_consent', label: 'entity.report.sys_consent', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_impact_analysis', label: 'entity.report.sys_impact_analysis', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_impact_analysis_link', label: 'entity.report.sys_impact_analysis_link', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_authorization_procedure', label: 'entity.report.sys_authorization_procedure', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_version', label: 'entity.report.sys_version', type: 'text', type_options: { required: false, disabled: disabled } }
         System:
             class: App\Entity\System
             list:
@@ -269,37 +241,6 @@ easy_admin:
                     - { property: 'text', label: 'entity.system.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
                     - { property: 'groups', label: 'entity.system.group', type_options: { required: false } }
                     - { property: 'edoc_url', label: 'entity.system.edoc_url', type: 'text', type_options: { required: false } }
-                    - { type: 'group' , label: 'menu.systemportal', icon: 'cogs' }
-                    - { property: 'sys_title', label: 'entity.system.sys_title', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_internal_id', label: 'entity.system.sys_internal_id', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_link', label: 'entity.system.sys_id_as_link', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_alternative_title', label: 'entity.system.sys_alternative_title', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_id', label: 'entity.system.sys_id', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_updated', label: 'entity.system.sys_updated', type: 'datetime', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_description', label: 'entity.system.sys_description', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_owner', label: 'entity.system.sys_owner', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_owner_subdepartment', label: 'entity.system.sys_owner_subdepartment', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_emergency_setup', label: 'entity.system.sys_emergency_setup', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_contractor', label: 'entity.system.sys_contractor', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_urgency_rating', label: 'entity.system.sys_urgency_rating', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_number_of_users', label: 'entity.system.sys_number_of_users', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_technical_documentation', label: 'entity.system.sys_technical_documentation', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_external_dependencies', label: 'entity.system.sys_external_dependencies', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_important_information', label: 'entity.system.sys_important_information', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'no_tools', disabled: disable, inline: true } }
-                    - { property: 'sys_superuser_organization', label: 'entity.system.sys_superuser_organization', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_itsecurity_category', label: 'entity.system.sys_itsecurity_category', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_link_to_security_review', label: 'entity.system.sys_link_to_security_review', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_link_to_contract', label: 'entity.system.sys_link_to_contract', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_end_of_contract', label: 'entity.system.sys_end_of_contract', type: 'datetime', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_status', label: 'entity.system.sys_status', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_open_data', label: 'entity.system.sys_open_data', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_open_source', label: 'entity.system.sys_open_source', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_digital_post', label: 'entity.system.sys_digital_post', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_system_category', label: 'entity.system.sys_system_category', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_digital_transactions_pr_year', label: 'entity.system.sys_digital_transactions_pr_year', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_total_transactions_pr_year', label: 'entity.system.sys_total_transactions_pr_year', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_self_service_url', label: 'entity.system.sys_self_service_url', type: 'text', type_options: { required: false, disabled: disabled } }
-                    - { property: 'sys_version', label: 'entity.system.sys_version', type: 'text', type_options: { required: false, disabled: disabled } }
         User:
             class: App\Entity\User
             list:

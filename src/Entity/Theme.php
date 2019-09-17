@@ -46,11 +46,23 @@ class Theme
      */
     private $groups;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", mappedBy="systemThemes")
+     */
+    private $systemGroups;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", mappedBy="reportThemes")
+     */
+    private $reportGroups;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->themeCategories = new ArrayCollection();
         $this->groups = new ArrayCollection();
+        $this->systemGroups = new ArrayCollection();
+        $this->reportGroups = new ArrayCollection();
     }
 
     public function getId()
@@ -146,6 +158,62 @@ class Theme
     {
         if ($this->groups->contains($groups)) {
             $this->groups->removeElement($groups);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getSystemGroups(): Collection
+    {
+        return $this->systemGroups;
+    }
+
+    public function addSystemGroup(Group $systemGroup): self
+    {
+        if (!$this->systemGroups->contains($systemGroup)) {
+            $this->systemGroups[] = $systemGroup;
+            $systemGroup->addSystemTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSystemGroup(Group $systemGroup): self
+    {
+        if ($this->systemGroups->contains($systemGroup)) {
+            $this->systemGroups->removeElement($systemGroup);
+            $systemGroup->removeSystemTheme($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getReportGroups(): Collection
+    {
+        return $this->reportGroups;
+    }
+
+    public function addReportGroup(Group $reportGroup): self
+    {
+        if (!$this->reportGroups->contains($reportGroup)) {
+            $this->reportGroups[] = $reportGroup;
+            $reportGroup->addReportTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportGroup(Group $reportGroup): self
+    {
+        if ($this->reportGroups->contains($reportGroup)) {
+            $this->reportGroups->removeElement($reportGroup);
+            $reportGroup->removeReportTheme($this);
         }
 
         return $this;
