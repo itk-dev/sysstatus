@@ -4,19 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Group;
 use App\Entity\Report;
+use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
 use App\Entity\Theme;
 use App\Repository\CategoryRepository;
 use App\Repository\ThemeCategoryRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -96,8 +93,16 @@ class AdminController extends EasyAdminController
             15
         );
 
+        if ($entityType == 'system') {
+            $selfServiceOptions = $this->entityManager->getRepository(SelfServiceAvailableFromItem::class)->findAll();
+            $userGroupsThemesAndCategories['self_service'] = array_reduce($selfServiceOptions, function ($carry, SelfServiceAvailableFromItem $item) {
+                $carry[$item->getId()] = $item->getName();
+                return $carry;
+            }, []);
+        }
+
         $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories,
-            $formParameters, $subOwnerOptions, false, false);
+            $formParameters, $subOwnerOptions, false, false, $entityType == 'system');
         $filterFormBuilder->setMethod('GET')
             ->setAction($this->generateUrl('list',
                 ['entityType' => $entityType]));
@@ -282,7 +287,8 @@ class AdminController extends EasyAdminController
         $formParameters,
         $subownerOptions,
         bool $filterThemes = false,
-        bool $filterCategories = false
+        bool $filterCategories = false,
+        bool $filterSelfService = false
     ) {
         $filterFormBuilder = $this->createFormBuilder();
         $filterFormBuilder->add('groups', ChoiceType::class, [
@@ -329,6 +335,18 @@ class AdminController extends EasyAdminController
                 ],
                 'required' => false,
                 'data' => isset($formParameters['category']) ? $formParameters['category'] : null,
+            ]);
+        }
+        if ($filterSelfService) {
+            $filterFormBuilder->add('self_service', ChoiceType::class, [
+                'label' => 'filter.self_service',
+                'placeholder' => 'filter.placeholder.self_service',
+                'choices' => array_flip($userGroupsThemesAndCategories['self_service']),
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'required' => false,
+                'data' => isset($formParameters['self_service']) ? $formParameters['self_service'] : null,
             ]);
         }
         $filterFormBuilder->add('search', TextType::class, [

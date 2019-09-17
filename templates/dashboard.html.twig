@@ -105,5 +105,14 @@
     $('.dashboard-filters select').bind('change', function () {
       $('.dashboard-filters form').submit();
     });
+
+    $(document).ready(function() {
+      $('#form_groups').select2();
+    });
+
+    $('#form_groups').on('select2:opening select2:closing', function( event ) {
+      var $searchfield = $(this).parent().find('.select2-search__field');
+      $searchfield.prop('disabled', true);
+    });
   </script>
 {% endblock %}

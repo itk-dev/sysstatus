@@ -14,9 +14,14 @@
       <div class="col">
         {{ form_widget(filters.subowner) }}
       </div>
-      <div class="col-4">
+      <div class="col">
         {{ form_widget(filters.search) }}
       </div>
+      {% if filters.self_service is defined %}
+      <div class="col">
+        {{ form_widget(filters.self_service) }}
+      </div>
+      {% endif %}
     </div>
     {{ form_end(filters) }}
   </div>
