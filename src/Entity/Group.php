@@ -22,11 +22,6 @@ class Group extends BaseGroup
     protected $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", mappedBy="groups")
-     */
-    private $themes;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Report", mappedBy="groups")
      */
     private $reports;
@@ -61,34 +56,6 @@ class Group extends BaseGroup
     public function __toString()
     {
         return $this->name;
-    }
-
-    /**
-     * @return Collection|Theme[]
-     */
-    public function getThemes(): Collection
-    {
-        return $this->themes;
-    }
-
-    public function addTheme(Theme $theme): self
-    {
-        if (!$this->themes->contains($theme)) {
-            $this->themes[] = $theme;
-            $theme->addGroup($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTheme(Theme $theme): self
-    {
-        if ($this->themes->contains($theme)) {
-            $this->themes->removeElement($theme);
-            $theme->removeGroup($this);
-        }
-
-        return $this;
     }
 
     /**

@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminController extends EasyAdminController
 {
@@ -25,6 +26,7 @@ class AdminController extends EasyAdminController
     private $themeCategoryRepository;
     private $entityManager;
     private $paginator;
+    private $translator;
 
     /**
      * AdminController constructor.
@@ -37,12 +39,14 @@ class AdminController extends EasyAdminController
         CategoryRepository $categoryRepository,
         ThemeCategoryRepository $themeCategoryRepository,
         EntityManagerInterface $entityManager,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        TranslatorInterface $translator
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->themeCategoryRepository = $themeCategoryRepository;
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
+        $this->translator = $translator;
     }
 
     /**
@@ -78,7 +82,7 @@ class AdminController extends EasyAdminController
 
         // Get the groups the user is added to.
         $userGroups = $this->getUser()->getGroups();
-        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray());
+        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray(), $entityType);
 
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
@@ -195,7 +199,7 @@ class AdminController extends EasyAdminController
             $userGroups = $this->getUser()->getGroups();
         }
 
-        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray());
+        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray(), $entityType);
 
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
@@ -224,7 +228,9 @@ class AdminController extends EasyAdminController
         }
 
         foreach ($groups as $group) {
-            foreach ($group->getThemes() as $theme) {
+            $groupThemes = $entityType == 'report' ? $group->getReportThemes() : $group->getSystemThemes();
+
+            foreach ($groupThemes as $theme) {
                 if ($formParameters['theme'] != '') {
                     if ($theme->getId() != $formParameters['theme']) {
                         continue;
@@ -337,6 +343,7 @@ class AdminController extends EasyAdminController
             'multiple' => true,
             'attr' => [
                 'class' => 'form-control',
+                'data-placeholder' => $this->translator->trans('filter.placeholder.groups'),
             ],
             'required' => false,
             'data' => isset($formParameters['groups']) ? $formParameters['groups'] : null,
@@ -376,6 +383,7 @@ class AdminController extends EasyAdminController
                 'data' => isset($formParameters['category']) ? $formParameters['category'] : null,
             ]);
         }
+        /* @TODO: Add self service filter.
         if ($filterSelfService) {
             $filterFormBuilder->add('self_service', ChoiceType::class, [
                 'label' => 'filter.self_service',
@@ -387,7 +395,7 @@ class AdminController extends EasyAdminController
                 'required' => false,
                 'data' => isset($formParameters['self_service']) ? $formParameters['self_service'] : null,
             ]);
-        }
+        }*/
         $filterFormBuilder->add('search', TextType::class, [
             'label' => 'filter.search',
             'attr' => [
@@ -426,6 +434,8 @@ class AdminController extends EasyAdminController
             }
         }
 
+        // @TODO: Add self-service filter.
+
         if (isset($formParameters['search']) && $formParameters['search'] != '') {
             $query->andWhere('e.name LIKE :name');
             $query->setParameter('name', '%'.$formParameters['search'].'%');
@@ -445,13 +455,15 @@ class AdminController extends EasyAdminController
      * @param array $userGroups
      * @return mixed
      */
-    private function getUserGroupsThemesAndCategories(array $userGroups)
+    private function getUserGroupsThemesAndCategories(array $userGroups, $entityType)
     {
         return array_reduce($userGroups,
-            function ($carry, Group $group) {
+            function ($carry, Group $group) use ($entityType) {
                 $carry['groups'][$group->getId()] = $group->getName();
 
-                foreach ($group->getThemes() as $theme) {
+                $groupThemes = $entityType == 'report' ? $group->getReportThemes() : $group->getSystemThemes();
+
+                foreach ($groupThemes as $theme) {
                     $carry['themes'][$theme->getId()] = $theme->getName();
 
                     foreach ($theme->getOrderedCategories() as $category) {

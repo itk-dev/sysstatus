@@ -42,11 +42,6 @@ class Theme
     private $categories;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="themes")
-     */
-    private $groups;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Group", mappedBy="systemThemes")
      */
     private $systemGroups;
@@ -135,32 +130,6 @@ class Theme
         }
 
         return $list;
-    }
-
-    /**
-     * @return Collection|Group[]
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroups(Group $groups): self
-    {
-        if (!$this->groups->contains($groups)) {
-            $this->groups[] = $groups;
-        }
-
-        return $this;
-    }
-
-    public function removeGroups(Group $groups): self
-    {
-        if ($this->groups->contains($groups)) {
-            $this->groups->removeElement($groups);
-        }
-
-        return $this;
     }
 
     /**

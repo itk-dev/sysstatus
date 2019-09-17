@@ -117,8 +117,9 @@ class SystemImporter extends BaseImporter
                     ['name' => $groupName]
                 );
 
-                if ($findGroup && is_null($system->getGroup())) {
-                    $system->setGroup($findGroup);
+                if ($findGroup && !in_array($findGroup, $system->getGroups()->toArray())) {
+                    $system->addGroup($findGroup);
+                    $findGroup->setCreatedByFeedImport(true);
                 }
 
                 if ($subGroupName) {
