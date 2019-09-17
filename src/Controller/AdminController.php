@@ -11,6 +11,7 @@ use App\Repository\ThemeCategoryRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Knp\Component\Pager\PaginatorInterface;
@@ -72,7 +73,7 @@ class AdminController extends EasyAdminController
     {
         $queryParameters = $request->query;
         $formParameters = array_merge([
-            'group' => '',
+            'groups' => [],
             'subowner' => '',
             'search' => '',
         ], $queryParameters->get('form') ?: []);
@@ -84,10 +85,10 @@ class AdminController extends EasyAdminController
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters, $repository, $userGroups, $userGroupsThemesAndCategories);
+        $query = $this->applyFilters($query, $formParameters);
 
         // Get sub owners if a group has been selected.
-        $subOwnerOptions = $formParameters['group'] != '' ? $this->getSubOwnerOptions($repository, $formParameters['group']) : [];
+        $subOwnerOptions = $this->getSubOwnerOptions($repository, $formParameters['groups']);
 
         $paginator = $this->paginator->paginate(
             $query,
@@ -101,9 +102,8 @@ class AdminController extends EasyAdminController
             ->setAction($this->generateUrl('list',
                 ['entityType' => $entityType]));
 
-        $items = [];
-
         // Generate render array.
+        $items = [];
         switch ($entityType) {
             case 'system':
                 /* @var System $item */
@@ -111,13 +111,16 @@ class AdminController extends EasyAdminController
                     $items[$item->getId()] = [
                         'entity.system.id' => $item->getId(),
                         'entity.system.sys_title' => $item->getSysTitle(),
-                        'entity.system.group' => $item->getGroup() ? $item->getGroup()
-                            ->getName() : '',
+                        'entity.system.groups' => $item->getGroups() ? array_reduce($item->getGroups()->toArray(), function ($carry, Group $group) {
+                            if (strlen($carry) > 0) {
+                                $carry .= ', ';
+                            }
+                            $carry .= $group->getName();
+                            return $carry;
+                        }, '') : '',
                         'entity.system.sys_owner_sub' => $item->getSysOwnerSub(),
                         'entity.system.sys_system_owner' => $item->getSysSystemOwner(),
                         'entity.system.sys_link' => '<a href="'.$item->getSysLink().'">Link</a>',
-                        'entity.system.theme' => $item->getTheme() ? $item->getTheme()
-                            ->getName() : '',
                         'entity.system.selfServiceAvailableFromItems' => array_reduce($item->getSelfServiceAvailableFromItems()
                             ->toArray(), function ($carry, $item) {
                             $carry = (strlen($carry) > 0) ? $carry.', '.$item : $item;
@@ -134,13 +137,16 @@ class AdminController extends EasyAdminController
                     $items[$item->getId()] = [
                         'entity.report.id' => $item->getId(),
                         'entity.report.sys_title' => $item->getSysTitle(),
-                        'entity.report.group' => $item->getGroup() ? $item->getGroup()
-                            ->getName() : '',
+                        'entity.report.groups' => $item->getGroups() ? array_reduce($item->getGroups()->toArray(), function ($carry, Group $group) {
+                            if (strlen($carry) > 0) {
+                                $carry .= ', ';
+                            }
+                            $carry .= $group->getName();
+                            return $carry;
+                        }, '') : '',
                         'entity.report.sys_owner_sub' => $item->getSysOwnerSub(),
                         'entity.report.sys_system_owner' => $item->getSysSystemOwner(),
                         'entity.report.sys_link' => '<a href="'.$item->getSysLink().'">Link</a>',
-                        'entity.report.theme' => $item->getTheme() ? $item->getTheme()
-                            ->getName() : '',
                         'entity.report.text' => $item->getTextSet() ? '<label class="label label-success">Ja</label>' : '',
                     ];
                 }
@@ -166,7 +172,7 @@ class AdminController extends EasyAdminController
     {
         $queryParameters = $request->query;
         $formParameters = array_merge([
-            'group' => '',
+            'groups' => '',
             'subowner' => '',
             'theme' => '',
             'category' => '',
@@ -180,10 +186,10 @@ class AdminController extends EasyAdminController
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters, $repository, $userGroups, $userGroupsThemesAndCategories);
+        $query = $this->applyFilters($query, $formParameters);
 
         // Get sub owners if a group has been selected.
-        $subOwnerOptions = $formParameters['group'] != '' ? $this->getSubOwnerOptions($repository, $formParameters['group']) : [];
+        $subOwnerOptions = $this->getSubOwnerOptions($repository, $formParameters['groups']);
 
         $paginator = $this->paginator->paginate(
             $query,
@@ -215,15 +221,23 @@ class AdminController extends EasyAdminController
      * Get subowners for selected group.
      *
      * @param $repository
-     * @param $selectedGroup
+     * @param $selectedGroups
      * @return mixed
      */
-    private function getSubOwnerOptions($repository, $selectedGroup) {
+    private function getSubOwnerOptions($repository, $selectedGroups) {
+        $groups = $this->entityManager->getRepository(Group::class)->findBy([
+            'id' => $selectedGroups,
+        ]);
+
         $subOwnersQueryBuilder = $repository->createQueryBuilder('e');
         $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
         $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
-        $subOwnersQueryBuilder->andWhere('e.group = :group');
-        $subOwnersQueryBuilder->setParameter('group', $selectedGroup);
+
+        foreach ($groups as $group) {
+            $subOwnersQueryBuilder->andWhere($subOwnersQueryBuilder->expr()->isMemberOf(':group'.$group->getId(), 'e.groups'));
+            $subOwnersQueryBuilder->setParameter(':group'.$group->getId(), $group);
+        }
+
         $subOwners = $subOwnersQueryBuilder->getQuery()->getResult();
 
         return array_reduce($subOwners,
@@ -271,15 +285,16 @@ class AdminController extends EasyAdminController
         bool $filterCategories = false
     ) {
         $filterFormBuilder = $this->createFormBuilder();
-        $filterFormBuilder->add('group', ChoiceType::class, [
-            'label' => 'filter.group',
-            'placeholder' => 'filter.placeholder.group',
+        $filterFormBuilder->add('groups', ChoiceType::class, [
+            'label' => 'filter.groups',
+            'placeholder' => 'filter.placeholder.groups',
             'choices' => array_flip($userGroupsThemesAndCategories['groups']),
+            'multiple' => true,
             'attr' => [
                 'class' => 'form-control',
             ],
             'required' => false,
-            'data' => isset($formParameters['group']) ? $formParameters['group'] : null,
+            'data' => isset($formParameters['groups']) ? $formParameters['groups'] : null,
         ]);
         $filterFormBuilder->add('subowner', ChoiceType::class, [
             'label' => 'filter.subowner',
@@ -289,7 +304,7 @@ class AdminController extends EasyAdminController
                 'class' => 'form-control',
             ],
             'required' => false,
-            'disabled' => !isset($formParameters['group']) || $formParameters['group'] == '',
+            'disabled' => count($subownerOptions) == 0,
             'data' => isset($formParameters['subowner']) ? $formParameters['subowner'] : null,
         ]);
         if ($filterThemes) {
@@ -390,33 +405,25 @@ class AdminController extends EasyAdminController
      *
      * @param \Doctrine\ORM\QueryBuilder $query
      * @param array $formParameters
-     * @param \Doctrine\ORM\EntityRepository $repository
-     * @param \Doctrine\Common\Collections\Collection $userGroups
-     * @param $subOwnerOptions
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function applyFilters(
         QueryBuilder $query,
-        array $formParameters,
-        EntityRepository $repository,
-        Collection $userGroups,
-        $userGroupsThemesAndCategories
+        array $formParameters
     ) {
         $query->andWhere('e.archivedAt IS NULL');
 
-        $groups = [];
-
         // Get the groups the user can search in.
-        if (isset($formParameters['group']) && $formParameters['group'] != '') {
-            if (isset($userGroupsThemesAndCategories['groups'][$formParameters['group']])) {
-                $groups[] = $formParameters['group'];
-            }
-        } else {
-            $groups = $userGroups;
-        }
+        if (!empty($formParameters['groups'])) {
+            $groups = $this->entityManager->getRepository(Group::class)->findBy([
+               'id' => $formParameters['groups']
+            ]);
 
-        $query->andWhere('e.group IN (:groups)');
-        $query->setParameter('groups', $groups);
+            foreach ($groups as $group) {
+                $query->andWhere($query->expr()->isMemberOf(':group'.$group->getId(), 'e.groups'));
+                $query->setParameter(':group'.$group->getId(), $group);
+            }
+        }
 
         if (isset($formParameters['search']) && $formParameters['search'] != '') {
             $query->andWhere('e.name LIKE :name');
@@ -432,7 +439,7 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * Get array of a users group, themes and categories.
+     * Get array of a user's groups, themes and categories.
      *
      * @param array $userGroups
      * @return mixed

@@ -9,7 +9,7 @@
     {{ form_start(filters, { attr: { class: 'w-100' } }) }}
     <div class="row w-100 flex-row">
       <div class="col">
-        {{ form_widget(filters.group) }}
+        {{ form_widget(filters.groups) }}
       </div>
       <div class="col">
         {{ form_widget(filters.subowner) }}
@@ -17,14 +17,17 @@
       <div class="col-4">
         {{ form_widget(filters.search) }}
       </div>
-      <div>
-        <a class="btn btn-primary" href="{{ path('easyadmin', { action: 'new', entity: entityType|capitalize }) }}"
-           title="{{ ('list.action.new.'~entityType)|trans }}">
-          {{ ('list.action.new.'~entityType)|trans }}
-        </a>
-      </div>
     </div>
     {{ form_end(filters) }}
+  </div>
+{% endblock %}
+
+{% block content_footer %}
+  <div class="text-right">
+    <a class="btn btn-primary" href="{{ path('easyadmin', { action: 'new', entity: entityType|capitalize }) }}"
+       title="{{ ('list.action.new.'~entityType)|trans }}">
+      {{ ('list.action.new.'~entityType)|trans }}
+    </a>
   </div>
 {% endblock %}
 
@@ -74,8 +77,19 @@
 
 {% block body_javascript %}
   <script type="text/javascript">
+    {{ parent() }}
+
     $('.list-filters select').bind('change', function () {
       $('.list-filters form').submit();
+    });
+
+    $(document).ready(function() {
+      $('#form_groups').select2();
+    });
+
+    $('#form_groups').on('select2:opening select2:closing', function( event ) {
+      var $searchfield = $(this).parent().find('.select2-search__field');
+      $searchfield.prop('disabled', true);
     });
   </script>
 {% endblock %}

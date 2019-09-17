@@ -134,24 +134,6 @@ easy_admin:
                 item_permission: ['ROLE_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.report.id' }
-                    - { property: 'showable_name', label: 'entity.report.sys_title' }
-                    - { property: 'group', label: 'entity.report.group', type: 'text' }
-                    - { property: 'sys_owner_sub', label: 'entity.report.sys_owner_sub' }
-                    - { property: 'sys_system_owner', label: 'entity.report.sys_system_owner' }
-                    - { property: 'sys_link', label: 'entity.report.sys_link', type: 'file', filename: 'Link' }
-                    - { property: 'theme', label: 'entity.report.theme', type: 'text' }
-                    - { property: 'text_set', label: 'entity.report.text', type: 'boolean' }
-                sort: ['id', 'ASC']
-                dql_filter: "entity.sysStatus = 'Aktiv' AND entity.archivedAt IS NULL"
-                filters:
-                    -
-                        property: group
-                        type: entity
-                    -
-                        property: sysOwnerSub
-                        type: choice
-                        extract_from_property: sysOwnerSub
-                        parent_filter: group
             show:
                 fields:
                     - { property: 'sys_title', label: 'entity.report.sys_title', type: 'raw' }
@@ -161,8 +143,7 @@ easy_admin:
                     - { property: 'name', label: 'entity.report.name' }
                     - { property: 'text', label: 'entity.report.text', type: 'raw' }
                     - { property: 'sys_system_owner', label: 'entity.report.sys_system_owner' }
-                    - { property: 'theme', label: 'entity.report.theme', type: 'text' }
-                    - { property: 'group', label: 'entity.report.group', type: 'text' }
+                    - { property: 'groups', label: 'entity.report.group', type: 'text' }
                     - { property: 'answerarea', label: 'entity.report.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_alternative_title', label: 'entity.report.sys_alternative_title', type: 'raw' }
                     - { property: 'sys_updated', label: 'entity.report.sys_updated', type: 'datetime' }
@@ -202,8 +183,7 @@ easy_admin:
                     - { type: 'group', label: 'menu.general', icon: 'cog' }
                     - { property: 'name', label: 'entity.report.name', type: 'text', type_options: { required: false } }
                     - { property: 'text', label: 'entity.report.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
-                    - { property: 'theme', label: 'entity.report.theme', type_options: { required: false } }
-                    - { property: 'group', label: 'entity.report.group', type_options: { required: false } }
+                    - { property: 'groups', label: 'entity.report.group', type_options: { required: false } }
                     - { property: 'edoc_url', label: 'entity.report.edoc_url', type: 'text', type_options: { required: false } }
                     - { type: 'divider' }
                     - { type: 'group' , label: 'menu.reportportal', icon: 'cogs' }
@@ -248,40 +228,12 @@ easy_admin:
                 item_permission: ['ROLE_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.system.id' }
-                    - { property: 'showable_name', label: 'entity.system.sys_title' }
-                    - { property: 'group', label: 'entity.system.group', type: 'text' }
-                    - { property: 'sys_owner_sub', label: 'entity.system.sys_owner_sub' }
-                    - { property: 'sys_system_owner', label: 'entity.system.sys_system_owner' }
-                    - { property: 'sys_link', label: 'entity.system.sys_link', type: 'file', filename: 'Link' }
-                    - { property: 'theme', label: 'entity.system.theme', type: 'text' }
-                    - { property: 'selfServiceAvailableFromItems', label: 'entity.system.selfServiceAvailableFromItems', template: 'easy_admin_overrides/System/list/selfServiceAvailableFromItems.html.twig' }
-                    - { property: 'text_set', label: 'entity.system.text', type: 'boolean' }
-                sort: ['id', 'ASC']
-                dql_filter: "entity.sysStatus <> 'Systemet bruges ikke længere' AND entity.archivedAt IS NULL"
-                filters:
-                    -
-                        property: group
-                        type: entity
-                        placeholder: group.placeholder
-                    -
-                        property: sysOwnerSub
-                        type: choice
-                        extract_from_property: sysOwnerSub
-                        parent_filter: group
-                        placeholder: sysOwnerSub.placeholder
-                    -
-                        property: selfServiceAvailableFromItems
-                        type: entity
-                        class: App\Entity\SelfServiceAvailableFromItem
-                        placeholder: selfServiceAvailableFromItems.placeholder
-
             show:
                 fields:
                     - { property: 'name', label: 'entity.system.name' }
                     - { property: 'text', label: 'entity.system.text', type: 'raw' }
                     - { property: 'sys_system_owner', label: 'entity.system.sys_system_owner' }
-                    - { property: 'theme', label: 'entity.system.theme', type: 'text' }
-                    - { property: 'group', label: 'entity.system.group', type: 'text' }
+                    - { property: 'groups', label: 'entity.system.group', type: 'text' }
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'raw' }
                     - { property: 'sys_internal_id', label: 'entity.system.sys_id', type: 'text' }
@@ -319,10 +271,8 @@ easy_admin:
                     - { type: 'group', label: 'menu.general', icon: 'cog' }
                     - { property: 'name', label: 'entity.system.name', type: 'text', type_options: { required: false } }
                     - { property: 'text', label: 'entity.system.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
-                    - { property: 'theme', label: 'entity.system.theme', type_options: { required: false } }
-                    - { property: 'group', label: 'entity.system.group', type_options: { required: false } }
+                    - { property: 'groups', label: 'entity.system.group', type_options: { required: false } }
                     - { property: 'edoc_url', label: 'entity.system.edoc_url', type: 'text', type_options: { required: false } }
-                    - { type: 'divider' }
                     - { type: 'group' , label: 'menu.systemportal', icon: 'cogs' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'text', type_options: { required: false, disabled: disabled } }
                     - { property: 'sys_internal_id', label: 'entity.system.sys_internal_id', type: 'text', type_options: { required: false, disabled: disabled } }

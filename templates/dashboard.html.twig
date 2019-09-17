@@ -13,7 +13,7 @@
     {{ form_start(filters, { attr: { class: 'w-100' } }) }}
     <div class="row w-100 flex-row">
       <div class="col">
-        {{ form_widget(filters.group) }}
+        {{ form_widget(filters.groups) }}
       </div>
       <div class="col">
         {{ form_widget(filters.subowner) }}
@@ -99,6 +99,8 @@
 {% endblock main %}
 
 {% block body_javascript %}
+  {{ parent() }}
+
   <script type="text/javascript">
     $('.dashboard-filters select').bind('change', function () {
       $('.dashboard-filters form').submit();
