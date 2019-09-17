@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Group;
 use App\Entity\Report;
 use App\Entity\SelfServiceAvailableFromItem;
@@ -177,15 +178,23 @@ class AdminController extends EasyAdminController
     {
         $queryParameters = $request->query;
         $formParameters = array_merge([
-            'groups' => '',
+            'groups' => [],
             'subowner' => '',
             'theme' => '',
             'category' => '',
             'search' => '',
         ], $queryParameters->get('form') ?: []);
 
+        $user = $this->getUser();
+
         // Get the groups the user is added to.
-        $userGroups = $this->getUser()->getGroups();
+        if ($user->hasRole('ROLE_ADMIN')) {
+            $userGroups = $this->entityManager->getRepository(Group::class)->findAll();
+        }
+        else {
+            $userGroups = $this->getUser()->getGroups();
+        }
+
         $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray());
 
         // Get a query for the entity type.
@@ -202,11 +211,41 @@ class AdminController extends EasyAdminController
             10
         );
 
-        $items = $paginator->getItems();
+        $availableCategories = [];
+        $themes = [];
 
-        $availableCategories = $this->getAvailableCategories($items,
-            $formParameters['theme'], $userGroupsThemesAndCategories['groups'],
-            $formParameters['category']);
+        if (!empty($formParameters['groups'])) {
+            $groups = $this->entityManager->getRepository(Group::class)->findBy([
+                'id' => $formParameters['groups']
+            ]);
+        }
+        else {
+            $groups = $userGroups;
+        }
+
+        foreach ($groups as $group) {
+            foreach ($group->getThemes() as $theme) {
+                if ($formParameters['theme'] != '') {
+                    if ($theme->getId() != $formParameters['theme']) {
+                        continue;
+                    }
+                }
+
+                if (!isset($themes[$theme->getId()])) {
+                    $themes[$theme->getId()] = $theme;
+
+                    foreach ($theme->getOrderedCategories() as $category) {
+                        if ($formParameters['category'] != '') {
+                            if ($category->getId() != $formParameters['category']) {
+                                continue;
+                            }
+                        }
+
+                        $availableCategories[$category->getId()] = $category;
+                    }
+                }
+            }
+        }
 
         $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories,
             $formParameters, $subOwnerOptions, true, true);
@@ -360,62 +399,6 @@ class AdminController extends EasyAdminController
         ]);
 
         return $filterFormBuilder;
-    }
-
-    /**
-     * Get available categories.
-     *
-     * @param $items
-     * @param $selectedTheme
-     * @param $userGroups
-     * @param $selectedCategory
-     * @return array
-     */
-    private function getAvailableCategories(
-        $items,
-        $selectedTheme,
-        $userGroups,
-        $selectedCategory
-    ) {
-        $availableCategories = [];
-
-        foreach ($items as $item) {
-            /* @var Theme $theme */
-            $theme = $item->getTheme();
-
-            if ($theme == null) {
-                continue;
-            }
-
-            if ($selectedTheme != '') {
-                if ($theme->getId() != $selectedTheme) {
-                    continue;
-                }
-            }
-
-            $themeGroups = array_reduce($theme->getGroups()->toArray(),
-                function ($carry, Group $item) {
-                    $carry[$item->getId()] = $item->getName();
-
-                    return $carry;
-                }, []);
-
-            $intersect = array_intersect($themeGroups, $userGroups);
-
-            foreach ($theme->getOrderedCategories() as $category) {
-                if ($selectedCategory != '') {
-                    if ($category->getId() != $selectedCategory) {
-                        continue;
-                    }
-                }
-
-                if (count($intersect) > 0) {
-                    $availableCategories[$category->getId()] = $category;
-                }
-            }
-        }
-
-        return $availableCategories;
     }
 
     /**

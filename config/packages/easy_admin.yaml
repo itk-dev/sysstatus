@@ -54,14 +54,10 @@ easy_admin:
                     - { property: 'id', label: 'entity.theme.id' }
                     - { property: 'name', label: 'entity.theme.name' }
                     - { property: 'themeCategories', label: 'entity.theme.categories' }
-                    - { property: 'systems', label: 'entity.theme.systems' }
-                    - { property: 'reports', label: 'entity.theme.reports' }
                 sort: ['id', 'ASC']
             form:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
-                    - { property: 'systems', label: 'entity.theme.systems' }
-                    - { property: 'reports', label: 'entity.theme.reports' }
                     - { property: 'groups', label: 'entity.theme.groups' }
         Category:
             class: App\Entity\Category
