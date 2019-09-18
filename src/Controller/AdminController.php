@@ -33,6 +33,7 @@ class AdminController extends EasyAdminController
      * @param \App\Repository\ThemeCategoryRepository $themeCategoryRepository
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Knp\Component\Pager\PaginatorInterface $paginator
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      */
     public function __construct(
         CategoryRepository $categoryRepository,

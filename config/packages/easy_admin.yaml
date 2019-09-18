@@ -24,16 +24,17 @@ easy_admin:
             - { entity: 'ThemeCategory', icon: 'arrows-v', label: 'menu.theme_category' }
             - { entity: 'Category', icon: 'list', label: 'menu.categories' }
             - { entity: 'Question', icon: 'question', label: 'menu.questions' }
-            - { label: 'menu.admin', permission: ['ROLE_ADMIN'] }
+            - { label: 'menu.admin', permission: 'ROLE_ADMIN' }
             - { entity: 'User', icon: 'user', label: 'menu.users', permission: 'ROLE_ADMIN' }
             - { entity: 'Group', icon: 'users', label: 'menu.groups', permission: 'ROLE_ADMIN' }
-            - { label: 'menu.exports', icon: 'file-excel-o', route: 'export_page', permission: ['ROLE_ADMIN', 'ROLE_EXPORT'] }
+            - { label: 'menu.exports', icon: 'file-excel-o', route: 'export_page', permission: 'ROLE_ADMIN' }
         assets:
             css:
                 - ckeditor_styles.css
                 - styles.css
     entities:
         ThemeCategory:
+            item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
             class: App\Entity\ThemeCategory
             list:
                 fields:
@@ -45,6 +46,7 @@ easy_admin:
 
         Theme:
             class: App\Entity\Theme
+            item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
             show:
                 fields:
                     - { property: 'id', label: 'entity.theme.id' }
@@ -69,6 +71,7 @@ easy_admin:
 
         Category:
             class: App\Entity\Category
+            item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
             list:
                 fields:
                     - { property: 'id', label: 'entity.category.id' }
@@ -81,6 +84,7 @@ easy_admin:
 
         Question:
             class: App\Entity\Question
+            item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
             list:
                 fields:
                     - { property: 'id', label: 'entity.question.id' }
@@ -107,6 +111,7 @@ easy_admin:
         Answer:
             class: App\Entity\Answer
             list:
+                item_permission: ['ROLE_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.answer.id' }
                     - { property: 'smiley', label: 'entity.answer.smiley', type: 'text', template: 'easy_admin_overrides/field_smiley.html.twig' }
