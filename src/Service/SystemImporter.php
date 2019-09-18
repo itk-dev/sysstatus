@@ -97,10 +97,29 @@ class SystemImporter extends BaseImporter
             if (isset($selfServiceAvailableFromText)) {
                 $selfServiceAvailableFromTitles = explode(';#', $selfServiceAvailableFromText);
 
+                $addToSelfServiceGroup = false;
+
                 foreach ($selfServiceAvailableFromTitles as $title) {
+                    if ($title == '') {
+                        continue;
+                    }
+
+                    $addToSelfServiceGroup = true;
+
                     $name = (string)$title;
                     $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
                     $system->addSelfServiceAvailableFromItem($item);
+                }
+
+                // Add to SELVBETJENING group if the system has selvbetjening.
+                if ($addToSelfServiceGroup) {
+                    $findGroup = $this->groupRepository->findOneBy(
+                        ['name' => 'SELVBETJENING']
+                    );
+
+                    if ($findGroup && !in_array($findGroup, $system->getGroups()->toArray())) {
+                        $system->addGroup($findGroup);
+                    }
                 }
             }
 
@@ -119,7 +138,6 @@ class SystemImporter extends BaseImporter
 
                 if ($findGroup && !in_array($findGroup, $system->getGroups()->toArray())) {
                     $system->addGroup($findGroup);
-                    $findGroup->setCreatedByFeedImport(true);
                 }
 
                 if ($subGroupName) {

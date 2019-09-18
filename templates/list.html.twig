@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block global_actions_wrapper %}
-  <div class="global-actions w-auto list-filters" style="justify-content: flex-end">
+  <div class="global-actions w-75 list-filters" style="justify-content: flex-end">
     {{ form_start(filters, { attr: { class: 'w-100' } }) }}
     <div class="row w-100 flex-row">
       <div class="col">
@@ -53,16 +53,20 @@
       <tbody>
       {% for itemId,item in items %}
         <tr>
-          {% for key,field in item %}
+          {% for key,field in item.fields %}
             <td style="padding: 1em;">{{ field|raw }}</td>
           {% endfor %}
           <td>
-            <a class="btn btn-sm btn-primary" href="{{ path('easyadmin', { action: 'show', id: itemId, entity: entityType|capitalize }) }}">
-              {{ 'actions.show'|trans }}
-            </a>
-            <a class="btn btn-sm btn-warning" href="{{ path('easyadmin', { action: 'edit', id: itemId, entity: entityType|capitalize }) }}">
-              {{ 'actions.edit'|trans }}
-            </a>
+            {% if item.permission.show %}
+              <a class="btn btn-sm btn-primary" href="{{ path('easyadmin', { action: 'show', id: itemId, entity: entityType|capitalize }) }}">
+                {{ 'actions.show'|trans }}
+              </a>
+            {% endif %}
+            {% if item.permission.edit %}
+              <a class="btn btn-sm btn-warning" href="{{ path('easyadmin', { action: 'edit', id: itemId, entity: entityType|capitalize }) }}">
+                {{ 'actions.edit'|trans }}
+              </a>
+            {% endif %}
           </td>
         </tr>
       {% endfor %}

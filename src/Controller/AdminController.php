@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Entity\Group;
 use App\Entity\Report;
 use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
-use App\Entity\Theme;
 use App\Repository\CategoryRepository;
 use App\Repository\ThemeCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,6 +48,48 @@ class AdminController extends EasyAdminController
     }
 
     /**
+     * Overrides.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction()
+    {
+        $entityArray = $this->entity;
+        if ($entityArray['class'] == Report::class || $entityArray['class'] == System::class) {
+            $entity = $this->entityManager->getRepository($entityArray['class'])->find($_GET['id']);
+            $accessGranted = $this->isGranted('edit', $entity);
+
+            if (!$accessGranted) {
+                $this->addFlash('error', $this->translator->trans('flash.access_denied'));
+                return $this->redirectToRoute('list', ['entityType' => strtolower($entityArray['name'])]);
+            }
+        }
+
+        return parent::editAction();
+    }
+
+    /**
+     * Overrides.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction()
+    {
+        $entityArray = $this->entity;
+        if ($entityArray['class'] == Report::class || $entityArray['class'] == System::class) {
+            $entity = $this->entityManager->getRepository($entityArray['class'])->find($_GET['id']);
+            $accessGranted = $this->isGranted('show', $entity);
+
+            if (!$accessGranted) {
+                $this->addFlash('error', $this->translator->trans('flash.access_denied'));
+                return $this->redirectToRoute('list', ['entityType' => strtolower($entityArray['name'])]);
+            }
+        }
+
+        return parent::showAction();
+    }
+
+    /**
      * Overrides
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -82,7 +122,7 @@ class AdminController extends EasyAdminController
 
         // Get the groups the user is added to.
         $userGroups = $this->getUser()->getGroups();
-        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray(), $entityType);
+        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups ? $userGroups->toArray() : [], $entityType);
 
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
@@ -119,25 +159,32 @@ class AdminController extends EasyAdminController
                 /* @var System $item */
                 foreach ($paginator->getItems() as $item) {
                     $items[$item->getId()] = [
-                        'entity.system.id' => $item->getId(),
-                        'entity.system.sys_title' => $item->getSysTitle(),
-                        'entity.system.groups' => $item->getGroups() ? array_reduce($item->getGroups()->toArray(), function ($carry, Group $group) {
-                            if (strlen($carry) > 0) {
-                                $carry .= ', ';
-                            }
-                            $carry .= $group->getName();
-                            return $carry;
-                        }, '') : '',
-                        'entity.system.sys_owner_sub' => $item->getSysOwnerSub(),
-                        'entity.system.sys_system_owner' => $item->getSysSystemOwner(),
-                        'entity.system.sys_link' => '<a href="'.$item->getSysLink().'">Link</a>',
-                        'entity.system.selfServiceAvailableFromItems' => array_reduce($item->getSelfServiceAvailableFromItems()
-                            ->toArray(), function ($carry, $item) {
-                            $carry = (strlen($carry) > 0) ? $carry.', '.$item : $item;
+                        'entity' => $item,
+                        'permission' => [
+                            'show' => $this->isGranted('show', $item),
+                            'edit' => $this->isGranted('edit', $item),
+                        ],
+                        'fields' => [
+                            'entity.system.id' => $item->getId(),
+                            'entity.system.sys_title' => $item->getSysTitle(),
+                            'entity.system.groups' => $item->getGroups() ? array_reduce($item->getGroups()->toArray(), function ($carry, Group $group) {
+                                if (strlen($carry) > 0) {
+                                    $carry .= ', ';
+                                }
+                                $carry .= $group->getName();
+                                return $carry;
+                            }, '') : '',
+                            'entity.system.sys_owner_sub' => $item->getSysOwnerSub(),
+                            'entity.system.sys_system_owner' => $item->getSysSystemOwner(),
+                            'entity.system.sys_link' => '<a href="'.$item->getSysLink().'">Link</a>',
+                            'entity.system.selfServiceAvailableFromItems' => array_reduce($item->getSelfServiceAvailableFromItems()
+                                ->toArray(), function ($carry, $item) {
+                                $carry = (strlen($carry) > 0) ? $carry.', '.$item : $item;
 
-                            return $carry;
-                        }, ''),
-                        'entity.system.text' => $item->getTextSet() ? '<label class="label label-success">Ja</label>' : '',
+                                return $carry;
+                            }, ''),
+                            'entity.system.text' => $item->getTextSet() ? '<label class="label label-success">Ja</label>' : '',
+                        ],
                     ];
                 }
                 break;
@@ -145,19 +192,26 @@ class AdminController extends EasyAdminController
                 /* @var Report $item */
                 foreach ($paginator->getItems() as $item) {
                     $items[$item->getId()] = [
-                        'entity.report.id' => $item->getId(),
-                        'entity.report.sys_title' => $item->getSysTitle(),
-                        'entity.report.groups' => $item->getGroups() ? array_reduce($item->getGroups()->toArray(), function ($carry, Group $group) {
-                            if (strlen($carry) > 0) {
-                                $carry .= ', ';
-                            }
-                            $carry .= $group->getName();
-                            return $carry;
-                        }, '') : '',
-                        'entity.report.sys_owner_sub' => $item->getSysOwnerSub(),
-                        'entity.report.sys_system_owner' => $item->getSysSystemOwner(),
-                        'entity.report.sys_link' => '<a href="'.$item->getSysLink().'">Link</a>',
-                        'entity.report.text' => $item->getTextSet() ? '<label class="label label-success">Ja</label>' : '',
+                        'entity' => $item,
+                        'permission' => [
+                            'show' => $this->isGranted('show', $item),
+                            'edit' => $this->isGranted('edit', $item),
+                        ],
+                        'fields' => [
+                            'entity.report.id' => $item->getId(),
+                            'entity.report.sys_title' => $item->getSysTitle(),
+                            'entity.report.groups' => $item->getGroups() ? array_reduce($item->getGroups()->toArray(), function ($carry, Group $group) {
+                                if (strlen($carry) > 0) {
+                                    $carry .= ', ';
+                                }
+                                $carry .= $group->getName();
+                                return $carry;
+                            }, '') : '',
+                            'entity.report.sys_owner_sub' => $item->getSysOwnerSub(),
+                            'entity.report.sys_system_owner' => $item->getSysSystemOwner(),
+                            'entity.report.sys_link' => '<a href="'.$item->getSysLink().'">Link</a>',
+                            'entity.report.text' => $item->getTextSet() ? '<label class="label label-success">Ja</label>' : '',
+                        ]
                     ];
                 }
                 break;
@@ -199,7 +253,7 @@ class AdminController extends EasyAdminController
             $userGroups = $this->getUser()->getGroups();
         }
 
-        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups->toArray(), $entityType);
+        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups ? $userGroups->toArray() : [], $entityType);
 
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
@@ -253,11 +307,8 @@ class AdminController extends EasyAdminController
             }
         }
 
-        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories,
-            $formParameters, $subOwnerOptions, true, true);
-        $filterFormBuilder->setMethod('GET')
-            ->setAction($this->generateUrl('dashboard',
-                ['entityType' => $entityType]));
+        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subOwnerOptions, true, true);
+        $filterFormBuilder->setMethod('GET')->setAction($this->generateUrl('dashboard', ['entityType' => $entityType]));
 
         return $this->render('dashboard.html.twig', [
             'paginator' => $paginator,
@@ -421,6 +472,7 @@ class AdminController extends EasyAdminController
         array $formParameters
     ) {
         $query->andWhere('e.archivedAt IS NULL');
+        // @TODO: Filter inactive out.
 
         // Get the groups the user can search in.
         if (!empty($formParameters['groups'])) {
@@ -472,6 +524,10 @@ class AdminController extends EasyAdminController
                 }
 
                 return $carry;
-            }, []);
+            }, [
+                'groups' => [],
+                'themes' => [],
+                'categories' => [],
+            ]);
     }
 }

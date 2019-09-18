@@ -807,7 +807,14 @@ class System
      */
     public function getAnswerArea()
     {
-        return $this->getTheme();
+        $themes = [];
+        $groups = $this->getGroups();
+
+        foreach ($groups as $group) {
+            $themes = array_merge($themes, $group->getSystemThemes()->toArray());
+        }
+
+        return $themes;
     }
 
     public function getSysLink(): ?string
