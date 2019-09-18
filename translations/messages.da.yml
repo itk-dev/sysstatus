@@ -57,7 +57,7 @@ entity:
         name: Internt navn
         text: Noter
         theme: Tema
-        group: Gruppe
+        groups: Grupper
         answers: Smileys
         edoc_url: Link til systemdokumentation
         sys_id: Id
@@ -100,7 +100,7 @@ entity:
         name: Internt navn
         text: Noter
         theme: Tema
-        group: Gruppe
+        groups: Grupper
         answers: Smileys
         answers_remarks: Rediger
         answers_remarks_create: Opret

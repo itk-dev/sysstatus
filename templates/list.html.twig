@@ -45,7 +45,7 @@
     <table class="table table-striped table-sm table-hover" style="background-color: white;">
       {% if items|length > 0 %}
       <thead>
-      {% for key,field in items|first %}
+      {% for key,field in (items|first).fields %}
         <th style="padding: 1em;">{{ key|trans }}</th>
       {% endfor %}
       <th></th>

@@ -186,7 +186,7 @@ easy_admin:
                     - { property: 'name', label: 'entity.system.name' }
                     - { property: 'text', label: 'entity.system.text', type: 'raw' }
                     - { property: 'sys_system_owner', label: 'entity.system.sys_system_owner' }
-                    - { property: 'groups', label: 'entity.system.group', type: 'text' }
+                    - { property: 'groups', label: 'entity.system.group' }
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'raw' }
                     - { property: 'sys_internal_id', label: 'entity.system.sys_id', type: 'text' }
