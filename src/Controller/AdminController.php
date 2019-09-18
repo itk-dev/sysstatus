@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Answer;
 use App\Entity\Group;
 use App\Entity\Report;
 use App\Entity\SelfServiceAvailableFromItem;
@@ -55,14 +56,25 @@ class AdminController extends EasyAdminController
     public function editAction()
     {
         $entityArray = $this->entity;
-        if ($entityArray['class'] == Report::class || $entityArray['class'] == System::class) {
-            $entity = $this->entityManager->getRepository($entityArray['class'])->find($_GET['id']);
-            $accessGranted = $this->isGranted('edit', $entity);
+        switch ($entityArray['class']) {
+            case Report::class:
+            case System::class:
+                $entity = $this->entityManager->getRepository($entityArray['class'])->find($_GET['id']);
+                $accessGranted = $this->isGranted('edit', $entity);
 
-            if (!$accessGranted) {
-                $this->addFlash('error', $this->translator->trans('flash.access_denied'));
-                return $this->redirectToRoute('list', ['entityType' => strtolower($entityArray['name'])]);
-            }
+                if (!$accessGranted) {
+                    $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
+                    return $this->redirectToRoute('list', ['entityType' => strtolower($entityArray['name'])]);
+                }
+                break;
+            case Answer::class:
+                $entity = $this->entityManager->getRepository($entityArray['class'])->find($_GET['id']);
+                $accessGranted = $this->isGranted('edit', $entity);
+                if (!$accessGranted) {
+                    $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
+                    $this->redirectToReferrer();
+                }
+                break;
         }
 
         return parent::editAction();
@@ -120,9 +132,8 @@ class AdminController extends EasyAdminController
             'search' => '',
         ], $queryParameters->get('form') ?: []);
 
-        // Get the groups the user is added to.
-        $userGroups = $this->getUser()->getGroups();
-        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups ? $userGroups->toArray() : [], $entityType);
+        $userGroups = $this->entityManager->getRepository(Group::class)->findAll();
+        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups ?: [], $entityType);
 
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
@@ -243,17 +254,8 @@ class AdminController extends EasyAdminController
             'search' => '',
         ], $queryParameters->get('form') ?: []);
 
-        $user = $this->getUser();
-
-        // Get the groups the user is added to.
-        if ($user->hasRole('ROLE_ADMIN')) {
-            $userGroups = $this->entityManager->getRepository(Group::class)->findAll();
-        }
-        else {
-            $userGroups = $this->getUser()->getGroups();
-        }
-
-        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups ? $userGroups->toArray() : [], $entityType);
+        $userGroups = $this->entityManager->getRepository(Group::class)->findAll();
+        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups ?: [], $entityType);
 
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
@@ -373,7 +375,6 @@ class AdminController extends EasyAdminController
      * @param $userGroupsThemesAndCategories
      * @param $formParameters
      * @param $subownerOptions
-     * @param $entityType
      * @param bool $filterThemes
      * @param bool $filterCategories
      * @return \Symfony\Component\Form\FormBuilderInterface

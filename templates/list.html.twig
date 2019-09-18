@@ -56,14 +56,14 @@
           {% for key,field in item.fields %}
             <td style="padding: 1em;">{{ field|raw }}</td>
           {% endfor %}
-          <td>
+          <td class="text-right">
             {% if item.permission.show %}
-              <a class="btn btn-sm btn-primary" href="{{ path('easyadmin', { action: 'show', id: itemId, entity: entityType|capitalize }) }}">
+              <a class="btn btn-sm btn-primary m-1" href="{{ path('easyadmin', { action: 'show', id: itemId, entity: entityType|capitalize }) }}">
                 {{ 'actions.show'|trans }}
               </a>
             {% endif %}
             {% if item.permission.edit %}
-              <a class="btn btn-sm btn-warning" href="{{ path('easyadmin', { action: 'edit', id: itemId, entity: entityType|capitalize }) }}">
+              <a class="btn btn-sm btn-warning m-1" href="{{ path('easyadmin', { action: 'edit', id: itemId, entity: entityType|capitalize }) }}">
                 {{ 'actions.edit'|trans }}
               </a>
             {% endif %}

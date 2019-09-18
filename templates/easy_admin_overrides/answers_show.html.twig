@@ -35,7 +35,7 @@
             {% if answer in item.answers %}
               {% set numberOfAnswers = numberOfAnswers + 1 %}
               <td>
-                <a href="?entity=Answer&id={{ answer.id }}&action=edit&referer=%252F%253Fentity%253D{{ itemClass }}%2526action%253Dshow%2526id%253D{{ item.id }}">
+                <a href="{{ easyadmin_path('Answer', 'edit', { id: answer.id }) }}">
                   <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
                 </a>
               </td>
@@ -44,7 +44,7 @@
           {% if numberOfAnswers == 0 %}
             <td></td>
             <td>
-              <a href="answer/new?question={{ question.id }}&{{ itemClass | lower }}={{ item.id }}&referer=%252F%253Fentity%253D{{ itemClass }}%2526action%253Dshow%2526id%253D{{ item.id }}">
+              <a href="answer/new?question={{ question.id }}&{{ itemClass | lower }}={{ item.id }}&referrer={{ app.request.uri|url_encode }}">
                 <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
               </a>
             </td>

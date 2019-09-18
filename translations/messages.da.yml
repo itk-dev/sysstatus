@@ -11,6 +11,9 @@ filter:
         search: Søg på navn
         self_service: Filtrér på selvbetjening
 
+flash:
+    access_denied: Du har ikke adgang til at tilgå denne resurse.
+
 list:
     no_result: Ingen resultater
     system: Systemer
@@ -146,6 +149,7 @@ entity:
         sys_data_to_science: Videregivelse af oplysninger til forskning
         sys_system_owner: Systemejer
 menu:
+    configuration: Konfiguration
     notes: Notater
     systemportal: Fra systemportalen
     general: Redigerbar Data
@@ -165,8 +169,8 @@ menu:
         reports: Anmeldelser
         systems: Systemer
     dashboard:
-        reports: 'Dashboard - Anmeldelser'
-        systems: 'Dashboard - Systemer'
+        reports: 'Dashboard: Anmeldelser'
+        systems: 'Dashboard: Systemer'
     groups: Grupper
     theme_category: Tema-Kategori
     exports: Eksport

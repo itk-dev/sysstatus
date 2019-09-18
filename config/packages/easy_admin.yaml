@@ -14,16 +14,16 @@ easy_admin:
             label_null: 'easy_admin_overrides/label_null.html.twig'
         menu:
             - { label: 'menu.dashboards' }
-            - { label: 'menu.dashboard.reports', icon: 'file', route: 'dashboard', params: { entityType: 'report' } }
+            - { label: 'menu.dashboard.reports', icon: 'file-alt', route: 'dashboard', params: { entityType: 'report' } }
             - { label: 'menu.dashboard.systems', icon: 'cogs', route: 'dashboard', params: { entityType: 'system' } }
             - { label: 'menu.sysstatus' }
-            - { label: 'menu.list.reports', icon: 'file', route: 'list', params: { entityType: 'report' } }
-            - { label: 'menu.list.systems', icon: 'cogs', route: 'list', params: { entityType: 'system' } }
+            - { label: 'menu.list.reports', icon: 'file', route: 'list', params: { entityType: 'report' }, default: true }
+            - { label: 'menu.list.systems', icon: 'cog', route: 'list', params: { entityType: 'system' } }
             - { label: 'menu.configuration' }
-            - { entity: 'Theme', icon: 'th-large', label: 'menu.themes', permission: 'ROLE_ADMIN' }
-            - { entity: 'ThemeCategory', icon: 'arrows-v', label: 'menu.theme_category', permission: 'ROLE_ADMIN' }
-            - { entity: 'Category', icon: 'list', label: 'menu.categories', permission: 'ROLE_ADMIN' }
-            - { entity: 'Question', icon: 'question', label: 'menu.questions', permission: 'ROLE_ADMIN' }
+            - { entity: 'Theme', icon: 'th-large', label: 'menu.themes' }
+            - { entity: 'ThemeCategory', icon: 'arrows-v', label: 'menu.theme_category' }
+            - { entity: 'Category', icon: 'list', label: 'menu.categories' }
+            - { entity: 'Question', icon: 'question', label: 'menu.questions' }
             - { label: 'menu.admin', permission: ['ROLE_ADMIN'] }
             - { entity: 'User', icon: 'user', label: 'menu.users', permission: 'ROLE_ADMIN' }
             - { entity: 'Group', icon: 'users', label: 'menu.groups', permission: 'ROLE_ADMIN' }
@@ -133,7 +133,7 @@ easy_admin:
                     - { property: 'name', label: 'entity.report.name' }
                     - { property: 'text', label: 'entity.report.text', type: 'raw' }
                     - { property: 'sys_system_owner', label: 'entity.report.sys_system_owner' }
-                    - { property: 'groups', label: 'entity.report.group' }
+                    - { property: 'groups', label: 'entity.report.groups' }
                     - { property: 'answerarea', label: 'entity.report.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_alternative_title', label: 'entity.report.sys_alternative_title', type: 'raw' }
                     - { property: 'sys_updated', label: 'entity.report.sys_updated', type: 'datetime' }
@@ -186,7 +186,7 @@ easy_admin:
                     - { property: 'name', label: 'entity.system.name' }
                     - { property: 'text', label: 'entity.system.text', type: 'raw' }
                     - { property: 'sys_system_owner', label: 'entity.system.sys_system_owner' }
-                    - { property: 'groups', label: 'entity.system.group' }
+                    - { property: 'groups', label: 'entity.system.groups' }
                     - { property: 'answerarea', label: 'entity.system.answers', type: 'App\Entity\Answer', template: 'easy_admin_overrides/answers_show.html.twig' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'raw' }
                     - { property: 'sys_internal_id', label: 'entity.system.sys_id', type: 'text' }
