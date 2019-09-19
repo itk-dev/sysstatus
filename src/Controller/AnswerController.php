@@ -78,7 +78,7 @@ class AnswerController extends Controller
                 'action' => 'edit',
                 'id' => $answer->getId(),
                 'entity' => 'Answer',
-                'referrer' => $request->query->get('referrer'),
+                'referer' => $request->query->get('referer'),
             ]
         );
     }
