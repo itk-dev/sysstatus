@@ -84,7 +84,7 @@
         {% endfor %}
       {% else %}
         <tr>
-          <td colspan="100%">
+          <td colspan="{{paginator|length + 2}}">
             <div>{{ 'dashboard.no_categories_for_result' | trans }}</div>
           </td>
         </tr>
