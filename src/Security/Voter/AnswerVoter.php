@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Answer;
+use App\Entity\Group;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -48,20 +49,19 @@ class AnswerVoter extends Voter
 
         $entity = $report == null ? $system : $report;
 
-        $userGroups = array_map(function($e) {
-            return is_object($e) ? $e->getId() : null;
-        }, $user->getGroups()->toArray());
-        $entityGroups = array_map(function($e) {
-            return is_object($e) ? $e->getId() : null;
-        }, $entity->getGroups()->toArray());
+        $userGroups = $user->getGroups()->map(function (Group $group) {
+            return $group->getId();
+        })->getValues();
+        $entityGroups = $entity->getGroups()->map(function (Group $group) {
+            return $group->getId();
+        })->getValues();
+
+        $userInEntityGroup = count(array_intersect($userGroups, $entityGroups)) > 0;
 
         switch ($attribute) {
             case self::SHOW:
             case self::EDIT:
-                if (count(array_intersect($userGroups, $entityGroups)) > 0) {
-                    return true;
-                }
-                break;
+                return $userInEntityGroup;
         }
 
         return false;
