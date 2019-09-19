@@ -136,7 +136,7 @@ class SystemImporter extends BaseImporter
                     ['name' => $groupName]
                 );
 
-                if ($findGroup && !in_array($findGroup, $system->getGroups()->toArray())) {
+                if ($findGroup && !$system->getGroups()->contains($findGroup)) {
                     $system->addGroup($findGroup);
                 }
 

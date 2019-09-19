@@ -92,7 +92,7 @@ class ReportImporter extends BaseImporter
                     ['name' => $groupName]
                 );
 
-                if ($findGroup && !in_array($findGroup, $report->getGroups()->toArray())) {
+                if ($findGroup && !$report->getGroups()->contains($findGroup)) {
                     $report->addGroup($findGroup);
                 }
 
