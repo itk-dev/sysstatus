@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
@@ -38,7 +39,7 @@ class User extends BaseUser
     }
 
     /**
-     * @return mixed
+     * @return Collection|Group[]
      */
     public function getGroups()
     {
@@ -46,7 +47,7 @@ class User extends BaseUser
     }
 
     /**
-     * @param mixed $groups
+     * @param \Doctrine\Common\Collections\Collection $groups
      */
     public function setGroups($groups): void
     {

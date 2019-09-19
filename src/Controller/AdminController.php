@@ -60,7 +60,7 @@ class AdminController extends EasyAdminController
         switch ($entityArray['class']) {
             case Report::class:
             case System::class:
-                $entity = $this->entityManager->getRepository($entityArray['class'])->find($_GET['id']);
+                $entity = $this->getEntity($entityArray['class'], $_GET('id'));
                 $accessGranted = $this->isGranted('edit', $entity);
 
                 if (!$accessGranted) {
@@ -69,8 +69,9 @@ class AdminController extends EasyAdminController
                 }
                 break;
             case Answer::class:
-                $entity = $this->entityManager->getRepository($entityArray['class'])->find($_GET['id']);
+                $entity = $this->getEntity($entityArray['class'], $_GET['id']);
                 $accessGranted = $this->isGranted('edit', $entity);
+
                 if (!$accessGranted) {
                     $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
                     $this->redirectToReferrer();
@@ -90,7 +91,7 @@ class AdminController extends EasyAdminController
     {
         $entityArray = $this->entity;
         if ($entityArray['class'] == Report::class || $entityArray['class'] == System::class) {
-            $entity = $this->entityManager->getRepository($entityArray['class'])->find($_GET['id']);
+            $entity = $this->getEntity($entityArray['class'], $_GET['id']);
             $accessGranted = $this->isGranted('show', $entity);
 
             if (!$accessGranted) {
@@ -319,6 +320,16 @@ class AdminController extends EasyAdminController
             'filters' => $filterFormBuilder->getForm()->createView(),
             'entityType' => $entityType,
         ]);
+    }
+
+    /**
+     * @param $className
+     * @param $id
+     * @return object|null
+     */
+    private function getEntity($className, $id)
+    {
+        return $this->entityManager->getRepository($className)->find($id);
     }
 
     /**
