@@ -53,6 +53,11 @@ class AdminController extends EasyAdminController
         $this->translator = $translator;
     }
 
+    /**
+     * Overrides EasyAdmin delete action.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction()
     {
         $entityArray = $this->entity;
@@ -78,7 +83,7 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * Overrides.
+     * Overrides EasyAdmin edit action.
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -108,7 +113,7 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * Overrides.
+     * Overrides EasyAdmin show action.
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -129,7 +134,7 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * Overrides
+     * Overrides EasyAdmin list action.
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
