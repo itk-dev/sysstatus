@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Answer;
+use App\Entity\Category;
 use App\Entity\Group;
+use App\Entity\Question;
 use App\Entity\Report;
 use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
+use App\Entity\Theme;
+use App\Entity\ThemeCategory;
 use App\Repository\CategoryRepository;
 use App\Repository\ThemeCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,6 +53,30 @@ class AdminController extends EasyAdminController
         $this->translator = $translator;
     }
 
+    public function deleteAction()
+    {
+        $entityArray = $this->entity;
+        switch ($entityArray['class']) {
+            case Report::class:
+            case System::class:
+            case Answer::class:
+            case Theme::class:
+            case ThemeCategory::class:
+            case Category::class:
+            case Question::class:
+                $entity = $this->getEntity($entityArray['class'], $_GET['id']);
+                $accessGranted = $this->isGranted('delete', $entity);
+
+                if (!$accessGranted) {
+                    $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
+                    return $this->redirectToReferrer();
+                }
+                break;
+        }
+
+        return parent::deleteAction();
+    }
+
     /**
      * Overrides.
      *
@@ -60,24 +88,21 @@ class AdminController extends EasyAdminController
         switch ($entityArray['class']) {
             case Report::class:
             case System::class:
-                $entity = $this->getEntity($entityArray['class'], $_GET('id'));
-                $accessGranted = $this->isGranted('edit', $entity);
-
-                if (!$accessGranted) {
-                    $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
-                    return $this->redirectToRoute('list', ['entityType' => strtolower($entityArray['name'])]);
-                }
-                break;
             case Answer::class:
+            case Theme::class:
+            case ThemeCategory::class:
+            case Category::class:
+            case Question::class:
                 $entity = $this->getEntity($entityArray['class'], $_GET['id']);
                 $accessGranted = $this->isGranted('edit', $entity);
 
                 if (!$accessGranted) {
                     $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
-                    $this->redirectToReferrer();
+                    return $this->redirectToReferrer();
                 }
                 break;
         }
+
 
         return parent::editAction();
     }

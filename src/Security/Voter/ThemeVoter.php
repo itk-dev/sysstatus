@@ -2,15 +2,16 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Answer;
 use App\Entity\Group;
+use App\Entity\Theme;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class AnswerVoter extends AbstractVoter
+class ThemeVoter extends AbstractVoter
 {
     protected function supports($attribute, $subject)
     {
-        return $this->isSupported($attribute, $subject, [Answer::class]);
+        return $this->isSupported($attribute, $subject, [Theme::class]);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -23,20 +24,24 @@ class AnswerVoter extends AbstractVoter
             return true;
         }
 
-        $report = $subject->getReport();
-        $system = $subject->getSystem();
+        /* @var \Doctrine\Common\Collections\ArrayCollection $systemGroups */
+        $systemGroups = $subject->getSystemGroups();
+        /* @var \Doctrine\Common\Collections\Collection $reportGroups */
+        $reportGroups = $subject->getReportGroups();
 
-        if ($system == null && $report == null) {
+        if ($systemGroups == null && $reportGroups == null) {
             return false;
         }
 
-        $entity = $report == null ? $system : $report;
+        $entityGroups = $systemGroups->map(function (Group $group) {
+            return $group->getId();
+        })->getValues();
+        $entityGroups = array_merge($entityGroups, $reportGroups->map(function (Group $group) {
+            return $group->getId();
+        })->getValues());
 
         $user = $token->getUser();
         $userGroups = $user->getGroups()->map(function (Group $group) {
-            return $group->getId();
-        })->getValues();
-        $entityGroups = $entity->getGroups()->map(function (Group $group) {
             return $group->getId();
         })->getValues();
 
@@ -45,9 +50,10 @@ class AnswerVoter extends AbstractVoter
         switch ($attribute) {
             case self::SHOW:
             case self::EDIT:
-            case self::NEW:
-            case self::DELETE:
                 return $userInEntityGroup;
+            case self::DELETE:
+            case self::NEW:
+                return $userInEntityGroup && $user->hasRole('ROLE_GROUP_ADMIN');
         }
 
         return false;
