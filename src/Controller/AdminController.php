@@ -54,6 +54,24 @@ class AdminController extends EasyAdminController
     }
 
     /**
+     * Overrides EasyAdmin new action.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function newAction()
+    {
+        $entityArray = $this->entity;
+        switch ($entityArray['class']) {
+            case Theme::class:
+                return $this->redirectToRoute('theme_new');
+            case Category::class:
+                return $this->redirectToRoute('category_new');
+        }
+
+        return parent::newAction();
+    }
+
+    /**
      * Overrides EasyAdmin delete action.
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -108,6 +126,13 @@ class AdminController extends EasyAdminController
                 break;
         }
 
+        // Edit form overrides.
+        switch ($entityArray['class']) {
+            case Theme::class:
+                return $this->redirectToRoute('theme_edit', ['id' => $entity->getId()]);
+            case Category::class:
+                return $this->redirectToRoute('category_edit', ['id' => $entity->getId()]);
+        }
 
         return parent::editAction();
     }

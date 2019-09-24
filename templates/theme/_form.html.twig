@@ -1,0 +1,65 @@
+{% import _self as formMacros %}
+
+{% macro printThemeCategory(themeCategory) %}
+    <tr>
+        <td>
+            {{ form_row(themeCategory.sortOrder) }}
+        </td>
+        <td>
+            {{ form_row(themeCategory.category) }}
+        </td>
+    </tr>
+{% endmacro %}
+
+{{ form_start(form) }}
+<div class="m-2">
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+    {{ form_help(form.name) }}
+    <div class="form-errors">
+        {{ form_errors(form.name) }}
+    </div>
+</div>
+<div class="m-2">
+    {{ form_label(form.systemGroups) }}
+    {{ form_widget(form.systemGroups) }}
+    {{ form_help(form.systemGroups) }}
+    <div class="form-errors">
+        {{ form_errors(form.systemGroups) }}
+    </div>
+</div>
+<div class="m-2">
+    {{ form_label(form.reportGroups) }}
+    {{ form_widget(form.reportGroups) }}
+    {{ form_help(form.reportGroups) }}
+    <div class="form-errors">
+        {{ form_errors(form.reportGroups) }}
+    </div>
+</div>
+<div class="m-2">
+    {{ form_label(form.themeCategories) }}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ 'theme.form.sort_order'|trans }}</th>
+                <th>{{ 'theme.form.category'|trans }}</th>
+                <th> </th>
+            </tr>
+        </thead>
+
+        <tbody class="themeCategories" data-prototype="{{ formMacros.printThemeCategory(form.themeCategories.vars.prototype)|e('html_attr') }}">
+            {% for themeCategory in form.themeCategories %}
+                {{ formMacros.printThemeCategory(themeCategory) }}
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ form_widget(form.themeCategories) }}
+    {{ form_help(form.themeCategories) }}
+    <div class="form-errors">
+        {{ form_errors(form.themeCategories) }}
+    </div>
+</div>
+<div class="mt-4">
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+</div>
+{{ form_end(form) }}

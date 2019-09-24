@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use FOS\UserBundle\Model\GroupInterface;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
@@ -25,11 +26,8 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group")
-     * @ORM\JoinTable(name="fos_user_user_group",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
+     * @ORM\JoinTable(name="fos_user_user_group")
      */
     protected $groups;
 
@@ -52,5 +50,25 @@ class User extends BaseUser
     public function setGroups($groups): void
     {
         $this->groups = $groups;
+    }
+
+    public function addGroup(GroupInterface $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+            $group->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(GroupInterface $group): self
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+            $group->removeGroup($this);
+        }
+
+        return $this;
     }
 }

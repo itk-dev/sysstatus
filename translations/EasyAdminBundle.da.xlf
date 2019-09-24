@@ -6,6 +6,14 @@
                 <source>label.false</source>
                 <target>Nej</target>
             </trans-unit>
+            <trans-unit id="paginator.result">
+                <source>paginator.result</source>
+                <target>Resultat</target>
+            </trans-unit>
+            <trans-unit id="paginator.results">
+                <source>paginator.results</source>
+                <target>Resultater</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

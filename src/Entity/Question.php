@@ -126,9 +126,12 @@ class Question
 
     /**
      * @param mixed $sortOrder
+     * @return \App\Entity\Question
      */
-    public function setSortOrder($sortOrder): void
+    public function setSortOrder($sortOrder): \App\Entity\Question
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 }
