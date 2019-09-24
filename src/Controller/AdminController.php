@@ -195,7 +195,7 @@ class AdminController extends EasyAdminController
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters);
+        $query = $this->applyFilters($query, $formParameters, $entityType);
 
         // Get sub owners if a group has been selected.
         $subOwnerOptions = $this->getSubOwnerOptions($repository, $formParameters['groups']);
@@ -317,7 +317,7 @@ class AdminController extends EasyAdminController
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters);
+        $query = $this->applyFilters($query, $formParameters, $entityType);
 
         // Get sub owners if a group has been selected.
         $subOwnerOptions = $this->getSubOwnerOptions($repository, $formParameters['groups']);
@@ -537,10 +537,18 @@ class AdminController extends EasyAdminController
      */
     private function applyFilters(
         QueryBuilder $query,
-        array $formParameters
+        array $formParameters,
+        $entityType = null
     ) {
         $query->andWhere('e.archivedAt IS NULL');
-        // @TODO: Filter inactive out.
+
+        // Filter inactives out.
+        if ($entityType == 'report') {
+            $query->andWhere('e.sysStatus = \'Aktiv\'');
+        }
+        else if ($entityType == 'system') {
+            $query->andWhere('e.sysStatus <> \'Systemet bruges ikke længere\'');
+        }
 
         // Get the groups the user can search in.
         if (!empty($formParameters['groups'])) {
