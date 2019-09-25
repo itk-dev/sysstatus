@@ -24,6 +24,11 @@
       <div class="col">
         {{ form_widget(filters.category) }}
       </div>
+      {% if filters.self_service is defined %}
+        <div class="col">
+          {{ form_widget(filters.self_service) }}
+        </div>
+      {% endif %}
       <div class="col-4">
         {{ form_widget(filters.search) }}
       </div>
