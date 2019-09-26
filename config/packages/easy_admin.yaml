@@ -33,7 +33,7 @@ easy_admin:
     entities:
         Theme:
             class: App\Entity\Theme
-            item_permission: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
+            item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
             show:
                 fields:
                     - { property: 'id', label: 'entity.theme.id' }
@@ -49,6 +49,7 @@ easy_admin:
                     - { property: 'systemGroups', label: 'entity.theme.system_groups' }
                     - { property: 'reportGroups', label: 'entity.theme.report_groups' }
                 sort: ['id', 'ASC']
+            # Overridden by AdminController
             form:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
@@ -58,13 +59,14 @@ easy_admin:
 
         Category:
             class: App\Entity\Category
-            item_permission: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
+            item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
             list:
                 fields:
                     - { property: 'id', label: 'entity.category.id' }
                     - { property: 'name', label: 'entity.category.name' }
                     - { property: 'questions', label: 'entity.category.questions' }
                 sort: ['id', 'ASC']
+            # Overridden by AdminController
             form:
                 fields:
                     - { property: 'name', label: 'entity.category.name' }
@@ -72,6 +74,7 @@ easy_admin:
         Answer:
             class: App\Entity\Answer
             list:
+                # Not accessible through UI.
                 item_permission: ['ROLE_SUPER_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.answer.id' }
@@ -86,8 +89,9 @@ easy_admin:
 
         Report:
             class: App\Entity\Report
+            # Overridden by AdminController
             list:
-                item_permission: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']
+                item_permission: ['ROLE_SUPER_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.report.id' }
             show:
@@ -144,8 +148,9 @@ easy_admin:
 
         System:
             class: App\Entity\System
+            # Overridden by AdminController
             list:
-                item_permission: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']
+                item_permission: ['ROLE_SUPER_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.system.id' }
             show:
@@ -195,7 +200,7 @@ easy_admin:
                     - { property: 'edoc_url', label: 'entity.system.edoc_url', type: 'text', type_options: { required: false } }
 
         User:
-            item_permission: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']
+            item_permission: ['ROLE_ADMIN']
             class: App\Entity\User
             list:
                 fields:
@@ -225,7 +230,7 @@ easy_admin:
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_GROUP_ADMIN': 'ROLE_GROUP_ADMIN', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
 
         Group:
-            item_permission: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']
+            item_permission: ['ROLE_ADMIN']
             class: App\Entity\Group
             list:
                 fields:
