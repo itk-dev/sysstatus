@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\GroupInterface;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -34,6 +35,8 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
+
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -56,7 +59,7 @@ class User extends BaseUser
     {
         if (!$this->groups->contains($group)) {
             $this->groups[] = $group;
-            $group->addGroup($this);
+            $group->addUser($this);
         }
 
         return $this;
@@ -66,7 +69,7 @@ class User extends BaseUser
     {
         if ($this->groups->contains($group)) {
             $this->groups->removeElement($group);
-            $group->removeGroup($this);
+            $group->removeUser($this);
         }
 
         return $this;
