@@ -4,8 +4,11 @@ namespace App\Service;
 
 use App\DBAL\Types\SmileyType;
 use App\Entity\Answer;
+use App\Entity\Category;
+use App\Entity\Group;
 use App\Entity\Report;
 use App\Entity\System;
+use App\Entity\Theme;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use App\Repository\ThemeRepository;
@@ -148,30 +151,19 @@ class DataExporter
         $spreadsheet->setActiveSheetIndex($sheetIndex);
 
         $themesThatApply = [];
+        $groupsThatApply = [];
 
-        // Find themes that is attached to the entities.
-        $themes = $this->themeRepository->findAll();
-        foreach ($themes as $theme) {
-            if ($type == Report::class) {
-                if (count($theme->getReports()) > 0 &&
-                    count(array_intersect(
-                        $theme->getReports()->toArray(),
-                        $entities
-                    )) > 0
-                ) {
-                    $themesThatApply[] = $theme;
-                }
-            } else {
-                if ($type == System::class) {
-                    if (count($theme->getSystems()) > 0 &&
-                        count(array_intersect(
-                            $theme->getSystems()->toArray(),
-                            $entities
-                        )) > 0
-                    ) {
-                        $themesThatApply[] = $theme;
-                    }
-                }
+        foreach ($entities as $entity) {
+            foreach ($entity->getGroups() as $group) {
+                $groupsThatApply[$group->getId()] = $group;
+            }
+        }
+
+        /* @var Group $group */
+        foreach ($groupsThatApply as $group) {
+            $themes = $type == Report::class ? $group->getReportThemes() : $group->getSystemThemes();
+            foreach ($themes as $theme) {
+                $themesThatApply[$theme->getId()] = $theme;
             }
         }
 
@@ -188,7 +180,7 @@ class DataExporter
 
         $answerColumns = [];
 
-        $categoryRow = ['Kategorier', '', '', '', '', ''];
+        $categoryRow = ['Kategorier', '', '', '', ''];
 
         foreach ($categories as $category) {
             $categoryRow[] = $category->getName();
@@ -217,7 +209,6 @@ class DataExporter
             'Status',
             'Gruppe',
             'Afdeling',
-            'Tema',
         ];
 
         $headings = array_merge(
@@ -324,9 +315,10 @@ class DataExporter
                 $entity->getSysInternalId(),
                 $entity->getSysTitle(),
                 $entity->getSysStatus(),
-                $entity->getGroup()->getName(),
+                implode(",", $entity->getGroups()->map(function (Group $group) {
+                    return $group->getName();
+                })->getValues()),
                 $entity->getSysOwnerSub(),
-                $entity->getTheme(),
             ];
 
             // Insert each cell for the entity row.
@@ -407,25 +399,37 @@ class DataExporter
     /**
      * Test if a category applies to an entity
      *
-     * @param $entity
-     * @param $category
+     * @param Report|System $entity
+     * @param Category $category
      * @return bool
      */
     private function categoryAppliesToEntity($entity, $category)
     {
-        $theme = $entity->getTheme();
+        $groupIds = $entity->getGroups()->map(function ($item) {
+            return $item->getId();
+        })->getValues();
 
-        if (is_null($theme)) {
-            return false;
-        }
+        $entityClassName = get_class($entity);
 
-        foreach ($theme->getThemeCategories() as $themeCategory) {
-            if ($themeCategory->getCategory() == $category) {
-                return true;
-            }
-        }
+        $categoryGroupIds = array_values(
+            array_reduce($category->getThemes(), function ($carry, Theme $theme) use ($entityClassName) {
+                $groups = [];
+                if ($entityClassName == Report::class) {
+                    $groups = $theme->getReportGroups();
+                }
+                else if ($entityClassName == System::class) {
+                    $groups = $theme->getSystemGroups();
+                }
 
-        return false;
+                foreach ($groups as $group) {
+                    $carry[$group->getId()] = $group->getId();
+                }
+
+                return $carry;
+            }, [])
+        );
+
+        return array_intersect($groupIds, $categoryGroupIds) > 0;
     }
 
     /**
@@ -474,7 +478,7 @@ class DataExporter
                 ->eq('e.sysStatus', $qb->expr()->literal('Aktiv')));
 
         if (isset($groupId)) {
-            $qb->andWhere($qb->expr()->eq('e.group', ':group'))
+            $qb->andWhere($qb->expr()->isMemberOf(':group', 'e.groups'))
                 ->setParameter('group', $groupId);
         }
 
@@ -513,7 +517,7 @@ class DataExporter
                     $qb->expr()->literal('Systemet bruges ikke længere')));
 
         if (isset($groupId)) {
-            $qb->andWhere($qb->expr()->eq('e.group', ':group'))
+            $qb->andWhere($qb->expr()->isMemberOf(':group', 'e.groups'))
                 ->setParameter('group', $groupId);
         }
 

@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Answer;
+use App\Entity\Category;
 use App\Entity\Group;
+use App\Entity\Question;
 use App\Entity\Report;
 use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
+use App\Entity\Theme;
+use App\Entity\ThemeCategory;
 use App\Repository\CategoryRepository;
 use App\Repository\ThemeCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,7 +54,54 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * Overrides.
+     * Overrides EasyAdmin new action.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function newAction()
+    {
+        $entityArray = $this->entity;
+        switch ($entityArray['class']) {
+            case Theme::class:
+                return $this->redirectToRoute('theme_new');
+            case Category::class:
+                return $this->redirectToRoute('category_new');
+        }
+
+        return parent::newAction();
+    }
+
+    /**
+     * Overrides EasyAdmin delete action.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction()
+    {
+        $entityArray = $this->entity;
+        switch ($entityArray['class']) {
+            case Report::class:
+            case System::class:
+            case Answer::class:
+            case Theme::class:
+            case ThemeCategory::class:
+            case Category::class:
+            case Question::class:
+                $entity = $this->getEntity($entityArray['class'], $_GET['id']);
+                $accessGranted = $this->isGranted('delete', $entity);
+
+                if (!$accessGranted) {
+                    $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
+                    return $this->redirectToReferrer();
+                }
+                break;
+        }
+
+        return parent::deleteAction();
+    }
+
+    /**
+     * Overrides EasyAdmin edit action.
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -60,30 +111,34 @@ class AdminController extends EasyAdminController
         switch ($entityArray['class']) {
             case Report::class:
             case System::class:
-                $entity = $this->getEntity($entityArray['class'], $_GET('id'));
-                $accessGranted = $this->isGranted('edit', $entity);
-
-                if (!$accessGranted) {
-                    $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
-                    return $this->redirectToRoute('list', ['entityType' => strtolower($entityArray['name'])]);
-                }
-                break;
             case Answer::class:
+            case Theme::class:
+            case ThemeCategory::class:
+            case Category::class:
+            case Question::class:
                 $entity = $this->getEntity($entityArray['class'], $_GET['id']);
                 $accessGranted = $this->isGranted('edit', $entity);
 
                 if (!$accessGranted) {
                     $this->addFlash('danger', $this->translator->trans('flash.access_denied'));
-                    $this->redirectToReferrer();
+                    return $this->redirectToReferrer();
                 }
                 break;
+        }
+
+        // Edit form overrides.
+        switch ($entityArray['class']) {
+            case Theme::class:
+                return $this->redirectToRoute('theme_edit', ['id' => $entity->getId()]);
+            case Category::class:
+                return $this->redirectToRoute('category_edit', ['id' => $entity->getId()]);
         }
 
         return parent::editAction();
     }
 
     /**
-     * Overrides.
+     * Overrides EasyAdmin show action.
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -104,7 +159,7 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * Overrides
+     * Overrides EasyAdmin list action.
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -140,7 +195,7 @@ class AdminController extends EasyAdminController
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters);
+        $query = $this->applyFilters($query, $formParameters, $entityType);
 
         // Get sub owners if a group has been selected.
         $subOwnerOptions = $this->getSubOwnerOptions($repository, $formParameters['groups']);
@@ -159,8 +214,10 @@ class AdminController extends EasyAdminController
             }, []);
         }
 
+        $selfServiceOptions = $this->getSelfServiceOptions($entityType);
+
         $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories,
-            $formParameters, $subOwnerOptions, false, false, $entityType == 'system');
+            $formParameters, $subOwnerOptions, false, false, $selfServiceOptions);
         $filterFormBuilder->setMethod('GET')
             ->setAction($this->generateUrl('list',
                 ['entityType' => $entityType]));
@@ -262,7 +319,7 @@ class AdminController extends EasyAdminController
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters);
+        $query = $this->applyFilters($query, $formParameters, $entityType);
 
         // Get sub owners if a group has been selected.
         $subOwnerOptions = $this->getSubOwnerOptions($repository, $formParameters['groups']);
@@ -311,7 +368,9 @@ class AdminController extends EasyAdminController
             }
         }
 
-        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subOwnerOptions, true, true);
+        $selfServiceOptions = $this->getSelfServiceOptions($entityType);
+
+        $filterFormBuilder = $this->getFilterFormBuilder($userGroupsThemesAndCategories, $formParameters, $subOwnerOptions, true, true, $selfServiceOptions);
         $filterFormBuilder->setMethod('GET')->setAction($this->generateUrl('dashboard', ['entityType' => $entityType]));
 
         return $this->render('dashboard.html.twig', [
@@ -320,6 +379,26 @@ class AdminController extends EasyAdminController
             'filters' => $filterFormBuilder->getForm()->createView(),
             'entityType' => $entityType,
         ]);
+    }
+
+    /**
+     * Get options for self service filter.
+     *
+     * @param $entityType
+     * @return array
+     */
+    private function getSelfServiceOptions($entityType)
+    {
+        $selfServiceOptions = [];
+        if ($entityType == 'system') {
+            /* @var \Doctrine\Common\Collections\Collection $selfServiceAvailableFromItems */
+            $selfServiceAvailableFromItems = $this->entityManager->getRepository(SelfServiceAvailableFromItem::class)->findAll();
+            /* @var SelfServiceAvailableFromItem $item */
+            foreach ($selfServiceAvailableFromItems as $item) {
+                $selfServiceOptions[$item->getName()] = $item->getId();
+            }
+        }
+        return $selfServiceOptions;
     }
 
     /**
@@ -389,6 +468,7 @@ class AdminController extends EasyAdminController
      * @param $subownerOptions
      * @param bool $filterThemes
      * @param bool $filterCategories
+     * @param array $filterSelfServiceOptions
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
     private function getFilterFormBuilder(
@@ -397,7 +477,7 @@ class AdminController extends EasyAdminController
         $subownerOptions,
         bool $filterThemes = false,
         bool $filterCategories = false,
-        bool $filterSelfService = false
+        array $filterSelfServiceOptions = []
     ) {
         $filterFormBuilder = $this->createFormBuilder();
         $filterFormBuilder->add('groups', ChoiceType::class, [
@@ -447,19 +527,18 @@ class AdminController extends EasyAdminController
                 'data' => isset($formParameters['category']) ? $formParameters['category'] : null,
             ]);
         }
-        /* @TODO: Add self service filter.
-        if ($filterSelfService) {
+        if (count($filterSelfServiceOptions) > 0) {
             $filterFormBuilder->add('self_service', ChoiceType::class, [
                 'label' => 'filter.self_service',
                 'placeholder' => 'filter.placeholder.self_service',
-                'choices' => array_flip($userGroupsThemesAndCategories['self_service']),
+                'choices' => $filterSelfServiceOptions,
                 'attr' => [
                     'class' => 'form-control',
                 ],
                 'required' => false,
                 'data' => isset($formParameters['self_service']) ? $formParameters['self_service'] : null,
             ]);
-        }*/
+        }
         $filterFormBuilder->add('search', TextType::class, [
             'label' => 'filter.search',
             'attr' => [
@@ -482,10 +561,18 @@ class AdminController extends EasyAdminController
      */
     private function applyFilters(
         QueryBuilder $query,
-        array $formParameters
+        array $formParameters,
+        $entityType = null
     ) {
         $query->andWhere('e.archivedAt IS NULL');
-        // @TODO: Filter inactive out.
+
+        // Filter inactives out.
+        if ($entityType == 'report') {
+            $query->andWhere('e.sysStatus = \'Aktiv\'');
+        }
+        else if ($entityType == 'system') {
+            $query->andWhere('e.sysStatus <> \'Systemet bruges ikke længere\'');
+        }
 
         // Get the groups the user can search in.
         if (!empty($formParameters['groups'])) {
@@ -499,7 +586,15 @@ class AdminController extends EasyAdminController
             }
         }
 
-        // @TODO: Add self-service filter.
+        if (isset($formParameters['self_service']) && $formParameters['self_service'] != '') {
+            $item = $this->entityManager->getRepository(SelfServiceAvailableFromItem::class)->findOneBy([
+                'id' => $formParameters['self_service'],
+            ]);
+            if ($item != null) {
+                $query->andWhere(':self_service MEMBER OF e.selfServiceAvailableFromItems');
+                $query->setParameter('self_service', $item);
+            }
+        }
 
         if (isset($formParameters['search']) && $formParameters['search'] != '') {
             $query->andWhere('e.name LIKE :name');

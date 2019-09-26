@@ -196,3 +196,11 @@ body.list table tbody td.dashboard--table-answer {
   justify-content: center;
   align-items: center;
 }
+
+.form-errors {
+  color: red;
+}
+
+.question-form-textarea {
+  width: 300px;
+}

@@ -21,9 +21,7 @@ easy_admin:
             - { label: 'menu.list.systems', icon: 'cog', route: 'list', params: { entityType: 'system' } }
             - { label: 'menu.configuration' }
             - { entity: 'Theme', icon: 'th-large', label: 'menu.themes' }
-            - { entity: 'ThemeCategory', icon: 'arrows-v', label: 'menu.theme_category' }
             - { entity: 'Category', icon: 'list', label: 'menu.categories' }
-            - { entity: 'Question', icon: 'question', label: 'menu.questions' }
             - { label: 'menu.admin', permission: 'ROLE_ADMIN' }
             - { entity: 'User', icon: 'user', label: 'menu.users', permission: 'ROLE_ADMIN' }
             - { entity: 'Group', icon: 'users', label: 'menu.groups', permission: 'ROLE_ADMIN' }
@@ -33,17 +31,6 @@ easy_admin:
                 - ckeditor_styles.css
                 - styles.css
     entities:
-        ThemeCategory:
-            item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
-            class: App\Entity\ThemeCategory
-            list:
-                fields:
-                    - { property: 'sort_order', label: 'entity.theme_category.sort_order' }
-                    - { property: 'category', label: 'entity.theme_category.category' }
-                    - { property: 'theme', label: 'entity.theme_category.theme' }
-                sort: ['sortOrder', 'ASC']
-                actions: []
-
         Theme:
             class: App\Entity\Theme
             item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
@@ -62,6 +49,7 @@ easy_admin:
                     - { property: 'systemGroups', label: 'entity.theme.system_groups' }
                     - { property: 'reportGroups', label: 'entity.theme.report_groups' }
                 sort: ['id', 'ASC']
+            # Overridden by AdminController
             form:
                 fields:
                     - { property: 'name', label: 'entity.theme.name' }
@@ -78,40 +66,16 @@ easy_admin:
                     - { property: 'name', label: 'entity.category.name' }
                     - { property: 'questions', label: 'entity.category.questions' }
                 sort: ['id', 'ASC']
+            # Overridden by AdminController
             form:
                 fields:
                     - { property: 'name', label: 'entity.category.name' }
 
-        Question:
-            class: App\Entity\Question
-            item_permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']
-            list:
-                fields:
-                    - { property: 'id', label: 'entity.question.id' }
-                    - { property: 'sortOrder', label: 'entity.question.sort_order' }
-                    - { property: 'question', label: 'entity.question.question' }
-                    - { property: 'answers', label: 'entity.question.answers' }
-                    - { property: 'category', label: 'entity.question.category' }
-                sort: ['id', 'ASC']
-            form:
-                fields:
-                    - { property: 'sortOrder', label: 'entity.question.sort_order' }
-                    - { property: 'question', label: 'entity.question.question' }
-                    - { property: 'category', label: 'entity.question.category' }
-            show:
-                fields:
-                    - { property: 'sortOrder' }
-                    - { property: 'question' }
-                    - { property: 'category' }
-                    - { property: 'created_by' }
-                    - { property: 'updated_by' }
-                    - { property: 'created_at', type: 'datetime' }
-                    - { property: 'updated_at', type: 'datetime' }
-
         Answer:
             class: App\Entity\Answer
             list:
-                item_permission: ['ROLE_ADMIN']
+                # Not accessible through UI.
+                item_permission: ['ROLE_SUPER_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.answer.id' }
                     - { property: 'smiley', label: 'entity.answer.smiley', type: 'text', template: 'easy_admin_overrides/field_smiley.html.twig' }
@@ -125,8 +89,9 @@ easy_admin:
 
         Report:
             class: App\Entity\Report
+            # Overridden by AdminController
             list:
-                item_permission: ['ROLE_ADMIN']
+                item_permission: ['ROLE_SUPER_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.report.id' }
             show:
@@ -180,10 +145,12 @@ easy_admin:
                     - { property: 'text', label: 'entity.report.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
                     - { property: 'groups', label: 'entity.report.group', type_options: { required: false }, permission: 'ROLE_ADMIN' }
                     - { property: 'edoc_url', label: 'entity.report.edoc_url', type: 'text', type_options: { required: false } }
+
         System:
             class: App\Entity\System
+            # Overridden by AdminController
             list:
-                item_permission: ['ROLE_ADMIN']
+                item_permission: ['ROLE_SUPER_ADMIN']
                 fields:
                     - { property: 'id', label: 'entity.system.id' }
             show:
@@ -231,7 +198,9 @@ easy_admin:
                     - { property: 'text', label: 'entity.system.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
                     - { property: 'groups', label: 'entity.system.group', type_options: { required: false }, permission: 'ROLE_ADMIN' }
                     - { property: 'edoc_url', label: 'entity.system.edoc_url', type: 'text', type_options: { required: false } }
+
         User:
+            item_permission: ['ROLE_ADMIN']
             class: App\Entity\User
             list:
                 fields:
@@ -259,7 +228,9 @@ easy_admin:
                     # if administrators are allowed to edit users' passwords and roles, add this:
                     - { property: 'plainPassword', type: 'text', type_options: { required: false } }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_GROUP_ADMIN': 'ROLE_GROUP_ADMIN', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+
         Group:
+            item_permission: ['ROLE_ADMIN']
             class: App\Entity\Group
             list:
                 fields:

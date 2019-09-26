@@ -2,6 +2,34 @@ actions:
     show: Vis
     edit: Rediger
 
+common:
+    actions:
+        save: Gem
+        delete: Slet
+        confirm:
+            delete: Bekræft sletning?
+
+category:
+    new:
+        headline: Opret kategori
+    edit:
+        headline: Rediger kategori
+    form:
+        sort_order: Sortering
+        question: Spørgsmål
+
+theme:
+    new:
+        headline: Opret tema
+    edit:
+        headline: Rediger tema
+    form:
+        system_groups: Systemgrupper
+        report_groups: Anmeldelsesgrupper
+        theme_categories: Kategorier
+        sort_order: Sortering
+        category: Kategori
+
 filter:
     placeholder:
         groups: -- Vælg grupper --
@@ -43,6 +71,8 @@ entity:
         categories: Kategorier
         name: Navn
         systems: Systemer
+        system_groups: Systemgrupper
+        report_groups: Anmeldelsesgrupper
         reports: Anmeldelser
         theme_categories: Kategorier
     answer:

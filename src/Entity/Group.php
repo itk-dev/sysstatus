@@ -43,6 +43,11 @@ class Group extends BaseGroup
      */
     private $reportThemes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="groups")
+     */
+    private $users;
+
     public function __construct()
     {
         parent::__construct(NULL, ['ROLE_USER']);
@@ -51,6 +56,7 @@ class Group extends BaseGroup
         $this->systems = new ArrayCollection();
         $this->systemThemes = new ArrayCollection();
         $this->reportThemes = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function __toString()
@@ -161,6 +167,34 @@ class Group extends BaseGroup
     {
         if ($this->reportThemes->contains($reportTheme)) {
             $this->reportThemes->removeElement($reportTheme);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeGroup($this);
         }
 
         return $this;
