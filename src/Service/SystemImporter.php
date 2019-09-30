@@ -95,15 +95,11 @@ class SystemImporter extends BaseImporter
 
             $selfServiceAvailableFromText = $this->sanitizeText($entry->{'Selvbetjening tilgængelig fra'});
             if (isset($selfServiceAvailableFromText)) {
-                $selfServiceAvailableFromTitles = explode(';#', $selfServiceAvailableFromText);
+                $selfServiceAvailableFromTitles = $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, null, PREG_SPLIT_NO_EMPTY);
 
                 $addToSelfServiceGroup = false;
 
                 foreach ($selfServiceAvailableFromTitles as $title) {
-                    if ($title == '') {
-                        continue;
-                    }
-
                     $addToSelfServiceGroup = true;
 
                     $name = (string)$title;
