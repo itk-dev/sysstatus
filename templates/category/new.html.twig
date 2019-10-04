@@ -10,10 +10,6 @@
 
 {% block main %}
   {{ include('category/_form.html.twig', {'button_label': ('common.actions.save'|trans)}) }}
-
-  <div class="text-right">
-    {{ include('category/_delete_form.html.twig') }}
-  </div>
 {% endblock %}
 
 {% block body_javascript %}

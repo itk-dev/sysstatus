@@ -143,7 +143,7 @@ easy_admin:
                     - { type: 'group', label: 'menu.general', icon: 'cog' }
                     - { property: 'sys_title', label: 'entity.report.sys_title', type: 'text', type_options: { required: false, disabled: true } }
                     - { property: 'text', label: 'entity.report.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
-                    - { property: 'groups', label: 'entity.report.group', type_options: { required: false }, permission: 'ROLE_ADMIN' }
+                    - { property: 'groups', label: 'entity.report.groups', type_options: { required: false }, permission: 'ROLE_ADMIN' }
                     - { property: 'edoc_url', label: 'entity.report.edoc_url', type: 'text', type_options: { required: false } }
 
         System:
@@ -196,7 +196,7 @@ easy_admin:
                     - { type: 'group', label: 'menu.general', icon: 'cog' }
                     - { property: 'sys_title', label: 'entity.system.sys_title', type: 'text', type_options: { required: false, disabled: true } }
                     - { property: 'text', label: 'entity.system.text', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { required: false, config_name: 'simple_toolbar' } }
-                    - { property: 'groups', label: 'entity.system.group', type_options: { required: false }, permission: 'ROLE_ADMIN' }
+                    - { property: 'groups', label: 'entity.system.groups', type_options: { required: false }, permission: 'ROLE_ADMIN' }
                     - { property: 'edoc_url', label: 'entity.system.edoc_url', type: 'text', type_options: { required: false } }
 
         User:

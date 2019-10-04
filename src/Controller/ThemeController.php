@@ -76,7 +76,13 @@ class ThemeController extends AbstractController
     private function createThemeForm($theme) {
         /* @var \Doctrine\Common\Collections\Collection $availableGroups */
         $user = $this->getUser();
-        $availableGroups = $this->groupRepository->findByUser($user);
+
+        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN')) {
+            $availableGroups = $this->groupRepository->findAll();
+        }
+        else {
+            $availableGroups = $this->groupRepository->findByUser($user);
+        }
 
         $availableGroupOptions = [];
         foreach ($availableGroups as $g) {
