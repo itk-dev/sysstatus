@@ -19,9 +19,9 @@ easy_admin:
             - { label: 'menu.sysstatus' }
             - { label: 'menu.list.reports', icon: 'file', route: 'list', params: { entityType: 'report' }, default: true }
             - { label: 'menu.list.systems', icon: 'cog', route: 'list', params: { entityType: 'system' } }
-            - { label: 'menu.configuration' }
-            - { entity: 'Theme', icon: 'th-large', label: 'menu.themes' }
-            - { entity: 'Category', icon: 'list', label: 'menu.categories' }
+            - { label: 'menu.configuration', permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']  }
+            - { entity: 'Theme', icon: 'th-large', label: 'menu.themes', permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN']  }
+            - { entity: 'Category', icon: 'list', label: 'menu.categories', permission: ['ROLE_ADMIN', 'ROLE_GROUP_ADMIN'] }
             - { label: 'menu.admin', permission: 'ROLE_ADMIN' }
             - { entity: 'User', icon: 'user', label: 'menu.users', permission: 'ROLE_ADMIN' }
             - { entity: 'Group', icon: 'users', label: 'menu.groups', permission: 'ROLE_ADMIN' }
@@ -73,6 +73,7 @@ easy_admin:
 
         Answer:
             class: App\Entity\Answer
+            disabled_actions: ['delete']
             list:
                 # Not accessible through UI.
                 item_permission: ['ROLE_SUPER_ADMIN']
@@ -89,6 +90,7 @@ easy_admin:
 
         Report:
             class: App\Entity\Report
+            disabled_actions: ['delete']
             # Overridden by AdminController
             list:
                 item_permission: ['ROLE_SUPER_ADMIN']
@@ -148,6 +150,7 @@ easy_admin:
 
         System:
             class: App\Entity\System
+            disabled_actions: ['delete']
             # Overridden by AdminController
             list:
                 item_permission: ['ROLE_SUPER_ADMIN']

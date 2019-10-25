@@ -27,15 +27,6 @@
   </div>
 {% endblock %}
 
-{% block content_footer %}
-  <div class="text-right">
-    <a class="btn btn-primary" href="{{ path('easyadmin', { action: 'new', entity: entityType|capitalize }) }}"
-       title="{{ ('list.action.new.'~entityType)|trans }}">
-      {{ ('list.action.new.'~entityType)|trans }}
-    </a>
-  </div>
-{% endblock %}
-
 {% block content_title %}
   {{ ('list.'~entityType)|trans }}
 {% endblock %}
