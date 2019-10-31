@@ -8,10 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  * @Gedmo\Loggable
+ * @UniqueEntity("name")
  */
 class Category
 {
@@ -26,13 +28,13 @@ class Category
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Versioned
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="category", cascade={"persist"})
      */
     private $questions;
 

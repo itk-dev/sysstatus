@@ -1,3 +1,56 @@
+actions:
+    show: Vis
+    edit: Rediger
+
+common:
+    actions:
+        save: Gem
+        delete: Slet
+        confirm:
+            delete: Bekræft sletning?
+
+category:
+    new:
+        headline: Opret kategori
+    edit:
+        headline: Rediger kategori
+    form:
+        sort_order: Sortering
+        question: Spørgsmål
+
+theme:
+    new:
+        headline: Opret tema
+    edit:
+        headline: Rediger tema
+    form:
+        system_groups: Systemgrupper
+        report_groups: Anmeldelsesgrupper
+        theme_categories: Kategorier
+        sort_order: Sortering
+        category: Kategori
+
+filter:
+    placeholder:
+        groups: -- Vælg grupper --
+        subowner: -- Vælg undergruppe --
+        theme: -- Vælg tema --
+        category: -- Vælg kategori --
+        search: Søg på navn
+        self_service: Filtrér på selvbetjening
+
+flash:
+    access_denied: Du har ikke adgang til at tilgå denne resurse.
+
+list:
+    no_result: Ingen resultater
+    system: Systemer
+    report: Anmeldelser
+    action:
+        new:
+            report: Opret anmeldelse
+            system: Opret system
+
 entity:
     theme_category:
         sort_order: Vægt
@@ -18,6 +71,8 @@ entity:
         categories: Kategorier
         name: Navn
         systems: Systemer
+        system_groups: Systemgrupper
+        report_groups: Anmeldelsesgrupper
         reports: Anmeldelser
         theme_categories: Kategorier
     answer:
@@ -35,7 +90,7 @@ entity:
         name: Internt navn
         text: Noter
         theme: Tema
-        group: Gruppe
+        groups: Grupper
         answers: Smileys
         edoc_url: Link til systemdokumentation
         sys_id: Id
@@ -78,7 +133,7 @@ entity:
         name: Internt navn
         text: Noter
         theme: Tema
-        group: Gruppe
+        groups: Grupper
         answers: Smileys
         answers_remarks: Rediger
         answers_remarks_create: Opret
@@ -124,6 +179,7 @@ entity:
         sys_data_to_science: Videregivelse af oplysninger til forskning
         sys_system_owner: Systemejer
 menu:
+    configuration: Konfiguration
     notes: Notater
     systemportal: Fra systemportalen
     general: Redigerbar Data
@@ -139,9 +195,12 @@ menu:
     sysstatus: Systemstatus
     separator: ''
     dashboards: Dashboards
+    list:
+        reports: Anmeldelser
+        systems: Systemer
     dashboard:
-        reports: Anmeldelse
-        systems: System
+        reports: 'Dashboard: Anmeldelser'
+        systems: 'Dashboard: Systemer'
     groups: Grupper
     theme_category: Tema-Kategori
     exports: Eksport
@@ -171,7 +230,7 @@ ROLE_ADMIN: ROLE_ADMIN
 Green: Grøn
 Yellow: Gul
 Red: Rød
-Blue: Blue
+Blue: Blå
 ID: ID
 Actions: Handlinger
 Name: Navn
@@ -193,6 +252,8 @@ Group: Gruppe
 label:
     'null': ''
 dashboard:
+    report: Dashboard - Anmeldelser
+    system: Dashboard - Systemer
     title_prefix: 'Dashboard: '
     no_categories_for_result: Ingen kategorier koblet på resultaterne.
 Filter: Filtrér
@@ -207,8 +268,8 @@ All: Alle
 export:
     description: Eksporter alle anmeldelser eller systemer til Excel.
     headline: Eksport
-    reports: Eksporter anmeldelser
-    systems: Eksporter systemer
+    reports: Eksporter alle anmeldelser
+    systems: Eksporter alle systemer
     filtered:
         description: Eksporter anmeldelser eller systemer fra en given gruppe.
 

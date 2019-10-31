@@ -1,5 +1,10 @@
 # ITStyr CHANGELOG
 
+## in develop
+
+* Adds export of comments on answers instead of results.
+* Adds color option for each answer in export.
+
 ## 1.9.0
 
 * Added eDoc url to Report and System.

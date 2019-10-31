@@ -50,7 +50,7 @@ class ReportImporter extends BaseImporter
             $report->setSysOwner($this->sanitizeText($entry->{'Systemejerskab'}));
             $report->setSysPurpose($this->sanitizeText($entry->{'Formål'}));
             $report->setSysClassification($this->sanitizeText($entry->{'Systemets klassifikation'}));
-            $report->setSysDateForRevision($this->convertDate($entry->{'Dato for revision'}));
+//@TODO:            $report->setSysDateForRevision($this->convertDate($entry->{'Dato for revision'}));
             $report->setSysPersons($this->sanitizeText($entry->{'Personkreds'}));
             $report->setSysInformationTypes($this->sanitizeText($entry->{'Oplysningstyper'}));
             $report->setSysDataSentTo($this->sanitizeText($entry->{'Hvor overføres data til?'}));
@@ -92,8 +92,8 @@ class ReportImporter extends BaseImporter
                     ['name' => $groupName]
                 );
 
-                if ($findGroup && is_null($report->getGroup())) {
-                    $report->setGroup($findGroup);
+                if ($findGroup && !$report->getGroups()->contains($findGroup)) {
+                    $report->addGroup($findGroup);
                 }
 
                 if ($subGroupName) {
