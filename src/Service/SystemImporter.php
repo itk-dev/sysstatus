@@ -95,12 +95,27 @@ class SystemImporter extends BaseImporter
 
             $selfServiceAvailableFromText = $this->sanitizeText($entry->{'Selvbetjening tilgængelig fra'});
             if (isset($selfServiceAvailableFromText)) {
-                $selfServiceAvailableFromTitles = explode(';#', $selfServiceAvailableFromText);
+                $selfServiceAvailableFromTitles = $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, null, PREG_SPLIT_NO_EMPTY);
+
+                $addToSelfServiceGroup = false;
 
                 foreach ($selfServiceAvailableFromTitles as $title) {
+                    $addToSelfServiceGroup = true;
+
                     $name = (string)$title;
                     $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
                     $system->addSelfServiceAvailableFromItem($item);
+                }
+
+                // Add to SELVBETJENING group if the system has selvbetjening.
+                if ($addToSelfServiceGroup) {
+                    $findGroup = $this->groupRepository->findOneBy(
+                        ['name' => 'SELVBETJENING']
+                    );
+
+                    if ($findGroup && !in_array($findGroup, $system->getGroups()->toArray())) {
+                        $system->addGroup($findGroup);
+                    }
                 }
             }
 
@@ -117,8 +132,8 @@ class SystemImporter extends BaseImporter
                     ['name' => $groupName]
                 );
 
-                if ($findGroup && is_null($system->getGroup())) {
-                    $system->setGroup($findGroup);
+                if ($findGroup && !$system->getGroups()->contains($findGroup)) {
+                    $system->addGroup($findGroup);
                 }
 
                 if ($subGroupName) {

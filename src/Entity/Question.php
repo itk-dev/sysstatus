@@ -126,9 +126,12 @@ class Question
 
     /**
      * @param mixed $sortOrder
+     * @return Question
      */
-    public function setSortOrder($sortOrder): void
+    public function setSortOrder($sortOrder): Question
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 }

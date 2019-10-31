@@ -8,10 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
  * @Gedmo\Loggable
+ * @UniqueEntity("name")
  */
 class Theme
 {
@@ -26,23 +28,13 @@ class Theme
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true))
      * @Gedmo\Versioned
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\System", mappedBy="theme")
-     */
-    private $systems;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="theme")
-     */
-    private $reports;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ThemeCategory", mappedBy="theme", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ThemeCategory", mappedBy="theme", orphanRemoval=true, cascade={"persist"})
      */
     private $themeCategories;
 
@@ -51,12 +43,23 @@ class Theme
      */
     private $categories;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", mappedBy="systemThemes")
+     */
+    private $systemGroups;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", mappedBy="reportThemes")
+     */
+    private $reportGroups;
+
     public function __construct()
     {
-        $this->systems = new ArrayCollection();
-        $this->reports = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->themeCategories = new ArrayCollection();
+        $this->groups = new ArrayCollection();
+        $this->systemGroups = new ArrayCollection();
+        $this->reportGroups = new ArrayCollection();
     }
 
     public function getId()
@@ -72,68 +75,6 @@ class Theme
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|System[]
-     */
-    public function getSystems(): Collection
-    {
-        return $this->systems;
-    }
-
-    public function addSystem(System $system): self
-    {
-        if (!$this->systems->contains($system)) {
-            $this->systems[] = $system;
-            $system->setTheme($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSystem(System $system): self
-    {
-        if ($this->systems->contains($system)) {
-            $this->systems->removeElement($system);
-            // set the owning side to null (unless already changed)
-            if ($system->getTheme() === $this) {
-                $system->setTheme(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Report[]
-     */
-    public function getReports(): Collection
-    {
-        return $this->reports;
-    }
-
-    public function addReport(Report $report): self
-    {
-        if (!$this->reports->contains($report)) {
-            $this->reports[] = $report;
-            $report->setTheme($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReport(Report $report): self
-    {
-        if ($this->reports->contains($report)) {
-            $this->reports->removeElement($report);
-            // set the owning side to null (unless already changed)
-            if ($report->getTheme() === $this) {
-                $report->setTheme(null);
-            }
-        }
 
         return $this;
     }
@@ -191,5 +132,61 @@ class Theme
         }
 
         return $list;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getSystemGroups(): Collection
+    {
+        return $this->systemGroups;
+    }
+
+    public function addSystemGroup(Group $systemGroup): self
+    {
+        if (!$this->systemGroups->contains($systemGroup)) {
+            $this->systemGroups[] = $systemGroup;
+            $systemGroup->addSystemTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSystemGroup(Group $systemGroup): self
+    {
+        if ($this->systemGroups->contains($systemGroup)) {
+            $this->systemGroups->removeElement($systemGroup);
+            $systemGroup->removeSystemTheme($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getReportGroups(): Collection
+    {
+        return $this->reportGroups;
+    }
+
+    public function addReportGroup(Group $reportGroup): self
+    {
+        if (!$this->reportGroups->contains($reportGroup)) {
+            $this->reportGroups[] = $reportGroup;
+            $reportGroup->addReportTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportGroup(Group $reportGroup): self
+    {
+        if ($this->reportGroups->contains($reportGroup)) {
+            $this->reportGroups->removeElement($reportGroup);
+            $reportGroup->removeReportTheme($this);
+        }
+
+        return $this;
     }
 }

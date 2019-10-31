@@ -40,11 +40,6 @@ class Report
     private $text;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="reports")
-     */
-    protected $group;
-
-    /**
      * @ORM\Column(type="string", length=255)
      * @Gedmo\Versioned
      */
@@ -201,11 +196,6 @@ class Report
     private $answers;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Theme", inversedBy="reports")
-     */
-    private $theme;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $sysOwnerSub;
@@ -255,9 +245,20 @@ class Report
      */
     private $eDocUrl;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="reports")
+     */
+    private $groups;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->groups = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     public function getId()
@@ -804,39 +805,6 @@ class Report
     /**
      * @return mixed
      */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
-     * @param mixed $group
-     */
-    public function setGroup($group): void
-    {
-        $this->group = $group;
-    }
-
-    public function __toString()
-    {
-        return $this->getName();
-    }
-
-    public function getTheme(): ?Theme
-    {
-        return $this->theme;
-    }
-
-    public function setTheme(?Theme $theme): self
-    {
-        $this->theme = $theme;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getSysSystemOwner()
     {
         return $this->sysSystemOwner;
@@ -871,7 +839,14 @@ class Report
      */
     public function getAnswerArea()
     {
-        return $this->getTheme();
+        $themes = [];
+        $groups = $this->getGroups();
+
+        foreach ($groups as $group) {
+            $themes = array_merge($themes, $group->getReportThemes()->toArray());
+        }
+
+        return $themes;
     }
 
     public function getSysInternalInformation(): ?string
@@ -978,6 +953,32 @@ class Report
     public function setEDocUrl(?string $eDocUrl): self
     {
         $this->eDocUrl = $eDocUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+        }
 
         return $this;
     }
