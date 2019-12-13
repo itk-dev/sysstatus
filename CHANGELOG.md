@@ -1,7 +1,8 @@
 # ITStyr CHANGELOG
 
-## in develop
+## 2.0.0
 
+* Changed to group control.
 * Adds export of comments on answers instead of results.
 * Adds color option for each answer in export.
 
