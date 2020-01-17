@@ -2,23 +2,20 @@
 
 namespace App\Command;
 
-use App\Entity\ImportRun;
 use App\Entity\Report;
 use App\Service\ReportImporter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ReportImportCommand extends Command
+class ReportImportCommand extends AbstractImportCommand
 {
     private $reportImporter;
-    private $entityManager;
 
     public function __construct(ReportImporter $reportImporter, EntityManagerInterface $entityManager)
     {
-        parent::__construct();
+        parent::__construct($entityManager);
 
         $this->reportImporter = $reportImporter;
         $this->entityManager = $entityManager;
@@ -45,13 +42,6 @@ class ReportImportCommand extends Command
             $output->writeln($errorMessage);
         }
 
-        $importRun = new ImportRun();
-        $importRun->setDatetime(new \DateTime());
-        $importRun->setOutput($success ? 'OK' : $errorMessage);
-        $importRun->setResult($success);
-        $importRun->setType(Report::class);
-
-        $this->entityManager->persist($importRun);
-        $this->entityManager->flush();
+        $this->recordImportRun(Report::class, $success, $errorMessage);
     }
 }

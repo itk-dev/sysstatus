@@ -2,26 +2,22 @@
 
 namespace App\Command;
 
-use App\Entity\ImportRun;
 use App\Entity\System;
 use App\Service\SystemImporter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class SystemImportCommand extends Command
+class SystemImportCommand extends AbstractImportCommand
 {
     private $systemImporter;
-    private $entityManager;
 
     public function __construct(SystemImporter $systemImporter, EntityManagerInterface $entityManager)
     {
-        parent::__construct();
+        parent::__construct($entityManager);
 
         $this->systemImporter = $systemImporter;
-        $this->entityManager = $entityManager;
     }
 
     protected function configure()
@@ -45,13 +41,6 @@ class SystemImportCommand extends Command
             $output->writeln($errorMessage);
         }
 
-        $importRun = new ImportRun();
-        $importRun->setDatetime(new \DateTime());
-        $importRun->setOutput($success ? 'OK' : $errorMessage);
-        $importRun->setResult($success);
-        $importRun->setType(System::class);
-
-        $this->entityManager->persist($importRun);
-        $this->entityManager->flush();
+        $this->recordImportRun(System::class, $success, $errorMessage);
     }
 }
