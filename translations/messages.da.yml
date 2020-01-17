@@ -52,6 +52,12 @@ list:
             system: Opret system
 
 entity:
+    import_run:
+        id: ID
+        type: Type
+        datetime: Tidspunkt
+        result: Result
+        output: Output
     theme_category:
         sort_order: Vægt
         category: Kategori
@@ -179,6 +185,7 @@ entity:
         sys_data_to_science: Videregivelse af oplysninger til forskning
         sys_system_owner: Systemejer
 menu:
+    import_runs: Import kørsler
     configuration: Konfiguration
     notes: Notater
     systemportal: Fra systemportalen
@@ -204,6 +211,7 @@ menu:
     groups: Grupper
     theme_category: Tema-Kategori
     exports: Eksport
+ImportRun: Import kørsler
 System: System
 Systems: Systemer
 User: Bruger
