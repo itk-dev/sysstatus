@@ -11,13 +11,9 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class SystemImportCommand extends AbstractImportCommand
 {
-    private $systemImporter;
-
     public function __construct(SystemImporter $systemImporter, EntityManagerInterface $entityManager)
     {
-        parent::__construct($entityManager);
-
-        $this->systemImporter = $systemImporter;
+        parent::__construct($systemImporter, $entityManager);
     }
 
     protected function configure()
@@ -30,17 +26,6 @@ class SystemImportCommand extends AbstractImportCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $success = true;
-        $errorMessage = null;
-
-        try {
-            $this->systemImporter->import($input->getArgument('src'));
-        } catch (\Exception $e) {
-            $success = false;
-            $errorMessage = $e->getMessage();
-            $output->writeln($errorMessage);
-        }
-
-        $this->recordImportRun(System::class, $success, $errorMessage);
+        $this->import(System::class, $input->getArgument('src'), $output);
     }
 }

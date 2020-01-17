@@ -11,14 +11,9 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class ReportImportCommand extends AbstractImportCommand
 {
-    private $reportImporter;
-
     public function __construct(ReportImporter $reportImporter, EntityManagerInterface $entityManager)
     {
-        parent::__construct($entityManager);
-
-        $this->reportImporter = $reportImporter;
-        $this->entityManager = $entityManager;
+        parent::__construct($reportImporter, $entityManager);
     }
 
     protected function configure()
@@ -31,17 +26,6 @@ class ReportImportCommand extends AbstractImportCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $success = true;
-        $errorMessage = null;
-
-        try {
-            $this->reportImporter->import($input->getArgument('src'));
-        } catch (\Exception $e) {
-            $success = false;
-            $errorMessage = $e->getMessage();
-            $output->writeln($errorMessage);
-        }
-
-        $this->recordImportRun(Report::class, $success, $errorMessage);
+        $this->import(Report::class, $input->getArgument('src'), $output);
     }
 }
