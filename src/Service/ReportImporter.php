@@ -7,7 +7,10 @@ use Doctrine\DBAL\Types\Type;
 
 class ReportImporter extends BaseImporter
 {
-    public function import($src)
+    /**
+     * @inheritDoc
+     */
+    public function import(string $src)
     {
         $systemURL = getenv('SYSTEM_URL');
 

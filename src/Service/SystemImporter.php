@@ -22,12 +22,15 @@ class SystemImporter extends BaseImporter
       SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
       EntityManagerInterface $entityManager
     ) {
-        parent::__construct( $reportRepository, $systemRepository, $groupRepository, $entityManager);
+        parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager);
 
         $this->selfServiceAvailableFromItemRepository = $selfServiceAvailableFromItemRepository;
     }
 
-    public function import($src)
+    /**
+     * @inheritDoc
+     */
+    public function import(string $src)
     {
         $systemURL = getenv('SYSTEM_URL');
 
