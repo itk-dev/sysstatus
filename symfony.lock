@@ -140,6 +140,9 @@
     "paragonie/random_compat": {
         "version": "v2.0.12"
     },
+    "php": {
+        "version": "7.2"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },
@@ -242,6 +245,9 @@
     "symfony/dotenv": {
         "version": "v4.0.8"
     },
+    "symfony/error-handler": {
+        "version": "v4.4.2"
+    },
     "symfony/event-dispatcher": {
         "version": "v4.0.8"
     },
@@ -289,9 +295,6 @@
     },
     "symfony/intl": {
         "version": "v4.0.8"
-    },
-    "symfony/lts": {
-        "version": "4-dev"
     },
     "symfony/maker-bundle": {
         "version": "1.0",
