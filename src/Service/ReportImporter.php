@@ -7,7 +7,10 @@ use Doctrine\DBAL\Types\Type;
 
 class ReportImporter extends BaseImporter
 {
-    public function import($src)
+    /**
+     * @inheritDoc
+     */
+    public function import(string $src)
     {
         $systemURL = getenv('SYSTEM_URL');
 
@@ -45,7 +48,7 @@ class ReportImporter extends BaseImporter
 
             $report->setSysLink($systemURL . '/' .  $entry->{'Sti'} . '/DispForm.aspx?ID=' . $entry->{'Id'});
 
-            $report->setSysConfidentialInformation($this->convertBoolean($entry->{'Følsomme oplysninger'}));
+            $report->setSysConfidentialInformation($this->convertBoolean($entry->{'Følsomme personoplysninger'}));
             $report->setSysAlternativeTitle($this->sanitizeText($entry->{'Systemnavn'}));
             $report->setSysOwner($this->sanitizeText($entry->{'Systemejerskab'}));
             $report->setSysPurpose($this->sanitizeText($entry->{'Formål'}));
@@ -63,7 +66,7 @@ class ReportImporter extends BaseImporter
             $report->setSysAuditorStatement($this->sanitizeText($entry->{'Revisorerklæring/tilsyn'}));
             $report->setSysAuditorStatementLink($this->sanitizeText($entry->{'Link til revisorerklæring'}));
             $report->setSysUsage($this->sanitizeText($entry->{'Systembrug'}));
-            $report->setSysRequestForInsight($this->sanitizeText($entry->{'Anmodning om indsigt'}));
+//@TODO:            $report->setSysRequestForInsight($this->sanitizeText($entry->{'Anmodning om indsigt'}));
             $report->setSysDateUse($this->convertDate($entry->{'Ibrugtagning'}));
             $report->setSysStatus($this->sanitizeText($entry->{'Status'}));
             $report->setSysRemarks($this->sanitizeText($entry->{'Bemærkninger'}));
@@ -71,7 +74,7 @@ class ReportImporter extends BaseImporter
             $report->setSysLegalBasis($this->sanitizeText($entry->{'Retligt grundlag'}));
             $report->setSysConsent($this->sanitizeText($entry->{'Samtykke'}));
             $report->setSysImpactAnalysis($this->sanitizeText($entry->{'Konsekvensanalyse'}));
-            $report->setSysImpactAnalysisLink($this->sanitizeText($entry->{'Link til konsekvensanalyse'}));
+//@TODO:             $report->setSysImpactAnalysisLink($this->sanitizeText($entry->{'Link til konsekvensanalyse'}));
             $report->setSysAuthorizationProcedure($this->sanitizeText($entry->{'Autorisationsprocedure'}));
             $report->setSysInternalInformation($this->sanitizeText($entry->{'Indsigt - interne oplysninger'}));
             $report->setSysDataWorthSaving($this->sanitizeText($entry->{'Indeholder systemet bevaringsværdige data?'}));

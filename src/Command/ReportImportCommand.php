@@ -2,21 +2,18 @@
 
 namespace App\Command;
 
+use App\Entity\Report;
 use App\Service\ReportImporter;
-use Symfony\Component\Console\Command\Command;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ReportImportCommand extends Command
+class ReportImportCommand extends AbstractImportCommand
 {
-    private $reportImporter;
-
-    public function __construct(ReportImporter $reportImporter)
+    public function __construct(ReportImporter $reportImporter, EntityManagerInterface $entityManager)
     {
-        parent::__construct();
-
-        $this->reportImporter = $reportImporter;
+        parent::__construct($reportImporter, $entityManager);
     }
 
     protected function configure()
@@ -29,6 +26,6 @@ class ReportImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->reportImporter->import($input->getArgument('src'));
+        $this->import(Report::class, $input->getArgument('src'), $output);
     }
 }

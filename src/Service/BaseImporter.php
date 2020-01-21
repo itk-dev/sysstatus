@@ -7,7 +7,7 @@ use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use App\Repository\GroupRepository;
 
-class BaseImporter
+abstract class BaseImporter implements ImportInterface
 {
     protected $entityManager;
     protected $reportRepository;

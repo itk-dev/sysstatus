@@ -2,21 +2,18 @@
 
 namespace App\Command;
 
+use App\Entity\System;
 use App\Service\SystemImporter;
-use Symfony\Component\Console\Command\Command;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class SystemImportCommand extends Command
+class SystemImportCommand extends AbstractImportCommand
 {
-    private $systemImporter;
-
-    public function __construct(SystemImporter $systemImporter)
+    public function __construct(SystemImporter $systemImporter, EntityManagerInterface $entityManager)
     {
-        parent::__construct();
-
-        $this->systemImporter = $systemImporter;
+        parent::__construct($systemImporter, $entityManager);
     }
 
     protected function configure()
@@ -29,6 +26,6 @@ class SystemImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->systemImporter->import($input->getArgument('src'));
+        $this->import(System::class, $input->getArgument('src'), $output);
     }
 }
