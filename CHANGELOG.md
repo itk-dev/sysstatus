@@ -1,5 +1,10 @@
 # ITStyr CHANGELOG
 
+## 2.1.0
+
+* Merged https://github.com/aakb/itstyr/pull/14 - Upgraded symfony to 4.4.2.
+* Merged https://github.com/aakb/itstyr/pull/13 - Added import run entity to track import run success. Changed report fields that are imported after change in Anmeldelsesportalen.
+
 ## 2.0.0
 
 * Changed to group control.

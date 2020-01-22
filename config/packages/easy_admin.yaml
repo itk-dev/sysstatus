@@ -26,6 +26,7 @@ easy_admin:
             - { entity: 'User', icon: 'user', label: 'menu.users', permission: 'ROLE_ADMIN' }
             - { entity: 'Group', icon: 'users', label: 'menu.groups', permission: 'ROLE_ADMIN' }
             - { label: 'menu.exports', icon: 'file-excel-o', route: 'export_page', permission: 'ROLE_ADMIN' }
+            - { entity: 'ImportRun', label: 'menu.import_runs', icon: 'file-import', route: 'list', permission: 'ROLE_ADMIN' }
         assets:
             css:
                 - ckeditor_styles.css
@@ -244,3 +245,22 @@ easy_admin:
                 fields:
                     - name
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+
+        ImportRun:
+            disabled_actions: ['edit','delete']
+            class: App\Entity\ImportRun
+            list:
+                item_permission: ['ROLE_ADMIN']
+                fields:
+                    - { property: 'id', label: 'entity.import_run.id' }
+                    - { property: 'type', label: 'entity.import_run.type' }
+                    - { property: 'datetime', label: 'entity.import_run.datetime' }
+                    - { property: 'result', label: 'entity.import_run.result' }
+            show:
+                item_permission: ['ROLE_ADMIN']
+                fields:
+                    - { property: 'id', label: 'entity.import_run.id' }
+                    - { property: 'type', label: 'entity.import_run.type' }
+                    - { property: 'datetime', label: 'entity.import_run.datetime' }
+                    - { property: 'result', label: 'entity.import_run.result' }
+                    - { property: 'output', label: 'entity.import_run.output' }
