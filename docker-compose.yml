@@ -12,7 +12,7 @@ services:
       MYSQL_DATABASE: db
 
   phpfpm:
-    image: itkdev/php7.2-fpm:latest
+    image: itkdev/php7.4-fpm:latest
     restart: always
     environment:
       - PHP_XDEBUG=${PHP_XDEBUG:-0}
