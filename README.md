@@ -3,8 +3,6 @@ Styringsværktøj til IT projekter
 
 ## Setup locally
 
-Copy `.env.dist` to `.env`.
-
 ### Start Docker containers
 
 ```sh
