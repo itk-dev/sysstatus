@@ -10,9 +10,12 @@ services:
       MYSQL_USER: db
       MYSQL_PASSWORD: db
       MYSQL_DATABASE: db
+    # @see https://symfony.com/doc/current/setup/symfony_server.html#docker-integration
+    labels:
+      com.symfony.server.service-prefix: 'DATABASE'
 
   phpfpm:
-    image: itkdev/php7.2-fpm:latest
+    image: itkdev/php7.4-fpm:latest
     restart: always
     environment:
       - PHP_XDEBUG=${PHP_XDEBUG:-0}
