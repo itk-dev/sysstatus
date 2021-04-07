@@ -3,8 +3,6 @@ Styringsværktøj til IT projekter
 
 ## Setup locally
 
-Copy `.env.dist` to `.env`.
-
 ### Start Docker containers
 
 ```sh
@@ -21,47 +19,11 @@ docker-compose exec phpfpm bin/console fos:user:create --super-admin
 
 ### Access the site
 
-You can get the site url by running:
-
-```sh
-echo http://itstyr.docker.localhost:$(docker-compose port reverse-proxy 80 | cut -d: -f2)
-```
-
-Open it in your default browser by running:
-
-```sh
-open http://itstyr.docker.localhost:$(docker-compose port reverse-proxy 80 | cut -d: -f2)
-```
-
-Note: You may have to add the line
+You should now be able to browse to the application
 
 ```
-0.0.0.0	itstyr.docker.localhost
+open http://$(docker-compose port nginx 80)
 ```
-
-to your `hosts` file to access the site.
-
-## Debugging
-
-To enable debugging in the `phpfpm` container, you have to restart it and enable `xdebug`:
-
-```sh
-PHP_XDEBUG=1 \
-PHP_XDEBUG_REMOTE_AUTOSTART=1 \
-PHP_XDEBUG_REMOTE_HOST=$(ipconfig getifaddr en0) \
-PHP_XDEBUG_REMOTE_PORT=9000 \
-PHP_XDEBUG_REMOTE_CONNECT_BACK=0 \
-docker-compose up -d
-```
-
-To disable `xdebug`, restart the container:
-
-```sh
-docker-compose up -d
-```
-
-## Setup on server
-https://symfony.com/doc/current/setup/web_server_configuration.html
 
 ## Import systems and reports
 ```sh
