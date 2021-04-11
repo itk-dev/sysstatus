@@ -11,7 +11,7 @@
 {% block global_actions_wrapper %}
   <div class="global-actions w-75 dashboard-filters" style="justify-content: flex-end">
     {{ form_start(filters, { attr: { class: 'w-100' } }) }}
-    <div class="row w-100 flex-row">
+    <div class="row w-100 flex-row no-gutters align-items-center">
       <div class="col">
         {{ form_widget(filters.groups) }}
       </div>
@@ -24,13 +24,17 @@
       <div class="col">
         {{ form_widget(filters.category) }}
       </div>
+      <div class="w-100"></div>
       {% if filters.self_service is defined %}
         <div class="col">
           {{ form_widget(filters.self_service) }}
         </div>
       {% endif %}
-      <div class="col-4">
+      <div class="col">
         {{ form_widget(filters.search) }}
+      </div>
+      <div class="col-1">
+        {{ form_widget(filters.save, { attr: { class: 'btn btn-primary' }}) }}
       </div>
     </div>
     {{ form_end(filters) }}
@@ -107,10 +111,6 @@
   {{ parent() }}
 
   <script type="text/javascript">
-    $('.dashboard-filters select').bind('change', function () {
-      $('.dashboard-filters form').submit();
-    });
-
     $(document).ready(function() {
       $('#form_groups').select2();
     });

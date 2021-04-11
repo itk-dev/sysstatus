@@ -31,6 +31,7 @@ theme:
         category: Kategori
 
 filter:
+    submit: Søg
     placeholder:
         groups: -- Vælg grupper --
         subowner: -- Vælg undergruppe --

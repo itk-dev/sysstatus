@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -547,6 +548,9 @@ class AdminController extends EasyAdminController
             ],
             'required' => false,
             'data' => isset($formParameters['search']) ? $formParameters['search'] : null,
+        ]);
+        $filterFormBuilder->add('save', SubmitType::class, [
+            'label' => 'filter.submit',
         ]);
 
         return $filterFormBuilder;
