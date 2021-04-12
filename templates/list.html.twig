@@ -82,6 +82,10 @@
   <script type="text/javascript">
     {{ parent() }}
 
+    $('.list-filters select').bind('change', function () {
+      $('.list-filters form').submit();
+    });
+
     $(document).ready(function() {
       $('#form_groups').select2();
     });

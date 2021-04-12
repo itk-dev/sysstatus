@@ -111,6 +111,10 @@
   {{ parent() }}
 
   <script type="text/javascript">
+    $('.dashboard-filters select').bind('change', function () {
+      $('.dashboard-filters form').submit();
+    });
+
     $(document).ready(function() {
       $('#form_groups').select2();
     });
