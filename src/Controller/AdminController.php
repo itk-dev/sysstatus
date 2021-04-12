@@ -12,6 +12,7 @@ use App\Entity\System;
 use App\Entity\Theme;
 use App\Entity\ThemeCategory;
 use App\Repository\CategoryRepository;
+use App\Repository\ReportRepository;
 use App\Repository\ThemeCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -426,6 +427,16 @@ class AdminController extends EasyAdminController
         $subOwnersQueryBuilder = $repository->createQueryBuilder('e');
         $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
         $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
+
+        // Filter inactives out.
+        $subOwnersQueryBuilder->andWhere('e.archivedAt IS NULL');
+
+        $class = $repository->getClassName();
+        if (Report::class === $class) {
+            $subOwnersQueryBuilder->andWhere('e.sysStatus = \'Aktiv\'');
+        } else if (System::class === $class) {
+            $subOwnersQueryBuilder->andWhere('e.sysStatus <> \'Systemet bruges ikke længere\'');
+        }
 
         foreach ($groups as $group) {
             $subOwnersQueryBuilder->andWhere($subOwnersQueryBuilder->expr()->isMemberOf(':group'.$group->getId(), 'e.groups'));
