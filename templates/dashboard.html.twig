@@ -51,13 +51,13 @@
           <div>
           <span>
             <a href="{{ path('easyadmin', { action: 'show', id: item.id, entity: entityType|capitalize }) }}" title="{{ item.showableName }}">
-              {{ breakintolines(item.showableName, 35, 2) | raw }}
+              {{ item.showableName }}
             </a>
           </span>
           </div>
         </th>
       {% endfor %}
-      <th class="table-right-column"></th>
+      <th class="table-right-column rotate"><div><span></span></div></th>
       </thead>
       <tbody>
       {% if categories|length > 0 %}
@@ -67,7 +67,7 @@
             {% for result in paginator %}
               <td></td>
             {% endfor %}
-            <td class="table-right-column"></td>
+            <td class="table-right-column rotate"><div><span></span></div></td>
           </tr>
           {% for question in (category.questions)|sort_order %}
             <tr>
