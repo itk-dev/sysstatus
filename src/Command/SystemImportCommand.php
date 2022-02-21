@@ -27,5 +27,7 @@ class SystemImportCommand extends AbstractImportCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->import(System::class, $input->getArgument('src'), $output);
+
+        return 0;
     }
 }

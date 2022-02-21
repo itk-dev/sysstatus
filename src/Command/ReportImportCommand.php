@@ -27,5 +27,7 @@ class ReportImportCommand extends AbstractImportCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->import(Report::class, $input->getArgument('src'), $output);
+
+        return 0;
     }
 }
