@@ -59,7 +59,11 @@ class ReportImporter extends BaseImporter
             $report->setSysDataSentTo($this->sanitizeText($entry->{'Hvor overføres data til?'}));
             $report->setSysDataComeFrom($this->sanitizeText($entry->{'Hvor kommer data fra?'}));
             $report->setSysDataLocation($this->sanitizeText($entry->{'Placering af data'}));
-            $report->setSysLatestDeletionDate($this->sanitizeText($entry->{'Hvornår slettes oplysningerne senest'}));
+            // The 'Hvornår slettes oplysningerne senest' field seems to have
+            // gone away (cf. https://jira.itkdev.dk/browse/SUPP0RT-419).
+            if (isset($entry->{'Hvornår slettes oplysningerne senest'})) {
+                $report->setSysLatestDeletionDate($this->sanitizeText($entry->{'Hvornår slettes oplysningerne senest'}));
+            }
             $report->setSysDataProcessors($this->sanitizeText($entry->{'Databehandler'}));
             $report->setSysDataProcessingAgreement($this->sanitizeText($entry->{'Databehandleraftale/fortrolighedsaftale'}));
             $report->setSysDataProcessingAgreementLink($this->sanitizeText($entry->{'Link til databehandleraftale/fortrolighedsaftale'}));
