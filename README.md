@@ -22,7 +22,9 @@ docker-compose exec phpfpm bin/console fos:user:create --super-admin
 You should now be able to browse to the application
 
 ```
-open http://$(docker-compose port nginx 80)
+
+open "http://$(docker-compose port nginx 8080)"
+
 ```
 
 ## Import systems and reports
