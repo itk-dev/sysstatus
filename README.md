@@ -29,6 +29,6 @@ open "http://$(docker-compose port nginx 8080)"
 
 ## Import systems and reports
 ```sh
-docker compose exec phpfpmbin/console itstyr:import:system PATH
+docker compose exec phpfpm bin/console itstyr:import:system PATH
 docker compose exec phpfpm bin/console itstyr:import:report PATH
 ```
