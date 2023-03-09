@@ -33,6 +33,9 @@ docker compose exec phpfpm bin/console itstyr:import:system PATH
 docker compose exec phpfpm bin/console itstyr:import:report PATH
 ```
 
+### Flowchart
+
+A helpful flowchart over the Entities, and Joinedtables.
 
 ```mermaid
 flowchart TD
@@ -48,11 +51,35 @@ flowchart TD
  ThemeCategory[ThemeCategory]
  User[User]
  
- fos_user_user_group[JoinTable: fos_user_user_group]
- 
- Database --> Answers & Category & Group & ImportRun & Question  & Report & SelServiceAFI & System & Theme & ThemeCategory & User
+ fos_user_user_group{{JoinTable: fos_user_user_group }}
+ group_system_themes{{JoinTable: group_system_themes }}
+ group_report_themes{{JoinTable: group_report_themes }}
 
- User <-- ManyToMany --> Group
- User -- JoinTable User and Groups --> fos_user_user_group
+ Database[(Database)] --> Answers & Category & Group & ImportRun & Question  & Report & SelServiceAFI & System & Theme & ThemeCategory & User
+
+ User---|ManyToMany| Group
+  User -- JoinTable User and Group --o fos_user_user_group
+
+ Group---|ManyToMany| Report
+ Group---|ManyToMany| System
+ Group---|ManyToMany| Theme
+  Group -- JoinTable Theme and Group --o group_system_themes
+ Group---|ManyToMany| Theme
+  Group -- JoinTable Theme and Group --o group_report_themes
+
+ Report --- |ManyToOne| Answers
+
+ System --- |ManyToOne| Answers
+ System --- |ManyToMany| SelServiceAFI
+
+ Theme --- |ManyToOne| ThemeCategory
+ 
+ Answers --- |ManyToOne| Question
+  Question -- JoinCollum Answers and Question --o Answers
+
+ ThemeCategory --- |ManyToOne| Category
+  Category -- JoinCollum ThemeCategory and Category --o ThemeCategory
+
+ Question --- |ManyToOne| Category
 ```
 
