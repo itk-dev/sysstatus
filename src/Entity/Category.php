@@ -18,9 +18,17 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: ThemeCategory::class, orphanRemoval: true)]
     private Collection $themeCategories;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->themeCategories = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName() ?: $this->getId();
     }
 
     public function getId(): ?int
@@ -54,6 +62,18 @@ class Category
                 $themeCategory->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
