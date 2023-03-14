@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation\Loggable;
+use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
@@ -30,12 +31,15 @@ class Report
     private Collection $answers;
 
     #[ORM\Column(length: 255)]
+    #[Versioned]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Versioned]
     private ?string $text = null;
 
     #[ORM\Column(length: 255)]
+    #[Versioned]
     private ?string $sysSystemOwner = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -92,7 +96,7 @@ class Report
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $sysAuditorStatementLink = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $sysUsage = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
