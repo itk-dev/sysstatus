@@ -2,15 +2,16 @@
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
 class Version20180424124131 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema):void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
@@ -20,7 +21,7 @@ class Version20180424124131 extends AbstractMigration
         $this->addSql('CREATE TABLE report (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, text LONGTEXT DEFAULT NULL, sys_id VARCHAR(255) DEFAULT NULL, sys_title LONGTEXT DEFAULT NULL, sys_alternative_title LONGTEXT DEFAULT NULL, sys_updated DATETIME DEFAULT NULL, sys_owner LONGTEXT DEFAULT NULL, sys_confidential_information TINYINT(1) DEFAULT NULL, sys_purpose LONGTEXT DEFAULT NULL, sys_classification LONGTEXT DEFAULT NULL, sys_date_for_revision DATETIME DEFAULT NULL, sys_persons LONGTEXT DEFAULT NULL, sys_information_types LONGTEXT DEFAULT NULL, sys_dato_to_previous_internal_system_dependencies LONGTEXT DEFAULT NULL, sys_dato_from_previous_external_system_dependencies LONGTEXT DEFAULT NULL, sys_data_location LONGTEXT DEFAULT NULL, sys_latest_deletion_date LONGTEXT DEFAULT NULL, sys_data_worth_saving TINYINT(1) DEFAULT NULL, sys_data_worth_saving_via LONGTEXT DEFAULT NULL, sys_data_processors LONGTEXT DEFAULT NULL, sys_data_processing_agreement LONGTEXT DEFAULT NULL, sys_data_processing_agreement_link LONGTEXT DEFAULT NULL, sys_auditor_statement LONGTEXT DEFAULT NULL, sys_auditor_statement_link LONGTEXT DEFAULT NULL, sys_usage LONGTEXT DEFAULT NULL, sys_request_for_insight LONGTEXT DEFAULT NULL, sys_date_use DATETIME DEFAULT NULL, sys_status LONGTEXT DEFAULT NULL, sys_remarks LONGTEXT DEFAULT NULL, sys_video_suveillance LONGTEXT DEFAULT NULL, sys_obligation_to_inform LONGTEXT DEFAULT NULL, sys_legal_basis LONGTEXT DEFAULT NULL, sys_consent LONGTEXT DEFAULT NULL, sys_impact_analysis LONGTEXT DEFAULT NULL, sys_authorization_procedure LONGTEXT DEFAULT NULL, sys_version LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema):void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
