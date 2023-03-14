@@ -25,11 +25,15 @@ class Group
     #[ORM\ManyToMany(targetEntity: Report::class, mappedBy: 'groups')]
     private Collection $reports;
 
+    #[ORM\ManyToMany(targetEntity: System::class, mappedBy: 'groups')]
+    private Collection $systems;
+
     public function __construct()
     {
         $this->systemThemes = new ArrayCollection();
         $this->reportThemes = new ArrayCollection();
         $this->reports = new ArrayCollection();
+        $this->systems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,6 +117,33 @@ class Group
     {
         if ($this->reports->removeElement($report)) {
             $report->removeGroup($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, System>
+     */
+    public function getSystems(): Collection
+    {
+        return $this->systems;
+    }
+
+    public function addSystem(System $system): self
+    {
+        if (!$this->systems->contains($system)) {
+            $this->systems->add($system);
+            $system->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSystem(System $system): self
+    {
+        if ($this->systems->removeElement($system)) {
+            $system->removeGroup($this);
         }
 
         return $this;
