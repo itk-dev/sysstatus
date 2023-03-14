@@ -17,9 +17,11 @@ class Group
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: Theme::class, mappedBy: 'systemGroups')]
+    #[ORM\JoinTable(name: "group_system_themes")]
     private Collection $systemThemes;
 
     #[ORM\ManyToMany(targetEntity: Theme::class, mappedBy: 'reportGroups')]
+    #[ORM\JoinTable(name: "group_report_themes")]
     private Collection $reportThemes;
 
     #[ORM\ManyToMany(targetEntity: Report::class, mappedBy: 'groups')]
@@ -28,12 +30,21 @@ class Group
     #[ORM\ManyToMany(targetEntity: System::class, mappedBy: 'groups')]
     private Collection $systems;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->systemThemes = new ArrayCollection();
         $this->reportThemes = new ArrayCollection();
         $this->reports = new ArrayCollection();
         $this->systems = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -144,6 +155,33 @@ class Group
     {
         if ($this->systems->removeElement($system)) {
             $system->removeGroup($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeGroup($this);
         }
 
         return $this;
