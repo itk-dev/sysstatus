@@ -18,9 +18,13 @@ class System
     #[ORM\ManyToMany(targetEntity: SelfServiceAvailableFromItem::class, mappedBy: 'systems')]
     private Collection $selfServiceAvailableFromItems;
 
+    #[ORM\OneToMany(mappedBy: 'system', targetEntity: Answer::class)]
+    private Collection $answers;
+
     public function __construct()
     {
         $this->selfServiceAvailableFromItems = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -50,6 +54,36 @@ class System
     {
         if ($this->selfServiceAvailableFromItems->removeElement($selfServiceAvailableFromItem)) {
             $selfServiceAvailableFromItem->removeSystem($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setSystem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getSystem() === $this) {
+                $answer->setSystem(null);
+            }
         }
 
         return $this;
