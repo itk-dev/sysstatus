@@ -22,10 +22,14 @@ class Group
     #[ORM\ManyToMany(targetEntity: Theme::class, mappedBy: 'reportGroups')]
     private Collection $reportThemes;
 
+    #[ORM\ManyToMany(targetEntity: Report::class, mappedBy: 'groups')]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->systemThemes = new ArrayCollection();
         $this->reportThemes = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,6 +86,33 @@ class Group
     {
         if ($this->reportThemes->removeElement($reportTheme)) {
             $reportTheme->removeReportGroup($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            $report->removeGroup($this);
         }
 
         return $this;
