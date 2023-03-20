@@ -5,10 +5,14 @@ namespace App\Entity;
 use App\Repository\GroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GroupRepository::class)]
-#[ORM\Table(name: '`group`')]
+
+
+//#[ORM\Entity(repositoryClass: GroupRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'fos_group')]
 class Group
 {
     #[ORM\Id]
@@ -16,8 +20,9 @@ class Group
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Theme::class, mappedBy: 'systemGroups')]
-    #[ORM\JoinTable(name: "group_system_themes")]
+
+    #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'systemGroups')]
+    #[ORM\JoinTable(name: 'group_system_themes')]
     private Collection $systemThemes;
 
     #[ORM\ManyToMany(targetEntity: Theme::class, mappedBy: 'reportGroups')]
@@ -32,6 +37,12 @@ class Group
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups')]
     private Collection $users;
+
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
 
     public function __construct()
     {
@@ -183,6 +194,30 @@ class Group
         if ($this->users->removeElement($user)) {
             $user->removeGroup($this);
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
