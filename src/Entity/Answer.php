@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\DBAL\Types\SmileyType;
+use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use App\Repository\AnswerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
-use Gedmo\Loggable\Loggable;
 use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -32,7 +32,8 @@ class Answer
     private ?string $note = null;
 
 
-    #[ORM\Column(type: SmileyType::class , nullable: true)]
+    #[ORM\Column(type: 'SmileyType' , nullable: true)]
+    #[DoctrineAssert\EnumType(entity: SmileyType::class)]
     #[Versioned]
     private ?string $smiley = null;
 
