@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 trait ArchivableEntity
 {
     /**
-     * @var \DateTime
+//     * @var \DateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $archivedAt;
+    protected ?\DateTime $archivedAt =null;
 
     /**
      * Sets archivedAt.

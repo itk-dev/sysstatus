@@ -28,10 +28,10 @@ class Theme
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'theme', targetEntity: ThemeCategory::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'theme', targetEntity: ThemeCategory::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $themeCategories;
 
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'systemThemes')]
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'systemThemes')]
     private Collection $systemGroups;
 
     #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'reportThemes')]
@@ -76,19 +76,22 @@ class Theme
         return $this;
     }
 
-    public function removeThemeCategory(ThemeCategory $themeCategory): self
-    {
 
 
-        return $this;
-    }
+public function removeThemeCategory(ThemeCategory $themeCategory): self
+{
+    if ($this->themeCategories->removeElement($themeCategory)) {
+        // set the owning side to null (unless already changed)
+        if ($themeCategory->getTheme() === $this) {
+            $themeCategory->setTheme(null);
+        }
 
-    /**        if ($this->themeCategories->removeElement($themeCategory)) {
-    // set the owning side to null (unless already changed)
-    if ($themeCategory->getTheme() === $this) {
-    $themeCategory->setTheme(null);
-    }
-    }
+
+}
+    return $this;
+}
+
+    /**
      * Virtual.
      */
     public function getOrderedCategories() {

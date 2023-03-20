@@ -6,6 +6,7 @@ use App\Entity\SelfServiceAvailableFromItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @extends ServiceEntityRepository<SelfServiceAvailableFromItem>
  *
@@ -37,6 +38,29 @@ class SelfServiceAvailableFromItemRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Get an item by name. If it does not exist and new one will be created.
+     *
+     * @param string $name
+     *
+     * @return SelfServiceAvailableFromItem
+     */
+    public function getItem(string $name)
+    {
+        $item = $this->findOneBy(['name' => $name]);
+
+        if (null === $item) {
+            $item = new SelfServiceAvailableFromItem();
+            $item->setName($name);
+            $em = $this->getEntityManager();
+            $em->persist($item);
+            // Flush to make sure that we can find this item by name.
+            $em->flush();
+        }
+
+        return $item;
     }
 
 //    /**

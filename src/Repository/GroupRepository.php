@@ -39,20 +39,18 @@ class GroupRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Group[] Returns an array of Group objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Group[] Returns an array of Group objects
+     */
+    public function findByUser($user): array
+    {
+        return $this->createQueryBuilder('g')
+            ->andWhere(':val MEMBER OF g.users')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult();
+
+    }
 
 //    public function findOneBySomeField($value): ?Group
 //    {
