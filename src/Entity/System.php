@@ -143,6 +143,9 @@ class System
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $sysOpenData = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysNumberOfUsers = null;
+
     public function __construct()
     {
         $this->selfServiceAvailableFromItems = new ArrayCollection();
@@ -706,5 +709,10 @@ class System
     public function setSysNumberOfUsers($sysNumberOfUsers)
     {
         $this->sysNumberOfUsers = $sysNumberOfUsers;
+    }
+
+    public function getSysNumberOfUsers(): ?string
+    {
+        return $this->sysNumberOfUsers;
     }
 }

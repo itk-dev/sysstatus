@@ -49,16 +49,29 @@ class SelfServiceAvailableFromItemRepository extends ServiceEntityRepository
      */
     public function getItem(string $name)
     {
+
+
+
         $item = $this->findOneBy(['name' => $name]);
 
+
+
         if (null === $item) {
+
+
             $item = new SelfServiceAvailableFromItem();
+
             $item->setName($name);
             $em = $this->getEntityManager();
+
             $em->persist($item);
+
             // Flush to make sure that we can find this item by name.
             $em->flush();
+
         }
+
+
 
         return $item;
     }

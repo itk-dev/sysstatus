@@ -8,6 +8,7 @@ use App\Repository\ReportRepository;
 use App\Repository\SelfServiceAvailableFromItemRepository;
 use App\Repository\SystemRepository;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SystemImporter extends BaseImporter
@@ -33,7 +34,6 @@ class SystemImporter extends BaseImporter
 
     public function import(string $src)
     {
-
         $systemURL = getenv('SYSTEM_URL');
 
         $json = file_get_contents($src);
@@ -53,12 +53,16 @@ class SystemImporter extends BaseImporter
 
             $system = $this->systemRepository->findOneBy(['sysInternalId' => $entry->{'Id'}]);
 
+
             if (!$system) {
                 $system = new System();
                 $system->setName($this->sanitizeText($entry->{'Titel'}));
 
 
                 $this->entityManager->persist($system);
+
+
+
 
             }
             // Un-archive the system.
@@ -102,18 +106,30 @@ class SystemImporter extends BaseImporter
             $system->setSysSystemOwner($this->sanitizeText($entry->{'Systemejer'}));
 
             $selfServiceAvailableFromText = $this->sanitizeText($entry->{'Selvbetjening tilgængelig fra'});
+
+
+
             if (isset($selfServiceAvailableFromText)) {
-                $selfServiceAvailableFromTitles = $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, null, PREG_SPLIT_NO_EMPTY);
+                $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, -1, PREG_SPLIT_NO_EMPTY);
 
                 $addToSelfServiceGroup = false;
 
                 foreach ($selfServiceAvailableFromTitles as $title) {
+
+
                     $addToSelfServiceGroup = true;
 
                     $name = (string)$title;
+
+
                     $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
+                 ;
+
                     $system->addSelfServiceAvailableFromItem($item);
                 }
+
+
+
 
                 // Add to SELVBETJENING group if the system has selvbetjening.
                 if ($addToSelfServiceGroup) {
@@ -125,7 +141,10 @@ class SystemImporter extends BaseImporter
                         $system->addGroup($findGroup);
                     }
                 }
+
+
             }
+
 
             // Set group and subGroup.
             if (!is_null($system->getSysOwner())) {
@@ -155,13 +174,18 @@ class SystemImporter extends BaseImporter
 
 
 
+
         // Archive systems that no longer exist in Systemoversigten.
+
         $this->systemRepository->createQueryBuilder('e')
             ->update()
             ->set('e.archivedAt', ':now')
             ->setParameter('now', new \DateTime())
             ->where('e.sysInternalId NOT IN (:sysInternalIds)')
-            ->setParameter('sysInternalIds', $sysInternalIds)
+           ->setParameter('sysInternalIds', $sysInternalIds)
+
+
+
             ->getQuery()
             ->execute();
 
