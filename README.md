@@ -3,6 +3,9 @@ Styringsværktøj til IT projekter
 
 ## Setup locally
 
+### Preset
+Make sure you have a set of JSON files for testing import Commands.
+
 ### Start Docker containers
 
 ```sh
