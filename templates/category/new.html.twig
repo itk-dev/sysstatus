@@ -1,0 +1,17 @@
+{% extends '@EasyAdmin/default/layout.html.twig' %}
+
+{% block page_title %}
+  {{ ('category.new.headline')|trans }}: {{ category.name }} (#{{ category.id }})
+{% endblock %}
+
+{% block content_title %}
+  {{ ('category.new.headline')|trans }}: {{ category.name }} (#{{ category.id }})
+{% endblock %}
+
+{% block main %}
+  {{ include('category/_form.html.twig', {'button_label': ('common.actions.save'|trans)}) }}
+{% endblock %}
+
+{% block body_javascript %}
+  <script type="text/javascript" src="/form_category.js"></script>
+{% endblock %}

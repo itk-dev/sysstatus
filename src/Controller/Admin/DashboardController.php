@@ -38,7 +38,13 @@ class DashboardController extends AbstractDashboardController
         //
         // return $this->render('some/path/my-dashboard.html.twig');
     }
+    public function configureDashboard(): Dashboard
+    {
+        return Dashboard::new()
+            ->setTitle('Sysstatus')
+            ->setFaviconPath('favicon.ico');
 
+    }
     public function configureCrud(): Crud
     {
         return Crud::new()
@@ -46,19 +52,15 @@ class DashboardController extends AbstractDashboardController
 
             // the first argument is the "template name", which is the same as the
             // Twig path but without the `@EasyAdmin/` prefix
-            ->overrideTemplate('label/null', 'admin/labels/my_null_label.html.twig')
-
-            ->overrideTemplates([
-                'crud/index' => 'admin/pages/index.html.twig',
-                'crud/field/textarea' => 'admin/fields/dynamic_textarea.html.twig',
-            ]);
+            ->overrideTemplate('label/null', 'easy_admin_overrides/label_null.html.twig');
+//
+//            ->overrideTemplates([
+//                'crud/index' => 'admin/pages/index.html.twig',
+//                'crud/field/textarea' => 'admin/fields/dynamic_textarea.html.twig',
+//            ]);
     }
 
-    public function configureDashboard(): Dashboard
-    {
-        return Dashboard::new()
-            ->setTitle('App');
-    }
+
 
     public function configureMenuItems(): iterable
     {
