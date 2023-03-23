@@ -31,18 +31,28 @@ class Theme
     #[ORM\OneToMany(mappedBy: 'theme', targetEntity: ThemeCategory::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $themeCategories;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $categories;
+
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'systemThemes')]
     private Collection $systemGroups;
 
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'reportThemes')]
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'reportThemes')]
     private Collection $reportGroups;
 
     #[ORM\Column(length: 255)]
     #[Versioned]
     private ?string $name = null;
 
+
+
+
+
     public function __construct()
     {
+        $this->categories = new ArrayCollection();
         $this->themeCategories = new ArrayCollection();
         $this->systemGroups = new ArrayCollection();
         $this->reportGroups = new ArrayCollection();
@@ -94,7 +104,8 @@ public function removeThemeCategory(ThemeCategory $themeCategory): self
     /**
      * Virtual.
      */
-    public function getOrderedCategories() {
+    public function getOrderedCategories(): array
+    {
         $list = [];
 
         $themeCategories = $this->themeCategories;

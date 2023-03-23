@@ -25,7 +25,7 @@ class Group
     #[ORM\JoinTable(name: 'group_system_themes')]
     private Collection $systemThemes;
 
-    #[ORM\ManyToMany(targetEntity: Theme::class, mappedBy: 'reportGroups')]
+    #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'reportGroups')]
     #[ORM\JoinTable(name: "group_report_themes")]
     private Collection $reportThemes;
 

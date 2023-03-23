@@ -60,9 +60,9 @@ class User
     }
 
     /**
-     * @param \Doctrine\Common\Collections\Collection $groups
+     * @param Collection $groups
      */
-    public function setGroups($groups): void
+    public function setGroups(Collection $groups): void
     {
         $this->groups = $groups;
     }
