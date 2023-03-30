@@ -13,12 +13,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+
 class UserCrudController extends AbstractCrudController
 {
+
     public static function getEntityFqcn(): string
     {
         return User::class;
     }
+
+
 
     public function configureActions(Actions $actions): Actions
     {

@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Category;
+use App\Entity\System;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -25,7 +27,7 @@ class DashboardController extends AbstractDashboardController
         // Option 1. You can make your dashboard redirect to some common page of your backend
 
          $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-         return $this->redirect($adminUrlGenerator->setController(UserCrudController::class)->generateUrl());
+         return $this->redirect($adminUrlGenerator->setController(AdminContent::class)->generateUrl());
 
         // Option 2. You can make your dashboard redirect to different pages depending on the user
         //
@@ -64,9 +66,38 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+//        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+//
+//        MenuItem::section('Blog');
+//        yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
+//        yield MenuItem::linkToCrud('menu.dashboard.systems', 'fas fa-cogs', System::class);
+//
+//        MenuItem::section('Blog');
+//        yield MenuItem::linkToCrud('menu.categories', 'fas fa-list', Category::class);
+//        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+
+        return [
+
+
+
+            MenuItem::section('Dashboard ?'),
+                MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+
+            MenuItem::section('Sysstatus'),
+                MenuItem::linkToCrud('menu.dashboard.systems', 'fas fa-cogs', System::class),
+
+            MenuItem::section('Konfiguration'),
+                MenuItem::linkToCrud('menu.categories', 'fas fa-list', Category::class),
+
+            MenuItem::section('Blog'),
+                MenuItem::linkToCrud('User', 'fas fa-user', User::class),
+
+
+//            MenuItem::section('Administration'),
+//                MenuItem::linkToCrud('menu.categories', 'fas fa-list', Category::class),
+//            MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+
+        ];
 
     }
 }
