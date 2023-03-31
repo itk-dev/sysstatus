@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Entity\Group;
 use App\Entity\System;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -80,7 +81,7 @@ class DashboardController extends AbstractDashboardController
 
 
 
-            MenuItem::section('Dashboard ?'),
+            MenuItem::section('Dashboard '),
                 MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
 
             MenuItem::section('Sysstatus'),
@@ -89,8 +90,9 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Konfiguration'),
                 MenuItem::linkToCrud('menu.categories', 'fas fa-list', Category::class),
 
-            MenuItem::section('Blog'),
+            MenuItem::section('Administration'),
                 MenuItem::linkToCrud('User', 'fas fa-user', User::class),
+                MenuItem::linkToCrud('Group', 'fas fa-users', Group::class),
 
 
 //            MenuItem::section('Administration'),

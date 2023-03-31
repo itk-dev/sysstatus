@@ -35,7 +35,7 @@ class User
     #[ORM\Column]
     private ?bool $enabled = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLogin = null;
 
     #[ORM\Column]
@@ -71,6 +71,8 @@ class User
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
+
+
         }
 
         return $this;
