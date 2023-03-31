@@ -47,14 +47,14 @@ class UserCrudController extends AbstractCrudController
     {
         $username = TextField::new('username');
         $email = EmailField::new('email');
-        $groups = CollectionField::new('groups');;
+        $groups = AssociationField::new('groups');;
 //        $groups1 = Field::new('groups');
         $enabled = BooleanField::new('enabled');
         $lastLogin = DateTimeField::new('lastLogin');
 
-        var_dump();
 
-        $roles = ChoiceField::new('roles');
+
+        $roles = ArrayField::new('roles');
         $choice_roles = ChoiceField::new('roles')->setChoices([
             'User' => "ROLE_USER",
             'Admin' => "ROLE_ADMIN"
