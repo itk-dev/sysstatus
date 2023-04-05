@@ -24,7 +24,10 @@ class SystemImportCommand extends AbstractImportCommand
             ->addArgument('src', InputArgument::REQUIRED, 'The src of the feed.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @throws \Exception
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->import(System::class, $input->getArgument('src'), $output);
 

@@ -2,31 +2,32 @@
 
 namespace App\Controller;
 
+use App\Repository\GroupRepository;
 use App\Service\DataExporter;
+use PhpOffice\PhpSpreadsheet\Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ExportController
  * @package App\Controller
  */
-class ExportController extends Controller
+class ExportController extends AbstractController
 {
+
     /**
      * @Route("/export/report", name="export_report")
-     *
-     * @param \App\Service\DataExporter $dataExporter
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @param DataExporter $dataExporter
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportReports(
+
+
         DataExporter $dataExporter
     ) {
         $dataExporter->exportReport();
@@ -36,7 +37,7 @@ class ExportController extends Controller
      * @Route("/export/system", name="export_system")
      *
      * @param \App\Service\DataExporter $dataExporter
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportSystems(
@@ -54,9 +55,10 @@ class ExportController extends Controller
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportPage(Request $request, DataExporter $dataExporter)
+    public function exportPage(Request $request, DataExporter $dataExporter, GroupRepository $groupRepository): Response
     {
-        $groups = $this->get('doctrine.orm.default_entity_manager')->getRepository('App:Group')->findAll();
+
+        $groups = $groupRepository->findAll();
 
         $choices = [];
 
@@ -109,4 +111,8 @@ class ExportController extends Controller
             'sort_form' => $form->createView(),
         ]);
     }
+
+
+
+
 }

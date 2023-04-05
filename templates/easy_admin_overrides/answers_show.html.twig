@@ -33,9 +33,17 @@
               </td>
             {% endif %}
             {% if answer in item.answers %}
+
               {% set numberOfAnswers = numberOfAnswers + 1 %}
               <td>
                 <a href="{{ easyadmin_path('Answer', 'edit', { id: answer.id }) }}">
+{#M{Maaske det her istedet ? #}
+{#                  <a class="text-white" href="{{ ea_url()#}
+{#                    .setController('App\\Controller\\Admin\\QuestionCrudController')#}
+{#                    .setAction('edit')#}
+{#                    .setEntityId(question.id)#}
+{#                  }}">#}
+
                   <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
                 </a>
               </td>

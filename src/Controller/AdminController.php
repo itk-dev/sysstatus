@@ -18,15 +18,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AdminController extends EasyAdminController
+
+class AdminController extends AbstractController
 {
+
+
+
     private $categoryRepository;
     private $themeCategoryRepository;
     private $entityManager;
@@ -73,11 +79,15 @@ class AdminController extends EasyAdminController
         return parent::newAction();
     }
 
+
+
+
     /**
      * Overrides EasyAdmin delete action.
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
+
     public function deleteAction()
     {
         $entityArray = $this->entity;
@@ -184,6 +194,9 @@ class AdminController extends EasyAdminController
      */
     public function list(Request $request, $entityType)
     {
+
+
+
         $queryParameters = $request->query;
         $formParameters = array_merge([
             'groups' => [],

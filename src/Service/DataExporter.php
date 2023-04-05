@@ -36,23 +36,24 @@ class DataExporter
     /**
      * DataExporter constructor.
      *
-     * @param \App\Repository\ReportRepository $reportRepository
-     * @param \App\Repository\SystemRepository $systemRepository
-     * @param \App\Repository\ThemeRepository $themeRepository
-     * @param \Psr\Container\ContainerInterface $container
+     * @param ReportRepository $reportRepository
+     * @param SystemRepository $systemRepository
+     * @param ThemeRepository $themeRepository
+     * @param ContainerInterface $container
      * @throws \Exception
      */
     public function __construct(
+        string $basePath,
         ReportRepository $reportRepository,
         SystemRepository $systemRepository,
         ThemeRepository $themeRepository,
-        ContainerInterface $container
+
     ) {
         $this->reportRepository = $reportRepository;
         $this->systemRepository = $systemRepository;
         $this->themeRepository = $themeRepository;
 
-        $this->basePath = $container->get('kernel')->getProjectDir();
+        $this->basePath = $basePath;
     }
 
     /**

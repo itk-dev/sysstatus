@@ -2,41 +2,39 @@
 
 namespace App\Entity;
 
+use App\Repository\SelfServiceAvailableFromItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SelfServiceAvailableFromItemRepository")
- */
+#[ORM\Entity(repositoryClass: SelfServiceAvailableFromItemRepository::class)]
 class SelfServiceAvailableFromItem
 {
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\System", inversedBy="selfServiceAvailableFromItems")
-     */
-    private $systems;
+    #[ORM\ManyToMany(targetEntity: System::class, inversedBy: 'selfServiceAvailableFromItems')]
+    private Collection $systems;
 
     public function __construct()
     {
         $this->systems = new ArrayCollection();
     }
 
-    public function getId()
+    public function __toString()
+    {
+        return $this->name ?? __CLASS__;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -54,7 +52,7 @@ class SelfServiceAvailableFromItem
     }
 
     /**
-     * @return Collection|System[]
+     * @return Collection<int, System>
      */
     public function getSystems(): Collection
     {
@@ -64,7 +62,7 @@ class SelfServiceAvailableFromItem
     public function addSystem(System $system): self
     {
         if (!$this->systems->contains($system)) {
-            $this->systems[] = $system;
+            $this->systems->add($system);
         }
 
         return $this;
@@ -72,15 +70,8 @@ class SelfServiceAvailableFromItem
 
     public function removeSystem(System $system): self
     {
-        if ($this->systems->contains($system)) {
-            $this->systems->removeElement($system);
-        }
+        $this->systems->removeElement($system);
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name ?? __CLASS__;
     }
 }

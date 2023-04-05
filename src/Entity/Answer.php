@@ -2,58 +2,53 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\DBAL\Types\SmileyType;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
+use App\Repository\AnswerRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AnswerRepository")
- * @Gedmo\Loggable
- */
+#[ORM\Entity(repositoryClass: AnswerRepository::class)]
+#[\Gedmo\Mapping\Annotation\Loggable]
 class Answer
 {
     use BlameableEntity;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Question", inversedBy="answers")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $question;
+    #[ORM\ManyToOne(inversedBy: 'answers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Question $question = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Gedmo\Versioned
-     */
-    private $note;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Versioned]
+    private ?string $note = null;
 
-    /**
-     * @ORM\Column(type="SmileyType", nullable=true)
-     * @DoctrineAssert\Enum(entity="App\DBAL\Types\SmileyType")
-     * @Gedmo\Versioned
-     */
-    private $smiley;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\System", inversedBy="answers")
-     */
-    private $system;
+    #[ORM\Column(type: 'SmileyType' , nullable: true)]
+    #[DoctrineAssert\EnumType(entity: SmileyType::class)]
+    #[Versioned]
+    private ?string $smiley = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Report", inversedBy="answers")
-     */
-    private $report;
+    #[ORM\ManyToOne(inversedBy: 'answers')]
+    private ?System $system = null;
 
-    public function getId()
+    #[ORM\ManyToOne(inversedBy: 'answers')]
+    private ?Report $report = null;
+
+    public function __toString()
+    {
+        return $this->getNote();
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -87,7 +82,7 @@ class Answer
         return $this->smiley;
     }
 
-    public function setSmiley(?string $smiley): self
+    public function setSmiley(string $smiley): self
     {
         $this->smiley = $smiley;
 
@@ -116,10 +111,5 @@ class Answer
         $this->report = $report;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getNote();
     }
 }

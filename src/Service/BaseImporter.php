@@ -9,11 +9,11 @@ use App\Repository\GroupRepository;
 
 abstract class BaseImporter implements ImportInterface
 {
-    protected $entityManager;
-    protected $reportRepository;
-    protected $systemRepository;
-    protected $groupRepository;
-    protected $url;
+    protected EntityManagerInterface $entityManager;
+    protected ReportRepository $reportRepository;
+    protected SystemRepository $systemRepository;
+    protected GroupRepository $groupRepository;
+    protected string|array|false $url;
 
 
     public function __construct(
@@ -39,17 +39,16 @@ abstract class BaseImporter implements ImportInterface
         return $str;
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function convertDate(string $date) {
-        if (!is_string($date)) {
-            return null;
-        }
 
-        $new = new \DateTime($date);
-
-        return $new;
+        return new \DateTime($date);
     }
 
-    protected function convertBoolean(string $str) {
+    protected function convertBoolean(string $str): bool
+    {
         return $str == 'true';
     }
 }

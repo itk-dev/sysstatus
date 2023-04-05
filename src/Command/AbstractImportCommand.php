@@ -10,8 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractImportCommand extends Command
 {
-    protected $entityManager;
-    protected $importer;
+    protected EntityManagerInterface $entityManager;
+    protected BaseImporter $importer;
 
     public function __construct(BaseImporter $importer, EntityManagerInterface $entityManager)
     {
@@ -33,6 +33,7 @@ abstract class AbstractImportCommand extends Command
     {
         $success = true;
         $errorMessage = null;
+
 
         try {
             $this->importer->import($src);

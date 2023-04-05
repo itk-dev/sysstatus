@@ -2,75 +2,145 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use FOS\UserBundle\Model\GroupInterface;
-use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="fos_user")
- */
-class User extends BaseUser
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: "fos_user")]
+class User
 {
     use BlameableEntity;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
-     * @ORM\JoinTable(name="fos_user_user_group")
-     */
-    protected $groups;
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: "fos_user_user_group" )]
+    private Collection $groups;
+
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
+
+    #[ORM\Column]
+    private ?bool $enabled = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastLogin = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->groups = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     /**
-     * @return Collection|Group[]
+     * @return Collection<int, Group>
      */
-    public function getGroups()
+    public function getGroups(): Collection
     {
         return $this->groups;
     }
 
     /**
-     * @param \Doctrine\Common\Collections\Collection $groups
+     * @param Collection $groups
      */
-    public function setGroups($groups): void
+    public function setGroups(Collection $groups): void
     {
         $this->groups = $groups;
     }
 
-    public function addGroup(GroupInterface $group): self
+    public function addGroup(Group $group): self
     {
         if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-            $group->addUser($this);
+            $this->groups->add($group);
+
+
         }
 
         return $this;
     }
 
-    public function removeGroup(GroupInterface $group): self
+    public function removeGroup(Group $group): self
     {
-        if ($this->groups->contains($group)) {
-            $this->groups->removeElement($group);
-            $group->removeUser($this);
-        }
+        $this->groups->removeElement($group);
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
