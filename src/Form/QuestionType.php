@@ -1,18 +1,23 @@
 <?php
 
-namespace App\Command\Form;
+namespace App\Form;
 
-use App\Entity\Category;
+use App\Entity\Question;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategoryType extends AbstractType
+class QuestionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', null, [
+            ->add('sortOrder', null, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('question', null, [
                 'attr' => [
                     'class' => 'form-control'
                 ]
@@ -23,7 +28,7 @@ class CategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Category::class,
+            'data_class' => Question::class,
         ]);
     }
 }

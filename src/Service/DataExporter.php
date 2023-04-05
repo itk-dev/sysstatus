@@ -43,16 +43,17 @@ class DataExporter
      * @throws \Exception
      */
     public function __construct(
+        string $basePath,
         ReportRepository $reportRepository,
         SystemRepository $systemRepository,
         ThemeRepository $themeRepository,
-        ContainerInterface $container
+
     ) {
         $this->reportRepository = $reportRepository;
         $this->systemRepository = $systemRepository;
         $this->themeRepository = $themeRepository;
 
-        $this->basePath = $container->get('kernel')->getProjectDir();
+        $this->basePath = $basePath;
     }
 
     /**

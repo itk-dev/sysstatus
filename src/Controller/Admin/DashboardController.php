@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Category;
 use App\Entity\Group;
+use App\Entity\ImportRun;
+use App\Entity\Report;
 use App\Entity\System;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -82,10 +84,13 @@ class DashboardController extends AbstractDashboardController
 
 
             MenuItem::section('Dashboard '),
-                MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+//                MenuItem::linkToDashboard('Dashboard-Systemer', 'fa fa-cog'),
+//                MenuItem::linkToDashboard('Dashboard-Anmeldelser', 'fa fa-smiley', Report::class),
+                  MenuItem::linkToCrud('Dashboard-Systems', 'fa fa-cog', System::class)->setController(CustomSystemDashboard::class),
+
 
             MenuItem::section('Sysstatus'),
-                MenuItem::linkToCrud('menu.dashboard.systems', 'fas fa-cogs', System::class),
+                MenuItem::linkToCrud('Systemer', 'fas fa-cogs', System::class),
 
             MenuItem::section('Konfiguration'),
                 MenuItem::linkToCrud('menu.categories', 'fas fa-list', Category::class),
@@ -93,6 +98,9 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Administration'),
                 MenuItem::linkToCrud('User', 'fas fa-user', User::class),
                 MenuItem::linkToCrud('Group', 'fas fa-users', Group::class),
+                MenuItem::linkToCrud('Import kørsler ', 'fas fa-file-excel', ImportRun::class),
+                MenuItem::linkToRoute('Eksport', 'fas fa-file-import', 'export_page'),
+
 
 
 //            MenuItem::section('Administration'),

@@ -36,7 +36,7 @@ class CategoryCrudController extends AbstractCrudController
         $created_by = TextField::new('created_by');
         $updated_by = TextField::new('updated_by');
 
-        $coll_question = CollectionField::new('questions')->setEntryType('App\Command\Form\QuestionType');
+        $coll_question = CollectionField::new('questions')->setEntryType('App\Form\QuestionType');
 
         $time_created_at = TimeField::new('created_at');
         $time_updated_at = TimeField::new('time_updated_at');

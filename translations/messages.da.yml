@@ -1,0 +1,287 @@
+actions:
+    show: Vis
+    edit: Rediger
+
+common:
+    actions:
+        save: Gem
+        delete: Slet
+        confirm:
+            delete: Bekræft sletning?
+
+category:
+    new:
+        headline: Opret kategori
+    edit:
+        headline: Rediger kategori
+    form:
+        sort_order: Sortering
+        question: Spørgsmål
+
+theme:
+    new:
+        headline: Opret tema
+    edit:
+        headline: Rediger tema
+    form:
+        system_groups: Systemgrupper
+        report_groups: Anmeldelsesgrupper
+        theme_categories: Kategorier
+        sort_order: Sortering
+        category: Kategori
+
+filter:
+    submit: Søg
+    placeholder:
+        groups: -- Vælg grupper --
+        subowner: -- Vælg undergruppe --
+        theme: -- Vælg tema --
+        category: -- Vælg kategori --
+        search: Søg på navn
+        self_service: Filtrér på selvbetjening
+
+flash:
+    access_denied: Du har ikke adgang til at tilgå denne resurse.
+
+list:
+    no_result: Ingen resultater
+    system: Systemer
+    report: Anmeldelser
+    action:
+        new:
+            report: Opret anmeldelse
+            system: Opret system
+
+entity:
+    import_run:
+        id: ID
+        type: Type
+        datetime: Tidspunkt
+        result: Result
+        output: Output
+    theme_category:
+        sort_order: Vægt
+        category: Kategori
+        theme: Tema
+    category:
+        id: ID
+        name: Navn
+        questions: Antal spørgsmål
+    question:
+        id: ID
+        question: Spørgsmål
+        category: Kategori
+        answers: Svar
+        sort_order: Vægt
+    theme:
+        id: ID
+        categories: Kategorier
+        name: Navn
+        systems: Systemer
+        system_groups: Systemgrupper
+        report_groups: Anmeldelsesgrupper
+        reports: Anmeldelser
+        theme_categories: Kategorier
+    answer:
+        id: ID
+        note: Notat
+        smiley: Smiley
+        question: Spørgsmål
+        text: Bemærkninger
+    note:
+        id: ID
+        name: Navn
+        text: Notater
+    system:
+        id: ID
+        name: Internt navn
+        text: Noter
+        theme: Tema
+        groups: Grupper
+        answers: Smileys
+        edoc_url: Link til systemdokumentation
+        sys_id: Id
+        sys_id_as_link: Link til systemportalen
+        sys_title: Systemnavn
+        sys_updated: Opdateret
+        sys_description: Beskrivelse
+        sys_owner: Systemejerskab
+        sys_owner_sub: Afdeling
+        sys_owner_subdepartment: SystemejerskabUnderafdeling
+        sys_emergency_setup: Driftsberedskab
+        sys_contractor: Systemleverandør
+        sys_urgency_rating: Urgency Rating
+        sys_number_of_users: Antal brugere
+        sys_technical_documentation: Teknisk dokumentation
+        sys_external_dependencies: Eksterne systemafhængigheder
+        sys_important_information: Vigtige supplerende oplysninger
+        sys_superuser_organization: Superbrugerorganisation
+        sys_itsecurity_category: IT sikkerhedskategori
+        sys_link_to_security_review: Link til sikkerhedsanmeldelse
+        sys_link_to_contract: Link til kontrakt
+        sys_end_of_contract: Kontraktudløbsdato
+        sys_open_data: Open data
+        sys_open_source: Open source
+        sys_digital_post: Digital Post
+        sys_system_category: Systemkategori
+        sys_digital_transactions_pr_year: Antal digitale transaktioner pr år
+        sys_total_transactions_pr_year: Antal totale transaktioner pr år
+        sys_self_service_url: Selvbetjenings-URL
+        selfServiceAvailableFromItems: Selvbetjening tilgængelig fra
+        sys_alternative_title: Kaldenavn
+        sys_version: Version
+        sys_internal_id: Id i systemportalen
+        sys_link: Link til system
+        sys_status: Status
+        sys_system_owner: Systemejer
+    report:
+        edoc_url: Link til systemdokumentation
+        id: ID
+        name: Internt navn
+        text: Noter
+        theme: Tema
+        groups: Grupper
+        answers: Smileys
+        answers_remarks: Rediger
+        answers_remarks_create: Opret
+        sys_id: Id
+        sys_internal_id: Id i anmeldelsesportalen
+        sys_link: Link til anmeldelse
+        sys_id_as_link: Link til anmeldelsesportalen
+        sys_title: Navn
+        sys_alternative_title: Systemets kaldenavn
+        sys_updated: Opdateret
+        sys_owner: Systemejerskab
+        sys_owner_sub: Afdeling
+        sys_confidential_information: Følsomme oplysninger
+        sys_purpose: Formål
+        sys_classification: Systemets klassifikation
+        sys_date_for_revision: Dato for Revision
+        sys_persons: Personkreds
+        sys_information_types: Oplysningstyper
+        sys_data_sent_to: Hvor overføres data til?
+        sys_data_come_from: Hvor kommer data fra?
+        sys_data_location: Placering af data
+        sys_latest_deletion_date: Hvornår slettes oplysningerne senest
+        sys_data_worth_saving: Indeholder systemet bevaringsværdige data
+        sys_data_processors: Databehandler
+        sys_data_processing_agreement: Databehandleaftale/fortrolighedsaftale
+        sys_data_processing_agreement_link: Link til databehandleraftale/fortrolighedsaftale
+        sys_auditor_statement: Revisorerklæring tilsyn
+        sys_auditor_statement_link: Link til revisorerklæring
+        sys_usage: Systembrug
+        sys_request_for_insight: Anmodning om indsigt
+        sys_date_use: Ibrugtagning
+        sys_status: Status
+        sys_remarks: Bemærkninger
+        sys_video_suveillance: Hvor tv overvåges der henne
+        sys_obligation_to_inform: Oplysningspligten
+        sys_legal_basis: Retligt grundlag
+        sys_consent: SamtykkeValue
+        sys_impact_analysis: Konsekvensanalyse
+        sys_impact_analysis_link: Link til konsekvensanalyse
+        sys_authorization_procedure: Autorisationsprocedure
+        sys_version: Version
+        sys_internal_information: Indsigt – interne oplysninger
+        sys_data_to_science: Videregivelse af oplysninger til forskning
+        sys_system_owner: Systemejer
+menu:
+    import_runs: Import kørsler
+    configuration: Konfiguration
+    notes: Notater
+    systemportal: Fra systemportalen
+    general: Redigerbar Data
+    reportportal: Fra anmeldelsesportalen
+    reports: Anmeldelser
+    systems: Systemer
+    users: Brugere
+    answers: Svar
+    questions: Spørgsmål
+    categories: Kategorier
+    themes: Temaer
+    admin: Administration
+    sysstatus: Sysstatus
+    separator: ''
+    dashboards: Dashboards
+    list:
+        reports: Anmeldelser
+        systems: Systemer
+    dashboard:
+        reports: 'Dashboard: Anmeldelser'
+        systems: 'Dashboard: Systemer'
+    groups: Grupper
+    theme_category: Tema-Kategori
+    exports: Eksport
+ImportRun: Import kørsler
+System: System
+Systems: Systemer
+User: Bruger
+Report: Anmeldelse
+Reports: Anmeldelser
+Note: Notat
+Answer: Svar
+Answers: Svar
+Category: Kategori
+Categories: Kategorier
+Question: Spørgsmål
+Questions: Spørgsmål
+Theme: Tema
+Themes: Temaer
+Smiley: Smiley
+Username: Brugernavn
+Email: Email
+Enabled: Aktiveret
+'Last login': Sidste login
+Roles: Roller
+'Plain password': Ubeskyttet kodeord
+ROLE_USER: ROLE_USER
+ROLE_ADMIN: ROLE_ADMIN
+Green: Grøn
+Yellow: Gul
+Red: Rød
+Blue: Blå
+ID: ID
+Actions: Handlinger
+Name: Navn
+answers_show:
+    id: ''
+    question: Spørgsmål
+    smiley: Smiley
+    actions: Handlinger
+    edit: Ret
+    no_active_theme: Intet tilkoblet tema.
+'Created by': Oprettet af
+'Updated by': Opdateret af
+'Created at': Oprettet
+'Updated at': Opdateret
+custom_filters:
+    none: Alle
+Apply: Udfør
+Group: Gruppe
+label:
+    'null': ''
+dashboard:
+    report: Dashboard - Anmeldelser
+    system: Dashboard - Systemer
+    title_prefix: 'Dashboard: '
+    no_categories_for_result: Ingen kategorier koblet på resultaterne.
+Filter: Filtrér
+embedded_list:
+    open:
+        new_tab: Redigér
+'Sort order': Vægt
+ThemeCategory: Tema-Kategori
+easyadmin_embedded_list_row:
+    no_entity: Vises først efter der er gemt første gang.
+All: Alle
+export:
+    description: Eksporter alle anmeldelser eller systemer til Excel.
+    headline: Eksport
+    reports: Eksporter alle anmeldelser
+    systems: Eksporter alle systemer
+    filtered:
+        description: Eksporter anmeldelser eller systemer fra en given gruppe.
+
+group.placeholder: Magistrat
+sysOwnerSub.placeholder: Afdeling
+selfServiceAvailableFromItems.placeholder: Selvbetjeningsløsning

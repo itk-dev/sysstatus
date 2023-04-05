@@ -1,0 +1,51 @@
+.itstyr-fosuserbundle--main {
+
+}
+
+.itstyr-fosuserbundle--login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #bbb;
+  background: #BFC4E4;
+  padding: 30px;
+  font-size: 10pt;
+  font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+}
+
+.itstyr-fosuserbundle--login-header {
+  text-align: center;
+}
+
+.itstyr-fosuserbundle--login-main {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+.itstyr-fosuserbundle--login-main label {
+  margin-left: .1em;
+  margin-right: 1em;
+  margin-top: .5em;
+  margin-bottom: .5em;
+}
+
+.itstyr-fosuserbundle--login-main input#_submit {
+  width: 400px;
+  height: 40px;
+  margin: 0 auto;
+  background-color: #2A3CA2;
+  color: #fff;
+}
+
+.itstyr-fosuserbundle--login-main #remember_me {
+  margin-left: 1em;
+  margin-bottom: 1em;
+  height: auto;
+}
+
+.itstyr-fosuserbundle--login-container input {
+  height: 40px;
+  font-size: 16pt;
+  padding-left: 1em;
+  font-weight: bold;
+}
