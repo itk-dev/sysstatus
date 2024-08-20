@@ -1,5 +1,7 @@
 {
     "type": "project",
+    "name": "aakb/itstyr",
+    "description": "",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,

@@ -39,8 +39,13 @@ docker compose exec phpfpm bin/console itstyr:import:report PATH
 ### Flowchart
 
 A helpful flowchart over the Entities, and Joinedtables.
-Ilustrative figures meaning  1 ``` Database = Database ``` 2 ```Black square = Entities``` 3  ```Grey square = relations```
-4 ```Hexagon = Joinedtables``` 5 ```arrow = relation between DB and Entity``` 6 ```bulletin = shows the mapping Entities in Jointables, and JoinCollums```
+Ilustrative figures meaning:
+1. Database = Database
+2. Black square = Entities
+3. Grey square = relations
+4. Hexagon = Joinedtables
+5. arrow = relation between DB and Entity
+6. bulletin = shows the mapping Entities in Jointables, and JoinCollums
 
 ```mermaid
 flowchart TD
