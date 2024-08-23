@@ -20,3 +20,7 @@
 ### <Coding standard> ###
 .php-cs-fixer.cache
 ### <Coding standard> ###
+
+### OTHER ###
+/import/*
+### OTHER ###
