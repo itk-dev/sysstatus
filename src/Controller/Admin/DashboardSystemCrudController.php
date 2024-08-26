@@ -12,7 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 
-class CustomSystemDashboard extends AbstractCrudController
+class DashboardSystemCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
