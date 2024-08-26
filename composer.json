@@ -13,7 +13,7 @@
         "doctrine/orm": "^2.14",
         "easycorp/easyadmin-bundle": "^4.6",
         "fresh/doctrine-enum-bundle": "^9.0",
-        "gedmo/doctrine-extensions": "^3.11",
+        "gedmo/doctrine-extensions": "^3.16",
         "knplabs/knp-paginator-bundle": "^6.1",
         "phpoffice/phpspreadsheet": "^1.28",
         "sensio/framework-extra-bundle": "^6.2",
