@@ -1,4 +1,5 @@
-{% extends '@EasyAdmin/default/layout.html.twig' %}
+{#{% extends '@EasyAdmin/default/layout.html.twig' %}#}
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block page_title %}
   {{ ('dashboard.'~entityType)|trans }}
@@ -49,8 +50,12 @@
       {% for item in paginator %}
         <th class="rotate">
           <div>
-          <span>
-            <a href="{{ path('easyadmin', { action: 'show', id: item.id, entity: entityType|capitalize }) }}" title="{{ item.showableName }}">
+{#          <span>#}
+{#            <a href="{{ path('admin', { action: 'show', id: item.id, entity: entityType|capitalize }) }}" title="{{ item.showableName }}">#}
+{#              {{ item.showableName }}#}
+{#            </a>#}
+            <a href="{{ ea_url().setController
+              ('App\\Controller\\Admin\\CategoryCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
               {{ item.showableName }}
             </a>
           </span>

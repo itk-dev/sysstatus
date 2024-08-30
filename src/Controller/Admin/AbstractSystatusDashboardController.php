@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Group;
 use App\Entity\ImportRun;
 use App\Entity\Report;
+use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
 use App\Entity\Theme;
 use App\Entity\User;
@@ -17,18 +18,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DashboardController extends AbstractDashboardController
+abstract class AbstractSystatusDashboardController extends AbstractDashboardController
 {
-    /**
-     * @Route("/admin")
-     */
 
-     public function index(): Response
-    {
-
-         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-         return $this->redirect($adminUrlGenerator->setController(AdminContent::class)->generateUrl());
-    }
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
@@ -47,12 +39,13 @@ class DashboardController extends AbstractDashboardController
         return [
 
             MenuItem::section('Dashboard '),
-                  MenuItem::linkToCrud('menu.dashboard.reports', 'fas fa-file-alt', Report::class)->setController(DashboardReportCrudController::class),
-                  MenuItem::linkToCrud('menu.dashboard.systems', 'fas fa-cogs', System::class)->setController(DashboardSystemCrudController::class),
+                  MenuItem::linkToRoute('menu.dashboard.reports', 'fas fa-file-alt', 'dashboard', ['entityType' => 'report']),
+                  MenuItem::linkToRoute('menu.dashboard.systems', 'fas fa-cogs',  'dashboard', ['entityType' => 'system']),
+
 
             MenuItem::section('Sysstatus'),
                 MenuItem::linkToCrud('menu.list.reports', 'fas fa-list', Report::class),
-                MenuItem::linkToCrud('menu.list.system', 'fas fa-cog', System::class),
+                MenuItem::linkToCrud('menu.list.systems', 'fas fa-cog', System::class),
 
             MenuItem::section('Konfiguration'),
                 MenuItem::linkToCrud('menu.themes', 'fas fa-th-large', Theme::class),
@@ -66,4 +59,5 @@ class DashboardController extends AbstractDashboardController
         ];
 
     }
+
 }
