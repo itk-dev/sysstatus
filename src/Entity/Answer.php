@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\DBAL\Types\SmileyType;
-use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use App\Repository\AnswerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;

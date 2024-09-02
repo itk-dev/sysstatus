@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use App\Repository\ThemeCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ThemeCategoryRepository::class)]
 class ThemeCategory
 {
+    use BlameableEntity;
+    use TimestampableEntity;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,8 +25,8 @@ class ThemeCategory
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\Column(options: ["default", 0])]
-    private ?int $sortOrder = null;
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    private ?int $sortOrder = 0;
 
     public function getId(): ?int
     {

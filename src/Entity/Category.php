@@ -11,7 +11,6 @@ use Gedmo\Mapping\Annotation\Loggable;
 use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints\Unique;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[Loggable]

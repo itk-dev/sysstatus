@@ -13,8 +13,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
-
-
 #[ORM\Entity(repositoryClass: ThemeRepository::class)]
 #[Loggable]
 #[UniqueEntity('name')]
