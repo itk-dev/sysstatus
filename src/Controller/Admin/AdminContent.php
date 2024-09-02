@@ -4,13 +4,7 @@ namespace App\Controller\Admin;
 
 
 
-use App\Entity\Answer;
-use App\Entity\Category;
-use App\Entity\Question;
-use App\Entity\Report;
 use App\Entity\System;
-use App\Entity\Theme;
-use App\Entity\ThemeCategory;
 use App\Repository\CategoryRepository;
 use App\Repository\ThemeCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;

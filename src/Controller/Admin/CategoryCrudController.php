@@ -9,7 +9,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
@@ -37,7 +36,6 @@ class CategoryCrudController extends AbstractCrudController
         $name = TextField::new('name');
         $created_by = TextField::new('created_by');
         $updated_by = TextField::new('updated_by');
-
         $number_of_questions = AssociationField::new('questions');
         $coll_question = CollectionField::new('questions')->setEntryType('App\Form\QuestionType');
 
@@ -49,7 +47,7 @@ class CategoryCrudController extends AbstractCrudController
             return [ $id, $name, $number_of_questions];
         }
         elseif(Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $name, $created_by, $updated_by, $time_created_at, $time_updated_at, $coll_question,];
+            return [$id, $name,  $coll_question, $created_by, $updated_by, $time_created_at, $time_updated_at,  ];
         }
         elseif(Crud::PAGE_NEW === $pageName) {
             return [ $name, $coll_question, ];

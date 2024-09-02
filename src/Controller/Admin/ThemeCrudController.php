@@ -7,11 +7,9 @@ use App\Form\ThemeCategoryType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ThemeCrudController extends AbstractCrudController
 {
@@ -28,11 +26,13 @@ class ThemeCrudController extends AbstractCrudController
         $sysgroups = AssociationField::new('systemGroups');
         $repgroups = AssociationField::new('reportGroups');
 
+
         $categoriesField = CollectionField::new('themeCategories')
             ->setEntryType(ThemeCategoryType::class)
             ->setFormTypeOptions([
                 'by_reference' => false // important for OneToMany associations
-            ]);
+            ])
+        ;
 
 
         if (Crud::PAGE_INDEX === $pageName) {
