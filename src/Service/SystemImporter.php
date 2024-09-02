@@ -7,8 +7,6 @@ use App\Repository\GroupRepository;
 use App\Repository\ReportRepository;
 use App\Repository\SelfServiceAvailableFromItemRepository;
 use App\Repository\SystemRepository;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SystemImporter extends BaseImporter

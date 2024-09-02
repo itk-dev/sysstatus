@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\ThemeCategory;
-
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -21,7 +20,11 @@ class ThemeCategoryType extends AbstractType
                 'choice_label' => 'name',
                 'required' => true,
             ])
-            ->add('sortOrder', IntegerType::class)
+            ->add('sortOrder', IntegerType::class, [
+                'required' => false,
+                'empty_data' => 0,
+            ])
+
         ;
     }
 

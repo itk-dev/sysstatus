@@ -5,9 +5,9 @@ namespace App\Command;
 use App\Entity\Report;
 use App\Service\ReportImporter;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 
 class ReportImportCommand extends AbstractImportCommand
 {

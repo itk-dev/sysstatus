@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Report;
-use Doctrine\DBAL\Types\Type;
 
 class ReportImporter extends BaseImporter
 {
