@@ -6,6 +6,7 @@ use App\Entity\Theme;
 use App\Form\ThemeCategoryType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -23,8 +24,10 @@ class ThemeCrudController extends AbstractCrudController
     {
         $id = IdField::new('id');
         $name = TextField::new('name');
+
         $sysgroups = AssociationField::new('systemGroups');
         $repgroups = AssociationField::new('reportGroups');
+        $test = ArrayField::new('systemGroups');
 
 
         $categoriesField = CollectionField::new('themeCategories')
@@ -42,7 +45,7 @@ class ThemeCrudController extends AbstractCrudController
             return [$id];
         }
         elseif(Crud::PAGE_NEW === $pageName) {
-            return [$name, $sysgroups, $repgroups, $categoriesField ];
+            return [$name, $sysgroups, $repgroups, $categoriesField];
         }
         elseif(Crud::PAGE_EDIT === $pageName) {
             return [$name, $sysgroups, $repgroups, $categoriesField ];
