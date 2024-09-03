@@ -36,7 +36,7 @@ class ThemeCrudController extends AbstractCrudController
 
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$name, ];
+            return [$name, $sysgroups, $repgroups, $categoriesField ];
         }
         elseif(Crud::PAGE_DETAIL === $pageName) {
             return [$id];
@@ -44,9 +44,9 @@ class ThemeCrudController extends AbstractCrudController
         elseif(Crud::PAGE_NEW === $pageName) {
             return [$name, $sysgroups, $repgroups, $categoriesField ];
         }
-//        elseif(Crud::PAGE_EDIT === $pageName) {
-//            return [$title, $editor_description, $editor_instructions, $editor_preparations, $coll_questions, $coll_configuration ];
-//        }
+        elseif(Crud::PAGE_EDIT === $pageName) {
+            return [$name, $sysgroups, $repgroups, $categoriesField ];
+        }
     }
 
 }
