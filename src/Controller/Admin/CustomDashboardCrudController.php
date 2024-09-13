@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SystemDashboardController extends AbstractSystatusDashboardController
+class CustomDashboardCrudController extends AbstractSystatusDashboardController
 {
     private $categoryRepository;
     private $themeCategoryRepository;
