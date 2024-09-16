@@ -123,6 +123,7 @@ class Theme
     {
         if (!$this->systemGroups->contains($systemGroup)) {
             $this->systemGroups->add($systemGroup);
+            $systemGroup->addSystemTheme($this);
         }
 
         return $this;
@@ -130,7 +131,9 @@ class Theme
 
     public function removeSystemGroup(Group $systemGroup): self
     {
-        $this->systemGroups->removeElement($systemGroup);
+        if ($this->systemGroups->removeElement($systemGroup)) {
+            $systemGroup->removeSystemTheme($this);
+        }
 
         return $this;
     }
@@ -147,6 +150,7 @@ class Theme
     {
         if (!$this->reportGroups->contains($reportGroup)) {
             $this->reportGroups->add($reportGroup);
+            $reportGroup->addReportTheme($this);
         }
 
         return $this;
@@ -154,7 +158,9 @@ class Theme
 
     public function removeReportGroup(Group $reportGroup): self
     {
-        $this->reportGroups->removeElement($reportGroup);
+        if ($this->reportGroups->removeElement($reportGroup)) {
+            $reportGroup->removeSystemTheme($this);
+        }
 
         return $this;
     }

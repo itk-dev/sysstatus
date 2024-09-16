@@ -25,8 +25,16 @@ class ThemeCrudController extends AbstractCrudController
         $id = IdField::new('id');
         $name = TextField::new('name');
 
-        $sysgroups = CollectionField::new('systemGroups');
-        $repgroups = AssociationField::new('reportGroups');
+
+        $sysgroups = AssociationField::new('systemGroups')
+            ->setFormTypeOption('by_reference', false)
+        ;
+
+        $repgroups = AssociationField::new('reportGroups')
+            ->setFormTypeOption('by_reference', false)
+        ;
+
+
         $test = ArrayField::new('systemGroups');
 
         $categoriesField = CollectionField::new('themeCategories')
