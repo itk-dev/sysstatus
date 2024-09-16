@@ -30,6 +30,7 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.43",
+        "friendsofphp/php-cs-fixer": "^3.64",
         "symfony/maker-bundle": "^1.48",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "6.4.*",
