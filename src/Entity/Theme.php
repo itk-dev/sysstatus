@@ -44,10 +44,6 @@ class Theme
     #[Versioned]
     private ?string $name = null;
 
-
-
-
-
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -86,18 +82,18 @@ class Theme
 
 
 
-public function removeThemeCategory(ThemeCategory $themeCategory): self
-{
-    if ($this->themeCategories->removeElement($themeCategory)) {
-        // set the owning side to null (unless already changed)
-        if ($themeCategory->getTheme() === $this) {
-            $themeCategory->setTheme(null);
-        }
+    public function removeThemeCategory(ThemeCategory $themeCategory): self
+    {
+        if ($this->themeCategories->removeElement($themeCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($themeCategory->getTheme() === $this) {
+                $themeCategory->setTheme(null);
+            }
 
 
-}
-    return $this;
-}
+    }
+        return $this;
+    }
 
     /**
      * Virtual.
@@ -131,6 +127,7 @@ public function removeThemeCategory(ThemeCategory $themeCategory): self
     {
         if (!$this->systemGroups->contains($systemGroup)) {
             $this->systemGroups->add($systemGroup);
+            $systemGroup->addSystemTheme($this);
         }
 
         return $this;
@@ -138,7 +135,9 @@ public function removeThemeCategory(ThemeCategory $themeCategory): self
 
     public function removeSystemGroup(Group $systemGroup): self
     {
-        $this->systemGroups->removeElement($systemGroup);
+        if ($this->systemGroups->removeElement($systemGroup)) {
+            $systemGroup->removeSystemTheme($this);
+        }
 
         return $this;
     }
@@ -155,6 +154,7 @@ public function removeThemeCategory(ThemeCategory $themeCategory): self
     {
         if (!$this->reportGroups->contains($reportGroup)) {
             $this->reportGroups->add($reportGroup);
+            $reportGroup->addReportTheme($this);
         }
 
         return $this;
@@ -162,7 +162,9 @@ public function removeThemeCategory(ThemeCategory $themeCategory): self
 
     public function removeReportGroup(Group $reportGroup): self
     {
-        $this->reportGroups->removeElement($reportGroup);
+        if ($this->reportGroups->removeElement($reportGroup)) {
+            $reportGroup->removeSystemTheme($this);
+        }
 
         return $this;
     }

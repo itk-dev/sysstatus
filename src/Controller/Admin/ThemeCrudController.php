@@ -25,8 +25,14 @@ class ThemeCrudController extends AbstractCrudController
         $id = IdField::new('id');
         $name = TextField::new('name');
 
-        $sysgroups = AssociationField::new('systemGroups');
-        $repgroups = AssociationField::new('reportGroups');
+        $sysgroups = AssociationField::new('systemGroups')
+            ->setFormTypeOption('by_reference', false)
+        ;
+
+        $repgroups = AssociationField::new('reportGroups')
+            ->setFormTypeOption('by_reference', false)
+        ;
+
         $test = ArrayField::new('systemGroups');
 
 
@@ -39,7 +45,7 @@ class ThemeCrudController extends AbstractCrudController
 
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$name, $sysgroups, $repgroups, $categoriesField ];
+            return [$name, $sysgroups, $repgroups, $categoriesField];
         }
         elseif(Crud::PAGE_DETAIL === $pageName) {
             return [$id];
