@@ -63,7 +63,6 @@ class TinyPizzaCommand extends Command
         $theme->setName('My awesome Theme');
         $theme->addSystemGroup($group);
 
-
         $themecategory = new ThemeCategory();
         $themecategory->setTheme($theme);
         $themecategory->setCategory($category);
