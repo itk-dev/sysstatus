@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Group;
 use App\Entity\Theme;
 use App\Form\ThemeCategoryType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -19,37 +20,30 @@ class ThemeCrudController extends AbstractCrudController
         return Theme::class;
     }
 
-
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');
         $name = TextField::new('name');
 
-        $sysgroups = AssociationField::new('systemGroups');
+        $sysgroups = CollectionField::new('systemGroups');
         $repgroups = AssociationField::new('reportGroups');
         $test = ArrayField::new('systemGroups');
-
 
         $categoriesField = CollectionField::new('themeCategories')
             ->setEntryType(ThemeCategoryType::class)
             ->setFormTypeOptions([
-                'by_reference' => false // important for OneToMany associations
+                'by_reference' => false, // important for OneToMany associations
             ])
         ;
 
-
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$name, $sysgroups, $repgroups, $categoriesField ];
-        }
-        elseif(Crud::PAGE_DETAIL === $pageName) {
+            return [$name, $sysgroups, $repgroups, $categoriesField];
+        } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id];
-        }
-        elseif(Crud::PAGE_NEW === $pageName) {
+        } elseif (Crud::PAGE_NEW === $pageName) {
+            return [$name, $sysgroups, $repgroups, $categoriesField];
+        } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $sysgroups, $repgroups, $categoriesField];
         }
-        elseif(Crud::PAGE_EDIT === $pageName) {
-            return [$name, $sysgroups, $repgroups, $categoriesField ];
-        }
     }
-
 }

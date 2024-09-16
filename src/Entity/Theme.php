@@ -12,7 +12,6 @@ use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 #[ORM\Entity(repositoryClass: ThemeRepository::class)]
 #[Loggable]
 #[UniqueEntity('name')]
@@ -30,7 +29,7 @@ class Theme
     private Collection $themeCategories;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var ArrayCollection
      */
     private $categories;
 
@@ -43,10 +42,6 @@ class Theme
     #[ORM\Column(length: 255)]
     #[Versioned]
     private ?string $name = null;
-
-
-
-
 
     public function __construct()
     {
@@ -84,20 +79,17 @@ class Theme
         return $this;
     }
 
-
-
-public function removeThemeCategory(ThemeCategory $themeCategory): self
-{
-    if ($this->themeCategories->removeElement($themeCategory)) {
-        // set the owning side to null (unless already changed)
-        if ($themeCategory->getTheme() === $this) {
-            $themeCategory->setTheme(null);
+    public function removeThemeCategory(ThemeCategory $themeCategory): self
+    {
+        if ($this->themeCategories->removeElement($themeCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($themeCategory->getTheme() === $this) {
+                $themeCategory->setTheme(null);
+            }
         }
 
-
-}
-    return $this;
-}
+        return $this;
+    }
 
     /**
      * Virtual.
@@ -112,7 +104,7 @@ public function removeThemeCategory(ThemeCategory $themeCategory): self
             return (int) $first->getSortOrder() < (int) $second->getSortOrder() ? 1 : -1;
         });
 
-        foreach($iterator as $i => $item) {
+        foreach ($iterator as $i => $item) {
             $list[] = $item->getCategory();
         }
 

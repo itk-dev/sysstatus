@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[Loggable]
-#[UniqueEntity("name")]
+#[UniqueEntity('name')]
 class Category
 {
     use BlameableEntity;
@@ -32,7 +32,7 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: ThemeCategory::class, orphanRemoval: true)]
     private Collection $themeCategories;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Question::class, cascade: ["persist"])]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Question::class, cascade: ['persist'])]
     private Collection $questions;
 
     public function __construct()
@@ -84,11 +84,12 @@ class Category
     /**
      * Virtual.
      */
-    public function getThemes() {
+    public function getThemes()
+    {
         $list = [];
         $iterator = $this->themeCategories->getIterator();
 
-        foreach($iterator as $i => $item) {
+        foreach ($iterator as $i => $item) {
             $list[$item->getTheme()->getId()] = $item->getTheme();
         }
 
