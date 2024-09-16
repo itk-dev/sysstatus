@@ -123,7 +123,6 @@ class Theme
     {
         if (!$this->systemGroups->contains($systemGroup)) {
             $this->systemGroups->add($systemGroup);
-            $systemGroup->addSystemTheme($this);
         }
 
         return $this;
