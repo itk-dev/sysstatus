@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Answer;
 use App\Entity\System;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -57,7 +58,9 @@ class SystemCrudController extends AbstractCrudController
         $edoc_url = TextField::new('edoc_url')->setLabel('entity.system.edoc_url');
         $groups = AssociationField::new('groups')->setLabel('entity.system.groups');
         $answers = AssociationField::new('answers')->setLabel('entity.system.answers');
-        $answerarea = CollectionField::new('answerarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig')->setFormTypeOptions('items' => );
+        $answerarea = CollectionField::new('answersarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig');
+
+
 
         $sys_updated = DateField::new('sys_updated')->setLabel('entity.system.sys_updated');
         $sys_description = TextField::new('sys_description')->setLabel('entity.system.sys_description');
