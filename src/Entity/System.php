@@ -171,7 +171,7 @@ class System
         return $this->selfServiceAvailableFromItems;
     }
 
-    public function addSelfServiceAvailableFromItem(SelfServiceAvailableFromItem $selfServiceAvailableFromItem): self
+    public function addSelfServiceAvailableFromItem(SelfServiceAvailableFromItem $selfServiceAvailableFromItem): static
     {
         if (!$this->selfServiceAvailableFromItems->contains($selfServiceAvailableFromItem)) {
             $this->selfServiceAvailableFromItems->add($selfServiceAvailableFromItem);
@@ -181,7 +181,7 @@ class System
         return $this;
     }
 
-    public function removeSelfServiceAvailableFromItem(SelfServiceAvailableFromItem $selfServiceAvailableFromItem): self
+    public function removeSelfServiceAvailableFromItem(SelfServiceAvailableFromItem $selfServiceAvailableFromItem): static
     {
         if ($this->selfServiceAvailableFromItems->removeElement($selfServiceAvailableFromItem)) {
             $selfServiceAvailableFromItem->removeSystem($this);
@@ -198,7 +198,7 @@ class System
         return $this->answers;
     }
 
-    public function addAnswer(Answer $answer): self
+    public function addAnswer(Answer $answer): static
     {
         if (!$this->answers->contains($answer)) {
             $this->answers->add($answer);
@@ -208,7 +208,7 @@ class System
         return $this;
     }
 
-    public function removeAnswer(Answer $answer): self
+    public function removeAnswer(Answer $answer): static
     {
         if ($this->answers->removeElement($answer)) {
             // set the owning side to null (unless already changed)
@@ -225,7 +225,7 @@ class System
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -237,7 +237,7 @@ class System
         return $this->text;
     }
 
-    public function setText(?string $text): self
+    public function setText(?string $text): static
     {
         $this->text = $text;
 
@@ -249,7 +249,7 @@ class System
         return $this->sysSystemOwner;
     }
 
-    public function setSysSystemOwner(string $sysSystemOwner): self
+    public function setSysSystemOwner(string $sysSystemOwner): static
     {
         $this->sysSystemOwner = $sysSystemOwner;
 
@@ -261,7 +261,7 @@ class System
         return $this->sysId;
     }
 
-    public function setSysId(?string $sysId): self
+    public function setSysId(?string $sysId): static
     {
         $this->sysId = $sysId;
 
@@ -273,7 +273,7 @@ class System
         return $this->sysTitle;
     }
 
-    public function setSysTitle(?string $sysTitle): self
+    public function setSysTitle(?string $sysTitle): static
     {
         $this->sysTitle = $sysTitle;
 
@@ -285,7 +285,7 @@ class System
         return $this->sysAlternativeTitle;
     }
 
-    public function setSysAlternativeTitle(?string $sysAlternativeTitle): self
+    public function setSysAlternativeTitle(?string $sysAlternativeTitle): static
     {
         $this->sysAlternativeTitle = $sysAlternativeTitle;
 
@@ -297,7 +297,7 @@ class System
         return $this->sysOwner;
     }
 
-    public function setSysOwner(?string $sysOwner): self
+    public function setSysOwner(?string $sysOwner): static
     {
         $this->sysOwner = $sysOwner;
 
@@ -309,7 +309,7 @@ class System
         return $this->sysOwnerSubdepartment;
     }
 
-    public function setSysOwnerSubdepartment(?string $sysOwnerSubdepartment): self
+    public function setSysOwnerSubdepartment(?string $sysOwnerSubdepartment): static
     {
         $this->sysOwnerSubdepartment = $sysOwnerSubdepartment;
 
@@ -321,7 +321,7 @@ class System
         return $this->sysEmergencySetup;
     }
 
-    public function setSysEmergencySetup(?string $sysEmergencySetup): self
+    public function setSysEmergencySetup(?string $sysEmergencySetup): static
     {
         $this->sysEmergencySetup = $sysEmergencySetup;
 
@@ -333,7 +333,7 @@ class System
         return $this->sysContractor;
     }
 
-    public function setSysContractor(?string $sysContractor): self
+    public function setSysContractor(?string $sysContractor): static
     {
         $this->sysContractor = $sysContractor;
 
@@ -345,7 +345,7 @@ class System
         return $this->sysUrgencyRating;
     }
 
-    public function setSysUrgencyRating(?string $sysUrgencyRating): self
+    public function setSysUrgencyRating(?string $sysUrgencyRating): static
     {
         $this->sysUrgencyRating = $sysUrgencyRating;
 
@@ -357,7 +357,7 @@ class System
         return $this->sysTechnicalDocumentation;
     }
 
-    public function setSysTechnicalDocumentation(?string $sysTechnicalDocumentation): self
+    public function setSysTechnicalDocumentation(?string $sysTechnicalDocumentation): static
     {
         $this->sysTechnicalDocumentation = $sysTechnicalDocumentation;
 
@@ -369,7 +369,7 @@ class System
         return $this->sysExternalDependencies;
     }
 
-    public function setSysExternalDependencies(?string $sysExternalDependencies): self
+    public function setSysExternalDependencies(?string $sysExternalDependencies): static
     {
         $this->sysExternalDependencies = $sysExternalDependencies;
 
@@ -381,7 +381,7 @@ class System
         return $this->sysImportantInformation;
     }
 
-    public function setSysImportantInformation(?string $sysImportantInformation): self
+    public function setSysImportantInformation(?string $sysImportantInformation): static
     {
         $this->sysImportantInformation = $sysImportantInformation;
 
@@ -393,7 +393,7 @@ class System
         return $this->sysSuperuserOrganization;
     }
 
-    public function setSysSuperuserOrganization(?string $sysSuperuserOrganization): self
+    public function setSysSuperuserOrganization(?string $sysSuperuserOrganization): static
     {
         $this->sysSuperuserOrganization = $sysSuperuserOrganization;
 
@@ -405,7 +405,7 @@ class System
         return $this->sysServerNames;
     }
 
-    public function setSysServerNames(?string $sysServerNames): self
+    public function setSysServerNames(?string $sysServerNames): static
     {
         $this->sysServerNames = $sysServerNames;
 
@@ -417,7 +417,7 @@ class System
         return $this->sysITSecurityCategory;
     }
 
-    public function setSysITSecurityCategory(?string $sysITSecurityCategory): self
+    public function setSysITSecurityCategory(?string $sysITSecurityCategory): static
     {
         $this->sysITSecurityCategory = $sysITSecurityCategory;
 
@@ -429,7 +429,7 @@ class System
         return $this->sysLinkToSecurityReview;
     }
 
-    public function setSysLinkToSecurityReview(?string $sysLinkToSecurityReview): self
+    public function setSysLinkToSecurityReview(?string $sysLinkToSecurityReview): static
     {
         $this->sysLinkToSecurityReview = $sysLinkToSecurityReview;
 
@@ -441,7 +441,7 @@ class System
         return $this->sysLinkToContract;
     }
 
-    public function setSysLinkToContract(?string $sysLinkToContract): self
+    public function setSysLinkToContract(?string $sysLinkToContract): static
     {
         $this->sysLinkToContract = $sysLinkToContract;
 
@@ -453,7 +453,7 @@ class System
         return $this->sysEndOfContract;
     }
 
-    public function setSysEndOfContract(?\DateTimeInterface $sysEndOfContract): self
+    public function setSysEndOfContract(?\DateTimeInterface $sysEndOfContract): static
     {
         $this->sysEndOfContract = $sysEndOfContract;
 
@@ -465,7 +465,7 @@ class System
         return $this->sysOpenSource;
     }
 
-    public function setSysOpenSource(string $sysOpenSource): self
+    public function setSysOpenSource(?string $sysOpenSource): static
     {
         $this->sysOpenSource = $sysOpenSource;
 
@@ -477,7 +477,7 @@ class System
         return $this->sysDigitalPost;
     }
 
-    public function setSysDigitalPost(?string $sysDigitalPost): self
+    public function setSysDigitalPost(?string $sysDigitalPost): static
     {
         $this->sysDigitalPost = $sysDigitalPost;
 
@@ -489,7 +489,7 @@ class System
         return $this->sysSystemCategory;
     }
 
-    public function setSysSystemCategory(?string $sysSystemCategory): self
+    public function setSysSystemCategory(?string $sysSystemCategory): static
     {
         $this->sysSystemCategory = $sysSystemCategory;
 
@@ -501,7 +501,7 @@ class System
         return $this->sysDigitalTransactionsPrYear;
     }
 
-    public function setSysDigitalTransactionsPrYear(?string $sysDigitalTransactionsPrYear): self
+    public function setSysDigitalTransactionsPrYear(?string $sysDigitalTransactionsPrYear): static
     {
         $this->sysDigitalTransactionsPrYear = $sysDigitalTransactionsPrYear;
 
@@ -513,7 +513,7 @@ class System
         return $this->sysTotalTransactionsPrYear;
     }
 
-    public function setSysTotalTransactionsPrYear(?string $sysTotalTransactionsPrYear): self
+    public function setSysTotalTransactionsPrYear(?string $sysTotalTransactionsPrYear): static
     {
         $this->sysTotalTransactionsPrYear = $sysTotalTransactionsPrYear;
 
@@ -525,7 +525,7 @@ class System
         return $this->sysSelfServiceURL;
     }
 
-    public function setSysSelfServiceURL(?string $sysSelfServiceURL): self
+    public function setSysSelfServiceURL(?string $sysSelfServiceURL): static
     {
         $this->sysSelfServiceURL = $sysSelfServiceURL;
 
@@ -537,7 +537,7 @@ class System
         return $this->sysVersion;
     }
 
-    public function setSysVersion(?string $sysVersion): self
+    public function setSysVersion(?string $sysVersion): static
     {
         $this->sysVersion = $sysVersion;
 
@@ -549,7 +549,7 @@ class System
         return $this->sysOwnerSub;
     }
 
-    public function setSysOwnerSub(?string $sysOwnerSub): self
+    public function setSysOwnerSub(?string $sysOwnerSub): static
     {
         $this->sysOwnerSub = $sysOwnerSub;
 
@@ -561,7 +561,7 @@ class System
         return $this->sysLink;
     }
 
-    public function setSysLink(string $sysLink): self
+    public function setSysLink(string $sysLink): static
     {
         $this->sysLink = $sysLink;
 
@@ -573,7 +573,7 @@ class System
         return $this->sysInternalId;
     }
 
-    public function setSysInternalId(?int $sysInternalId): self
+    public function setSysInternalId(?int $sysInternalId): static
     {
         $this->sysInternalId = $sysInternalId;
 
@@ -585,7 +585,7 @@ class System
         return $this->sysStatus;
     }
 
-    public function setSysStatus(?string $sysStatus): self
+    public function setSysStatus(?string $sysStatus): static
     {
         $this->sysStatus = $sysStatus;
 
@@ -597,7 +597,7 @@ class System
         return $this->eDocUrl;
     }
 
-    public function setEDocUrl(?string $eDocUrl): self
+    public function setEDocUrl(?string $eDocUrl): static
     {
         $this->eDocUrl = $eDocUrl;
 
@@ -612,7 +612,7 @@ class System
         return $this->groups;
     }
 
-    public function addGroup(Group $group): self
+    public function addGroup(Group $group): static
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -621,7 +621,7 @@ class System
         return $this;
     }
 
-    public function removeGroup(Group $group): self
+    public function removeGroup(Group $group): static
     {
         $this->groups->removeElement($group);
 
@@ -633,7 +633,7 @@ class System
         return $this->sysUpdated;
     }
 
-    public function setSysUpdated(?\DateTimeInterface $sysUpdated): self
+    public function setSysUpdated(?\DateTimeInterface $sysUpdated): static
     {
         $this->sysUpdated = $sysUpdated;
 
@@ -645,7 +645,7 @@ class System
         return $this->sysDescription;
     }
 
-    public function setSysDescription(?string $sysDescription): self
+    public function setSysDescription(?string $sysDescription): static
     {
         $this->sysDescription = $sysDescription;
 
@@ -657,7 +657,7 @@ class System
         return $this->sysOpenData;
     }
 
-    public function setSysOpenData(?string $sysOpenData): self
+    public function setSysOpenData(?string $sysOpenData): static
     {
         $this->sysOpenData = $sysOpenData;
 
@@ -703,12 +703,11 @@ class System
         return $themes;
     }
 
-    /**
-     * @param mixed $sysNumberOfUsers
-     */
-    public function setSysNumberOfUsers($sysNumberOfUsers)
+    public function setSysNumberOfUsers(?string $sysNumberOfUsers): static
     {
         $this->sysNumberOfUsers = $sysNumberOfUsers;
+
+        return $this;
     }
 
     public function getSysNumberOfUsers(): ?string
