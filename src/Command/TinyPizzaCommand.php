@@ -70,18 +70,30 @@ class TinyPizzaCommand extends Command
         $theme->addThemeCategory($themecategory);
         $this->entityManager->persist($theme);
 
-        $system = new System();
-        $system->setName('Myname');
-        $system->setSysSystemOwner('MR Horse');
-        $system->setSysLink('www.google.com');
+        //        foreach ($system->getAnswers() as $answer) {
+        //            $this->entityManager->persist($answer);
+        //        }
 
-        foreach ($system->getAnswers() as $answer) {
-            $this->entityManager->persist($answer);
+        // # Find Systemportalen with specific id 2
+        $system = new System();
+        $system = $this->entityManager->find(System::class, 2);
+        if (!$system) {
+            $io->error('No System entity found with id=2');
+
+            return Command::FAILURE;
+        }
+        $group = $this->entityManager->getRepository(Group::class)->findOneBy(['name' => 'My awesome Group']);
+
+        if (!$group) {
+            $io->error("No Group entity found with name 'Myawesomegroup'");
+
+            return Command::FAILURE;
         }
 
+        // Add group to system
+        $system->addGroup($group);
         $this->entityManager->persist($system);
-
-        $this->entityManager->persist($system);
+       ##    Save changes to database
 
         $this->entityManager->flush();
 
