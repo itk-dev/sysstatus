@@ -91,7 +91,10 @@ class TinyPizzaCommand extends Command
         $this->entityManager->persist($systemportalen);
         $this->entityManager->flush(); // # flush to save
 
-        // # 5 Getting System portalen, and addin Answers
+        // 5 Finding system portal.
+        // Creating new smiley and note in entity Answer
+        // putting question with id 1, into answer.
+        // puting answer into systemportal
         $systemportalen = $this->entityManager->find(System::class, 2);
         if (!$systemportalen) {
             $io->error('No System entity found with id=2');

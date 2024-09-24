@@ -57,15 +57,7 @@ class SystemCrudController extends AbstractCrudController
         $edoc_url = TextField::new('edoc_url')->setLabel('entity.system.edoc_url');
         $groups = AssociationField::new('groups')->setLabel('entity.system.groups');
         $answers = AssociationField::new('answers')->setLabel('entity.system.answers');
-//        $answerarea = CollectionField::new('answerarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig');
-        $answerarea = CollectionField::new('answers', 'Answers')
-            ->setFormTypeOptions([
-                'entry_type' => AnswerType::class, // this should be the form type of your `Answer` entity
-                'by_reference' => false, // this is important with OneToMany associations
-            ])
-            ->allowAdd() // allowing new forms for inserting new `Answer` entities
-            ->allowDelete(); // allowing delete forms to remove `Answer` entities.);
-
+        $answerarea = CollectionField::new('answerarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig')->setFormTypeOptions('items' => );
 
         $sys_updated = DateField::new('sys_updated')->setLabel('entity.system.sys_updated');
         $sys_description = TextField::new('sys_description')->setLabel('entity.system.sys_description');
@@ -116,8 +108,7 @@ class SystemCrudController extends AbstractCrudController
                 $sys_status, $sys_open_data, $sys_open_source, $sys_digital_post, $sys_system_category, $sys_digital_transactions_pr_year,
                 $sys_total_transactions_pr_year, $sys_self_service_url, $selfServiceAvailableFromItems, $sys_alternative_title, $sys_version,
                 $answerarea,
-
-                ];
+            ];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$sys_title, $text_editor, $groups, $edoc_url];
         }
