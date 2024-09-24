@@ -70,6 +70,19 @@ class TinyPizzaCommand extends Command
         $theme->addThemeCategory($themecategory);
         $this->entityManager->persist($theme);
 
+        $system = new System();
+        $system->setName('Myname');
+        $system->setSysSystemOwner('MR Horse');
+        $system->setSysLink('www.google.com');
+
+        foreach ($system->getAnswers() as $answer) {
+            $this->entityManager->persist($answer);
+        }
+
+        $this->entityManager->persist($system);
+
+        $this->entityManager->persist($system);
+
         $this->entityManager->flush();
 
         return Command::SUCCESS;

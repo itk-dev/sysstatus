@@ -45,7 +45,7 @@ class Answer
 
     public function __toString()
     {
-        return $this->getNote();
+        return $this->getNote() ?: 'No note';
     }
 
     public function getId(): ?int

@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -30,18 +31,13 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
     /**
      * AdminController constructor.
-     * @param CategoryRepository $categoryRepository
-     * @param ThemeCategoryRepository $themeCategoryRepository
-     * @param EntityManagerInterface $entityManager
-     * @param PaginatorInterface $paginator
-     * @param TranslatorInterface $translator
      */
     public function __construct(
         CategoryRepository $categoryRepository,
         ThemeCategoryRepository $themeCategoryRepository,
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->themeCategoryRepository = $themeCategoryRepository;
@@ -50,12 +46,10 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $this->translator = $translator;
     }
 
-
-
-
-    #[Route("admin/{entityType}", name: "dashboard")]
+    #[Route('admin/{entityType}', name: 'dashboard')]
     public function dashboard(Request $request, $entityType): mixed
     {
+
         $queryParameters = $request->query;
         $formParameters = array_merge([
             'groups' => [],
@@ -87,18 +81,17 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
         if (!empty($formParameters['groups'])) {
             $groups = $this->entityManager->getRepository(Group::class)->findBy([
-                'id' => $formParameters['groups']
+                'id' => $formParameters['groups'],
             ]);
-        }
-        else {
+        } else {
             $groups = $userGroups;
         }
 
         foreach ($groups as $group) {
-            $groupThemes = $entityType == 'report' ? $group->getReportThemes() : $group->getSystemThemes();
+            $groupThemes = 'report' == $entityType ? $group->getReportThemes() : $group->getSystemThemes();
 
             foreach ($groupThemes as $theme) {
-                if ($formParameters['theme'] != '') {
+                if ('' != $formParameters['theme']) {
                     if ($theme->getId() != $formParameters['theme']) {
                         continue;
                     }
@@ -108,7 +101,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                     $themes[$theme->getId()] = $theme;
 
                     foreach ($theme->getOrderedCategories() as $category) {
-                        if ($formParameters['category'] != '') {
+                        if ('' != $formParameters['category']) {
                             if ($category->getId() != $formParameters['category']) {
                                 continue;
                             }
@@ -133,17 +126,13 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         ]);
     }
 
-
-
-
-
     private function getUserGroupsThemesAndCategories(array $userGroups, $entityType)
     {
         return array_reduce($userGroups,
             function ($carry, Group $group) use ($entityType) {
                 $carry['groups'][$group->getId()] = $group->getName();
 
-                $groupThemes = $entityType == 'report' ? $group->getReportThemes() : $group->getSystemThemes();
+                $groupThemes = 'report' == $entityType ? $group->getReportThemes() : $group->getSystemThemes();
 
                 foreach ($groupThemes as $theme) {
                     $carry['themes'][$theme->getId()] = $theme->getName();
@@ -163,47 +152,37 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
     /**
      * Get repository for entity type.
-     *
-     * @param $entityType
-     * @return EntityRepository|null
      */
-    private function getRepository($entityType): ?\Doctrine\ORM\EntityRepository
+    private function getRepository($entityType): ?EntityRepository
     {
         return match ($entityType) {
             'system' => $this->entityManager->getRepository(System::class),
             'report' => $this->entityManager->getRepository(Report::class),
             default => null,
         };
-
     }
 
     /**
      * Apply common filters for report and system query.
-     *
-     * @param \Doctrine\ORM\QueryBuilder $query
-     * @param array $formParameters
-     * @return \Doctrine\ORM\QueryBuilder
      */
     private function applyFilters(
         QueryBuilder $query,
         array $formParameters,
-                     $entityType = null
-    ): \Doctrine\ORM\QueryBuilder
-    {
+        $entityType = null,
+    ): QueryBuilder {
         $query->andWhere('e.archivedAt IS NULL');
 
         // Filter inactives out.
-        if ($entityType == 'report') {
+        if ('report' == $entityType) {
             $query->andWhere('e.sysStatus = \'Aktiv\'');
-        }
-        else if ($entityType == 'system') {
+        } elseif ('system' == $entityType) {
             $query->andWhere('e.sysStatus <> \'Systemet bruges ikke længere\'');
         }
 
         // Get the groups the user can search in.
         if (!empty($formParameters['groups'])) {
             $groups = $this->entityManager->getRepository(Group::class)->findBy([
-                'id' => $formParameters['groups']
+                'id' => $formParameters['groups'],
             ]);
 
             foreach ($groups as $group) {
@@ -212,22 +191,22 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             }
         }
 
-        if (isset($formParameters['self_service']) && $formParameters['self_service'] != '') {
+        if (isset($formParameters['self_service']) && '' != $formParameters['self_service']) {
             $item = $this->entityManager->getRepository(SelfServiceAvailableFromItem::class)->findOneBy([
                 'id' => $formParameters['self_service'],
             ]);
-            if ($item != null) {
+            if (null != $item) {
                 $query->andWhere(':self_service MEMBER OF e.selfServiceAvailableFromItems');
                 $query->setParameter('self_service', $item);
             }
         }
 
-        if (isset($formParameters['search']) && $formParameters['search'] != '') {
+        if (isset($formParameters['search']) && '' != $formParameters['search']) {
             $query->andWhere('e.name LIKE :name');
             $query->setParameter('name', '%'.$formParameters['search'].'%');
         }
 
-        if (isset($formParameters['subowner']) && $formParameters['subowner'] != '') {
+        if (isset($formParameters['subowner']) && '' != $formParameters['subowner']) {
             $query->andWhere('e.sysOwnerSub = :subowner');
             $query->setParameter('subowner', $formParameters['subowner']);
         }
@@ -237,10 +216,6 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
     /**
      * Get subowners for selected group.
-     *
-     * @param $repository
-     * @param $selectedGroups
-     * @return mixed
      */
     private function getSubOwnerOptions($repository, $selectedGroups): mixed
     {
@@ -258,7 +233,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $class = $repository->getClassName();
         if (Report::class === $class) {
             $subOwnersQueryBuilder->andWhere('e.sysStatus = \'Aktiv\'');
-        } else if (System::class === $class) {
+        } elseif (System::class === $class) {
             $subOwnersQueryBuilder->andWhere('e.sysStatus <> \'Systemet bruges ikke længere\'');
         }
 
@@ -279,14 +254,11 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
     /**
      * Get options for self service filter.
-     *
-     * @param $entityType
-     * @return array
      */
     private function getSelfServiceOptions($entityType): array
     {
         $selfServiceOptions = [];
-        if ($entityType == 'system') {
+        if ('system' == $entityType) {
             /* @var Collection $selfServiceAvailableFromItems */
             $selfServiceAvailableFromItems = $this->entityManager->getRepository(SelfServiceAvailableFromItem::class)->findAll();
             /* @var SelfServiceAvailableFromItem $item */
@@ -294,19 +266,12 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 $selfServiceOptions[$item->getName()] = $item->getId();
             }
         }
+
         return $selfServiceOptions;
     }
 
     /**
      * Get filter form builder.
-     *
-     * @param $userGroupsThemesAndCategories
-     * @param $formParameters
-     * @param $subownerOptions
-     * @param bool $filterThemes
-     * @param bool $filterCategories
-     * @param array $filterSelfServiceOptions
-     * @return \Symfony\Component\Form\FormBuilderInterface
      */
     private function getFilterFormBuilder(
         $userGroupsThemesAndCategories,
@@ -314,9 +279,8 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $subownerOptions,
         bool $filterThemes = false,
         bool $filterCategories = false,
-        array $filterSelfServiceOptions = []
-    ): \Symfony\Component\Form\FormBuilderInterface
-    {
+        array $filterSelfServiceOptions = [],
+    ): \Symfony\Component\Form\FormBuilderInterface {
         $filterFormBuilder = $this->createFormBuilder();
         $filterFormBuilder->add('groups', ChoiceType::class, [
             'label' => 'filter.groups',
@@ -338,7 +302,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 'class' => 'form-control',
             ],
             'required' => false,
-            'disabled' => count($subownerOptions) == 0,
+            'disabled' => 0 == count($subownerOptions),
             'data' => $formParameters['subowner'] ?? null,
         ]);
         if ($filterThemes) {
@@ -401,12 +365,12 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     public function showAction()
     {
         $entityArray = $this->entity;
-        if ($entityArray['class'] == Report::class || $entityArray['class'] == System::class) {
+        if (Report::class == $entityArray['class'] || System::class == $entityArray['class']) {
             $entity = $this->getEntity($entityArray['class'], $_GET['id']);
             $accessGranted = $this->isGranted('show', $entity);
-
             if (!$accessGranted) {
                 $this->addFlash('error', $this->translator->trans('flash.access_denied'));
+
                 return $this->redirectToRoute('list', ['entityType' => strtolower($entityArray['name'])]);
             }
         }
@@ -414,14 +378,8 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         return parent::showAction();
     }
 
-    /**
-     * @param $className
-     * @param $id
-     * @return object|null
-     */
     private function getEntity($className, $id): ?object
     {
         return $this->entityManager->getRepository($className)->find($id);
     }
-
 }
