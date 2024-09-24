@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Answer;
 use App\Entity\Category;
 use App\Entity\Group;
 use App\Entity\Question;
@@ -42,13 +43,14 @@ class TinyPizzaCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        // # 1 Create a Group
         $group = new Group();
         $group->setName('My awesome Group');
         $group->setRoles(['ROLE_USER']);
         $this->entityManager->persist($group);
+        // # 2 Create a Category with 2 questions
         $category = new Category();
         $category->setName('My awesome Category');
-
         $question1 = new Question();
         $question1->setQuestion('What is your favorite color?');
         $question1->setSortOrder(0);
@@ -59,6 +61,7 @@ class TinyPizzaCommand extends Command
         $category->addQuestion($question2);
         $this->entityManager->persist($category);
 
+        // # 3 Through Theme link System to the Group, and the Category with 2 question
         $theme = new Theme();
         $theme->setName('My awesome Theme');
         $theme->addSystemGroup($group);
@@ -69,33 +72,52 @@ class TinyPizzaCommand extends Command
         $themecategory->setSortOrder(0);
         $theme->addThemeCategory($themecategory);
         $this->entityManager->persist($theme);
+        $this->entityManager->flush(); // # flush to save
 
-        //        foreach ($system->getAnswers() as $answer) {
-        //            $this->entityManager->persist($answer);
-        //        }
-
-        // # Find Systemportalen with specific id 2
-        $system = new System();
-        $system = $this->entityManager->find(System::class, 2);
-        if (!$system) {
+        // # 4 Find the system 'Systemportalen' and link it to the Group
+        $systemportalen = $this->entityManager->find(System::class, 2);
+        if (!$systemportalen) {
             $io->error('No System entity found with id=2');
 
             return Command::FAILURE;
         }
         $group = $this->entityManager->getRepository(Group::class)->findOneBy(['name' => 'My awesome Group']);
-
         if (!$group) {
-            $io->error("No Group entity found with name 'Myawesomegroup'");
+            $io->error("No Group entity found with name 'My awesome Group'");
+
+            return Command::FAILURE;
+        }
+        $systemportalen->addGroup($group);
+        $this->entityManager->persist($systemportalen);
+        $this->entityManager->flush(); // # flush to save
+
+        // # 5 Getting System portalen, and addin Answers
+        $systemportalen = $this->entityManager->find(System::class, 2);
+        if (!$systemportalen) {
+            $io->error('No System entity found with id=2');
 
             return Command::FAILURE;
         }
 
-        // Add group to system
-        $system->addGroup($group);
-        $this->entityManager->persist($system);
-       ##    Save changes to database
+        $answer = new Answer();
+        $answer->setSmiley('BLUE');
+        $answer->setNote('I am an awesome note');
 
-        $this->entityManager->flush();
+        // Fetch a Question instance
+        $questionRepository = $this->entityManager->getRepository(Question::class);
+        $question = $questionRepository->find(1);
+
+        if (!$question) {
+            $io->error('Question with id 1 > What is your favourite color, was not found');
+
+            return Command::FAILURE;
+        }
+
+        $answer->setQuestion($question);
+        $this->entityManager->persist($answer);
+        $systemportalen->addAnswer($answer);
+        $this->entityManager->persist($systemportalen);
+        $this->entityManager->flush(); // flush to save
 
         return Command::SUCCESS;
     }

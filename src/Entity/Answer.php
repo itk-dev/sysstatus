@@ -31,8 +31,7 @@ class Answer
     #[Versioned]
     private ?string $note = null;
 
-
-    #[ORM\Column(type: 'SmileyType' , nullable: true)]
+    #[ORM\Column(type: 'SmileyType', nullable: true)]
     #[DoctrineAssert\EnumType(entity: SmileyType::class)]
     #[Versioned]
     private ?string $smiley = null;
@@ -58,7 +57,7 @@ class Answer
         return $this->question;
     }
 
-    public function setQuestion(?Question $question): self
+    public function setQuestion(?Question $question): static
     {
         $this->question = $question;
 
@@ -70,19 +69,19 @@ class Answer
         return $this->note;
     }
 
-    public function setNote(?string $note): self
+    public function setNote(?string $note): static
     {
         $this->note = $note;
 
         return $this;
     }
 
-    public function getSmiley(): ?string
+    public function getSmiley()
     {
         return $this->smiley;
     }
 
-    public function setSmiley(string $smiley): self
+    public function setSmiley($smiley): static
     {
         $this->smiley = $smiley;
 
@@ -94,7 +93,7 @@ class Answer
         return $this->system;
     }
 
-    public function setSystem(?System $system): self
+    public function setSystem(?System $system): static
     {
         $this->system = $system;
 
@@ -106,7 +105,7 @@ class Answer
         return $this->report;
     }
 
-    public function setReport(?Report $report): self
+    public function setReport(?Report $report): static
     {
         $this->report = $report;
 

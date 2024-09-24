@@ -67,21 +67,18 @@ class Group
         return $this->systemThemes;
     }
 
-    public function addSystemTheme(Theme $systemTheme): self
+    public function addSystemTheme(Theme $systemTheme): static
     {
         if (!$this->systemThemes->contains($systemTheme)) {
             $this->systemThemes->add($systemTheme);
-            $systemTheme->addSystemGroup($this);
         }
 
         return $this;
     }
 
-    public function removeSystemTheme(Theme $systemTheme): self
+    public function removeSystemTheme(Theme $systemTheme): static
     {
-        if ($this->systemThemes->removeElement($systemTheme)) {
-            $systemTheme->removeSystemGroup($this);
-        }
+        $this->systemThemes->removeElement($systemTheme);
 
         return $this;
     }
@@ -94,21 +91,18 @@ class Group
         return $this->reportThemes;
     }
 
-    public function addReportTheme(Theme $reportTheme): self
+    public function addReportTheme(Theme $reportTheme): static
     {
         if (!$this->reportThemes->contains($reportTheme)) {
             $this->reportThemes->add($reportTheme);
-            $reportTheme->addReportGroup($this);
         }
 
         return $this;
     }
 
-    public function removeReportTheme(Theme $reportTheme): self
+    public function removeReportTheme(Theme $reportTheme): static
     {
-        if ($this->reportThemes->removeElement($reportTheme)) {
-            $reportTheme->removeReportGroup($this);
-        }
+        $this->reportThemes->removeElement($reportTheme);
 
         return $this;
     }
@@ -121,7 +115,7 @@ class Group
         return $this->reports;
     }
 
-    public function addReport(Report $report): self
+    public function addReport(Report $report): static
     {
         if (!$this->reports->contains($report)) {
             $this->reports->add($report);
@@ -131,7 +125,7 @@ class Group
         return $this;
     }
 
-    public function removeReport(Report $report): self
+    public function removeReport(Report $report): static
     {
         if ($this->reports->removeElement($report)) {
             $report->removeGroup($this);
@@ -148,7 +142,7 @@ class Group
         return $this->systems;
     }
 
-    public function addSystem(System $system): self
+    public function addSystem(System $system): static
     {
         if (!$this->systems->contains($system)) {
             $this->systems->add($system);
@@ -158,7 +152,7 @@ class Group
         return $this;
     }
 
-    public function removeSystem(System $system): self
+    public function removeSystem(System $system): static
     {
         if ($this->systems->removeElement($system)) {
             $system->removeGroup($this);
@@ -175,7 +169,7 @@ class Group
         return $this->users;
     }
 
-    public function addUser(User $user): self
+    public function addUser(User $user): static
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
@@ -185,7 +179,7 @@ class Group
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUser(User $user): static
     {
         if ($this->users->removeElement($user)) {
             $user->removeGroup($this);
@@ -199,7 +193,7 @@ class Group
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -211,7 +205,7 @@ class Group
         return $this->roles;
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): static
     {
         $this->roles = $roles;
 
