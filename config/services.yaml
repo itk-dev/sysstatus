@@ -26,3 +26,8 @@ services:
         arguments:
             $basePath: '%kernel.project_dir%'
     # please note that last definitions always *replace* previous ones
+    # Add this block
+
+    App\Twig\AppExtension:
+        arguments:
+            $adminUrlGenerator: '@EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator'

@@ -15,26 +15,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-
 class UserCrudController extends AbstractCrudController
 {
-
     public static function getEntityFqcn(): string
     {
         return User::class;
     }
 
-
-
     public function configureActions(Actions $actions): Actions
     {
-
-
         $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->remove(Crud::PAGE_INDEX, Action::EDIT)
-
         ;
 
         return $actions;
@@ -44,35 +37,24 @@ class UserCrudController extends AbstractCrudController
     {
         $username = TextField::new('username');
         $email = EmailField::new('email');
-        $groups = AssociationField::new('groups');;
-//        $groups1 = Field::new('groups');
+        $groups = AssociationField::new('groups');
+        //        $groups1 = Field::new('groups');
         $enabled = BooleanField::new('enabled');
         $lastLogin = DateTimeField::new('lastLogin');
 
-
-
         $roles = ArrayField::new('roles');
         $choice_roles = ChoiceField::new('roles')->setChoices([
-            'User' => "ROLE_USER",
-            'Admin' => "ROLE_ADMIN"
+            'User' => 'ROLE_USER',
+            'Admin' => 'ROLE_ADMIN',
         ])->allowMultipleChoices(true)->renderExpanded()->setEmptyData(false);
 
-
-
-
-
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$username, $email, $enabled, $lastLogin, $roles ];
+            return [$username, $email, $enabled, $lastLogin, $roles];
+        } elseif (Crud::PAGE_DETAIL === $pageName) {
+            return [$username, $email, $groups, $enabled, $lastLogin, $roles];
+        } elseif (Crud::PAGE_NEW === $pageName) {
+            return [$username, $email, $groups, $enabled,   $choice_roles];
         }
-        elseif(Crud::PAGE_DETAIL === $pageName) {
-            return [$username, $email, $groups, $enabled, $lastLogin, $roles ];
-        }
-        elseif(Crud::PAGE_NEW === $pageName) {
-            return [ $username, $email, $groups, $enabled,   $choice_roles ];
-        }
-//        elseif(Crud::PAGE_EDIT === $pageName) {
-//            return [$title, $editor_description, $editor_instructions, $editor_preparations, $coll_questions, $coll_configuration ];
-//        }
-    }
 
+    }
 }

@@ -2,20 +2,58 @@
 
 namespace App\Twig;
 
+use App\Controller\Admin\AnswerCrudController;
 use Doctrine\Common\Collections\ArrayCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
-    public function getFunctions()
+    private AdminUrlGenerator $adminUrlGenerator;
+
+    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    {
+        $this->adminUrlGenerator = $adminUrlGenerator;
+    }
+
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('getclass', [$this, 'getClass']),
             new TwigFunction('getanswer', [$this, 'getAnswer']),
             new TwigFunction('breakintolines', [$this, 'breakIntoLines']),
+            new TwigFunction('new_answer_url', [$this, 'newAnswerUrl']),
+            new TwigFunction('edit_answer_url', [$this, 'editAnswerUrl']),
         ];
+    }
+
+    public function editAnswerUrl(string $itemClass, int $instanceId, int $questionId, int $answerId): string
+    {
+        $url = $this->adminUrlGenerator
+            ->setController(AnswerCrudController::class)
+            ->setAction('edit')
+            ->set('entityId', $answerId)
+            ->set('question', $questionId)
+            ->set(strtolower($itemClass), $instanceId)
+            ->generateUrl()
+        ;
+
+        return $url;
+    }
+
+    public function newAnswerUrl(int $questionId, string $referer): string
+    {
+        $url = $this->adminUrlGenerator
+            ->setController(AnswerCrudController::class)  // Define the CRUD controller
+            ->setAction('new')                           // Define the 'new' action
+            ->set('question', $questionId)               // Set the question ID parameter
+            ->set('referer', $referer)                   // Set the referer URL
+            ->generateUrl()                             // Generate the final URL
+        ;
+
+        return $url;
     }
 
     public function getFilters()

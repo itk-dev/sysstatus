@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Answer;
 use App\Entity\Category;
 use App\Entity\Group;
 use App\Entity\ImportRun;
@@ -13,6 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractSystatusDashboardController extends AbstractDashboardController
 {
@@ -23,6 +27,7 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
             ->setFaviconPath('favicon.ico')
         ;
     }
+
 
     public function configureCrud(): Crud
     {
@@ -47,10 +52,14 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
             MenuItem::linkToCrud('menu.categories', 'fas fa-list', Category::class),
 
             MenuItem::section('Administration'),
+            MenuItem::linkToCrud('Test', 'test', Answer::class),
             MenuItem::linkToCrud('User', 'fas fa-user', User::class),
             MenuItem::linkToCrud('Group', 'fas fa-users', Group::class),
             MenuItem::linkToCrud('Import kørsler ', 'fas fa-file-excel', ImportRun::class),
             MenuItem::linkToRoute('Eksport', 'fas fa-file-import', 'export_page'),
+
+            MenuItem::section('Logout'),
+            MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
         ];
     }
 }
