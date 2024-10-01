@@ -46,14 +46,26 @@
           {% if numberOfAnswers == 0 %}
             <td></td>
             <td>
-{#              <a href="{{ new_answer_url(itemClass, entity.instance.id, question.id, ) }}">#}
-{#                <i class="fa fa-soap edit-icon"></i> {{ 'answers_show.edit' | trans }}#}
-{#              </a>#}
-              <a href="{{ new_answer_url(question.id,  app.request.uri|url_encode) }}">
+              {{ dump('Entiteten der gives videre er' ~ itemClass) }}
+              {{ dump('Question id er : '  ~ question.id) }}
+              {{ dump('Id på Active directory er' ~ entity.instance.id) }}
+              <a href="{{ new_test(itemClass, entity.instance.id, question.id) }}">
                 <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
               </a>
             </td>
           {% endif %}
+{#          {% if numberOfAnswers == 0 %}#}
+{#            <td></td>#}
+{#            <td>#}
+{#              <a href="{{ new_answer_url(itemClass, entity.instance.id, question.id, ) }}">#}
+{#                <i class="fa fa-soap edit-icon"></i> {{ 'answers_show.edit' | trans }}#}
+{#              </a>#}
+{#              {{ dump(question.id) }}#}
+{#              <a href="{{ edit_test(question.id,  app.request.uri|url_encode) }}">#}
+{#                <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}#}
+{#              </a>#}
+{#            </td>#}
+{#          {% endif %}#}
           </td>
         </tr>
       {% endfor %}
