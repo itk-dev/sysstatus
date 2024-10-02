@@ -2,12 +2,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Group;
 use App\Entity\Theme;
 use App\Form\ThemeCategoryType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -20,23 +18,19 @@ class ThemeCrudController extends AbstractCrudController
         return Theme::class;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');
         $name = TextField::new('name');
-
-
         $sysgroups = AssociationField::new('systemGroups')
             ->setFormTypeOption('by_reference', false)
         ;
-
         $repgroups = AssociationField::new('reportGroups')
             ->setFormTypeOption('by_reference', false)
         ;
-
-
-        $test = ArrayField::new('systemGroups');
-
         $categoriesField = CollectionField::new('themeCategories')
             ->setEntryType(ThemeCategoryType::class)
             ->setFormTypeOptions([
@@ -52,6 +46,8 @@ class ThemeCrudController extends AbstractCrudController
             return [$name, $sysgroups, $repgroups, $categoriesField];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $sysgroups, $repgroups, $categoriesField];
+        } else {
+            throw new \Exception('This action does not exist.');
         }
     }
 }

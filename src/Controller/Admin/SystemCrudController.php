@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Answer;
 use App\Entity\System;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -44,6 +43,9 @@ class SystemCrudController extends AbstractCrudController
         return $actions;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id')->setLabel('entity.system.id');
@@ -59,9 +61,6 @@ class SystemCrudController extends AbstractCrudController
         $groups = AssociationField::new('groups')->setLabel('entity.system.groups');
         $answers = AssociationField::new('answers')->setLabel('entity.system.answers');
         $answerarea = CollectionField::new('answersarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig');
-
-
-
         $sys_updated = DateField::new('sys_updated')->setLabel('entity.system.sys_updated');
         $sys_description = TextField::new('sys_description')->setLabel('entity.system.sys_description');
         $sys_owner_subdepartment = TextField::new('sys_owner_subdepartment')->setLabel('entity.system.sys_owner_subdepartment');
@@ -70,7 +69,6 @@ class SystemCrudController extends AbstractCrudController
         $sys_urgency_rating = TextField::new('sys_urgency_rating')->setLabel('entity.system.sys_urgency_rating');
         $sys_number_of_users = TextField::new('sys_number_of_users')->setLabel('entity.system.sys_number_of_users');
         $sys_technical_documentation = TextField::new('sys_technical_documentation')->setLabel('entity.system.sys_technical_documentation');
-        $sys_external_dependencies = TextField::new('sys_external_dependencies')->setLabel('entity.system.sys_external_dependencies');
         $sys_important_information = TextField::new('sys_important_information')->setLabel('entity.system.sys_important_information');
         $sys_superuser_organization = TextField::new('sys_superuser_organization')->setLabel('entity.system.sys_superuser_organization');
         $sys_itsecurity_category = TextField::new('sys_itsecurity_category')->setLabel('entity.system.sys_itsecurity_category');
@@ -84,12 +82,10 @@ class SystemCrudController extends AbstractCrudController
         $sys_digital_transactions_pr_year = TextField::new('sys_digital_transactions_pr_year')->setLabel('entity.system.sys_digital_transactions_pr_year');
         $sys_total_transactions_pr_year = TextField::new('sys_total_transactions_pr_year')->setLabel('entity.system.sys_total_transactions_pr_year');
         $selfServiceAvailableFromItems = IntegerField::new('selfServiceAvailableFromItems')->setLabel('entity.system.selfServiceAvailableFromItems');
-
         $sys_alternative_title = TextField::new('sys_alternative_title')->setLabel('sys_alternative_title');
         $sys_version = TextField::new('sys_version')->setLabel('sys_version');
         $sys_id_as_link = UrlField::new('sys_id_as_link');
         $sys_system_category = TextField::new('sys_system_category');
-
         $sys_view_all_groups = $groups->formatValue(function ($value) {
             $names = [];
             foreach ($value as $group) {
@@ -98,8 +94,6 @@ class SystemCrudController extends AbstractCrudController
 
             return implode(',  ', $names);
         });
-
-        //      $coll_question = CollectionField::new('questions')->setEntryType('App\Form\CategoryType');
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $name, $sys_owner, $sys_system_owner, $sys_link,  $text, $sys_self_service_url, $groups];
@@ -114,6 +108,8 @@ class SystemCrudController extends AbstractCrudController
             ];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$sys_title, $text_editor, $groups, $edoc_url];
+        } else {
+            throw new \Exception('This action does not exist.');
         }
     }
 }
