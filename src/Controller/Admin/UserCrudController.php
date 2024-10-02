@@ -33,6 +33,9 @@ class UserCrudController extends AbstractCrudController
         return $actions;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $username = TextField::new('username');
@@ -54,7 +57,8 @@ class UserCrudController extends AbstractCrudController
             return [$username, $email, $groups, $enabled, $lastLogin, $roles];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [$username, $email, $groups, $enabled,   $choice_roles];
+        } else {
+            throw new \Exception('This action does not exist.');
         }
-
     }
 }

@@ -26,7 +26,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('breakintolines', [$this, 'breakIntoLines']),
             new TwigFunction('new_answer_url', [$this, 'newAnswerUrl']),
             new TwigFunction('edit_answer_url', [$this, 'editAnswerUrl']),
-            new TwigFunction('new_test', [$this, 'newtest']),
+            new TwigFunction('edit_test', [$this, 'edittest']),
         ];
     }
 
@@ -44,8 +44,9 @@ class AppExtension extends AbstractExtension
         return $url;
     }
 
-    public function newtest(string $itemClass, int $itemId, int $questionId): string
+    public function edittest(string $itemClass, int $itemId, int $questionId): string
     {
+        //        dump($answer);
         $url = $this->adminUrlGenerator
             ->setController(AnswerCrudController::class)  // Define the CRUD controller
             ->setAction('new') // Define the 'new' action
