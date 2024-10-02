@@ -15,10 +15,13 @@ docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interact
 ```
 
 ### Create a super admin user
+email: a@a.com 
+password: admin
 
 ```sh
-docker compose exec phpfpm bin/console fos:user:create --super-admin
+docker compose exec phpfpm bin/console superuser
 ```
+
 
 ### Access the site
 
@@ -35,6 +38,12 @@ open "http://$(docker-compose port nginx 8080)"
 docker compose exec phpfpm bin/console itstyr:import:system PATH
 docker compose exec phpfpm bin/console itstyr:import:report PATH
 ```
+
+## Create TestSystemData
+```sh
+docker compose exec phpfpm bin/console create-testdata
+```
+
 
 ### Flowchart
 

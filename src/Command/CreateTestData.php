@@ -19,10 +19,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'tiny-pizza',
+    name: 'create-testdata',
     description: 'Add a short description for your command',
 )]
-class TinyPizzaCommand extends Command
+class CreateTestData extends Command
 {
     private EntityManagerInterface $entityManager;
 
