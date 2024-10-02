@@ -13,15 +13,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Knp\Component\Pager\PaginatorInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CustomDashboardCrudController extends AbstractSystatusDashboardController
+class CustomDashboardController extends AbstractSystatusDashboardController
 {
     private $categoryRepository;
     private $themeCategoryRepository;
@@ -46,10 +50,21 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $this->translator = $translator;
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/admin')]
+    public function index(): Response
+    {
+        $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+
+        return $this->redirect($adminUrlGenerator->setController(SystemCrudController::class)->generateUrl());
+    }
+
     #[Route('admin/{entityType}', name: 'dashboard')]
     public function dashboard(Request $request, $entityType): mixed
     {
-
         $queryParameters = $request->query;
         $formParameters = array_merge([
             'groups' => [],
@@ -360,7 +375,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     /**
      * Overrides EasyAdmin show action.
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function showAction()
     {
