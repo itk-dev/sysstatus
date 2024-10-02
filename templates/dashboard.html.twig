@@ -50,10 +50,6 @@
       {% for item in paginator %}
         <th class="rotate">
           <div>
-{#          <span>#}
-{#            <a href="{{ path('admin', { action: 'show', id: item.id, entity: entityType|capitalize }) }}" title="{{ item.showableName }}">#}
-{#              {{ item.showableName }}#}
-{#            </a>#}
             <a href="{{ ea_url().setController
               ('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
               {{ item.showableName }}

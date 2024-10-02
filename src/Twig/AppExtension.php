@@ -24,9 +24,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getclass', [$this, 'getClass']),
             new TwigFunction('getanswer', [$this, 'getAnswer']),
             new TwigFunction('breakintolines', [$this, 'breakIntoLines']),
-            new TwigFunction('new_answer_url', [$this, 'newAnswerUrl']),
             new TwigFunction('edit_answer_url', [$this, 'editAnswerUrl']),
-            new TwigFunction('edit_test', [$this, 'edittest']),
         ];
     }
 
@@ -44,32 +42,6 @@ class AppExtension extends AbstractExtension
         return $url;
     }
 
-    public function edittest(string $itemClass, int $itemId, int $questionId): string
-    {
-        //        dump($answer);
-        $url = $this->adminUrlGenerator
-            ->setController(AnswerCrudController::class)  // Define the CRUD controller
-            ->setAction('new') // Define the 'new' action
-            ->set($itemClass, $itemId) // Set the item ID parameter based on itemClass
-            ->set('question', $questionId)  // Set the question ID parameter
-            ->generateUrl()  // Generate the final URL
-        ;
-
-        return $url;
-    }
-
-    public function newAnswerUrl(int $questionId, string $referer): string
-    {
-        $url = $this->adminUrlGenerator
-            ->setController(AnswerCrudController::class)  // Define the CRUD controller
-            ->setAction('new')                           // Define the 'new' action
-            ->set('question', $questionId)               // Set the question ID parameter
-            ->set('referer', $referer)                   // Set the referer URL
-            ->generateUrl()                             // Generate the final URL
-        ;
-
-        return $url;
-    }
 
     public function getFilters()
     {
