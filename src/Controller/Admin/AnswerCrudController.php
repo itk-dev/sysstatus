@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class AnswerCrudController extends AbstractCrudController
 {
-    private $answerService;
+
     private $entityManager;
     private AnswerRepository $answerRepository;
     private ReportRepository $reportRepository;
@@ -33,7 +33,6 @@ class AnswerCrudController extends AbstractCrudController
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        AnswerService $answerService,
         AnswerRepository $answerRepository,
         ReportRepository $reportRepository,
         SystemRepository $systemRepository,
@@ -41,7 +40,6 @@ class AnswerCrudController extends AbstractCrudController
         RequestStack $requestStack,
     ) {
         $this->entityManager = $entityManager;
-        $this->answerService = $answerService;
         $this->answerRepository = $answerRepository;
         $this->reportRepository = $reportRepository;
         $this->systemRepository = $systemRepository;
