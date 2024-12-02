@@ -24,4 +24,10 @@ class LoginController extends AbstractController
             'error' => $error,
         ]);
     }
+
+    #[Route(path: '/logout', name: 'admin_logout')]
+    public function logout()
+    {
+        return $this->redirectToRoute('app_login');
+    }
 }

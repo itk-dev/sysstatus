@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: "fos_user")]
+#[ORM\Table(name: 'fos_user')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -26,7 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: "fos_user_user_group" )]
+    #[ORM\JoinTable(name: 'fos_user_user_group')]
     private Collection $groups;
 
     #[ORM\Column(length: 255)]
@@ -65,9 +65,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->groups;
     }
 
-    /**
-     * @param Collection $groups
-     */
     public function setGroups(Collection $groups): void
     {
         $this->groups = $groups;
@@ -77,8 +74,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
-
-
         }
 
         return $this;
@@ -100,8 +95,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->username;
     }
-
-
 
     public function getUsername(): ?string
     {
@@ -150,6 +143,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
     /**
      * @see UserInterface
      *
@@ -165,8 +159,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-    * @param list<string> $roles
-    */
+     * @param list<string> $roles
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -197,5 +191,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-
 }

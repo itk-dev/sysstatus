@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
     name: 'SuperUser',
@@ -19,9 +20,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class SuperUserCommand extends Command
 {
     private $entitManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    private $passwordHasher;
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
+        $this->passwordHasher = $passwordHasher;
         $this->entitManager = $entityManager;
         parent::__construct();
     }
@@ -39,14 +41,14 @@ class SuperUserCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $user = new User();
         $user->setUsername('a');
-        $user->setEmail('admin@example.com');
-        $user->setPassword('a');
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setEmail('a@a.com');
+        $user->setPassword($this->passwordHasher->hashPassword($user, 'a'));
+        $user->setRoles(['ROLE_SUPER_ADMIN']);
         $user->setEnabled(true);
         $this->entitManager->persist($user);
         $this->entitManager->flush();
 
-        $io->success('you have created user:: a , with password:: a');
+        $io->success('you have created email:: a@a , with password:: a');
 
         return Command::SUCCESS;
     }

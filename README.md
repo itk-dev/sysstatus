@@ -17,7 +17,7 @@ docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interact
 ### Create a super admin user
 
 ```sh
-docker compose exec phpfpm bin/console fos:user:create --super-admin
+docker compose exec phpfpm bin/console SuperUser
 ```
 
 ### Access the site
