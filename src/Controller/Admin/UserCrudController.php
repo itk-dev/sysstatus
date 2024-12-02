@@ -33,6 +33,9 @@ class UserCrudController extends AbstractCrudController
         return $actions;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $username = TextField::new('username');
@@ -43,6 +46,7 @@ class UserCrudController extends AbstractCrudController
         $lastLogin = DateTimeField::new('lastLogin');
 
         $roles = ArrayField::new('roles');
+
         $choice_roles = ChoiceField::new('roles')->setChoices([
             'User' => 'ROLE_USER',
             'Admin' => 'ROLE_ADMIN',
@@ -56,6 +60,8 @@ class UserCrudController extends AbstractCrudController
             return [$username, $email, $groups, $enabled, $password, $choice_roles];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$username, $email, $groups, $enabled, $password, $choice_roles];
+        } else {
+            throw new \Exception('Invalid page: '.$pageName);
         }
     }
 }

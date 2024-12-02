@@ -55,7 +55,7 @@
 {#              {{ item.showableName }}#}
 {#            </a>#}
             <a href="{{ ea_url().setController
-              ('App\\Controller\\Admin\\CategoryCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
+              ('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
               {{ item.showableName }}
             </a>
           </span>
