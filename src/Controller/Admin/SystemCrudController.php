@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -81,10 +82,12 @@ class SystemCrudController extends AbstractCrudController
 
         //      $coll_question = CollectionField::new('questions')->setEntryType('App\Form\CategoryType');
 
+        $test = Field::new('answerarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig');
+
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $name, $sys_owner, $sys_system_owner, $sys_link,  $text, $sys_self_service_url, $groups];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $name, $text, $sys_system_owner, $answerarea, $groups, $sys_title, $edoc_url, $sys_link, $sys_updated, $sys_description, $sys_owner, $sys_owner_subdepartment,
+            return [$test, $id, $name, $text, $sys_system_owner, $answerarea, $groups, $sys_title, $edoc_url, $sys_link, $sys_updated, $sys_description, $sys_owner, $sys_owner_subdepartment,
                 $sys_emergency_setup, $sys_contractor, $sys_urgency_rating, $sys_number_of_users, $sys_technical_documentation, $sys_external_dependencies, $sys_important_information,
                 $sys_superuser_organization, $sys_itsecurity_category, $sys_link_to_security_review, $sys_link_to_contract, $sys_end_of_contract, $sys_status, $sys_open_data,
                 $sys_open_source, $sys_digital_post, $sys_digital_transactions_pr_year, $sys_total_transactions_pr_year, /* $selfServiceAvailableFromItems, */ $sys_alternative_title,
