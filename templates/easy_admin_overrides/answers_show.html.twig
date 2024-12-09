@@ -33,21 +33,22 @@
           {% set numberOfAnswers = 0 %}
 
           {% for answer in question.answers %}
-            {% if answer in item.answers %}
+            {% if answer in entity.instance.answers %}
               <td>
                 {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note, 'width': 25 } %}
               </td>
             {% endif %}
-            {% if answer in item.answers %}
+            {% if answer in entity.instance.answers %}
 
               {% set numberOfAnswers = numberOfAnswers + 1 %}
               <td>
 {#                <a href="{{ easyadmin_path('Answer', 'edit', { id: answer.id }) }}">#}
-{#M{Maaske det her istedet ?#}
-                  <a class="text-white" href="{{ ea_url()
-                    .setController('App\\Controller\\Admin\\QuestionCrudController')
+
+
+                  <a class="" href="{{ ea_url()
+                    .setController('App\\Controller\\Admin\\AnswerController')
                     .setAction('edit')
-                    .setEntityId(question.id)
+                    .setEntityId(answer.id)
                   }}">
 
                   <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
