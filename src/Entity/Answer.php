@@ -31,8 +31,7 @@ class Answer
     #[Versioned]
     private ?string $note = null;
 
-
-    #[ORM\Column(type: 'SmileyType' , nullable: true)]
+    #[ORM\Column(type: 'SmileyType', nullable: true)]
     #[DoctrineAssert\EnumType(entity: SmileyType::class)]
     #[Versioned]
     private ?string $smiley = null;
@@ -45,7 +44,7 @@ class Answer
 
     public function __toString()
     {
-        return $this->getNote();
+        return $this->getNote() ?? '';
     }
 
     public function getId(): ?int

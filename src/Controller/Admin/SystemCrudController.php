@@ -11,7 +11,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -82,7 +81,7 @@ class SystemCrudController extends AbstractCrudController
 
         //      $coll_question = CollectionField::new('questions')->setEntryType('App\Form\CategoryType');
 
-              if (Crud::PAGE_INDEX === $pageName) {
+        if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $name, $sys_owner, $sys_system_owner, $sys_link,  $text, $sys_self_service_url, $groups];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $name, $text, $sys_system_owner, $answerarea, $groups, $sys_title, $edoc_url, $sys_link, $sys_updated, $sys_description, $sys_owner, $sys_owner_subdepartment,
@@ -93,6 +92,8 @@ class SystemCrudController extends AbstractCrudController
             ];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$sys_title, $text_editor, $groups, $edoc_url];
+        } else {
+            throw new \Exception('Invalid page: '.$pageName);
         }
     }
 }

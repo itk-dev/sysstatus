@@ -28,7 +28,12 @@
         <tr>
           <td>{{ alphabet[numberOfCategories - 1] }}{{ numberOfQuestions }}</td>
           <td>
-            <a href="?entity=Question&id={{ question.id }}&action=show">{{ question.question }}</a>
+            <a class="" href="{{ ea_url()
+              .setController('App\\Controller\\Admin\\AnswerCrudController')
+              .setAction('detail')
+            }}">
+              {{ question.question }}
+            </a>
           </td>
           {% set numberOfAnswers = 0 %}
 
@@ -46,7 +51,7 @@
 
 
                   <a class="" href="{{ ea_url()
-                    .setController('App\\Controller\\Admin\\AnswerController')
+                    .setController('App\\Controller\\Admin\\AnswerCrudController')
                     .setAction('edit')
                     .setEntityId(answer.id)
                   }}">
