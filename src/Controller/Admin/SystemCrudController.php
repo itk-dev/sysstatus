@@ -82,7 +82,7 @@ class SystemCrudController extends AbstractCrudController
         //      $coll_question = CollectionField::new('questions')->setEntryType('App\Form\CategoryType');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $name, $sys_owner, $sys_system_owner, $sys_link,  $text, $sys_self_service_url, $groups];
+            return [ $name, $sys_owner, $sys_system_owner, $sys_link,  $text, $sys_self_service_url, $groups];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $name, $text, $sys_system_owner, $answerarea, $groups, $sys_title, $edoc_url, $sys_link, $sys_updated, $sys_description, $sys_owner, $sys_owner_subdepartment,
                 $sys_emergency_setup, $sys_contractor, $sys_urgency_rating, $sys_number_of_users, $sys_technical_documentation, $sys_external_dependencies, $sys_important_information,

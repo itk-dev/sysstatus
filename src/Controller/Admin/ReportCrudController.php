@@ -50,6 +50,7 @@ class ReportCrudController extends AbstractCrudController
         $alternativeTitle = TextField::new('sys_alternative_title')->setLabel('entity.report.sys_alternative_title');
         $sys_updated = DateTimeField::new('sys_updated')->setLabel('entity.report.sys_updated');
         $owner = TextField::new('sys_owner')->setLabel('entity.report.sys_owner');
+        $afdeling = TextField::new('sys_owner_sub')->setLabel('entity.report.sys_owner');
         $confidentialInformation = BooleanField::new('sys_confidential_information')->setLabel('entity.report.sys_confidential_information');
         $purpose = TextField::new('sys_purpose')->setLabel('entity.report.sys_purpose');
         $classification = TextField::new('sys_classification')->setLabel('entity.report.sys_classification');
@@ -82,9 +83,8 @@ class ReportCrudController extends AbstractCrudController
         $version = TextField::new('sys_version')->setLabel('entity.report.sys_version');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$title];
-        }
-        elseif (Crud::PAGE_DETAIL === $pageName) {
+            return [$title, $name, $systemOwner, $afdeling, $edocUrl, $text,  $sys_link,  $text,  $groups];
+        } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$title, $internalId, $edocUrl,
                 $name, $text, $systemOwner, $groups, $answerarea, $alternativeTitle, $sys_updated, $owner,
                 $confidentialInformation, $purpose, $classification, $dateForRevision, $persons, $informationTypes,
@@ -92,9 +92,8 @@ class ReportCrudController extends AbstractCrudController
                 $dataProcessingAgreement, $dataProcessingAgreementLink, $auditorStatement, $auditorStatementLink,
                 $dataToScience, $usage, $requestForInsight, $dateUse, $status, $remarks, $internalInformation, $obligationToInform,
                 $legalBasis, $consent, $impactAnalysis, $impactAnalysisLink, $authorizationProcedure, $version];
-        }
-        elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$title2, $edocUrl, $groups, $text ];
+        } elseif (Crud::PAGE_EDIT === $pageName) {
+            return [$title2, $edocUrl, $groups, $text];
         } else {
             throw new \Exception('Invalid page: '.$pageName);
         }
