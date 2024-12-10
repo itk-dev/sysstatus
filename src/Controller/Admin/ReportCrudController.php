@@ -9,7 +9,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
@@ -33,14 +35,18 @@ class ReportCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $title = TextField::new('sys_title')->setLabel('entity.report.sys_title');
-        $internalId = TextField::new('sys_internal_id')->setLabel('entity.report.sys_internal_id');
+        $title2 = $title->setFormTypeOption('disabled', 'disabled');
+        $internalId = IdField::new('sys_internal_id')->setLabel('entity.report.sys_internal_id');
         $edocUrl = UrlField::new('edoc_url')->setLabel('entity.report.edoc_url');
-//        $sys_link = UrlField::new('sys_link')->setFilename('Link til anmeldelse')->setLabel('entity.report.sys_link');
+        $sys_link = UrlField::new('sys_link')->setLabel('entity.report.sys_link');
         $name = TextField::new('name')->setLabel('entity.report.name');
         $text = TextField::new('text')->setLabel('entity.report.text');
         $systemOwner = TextField::new('sys_system_owner')->setLabel('entity.report.sys_system_owner');
         $groups = AssociationField::new('groups')->setLabel('entity.report.groups');
-        $answerarea = AssociationField::new('answerarea')->setLabel('entity.report.answers')->setTemplatePath('easy_admin_overrides/answers_show.html.twig');
+
+        $answerarea = CollectionField::new('answerarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig')->setLabel('Smileys');
+        $answerarea = CollectionField::new('answerarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig')->setLabel('Smileys');
+
         $alternativeTitle = TextField::new('sys_alternative_title')->setLabel('entity.report.sys_alternative_title');
         $sys_updated = DateTimeField::new('sys_updated')->setLabel('entity.report.sys_updated');
         $owner = TextField::new('sys_owner')->setLabel('entity.report.sys_owner');
@@ -87,8 +93,8 @@ class ReportCrudController extends AbstractCrudController
                 $dataToScience, $usage, $requestForInsight, $dateUse, $status, $remarks, $internalInformation, $obligationToInform,
                 $legalBasis, $consent, $impactAnalysis, $impactAnalysisLink, $authorizationProcedure, $version];
         }
-         elseif (Crud::PAGE_EDIT === $pageName) {
-            return [];
+        elseif (Crud::PAGE_EDIT === $pageName) {
+            return [$title2, $edocUrl, $groups, $text ];
         } else {
             throw new \Exception('Invalid page: '.$pageName);
         }

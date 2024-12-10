@@ -235,3 +235,7 @@ body.list table tbody td.dashboard--table-answer {
 .question-form-textarea {
   width: 300px;
 }
+
+.field-label{
+  width: 300px !important;
+}

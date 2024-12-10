@@ -1,4 +1,3 @@
-{#{% extends '@EasyAdmin/default/layout.html.twig' %}#}
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block page_title %}
@@ -50,14 +49,15 @@
       {% for item in paginator %}
         <th class="rotate">
           <div>
-{#          <span>#}
-{#            <a href="{{ path('admin', { action: 'show', id: item.id, entity: entityType|capitalize }) }}" title="{{ item.showableName }}">#}
-{#              {{ item.showableName }}#}
-{#            </a>#}
-            <a href="{{ ea_url().setController
-              ('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
-              {{ item.showableName }}
-            </a>
+            {% if entityType == 'system' %}
+              <a href="{{ ea_url().setController('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
+                {{ item.showableName }}
+              </a>
+            {% elseif entityType == 'report' %}
+              <a href="{{ ea_url().setController('App\\Controller\\Admin\\ReportCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
+                {{ item.showableName }}
+              </a>
+            {% endif %}
           </span>
           </div>
         </th>
@@ -114,6 +114,9 @@
 
 {% block body_javascript %}
   {{ parent() }}
+
+  <!-- Your CSS link tag -->
+  <link href="{{ asset('styles.css') }}" rel="stylesheet">
 
   <script type="text/javascript">
     $('.dashboard-filters select').bind('change', function () {
