@@ -53,7 +53,7 @@ class SystemCrudController extends AbstractCrudController
         $sys_self_service_url = AssociationField::new('selfServiceAvailableFromItems')->setLabel('entity.system.selfServiceAvailableFromItems');
         $edoc_url = TextField::new('edoc_url')->setLabel('entity.system.edoc_url');
         $groups = AssociationField::new('groups')->setLabel('entity.system.groups');
-        $answerarea = CollectionField::new('answerarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig');
+        $answerarea = CollectionField::new('answerarea')->setTemplatePath('easy_admin_overrides/answers_show.html.twig')->setLabel('Smileys');
         $sys_updated = DateField::new('sys_updated')->setLabel('entity.system.sys_updated');
         $sys_description = TextField::new('sys_description')->setLabel('entity.system.sys_description');
         $sys_owner_subdepartment = TextField::new('sys_owner_subdepartment')->setLabel('entity.system.sys_owner_subdepartment');
