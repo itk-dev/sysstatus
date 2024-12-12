@@ -45,6 +45,8 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $this->translator = $translator;
     }
 
+
+
     #[Route('admin/{entityType}', name: 'dashboard')]
     public function dashboard(Request $request, $entityType): mixed
     {
