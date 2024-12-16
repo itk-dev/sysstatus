@@ -2,27 +2,20 @@
 
 namespace App\Form;
 
-use App\Entity\Question;
+use App\Entity\Theme;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class QuestionType extends AbstractType
+class ThemeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-
         $builder
-            ->add('sortOrder', null, [
+            ->add('name', null, [
                 'attr' => [
-                    'class' => 'form-control'
-                ]
-            ])
-            ->add('question', null, [
-                'attr' => [
-                    'class' => 'form-control'
-                ]
+                    'class' => 'form-control',
+                ],
             ])
         ;
     }
@@ -30,7 +23,7 @@ class QuestionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Question::class,
+            'data_class' => Theme::class,
         ]);
     }
 }

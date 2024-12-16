@@ -8,7 +8,7 @@
   {{ ('dashboard.'~entityType)|trans }}
 {% endblock %}
 
-{% block global_actions_wrapper %}
+{% block page_actions %}
   <div class="global-actions w-75 dashboard-filters" style="justify-content: flex-end">
     {{ form_start(filters, { attr: { class: 'w-100' } }) }}
     <div class="row w-100 flex-row no-gutters align-items-center">
