@@ -45,19 +45,26 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $this->translator = $translator;
     }
 
-
-
     #[Route('admin/{entityType}', name: 'dashboard')]
     public function dashboard(Request $request, $entityType): mixed
     {
         $queryParameters = $request->query;
+        $queryParams = $request->query->all(); // Fetch all query parameters as an array.
+        $formData = $queryParams['form'] ?? []; // Safely retrieve 'form' as an array.
+
+        // Ensure `formData` is always an array.
+        if (!is_array($formData)) {
+            $formData = [];
+        }
+
         $formParameters = array_merge([
             'groups' => [],
             'subowner' => '',
             'theme' => '',
             'category' => '',
+            'self_service' => '',
             'search' => '',
-        ], $queryParameters->get('form') ?: []);
+        ], $formData);
 
         $userGroups = $this->entityManager->getRepository(Group::class)->findAll();
         $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups ?: [], $entityType);
