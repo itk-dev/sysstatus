@@ -19,43 +19,35 @@ class ThemeCrudController extends AbstractCrudController
         return Theme::class;
     }
 
-
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');
         $name = TextField::new('name');
 
         $sysgroups = AssociationField::new('systemGroups')
-            ->setFormTypeOption('by_reference', false)
+            ->setFormTypeOption('by_reference', false)->setLabel('Systemer')
         ;
 
         $repgroups = AssociationField::new('reportGroups')
-            ->setFormTypeOption('by_reference', false)
+            ->setFormTypeOption('by_reference', false)->setLabel('Anmeldelser')
         ;
 
-        $test = ArrayField::new('systemGroups');
 
-
-        $categoriesField = CollectionField::new('themeCategories')
+        $categoriesField = CollectionField::new('themeCategories')->setLabel('Tilføj Tema og Kategori')
             ->setEntryType(ThemeCategoryType::class)
             ->setFormTypeOptions([
-                'by_reference' => false // important for OneToMany associations
+                'by_reference' => false, // important for OneToMany associations
             ])
         ;
 
-
         if (Crud::PAGE_INDEX === $pageName) {
             return [$name, $sysgroups, $repgroups, $categoriesField];
-        }
-        elseif(Crud::PAGE_DETAIL === $pageName) {
+        } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id];
-        }
-        elseif(Crud::PAGE_NEW === $pageName) {
+        } elseif (Crud::PAGE_NEW === $pageName) {
+            return [$name, $sysgroups, $repgroups, $categoriesField];
+        } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $sysgroups, $repgroups, $categoriesField];
         }
-        elseif(Crud::PAGE_EDIT === $pageName) {
-            return [$name, $sysgroups, $repgroups, $categoriesField ];
-        }
     }
-
 }

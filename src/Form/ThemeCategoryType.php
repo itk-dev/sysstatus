@@ -20,33 +20,21 @@ class ThemeCategoryType extends AbstractType
         $this->themeManager = $themeManager;
     }
 
-    //    public function buildForm(FormBuilderInterface $builder, array $options): void
-    //    {
-    //        $builder
-    //            ->add('category', EntityType::class, [
-    //                'class' => Category::class,
-    //                'choice_label' => 'name',
-    //                'required' => true,
-    //            ])
-    //            ->add('sortOrder', IntegerType::class, [
-    //                'required' => false,
-    //                'empty_data' => 0,
-    //            ])
-    //        ;
-    //    }
+
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
-        dd($this->themeManager->getCategoriesForCurrentUser());
+
         $builder
             ->add('sortOrder', null, [
-                'label' => false,
+
+                'label' => 'vægt',
                 'required' => true,
                 'empty_data' => 0,
             ])
             ->add('category', null, [
-                'label' => false,
+                'label' => 'Kategorier',
                 'choices' => $this->themeManager->getCategoriesForCurrentUser(),
                 'required' => true,
             ])

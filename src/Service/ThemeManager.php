@@ -7,7 +7,8 @@ use App\Entity\Group;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ThemeManager {
+class ThemeManager
+{
     private $tokenStorage;
     private $categoryRepository;
 
@@ -20,20 +21,21 @@ class ThemeManager {
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getCategoriesForCurrentUser() {
+    public function getCategoriesForCurrentUser()
+    {
         $user = $this->tokenStorage->getToken()->getUser();
+        $roles = $user->getRoles();
 
         $userCategories = [];
 
-        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN')) {
+        if (in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true)) {
             $adminCategories = $this->categoryRepository->findAll();
             foreach ($adminCategories as $category) {
                 $userCategories[$category->getName()] = $category;
             }
 
             return $userCategories;
-        }
-        else {
+        } else {
             $createdCategories = $this->categoryRepository->findBy([
                 'createdBy' => $user->getUsername(),
             ]);
