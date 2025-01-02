@@ -14,10 +14,9 @@ class CategoryType extends AbstractType
         $builder
             ->add('name', null, [
                 'attr' => [
-                    'class' => 'form-control'
-                ]
+                    'class' => 'form-control',
+                ],
             ])
-
         ;
     }
 
