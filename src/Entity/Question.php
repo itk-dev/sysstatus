@@ -34,7 +34,7 @@ class Question
     #[ORM\Column]
     private ?int $sortOrder = null;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, orphanRemoval: "true")]
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, orphanRemoval: 'true')]
     private Collection $answers;
 
     public function __construct()
@@ -86,7 +86,6 @@ class Question
 
     /**
      * @param mixed $sortOrder
-     * @return Question
      */
     public function setSortOrder(int $sortOrder): self
     {

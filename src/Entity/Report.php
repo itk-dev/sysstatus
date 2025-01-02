@@ -21,7 +21,6 @@ class Report
     use TimestampableEntity;
     use ArchivableEntity;
 
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

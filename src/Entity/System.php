@@ -128,7 +128,7 @@ class System
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sysStatus = null;
 
-    #[ORM\Column(name: "edoc_url", length: 255, nullable: true)]
+    #[ORM\Column(name: 'edoc_url', length: 255, nullable: true)]
     private ?string $eDocUrl = null;
 
     #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'systems')]
@@ -703,9 +703,6 @@ class System
         return $themes;
     }
 
-    /**
-     * @param mixed $sysNumberOfUsers
-     */
     public function setSysNumberOfUsers($sysNumberOfUsers)
     {
         $this->sysNumberOfUsers = $sysNumberOfUsers;

@@ -25,7 +25,7 @@ class ThemeCategory
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private ?int $sortOrder = 0;
 
     public function getId(): ?int

@@ -7,8 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-
-//#[ORM\Entity(repositoryClass: GroupRepository::class)]
+// #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Entity]
 #[ORM\Table(name: 'fos_group')]
 class Group
@@ -18,13 +17,12 @@ class Group
     #[ORM\Column]
     private ?int $id = null;
 
-
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'systemGroups')]
     #[ORM\JoinTable(name: 'group_system_themes')]
     private Collection $systemThemes;
 
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'reportGroups')]
-    #[ORM\JoinTable(name: "group_report_themes")]
+    #[ORM\JoinTable(name: 'group_report_themes')]
     private Collection $reportThemes;
 
     #[ORM\ManyToMany(targetEntity: Report::class, mappedBy: 'groups')]

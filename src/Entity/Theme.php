@@ -12,7 +12,6 @@ use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 #[ORM\Entity(repositoryClass: ThemeRepository::class)]
 #[Loggable]
 #[UniqueEntity('name')]
@@ -30,7 +29,7 @@ class Theme
     private Collection $themeCategories;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var ArrayCollection
      */
     private $categories;
 
@@ -80,8 +79,6 @@ class Theme
         return $this;
     }
 
-
-
     public function removeThemeCategory(ThemeCategory $themeCategory): self
     {
         if ($this->themeCategories->removeElement($themeCategory)) {
@@ -89,9 +86,8 @@ class Theme
             if ($themeCategory->getTheme() === $this) {
                 $themeCategory->setTheme(null);
             }
+        }
 
-
-    }
         return $this;
     }
 
@@ -108,7 +104,7 @@ class Theme
             return (int) $first->getSortOrder() < (int) $second->getSortOrder() ? 1 : -1;
         });
 
-        foreach($iterator as $i => $item) {
+        foreach ($iterator as $i => $item) {
             $list[] = $item->getCategory();
         }
 
