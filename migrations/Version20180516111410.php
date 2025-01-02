@@ -1,19 +1,21 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
 class Version20180516111410 extends AbstractMigration
 {
-    public function up(Schema $schema):void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE system ADD group_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE system ADD CONSTRAINT FK_C94D118BFE54D947 FOREIGN KEY (group_id) REFERENCES fos_group (id)');
@@ -23,10 +25,10 @@ class Version20180516111410 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_C42F7784FE54D947 ON report (group_id)');
     }
 
-    public function down(Schema $schema):void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE report DROP FOREIGN KEY FK_C42F7784FE54D947');
         $this->addSql('DROP INDEX IDX_C42F7784FE54D947 ON report');
