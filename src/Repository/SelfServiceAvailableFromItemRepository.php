@@ -6,7 +6,6 @@ use App\Entity\SelfServiceAvailableFromItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-
 /**
  * @extends ServiceEntityRepository<SelfServiceAvailableFromItem>
  *
@@ -43,22 +42,13 @@ class SelfServiceAvailableFromItemRepository extends ServiceEntityRepository
     /**
      * Get an item by name. If it does not exist and new one will be created.
      *
-     * @param string $name
-     *
      * @return SelfServiceAvailableFromItem
      */
     public function getItem(string $name)
     {
-
-
-
         $item = $this->findOneBy(['name' => $name]);
 
-
-
         if (null === $item) {
-
-
             $item = new SelfServiceAvailableFromItem();
 
             $item->setName($name);
@@ -68,36 +58,33 @@ class SelfServiceAvailableFromItemRepository extends ServiceEntityRepository
 
             // Flush to make sure that we can find this item by name.
             $em->flush();
-
         }
-
-
 
         return $item;
     }
 
-//    /**
-//     * @return SelfServiceAvailableFromItem[] Returns an array of SelfServiceAvailableFromItem objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return SelfServiceAvailableFromItem[] Returns an array of SelfServiceAvailableFromItem objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?SelfServiceAvailableFromItem
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?SelfServiceAvailableFromItem
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
