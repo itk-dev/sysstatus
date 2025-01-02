@@ -22,8 +22,6 @@
 ### <Coding standard> ###
 
 ### OTHER ###
-/import/*
-### OTHER ###
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
