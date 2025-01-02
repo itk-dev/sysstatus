@@ -48,17 +48,17 @@ class GroupRepository extends ServiceEntityRepository
             ->andWhere(':val MEMBER OF g.users')
             ->setParameter('val', $user)
             ->getQuery()
-            ->getResult();
-
+            ->getResult()
+        ;
     }
 
-//    public function findOneBySomeField($value): ?Group
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Group
+    //    {
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
