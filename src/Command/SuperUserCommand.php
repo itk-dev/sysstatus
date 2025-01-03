@@ -21,6 +21,7 @@ class SuperUserCommand extends Command
 {
     private $entitManager;
     private $passwordHasher;
+
     public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;

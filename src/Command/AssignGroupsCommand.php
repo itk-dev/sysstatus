@@ -5,10 +5,10 @@ namespace App\Command;
 use App\Repository\GroupRepository;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class AssignGroupsCommand extends Command
 {
@@ -21,7 +21,7 @@ class AssignGroupsCommand extends Command
         ReportRepository $reportRepository,
         SystemRepository $systemRepository,
         GroupRepository $groupRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
         $this->reportRepository = $reportRepository;
@@ -36,7 +36,8 @@ class AssignGroupsCommand extends Command
             ->setName('itstyr:group:assign')
             ->setDescription(
                 'Assign groups based on sysOwner if not already set.'
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -67,13 +68,12 @@ class AssignGroupsCommand extends Command
                     }
 
                     $output->writeln('"'.$report->getName().'" set group "'.$groupName.'" and subGroup: "'.$subGroupName.'"');
-                }
-                else {
-                    $output->writeln($groupName . " not found, ignored.");
+                } else {
+                    $output->writeln($groupName.' not found, ignored.');
                 }
             } else {
                 $output->writeln(
-                    $report->getName()." - ".$report->getSysOwner().' - ignored'
+                    $report->getName().' - '.$report->getSysOwner().' - ignored'
                 );
             }
         }
@@ -101,13 +101,12 @@ class AssignGroupsCommand extends Command
                     }
 
                     $output->writeln('"'.$system->getName().'" set group "'.$groupName.'" and subGroup: "'.$subGroupName.'"');
-                }
-                else {
-                    $output->writeln($groupName . " not found, ignored.");
+                } else {
+                    $output->writeln($groupName.' not found, ignored.');
                 }
             } else {
                 $output->writeln(
-                    $system->getName()." - ".$system->getSysOwner().' - ignored'
+                    $system->getName().' - '.$system->getSysOwner().' - ignored'
                 );
             }
         }

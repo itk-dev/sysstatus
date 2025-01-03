@@ -13,22 +13,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ExportController
- * @package App\Controller
+ * Class ExportController.
  */
 class ExportController extends AbstractController
 {
-
     /**
      * @Route("/export/report", name="export_report")
-     * @param DataExporter $dataExporter
+     *
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportReports(
-
-
-        DataExporter $dataExporter
+        DataExporter $dataExporter,
     ) {
         $dataExporter->exportReport();
     }
@@ -36,12 +32,11 @@ class ExportController extends AbstractController
     /**
      * @Route("/export/system", name="export_system")
      *
-     * @param \App\Service\DataExporter $dataExporter
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportSystems(
-        DataExporter $dataExporter
+        DataExporter $dataExporter,
     ) {
         $dataExporter->exportSystem();
     }
@@ -49,15 +44,11 @@ class ExportController extends AbstractController
     /**
      * @Route("/export", name="export_page")
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\Service\DataExporter $dataExporter
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportPage(Request $request, DataExporter $dataExporter, GroupRepository $groupRepository): Response
     {
-
         $groups = $groupRepository->findAll();
 
         $choices = [];
@@ -67,17 +58,17 @@ class ExportController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('entity', ChoiceType::class, array('label' => 'Entitet', 'choices' => [
+            ->add('entity', ChoiceType::class, ['label' => 'Entitet', 'choices' => [
                 'report' => 'report',
                 'system' => 'system',
-            ]))
-            ->add('group', ChoiceType::class, array('label' => 'Gruppe', 'choices' => $choices))
+            ]])
+            ->add('group', ChoiceType::class, ['label' => 'Gruppe', 'choices' => $choices])
             ->add('export_type', ChoiceType::class, [
                 'label' => 'Eksport type',
                 'choices' => [
                     'Resultater' => 'results',
                     'Kommentarer' => 'comments',
-                ]
+                ],
             ])
             ->add('color', ChoiceType::class, [
                 'label' => 'Farve',
@@ -86,8 +77,9 @@ class ExportController extends AbstractController
                     'Med farver' => true,
                 ],
             ])
-            ->add('submit', SubmitType::class, array('label' => 'Hent'))
-            ->getForm();
+            ->add('submit', SubmitType::class, ['label' => 'Hent'])
+            ->getForm()
+        ;
 
         $form->handleRequest($request);
 
@@ -98,11 +90,10 @@ class ExportController extends AbstractController
             $selectedExportType = $data['export_type'];
             $withColor = $data['color'];
 
-            if ($selectedEntity == 'report') {
-                $dataExporter->exportReport($selectedGroupId, true, $selectedExportType === 'comments', $withColor);
-            }
-            else if ($selectedEntity == 'system') {
-                $dataExporter->exportSystem($selectedGroupId, true, $selectedExportType === 'comments', $withColor);
+            if ('report' == $selectedEntity) {
+                $dataExporter->exportReport($selectedGroupId, true, 'comments' === $selectedExportType, $withColor);
+            } elseif ('system' == $selectedEntity) {
+                $dataExporter->exportSystem($selectedGroupId, true, 'comments' === $selectedExportType, $withColor);
             }
         }
 
@@ -111,8 +102,4 @@ class ExportController extends AbstractController
             'sort_form' => $form->createView(),
         ]);
     }
-
-
-
-
 }

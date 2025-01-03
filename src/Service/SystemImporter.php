@@ -11,24 +11,19 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SystemImporter extends BaseImporter
 {
-    /** @var SelfServiceAvailableFromItemRepository */
     private SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository;
 
     public function __construct(
-      ReportRepository $reportRepository,
-      SystemRepository $systemRepository,
-      GroupRepository $groupRepository,
-      SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
-      EntityManagerInterface $entityManager
+        ReportRepository $reportRepository,
+        SystemRepository $systemRepository,
+        GroupRepository $groupRepository,
+        SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
+        EntityManagerInterface $entityManager,
     ) {
         parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager);
 
         $this->selfServiceAvailableFromItemRepository = $selfServiceAvailableFromItemRepository;
     }
-
-    /**
-     * @inheritDoc
-     */
 
     public function import(string $src)
     {
@@ -51,21 +46,14 @@ class SystemImporter extends BaseImporter
 
             $system = $this->systemRepository->findOneBy(['sysInternalId' => $entry->{'Id'}]);
 
-
             if (!$system) {
                 $system = new System();
                 $system->setName($this->sanitizeText($entry->{'Titel'}));
 
-
                 $this->entityManager->persist($system);
-
-
-
-
             }
             // Un-archive the system.
             $system->setArchivedAt(null);
-
 
             $system->setSysId($entry->{'Id'});
             $system->setSysInternalId($sysInternalId);
@@ -73,7 +61,7 @@ class SystemImporter extends BaseImporter
             $system->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $system->setSysTitle($this->sanitizeText($entry->{'Titel'}));
 
-            $system->setSysLink($systemURL . '/' .  $entry->{'Sti'} . '/DispForm.aspx?ID=' . $entry->{'Id'});
+            $system->setSysLink($systemURL.'/'.$entry->{'Sti'}.'/DispForm.aspx?ID='.$entry->{'Id'});
 
             $system->setSysAlternativeTitle($this->sanitizeText($entry->{'Kaldenavn'}));
             $system->setSysDescription($this->sanitizeText($entry->{'Beskrivelse'}));
@@ -105,29 +93,20 @@ class SystemImporter extends BaseImporter
 
             $selfServiceAvailableFromText = $this->sanitizeText($entry->{'Selvbetjening tilgængelig fra'});
 
-
-
             if (isset($selfServiceAvailableFromText)) {
                 $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, -1, PREG_SPLIT_NO_EMPTY);
 
                 $addToSelfServiceGroup = false;
 
                 foreach ($selfServiceAvailableFromTitles as $title) {
-
-
                     $addToSelfServiceGroup = true;
 
-                    $name = (string)$title;
-
+                    $name = (string) $title;
 
                     $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
-                 ;
 
                     $system->addSelfServiceAvailableFromItem($item);
                 }
-
-
-
 
                 // Add to SELVBETJENING group if the system has selvbetjening.
                 if ($addToSelfServiceGroup) {
@@ -139,10 +118,7 @@ class SystemImporter extends BaseImporter
                         $system->addGroup($findGroup);
                     }
                 }
-
-
             }
-
 
             // Set group and subGroup.
             if (!is_null($system->getSysOwner())) {
@@ -165,13 +141,7 @@ class SystemImporter extends BaseImporter
                     $system->setSysOwnerSub($subGroupName);
                 }
             }
-
-
-
-        };
-
-
-
+        }
 
         // Archive systems that no longer exist in Systemoversigten.
 
@@ -182,14 +152,9 @@ class SystemImporter extends BaseImporter
             ->where('e.sysInternalId NOT IN (:sysInternalIds)')
            ->setParameter('sysInternalIds', $sysInternalIds)
 
-
-
             ->getQuery()
-            ->execute();
-
-
-
-
+            ->execute()
+        ;
 
         $this->entityManager->flush();
     }

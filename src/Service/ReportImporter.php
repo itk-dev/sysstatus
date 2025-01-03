@@ -6,9 +6,6 @@ use App\Entity\Report;
 
 class ReportImporter extends BaseImporter
 {
-    /**
-     * @inheritDoc
-     */
     public function import(string $src)
     {
         $systemURL = getenv('SYSTEM_URL');
@@ -45,14 +42,14 @@ class ReportImporter extends BaseImporter
             $report->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $report->setSysTitle($this->sanitizeText($entry->{'Titel'}));
 
-            $report->setSysLink($systemURL . '/' .  $entry->{'Sti'} . '/DispForm.aspx?ID=' . $entry->{'Id'});
+            $report->setSysLink($systemURL.'/'.$entry->{'Sti'}.'/DispForm.aspx?ID='.$entry->{'Id'});
 
             $report->setSysConfidentialInformation($this->convertBoolean($entry->{'Følsomme personoplysninger'}));
             $report->setSysAlternativeTitle($this->sanitizeText($entry->{'Systemnavn'}));
             $report->setSysOwner($this->sanitizeText($entry->{'Systemejerskab'}));
             $report->setSysPurpose($this->sanitizeText($entry->{'Formål'}));
             $report->setSysClassification($this->sanitizeText($entry->{'Systemets klassifikation'}));
-//@TODO:            $report->setSysDateForRevision($this->convertDate($entry->{'Dato for revision'}));
+            // @TODO:            $report->setSysDateForRevision($this->convertDate($entry->{'Dato for revision'}));
             $report->setSysPersons($this->sanitizeText($entry->{'Personkreds'}));
             $report->setSysInformationTypes($this->sanitizeText($entry->{'Oplysningstyper'}));
             $report->setSysDataSentTo($this->sanitizeText($entry->{'Hvor overføres data til?'}));
@@ -65,7 +62,7 @@ class ReportImporter extends BaseImporter
             $report->setSysAuditorStatement($this->sanitizeText($entry->{'Revisorerklæring/tilsyn'}));
             $report->setSysAuditorStatementLink($this->sanitizeText($entry->{'Link til revisorerklæring'}));
             $report->setSysUsage($this->sanitizeText($entry->{'Systembrug'}));
-//@TODO:            $report->setSysRequestForInsight($this->sanitizeText($entry->{'Anmodning om indsigt'}));
+            // @TODO:            $report->setSysRequestForInsight($this->sanitizeText($entry->{'Anmodning om indsigt'}));
             $report->setSysDateUse($this->convertDate($entry->{'Ibrugtagning'}));
             $report->setSysStatus($this->sanitizeText($entry->{'Status'}));
             $report->setSysRemarks($this->sanitizeText($entry->{'Bemærkninger'}));
@@ -73,7 +70,7 @@ class ReportImporter extends BaseImporter
             $report->setSysLegalBasis($this->sanitizeText($entry->{'Retligt grundlag'}));
             $report->setSysConsent($this->sanitizeText($entry->{'Samtykke'}));
             $report->setSysImpactAnalysis($this->sanitizeText($entry->{'Konsekvensanalyse'}));
-//@TODO:             $report->setSysImpactAnalysisLink($this->sanitizeText($entry->{'Link til konsekvensanalyse'}));
+            // @TODO:             $report->setSysImpactAnalysisLink($this->sanitizeText($entry->{'Link til konsekvensanalyse'}));
             $report->setSysAuthorizationProcedure($this->sanitizeText($entry->{'Autorisationsprocedure'}));
             $report->setSysInternalInformation($this->sanitizeText($entry->{'Indsigt - interne oplysninger'}));
             $report->setSysDataWorthSaving($this->sanitizeText($entry->{'Indeholder systemet bevaringsværdige data?'}));
@@ -113,7 +110,8 @@ class ReportImporter extends BaseImporter
             ->where('e.sysInternalId NOT IN (:sysInternalIds)')
             ->setParameter('sysInternalIds', $sysInternalIds)
             ->getQuery()
-            ->execute();
+            ->execute()
+        ;
 
         $this->entityManager->flush();
     }

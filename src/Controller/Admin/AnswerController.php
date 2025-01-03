@@ -28,8 +28,6 @@ class AnswerController extends AbstractController
         $systemId = $request->query->get('system');
         $questionId = $request->query->get('question');
 
-
-
         if (!isset($questionId)) {
             throw new \Exception('question not found', 400);
         }

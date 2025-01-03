@@ -19,11 +19,9 @@ use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Psr\Container\ContainerInterface;
 
 /**
  * Class DataExporter.
- * @package App\Service
  */
 class DataExporter
 {
@@ -35,10 +33,6 @@ class DataExporter
     /**
      * DataExporter constructor.
      *
-     * @param ReportRepository $reportRepository
-     * @param SystemRepository $systemRepository
-     * @param ThemeRepository $themeRepository
-     * @param ContainerInterface $container
      * @throws \Exception
      */
     public function __construct(
@@ -46,7 +40,6 @@ class DataExporter
         ReportRepository $reportRepository,
         SystemRepository $systemRepository,
         ThemeRepository $themeRepository,
-
     ) {
         $this->reportRepository = $reportRepository;
         $this->systemRepository = $systemRepository;
@@ -58,12 +51,13 @@ class DataExporter
     /**
      * Export reports or systems.
      *
-     * @param string $filenamePrefix The filename prefix.
-     * @param string $type The type of the entities that are exported.
-     * @param array $entities The entities to export.
-     * @param bool $splitIntoSubOwners Should the results be split into subowners?
-     * @param bool $onlyComments Should the answer notes be displayed instead of results?
-     * @param bool $withColor Whether or not colors should be displayed for answers.
+     * @param string $filenamePrefix     the filename prefix
+     * @param string $type               the type of the entities that are exported
+     * @param array  $entities           the entities to export
+     * @param bool   $splitIntoSubOwners Should the results be split into subowners?
+     * @param bool   $onlyComments       Should the answer notes be displayed instead of results?
+     * @param bool   $withColor          whether or not colors should be displayed for answers
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
@@ -73,11 +67,11 @@ class DataExporter
         $entities,
         $splitIntoSubOwners = false,
         $onlyComments = false,
-        $withColor = false
+        $withColor = false,
     ) {
         $spreadsheet = new Spreadsheet();
 
-        $filename = $filenamePrefix.'-'.date("Y-m-d-H_i_s");
+        $filename = $filenamePrefix.'-'.date('Y-m-d-H_i_s');
 
         // If $splitIntoSubOwners is true, each entity that belongs to a subowner
         // will be gathered in its own work sheet in the spreadsheet.
@@ -111,7 +105,7 @@ class DataExporter
                 $this->writeSheet($spreadsheet, $workSheet, $sheetNr, $type,
                     $entities, $onlyComments, $withColor);
 
-                $sheetNr++;
+                ++$sheetNr;
             }
         }
 
@@ -130,13 +124,14 @@ class DataExporter
     /**
      * Write $entities to a $sheet in the $spreadsheet.
      *
-     * @param Spreadsheet $spreadsheet The spreadsheet.
-     * @param Worksheet $sheet The worksheet to write to.
-     * @param int $sheetIndex The index of the worksheet.
-     * @param string $type Classname of the entities to export.
-     * @param array $entities The entities.
-     * @param bool $onlyComments If true only export comments for each answer.
-     * @param bool $withColor If true set the answer color as background to each answer.
+     * @param Spreadsheet $spreadsheet  the spreadsheet
+     * @param Worksheet   $sheet        the worksheet to write to
+     * @param int         $sheetIndex   the index of the worksheet
+     * @param string      $type         classname of the entities to export
+     * @param array       $entities     the entities
+     * @param bool        $onlyComments if true only export comments for each answer
+     * @param bool        $withColor    if true set the answer color as background to each answer
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     private function writeSheet(
@@ -146,7 +141,7 @@ class DataExporter
         string $type,
         array $entities,
         bool $onlyComments = false,
-        bool $withColor = false
+        bool $withColor = false,
     ) {
         $spreadsheet->setActiveSheetIndex($sheetIndex);
 
@@ -161,7 +156,7 @@ class DataExporter
 
         /* @var Group $group */
         foreach ($groupsThatApply as $group) {
-            $themes = $type == Report::class ? $group->getReportThemes() : $group->getSystemThemes();
+            $themes = Report::class == $type ? $group->getReportThemes() : $group->getSystemThemes();
             foreach ($themes as $theme) {
                 $themesThatApply[$theme->getId()] = $theme;
             }
@@ -186,7 +181,7 @@ class DataExporter
             $categoryRow[] = $category->getName();
             $setCategory = true;
 
-            if (count($category->getQuestions()) === 0) {
+            if (0 === count($category->getQuestions())) {
                 $answerColumns[] = '';
             } else {
                 foreach ($category->getQuestions() as $question) {
@@ -244,16 +239,18 @@ class DataExporter
         $sheet->getStyle('A1:'.Coordinate::stringFromColumnIndex(count($categoryRow) + 1).'1')
             ->applyFromArray($styleArray)
             ->getAlignment()
-            ->setTextRotation(45);
+            ->setTextRotation(45)
+        ;
         $sheet->getStyle('A2:'.Coordinate::stringFromColumnIndex(count($headings) + 1).'2')
             ->applyFromArray($styleArray)
             ->getAlignment()
-            ->setTextRotation(45);
+            ->setTextRotation(45)
+        ;
 
         $rowNr = 2;
 
         foreach ($entities as $entity) {
-            $rowNr++;
+            ++$rowNr;
             $columnNr = count($metaDataColumnHeadings);
 
             $answers = $entity->getAnswers();
@@ -269,7 +266,7 @@ class DataExporter
                 $categoryApplies = $this->categoryAppliesToEntity($entity, $category);
 
                 foreach ($category->getQuestions() as $question) {
-                    $columnNr++;
+                    ++$columnNr;
 
                     $value = '';
                     $note = '';
@@ -286,7 +283,7 @@ class DataExporter
                             }
                         }
 
-                        $cellsThatApply++;
+                        ++$cellsThatApply;
                     }
 
                     $questionColumns[] = $value;
@@ -315,7 +312,7 @@ class DataExporter
                 $entity->getSysInternalId(),
                 $entity->getSysTitle(),
                 $entity->getSysStatus(),
-                implode(",", $entity->getGroups()->map(function (Group $group) {
+                implode(',', $entity->getGroups()->map(function (Group $group) {
                     return $group->getName();
                 })->getValues()),
                 $entity->getSysOwnerSub(),
@@ -323,29 +320,32 @@ class DataExporter
 
             // Insert each cell for the entity row.
             foreach (array_merge(
-                         $metaColumns,
-                         $onlyComments ? $noteColumns : $questionColumns,
-                         $calculationColumns
-                     ) as $key => $cell) {
+                $metaColumns,
+                $onlyComments ? $noteColumns : $questionColumns,
+                $calculationColumns
+            ) as $key => $cell) {
                 $sheet->setCellValueByColumnAndRow($key + 1, $rowNr, $cell);
                 $sheet->getStyleByColumnAndRow($key + 1, $rowNr)
                     ->getAlignment()
-                    ->setWrapText(true);
+                    ->setWrapText(true)
+                ;
 
                 // Set color of cell.
                 if ($withColor && $key >= count($metaColumns) && $key < count($questionColumns) + count($metaColumns)) {
                     $color = $colorColumns[$key - count($metaColumns)];
 
-                    if ($color != null) {
+                    if (null != $color) {
                         $sheet->getStyleByColumnAndRow($key + 1, $rowNr, $cell)
                             ->getFill()
                             ->setFillType(Fill::FILL_SOLID)
                             ->getStartColor()
-                            ->setARGB($color);
+                            ->setARGB($color)
+                        ;
                         $sheet->getStyleByColumnAndRow($key + 1, $rowNr, $cell)
                             ->getFont()
                             ->getColor()
-                            ->setARGB('ffffff');
+                            ->setARGB('ffffff')
+                        ;
                     }
                 }
             }
@@ -381,10 +381,9 @@ class DataExporter
                     $sheet->setCellValueByColumnAndRow($column, $rowNr + 1,
                         '=COUNTIF('.$range.', 0)+COUNTIF('.$range.',1)+COUNTIF('.$range.',2)');
                     $sheet->setCellValueByColumnAndRow($column, $rowNr + 2,
-                        '=IF('.Coordinate::stringFromColumnIndex($column).($rowNr + 1).'>0, (('.Coordinate::stringFromColumnIndex($column).($rowNr).' / 2)/'.Coordinate::stringFromColumnIndex($column).($rowNr + 1).')* 100, 0)');
+                        '=IF('.Coordinate::stringFromColumnIndex($column).($rowNr + 1).'>0, (('.Coordinate::stringFromColumnIndex($column).$rowNr.' / 2)/'.Coordinate::stringFromColumnIndex($column).($rowNr + 1).')* 100, 0)');
                 }
             }
-
         }
 
         // Add image describing values to the bottom of the excel sheet.
@@ -397,10 +396,11 @@ class DataExporter
     }
 
     /**
-     * Test if a category applies to an entity
+     * Test if a category applies to an entity.
      *
      * @param Report|System $entity
-     * @param Category $category
+     * @param Category      $category
+     *
      * @return bool
      */
     private function categoryAppliesToEntity($entity, $category)
@@ -414,10 +414,9 @@ class DataExporter
         $categoryGroupIds = array_values(
             array_reduce($category->getThemes(), function ($carry, Theme $theme) use ($entityClassName) {
                 $groups = [];
-                if ($entityClassName == Report::class) {
+                if (Report::class == $entityClassName) {
                     $groups = $theme->getReportGroups();
-                }
-                else if ($entityClassName == System::class) {
+                } elseif (System::class == $entityClassName) {
                     $groups = $theme->getSystemGroups();
                 }
 
@@ -435,7 +434,6 @@ class DataExporter
     /**
      * Get Excel column letter.
      *
-     * @param $columnNr
      * @return string
      */
     private function getColumnLetter($columnNr)
@@ -459,10 +457,11 @@ class DataExporter
     /**
      * Export reports.
      *
-     * @param int|null $groupId The group id.
-     * @param bool $splitIntoSubOwners Split the report into subowner worksheets.
-     * @param bool $onlyComments Only export comments for each answer.
-     * @param bool $withColor Show answer color as cell background.
+     * @param int|null $groupId            the group id
+     * @param bool     $splitIntoSubOwners split the report into subowner worksheets
+     * @param bool     $onlyComments       only export comments for each answer
+     * @param bool     $withColor          show answer color as cell background
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
@@ -470,16 +469,18 @@ class DataExporter
         $groupId = null,
         $splitIntoSubOwners = false,
         $onlyComments = false,
-        $withColor = false
+        $withColor = false,
     ) {
         $qb = $this->reportRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
             ->andWhere($qb->expr()
-                ->eq('e.sysStatus', $qb->expr()->literal('Aktiv')));
+                ->eq('e.sysStatus', $qb->expr()->literal('Aktiv')))
+        ;
 
         if (isset($groupId)) {
             $qb->andWhere($qb->expr()->isMemberOf(':group', 'e.groups'))
-                ->setParameter('group', $groupId);
+                ->setParameter('group', $groupId)
+            ;
         }
 
         $entities = $qb->getQuery()->execute();
@@ -497,10 +498,11 @@ class DataExporter
     /**
      * Export systems.
      *
-     * @param int|null $groupId The group id.
-     * @param bool $splitIntoSubOwners Split the report into subowner worksheets.
-     * @param bool $onlyComments Only export comments for each answer.
-     * @param bool $withColor Show answer color as cell background.
+     * @param int|null $groupId            the group id
+     * @param bool     $splitIntoSubOwners split the report into subowner worksheets
+     * @param bool     $onlyComments       only export comments for each answer
+     * @param bool     $withColor          show answer color as cell background
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
@@ -508,17 +510,19 @@ class DataExporter
         $groupId = null,
         $splitIntoSubOwners = false,
         $onlyComments = false,
-        $withColor = false
+        $withColor = false,
     ) {
         $qb = $this->systemRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
             ->andWhere($qb->expr()
                 ->neq('e.sysStatus',
-                    $qb->expr()->literal('Systemet bruges ikke længere')));
+                    $qb->expr()->literal('Systemet bruges ikke længere')))
+        ;
 
         if (isset($groupId)) {
             $qb->andWhere($qb->expr()->isMemberOf(':group', 'e.groups'))
-                ->setParameter('group', $groupId);
+                ->setParameter('group', $groupId)
+            ;
         }
 
         $entities = $qb->getQuery()->execute();
@@ -536,7 +540,6 @@ class DataExporter
     /**
      * Get a value corresponding to answer smiley selected.
      *
-     * @param \App\Entity\Answer $answer
      * @return int
      */
     private function getAnswerValue(Answer $answer)
@@ -556,7 +559,6 @@ class DataExporter
     /**
      * Get color depending on answer smiley value.
      *
-     * @param \App\Entity\Answer $answer
      * @return string|null
      */
     private function getAnswerColor(Answer $answer)

@@ -21,7 +21,8 @@ class ReportImportCommand extends AbstractImportCommand
         $this
             ->setName('itstyr:import:report')
             ->setDescription('Import reports from feed.')
-            ->addArgument('src', InputArgument::REQUIRED, 'The src of the feed.');
+            ->addArgument('src', InputArgument::REQUIRED, 'The src of the feed.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

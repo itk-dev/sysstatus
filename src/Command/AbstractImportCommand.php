@@ -24,16 +24,12 @@ abstract class AbstractImportCommand extends Command
     /**
      * Run the importer.
      *
-     * @param string $type
-     * @param string $src
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @throws \Exception
      */
     protected function import(string $type, string $src, OutputInterface $output)
     {
         $success = true;
         $errorMessage = null;
-
 
         try {
             $this->importer->import($src);
@@ -49,15 +45,17 @@ abstract class AbstractImportCommand extends Command
     /**
      * Record import run.
      *
-     * @param string $type
-     *   The type of the import
-     * @param bool $success
-     *   Success of run
+     * @param string      $type
+     *                             The type of the import
+     * @param bool        $success
+     *                             Success of run
      * @param string|null $output
-     *   Output message or null
+     *                             Output message or null
+     *
      * @throws \Exception
      */
-    protected function recordImportRun(string $type, bool $success, string $output = null) {
+    protected function recordImportRun(string $type, bool $success, ?string $output = null)
+    {
         $importRun = new ImportRun();
         $importRun->setDatetime(new \DateTime());
         $importRun->setOutput($output);

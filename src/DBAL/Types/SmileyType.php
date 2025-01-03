@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DBAL\Types;
 
 use Fresh\DoctrineEnumBundle\DBAL\Types\AbstractEnumType;

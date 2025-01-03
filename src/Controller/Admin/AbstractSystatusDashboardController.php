@@ -53,8 +53,7 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
             MenuItem::linkToRoute('Eksport', 'fas fa-file-import', 'export_page'),
 
             MenuItem::section('LogOut '),
-            MenuItem::linkToRoute('Logout', 'fas fa-sign-out-alt', 'admin_logout')
-
+            MenuItem::linkToRoute('Logout', 'fas fa-sign-out-alt', 'admin_logout'),
         ];
     }
 }

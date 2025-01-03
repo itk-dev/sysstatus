@@ -21,7 +21,8 @@ class SystemImportCommand extends AbstractImportCommand
         $this
             ->setName('itstyr:import:system')
             ->setDescription('Import systems from System Portal feed.')
-            ->addArgument('src', InputArgument::REQUIRED, 'The src of the feed.');
+            ->addArgument('src', InputArgument::REQUIRED, 'The src of the feed.')
+        ;
     }
 
     /**

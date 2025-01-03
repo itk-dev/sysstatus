@@ -6,7 +6,6 @@ use App\Entity\Theme;
 use App\Form\ThemeCategoryType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -31,7 +30,6 @@ class ThemeCrudController extends AbstractCrudController
         $repgroups = AssociationField::new('reportGroups')
             ->setFormTypeOption('by_reference', false)->setLabel('Anmeldelser')
         ;
-
 
         $categoriesField = CollectionField::new('themeCategories')->setLabel('Tilføj Tema og Kategori')
             ->setEntryType(ThemeCategoryType::class)

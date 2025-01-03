@@ -23,12 +23,9 @@ class GroupCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-
-
         $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
-
         ;
 
         return $actions;
@@ -45,26 +42,21 @@ class GroupCrudController extends AbstractCrudController
         $reporttheme = ArrayField::new('reportTheme');
         $users = IntegerField::new('users');
 
-
         $asoc_report = AssociationField::new('reports');
         $asoc_systems = AssociationField::new('systems');
 
         $choice_roles = ChoiceField::new('roles')->setChoices([
-            'User' => "ROLE_USER",
-            'Admin' => "ROLE_ADMIN"
+            'User' => 'ROLE_USER',
+            'Admin' => 'ROLE_ADMIN',
         ])->allowMultipleChoices(true)->renderExpanded()->setEmptyData(false);
 
-
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$name, $asoc_report,$asoc_systems];
-        }
-        elseif(Crud::PAGE_DETAIL === $pageName) {
+            return [$name, $asoc_report, $asoc_systems];
+        } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $name, $roles, $system, $report, $systemtheme, $reporttheme, $users];
-        }
-        elseif(Crud::PAGE_NEW === $pageName) {
+        } elseif (Crud::PAGE_NEW === $pageName) {
             return [$name, $choice_roles];
-        }
-        elseif(Crud::PAGE_EDIT === $pageName) {
+        } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$id, $name, $roles];
         }
     }
