@@ -13,7 +13,7 @@ trait ArchivableEntity
     //     */
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected \DateTime $archivedAt;
+    protected ?\DateTime $archivedAt = null;
 
     /**
      * Sets archivedAt.
