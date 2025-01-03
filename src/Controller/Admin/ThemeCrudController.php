@@ -18,6 +18,9 @@ class ThemeCrudController extends AbstractCrudController
         return Theme::class;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');
@@ -46,6 +49,8 @@ class ThemeCrudController extends AbstractCrudController
             return [$name, $sysgroups, $repgroups, $categoriesField];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $sysgroups, $repgroups, $categoriesField];
+        } else {
+            throw new \Exception('Invalid page: '.$pageName);
         }
     }
 }

@@ -25,6 +25,9 @@ class QuestionCrudController extends AbstractCrudController
         ;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id')->setLabel('entity.system.id');

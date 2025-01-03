@@ -29,6 +29,9 @@ class ImportRunCrudController extends AbstractCrudController
         return $actions;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');
@@ -43,9 +46,8 @@ class ImportRunCrudController extends AbstractCrudController
             return [$id, $type, $datetime, $result, $output];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [$type, $datetime, $result, $output];
+        } else {
+            throw new \Exception('Invalid page: '.$pageName);
         }
-        //        elseif(Crud::PAGE_EDIT === $pageName) {
-        //            return [$title, $editor_description, $editor_instructions, $editor_preparations, $coll_questions, $coll_configuration ];
-        //        }
     }
 }

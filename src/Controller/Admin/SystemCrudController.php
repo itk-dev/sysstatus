@@ -46,6 +46,9 @@ class SystemCrudController extends AbstractCrudController
         return $actions;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id')->setLabel('entity.system.id');
