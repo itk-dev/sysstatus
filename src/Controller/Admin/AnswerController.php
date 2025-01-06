@@ -15,6 +15,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AnswerController extends AbstractController
 {
+    /**
+     * @throws \Exception
+     */
     #[Route('/answer/new', name: 'report')]
     public function newAnswer(
         Request $request,
@@ -74,7 +77,6 @@ class AnswerController extends AbstractController
                 'entityId' => $answer->getId(),
                 'referer' => $request->query->get('referer'),
                 'crudControllerFqcn' => AnswerCrudController::class,
-
             ]
         );
     }
