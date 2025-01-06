@@ -70,10 +70,11 @@ class AnswerController extends AbstractController
         return $this->redirectToRoute(
             'app_admin_customdashboardcrud_index',
             [
-                'action' => 'edit',
-                'id' => $answer->getId(),
-                'entity' => 'Answer',
+                'crudAction' => 'edit',
+                'entityId' => $answer->getId(),
                 'referer' => $request->query->get('referer'),
+                'crudControllerFqcn' => AnswerCrudController::class,
+
             ]
         );
     }

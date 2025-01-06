@@ -52,6 +52,7 @@
                     .setEntityId(answer.id)
                   }}">
 
+
                   <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
                 </a>
               </td>
@@ -60,9 +61,19 @@
           {% if numberOfAnswers == 0 %}
             <td></td>
             <td>
-              <a href="answer/new?question={{ question.id }}&{{ itemClass | lower }}={{ entity.instance.id }}&referer={{ app.request.uri|url_encode }}">
-                <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit' | trans }}
+{#               {{ dump(itemClass) }}#}
+{#              /admin/{entityType}#}
+              <a href="answer/new?question={{ question.id }}&{{ itemClass | lower }}={{ entity.instance.id }}&redirect=www.google.com">
+                <i class="fa fa-add new-icon"></i> {{ 'Opret Ny' | trans }}
               </a>
+
+{#              <a href="answer/new?question={{ question.id }}&{{ itemClass | lower }}={{ entity.instance.id }}#}
+{#              &redirect={{ path('dashboard'/itemClass }) | url_encode }}">#}
+{#                <i class="fa fa-add new-icon"></i> {{ 'Opret Ny' | trans }}#}
+{#              </a>#}
+{#       #}
+
+
             </td>
           {% endif %}
           </td>
