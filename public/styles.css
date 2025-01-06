@@ -222,6 +222,10 @@ body.list table tbody td.dashboard--table-answer {
   justify-content: center;
 }
 
+.current, .page, .next, .last {
+  margin: 5px;
+
+}
 .dashboard--table-cell {
   display: flex;
   justify-content: center;
