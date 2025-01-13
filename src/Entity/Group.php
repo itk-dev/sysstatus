@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 // #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Entity]
-#[ORM\Table(name: 'fos_group')]
 class Group
 {
     #[ORM\Id]

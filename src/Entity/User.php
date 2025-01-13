@@ -13,7 +13,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: 'fos_user')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -29,7 +28,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Group>
      */
     #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'fos_user_user_group')]
     private Collection $groups;
 
     #[ORM\Column(length: 255, nullable: true)]
