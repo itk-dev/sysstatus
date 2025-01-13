@@ -1,9 +1,11 @@
 # itstyr
+
 Styringsværktøj til IT projekter
 
 ## Setup locally
 
 ### Preset
+
 Make sure you have a set of JSON files for testing import Commands.
 
 ### Start Docker containers
@@ -31,15 +33,17 @@ open "http://$(docker-compose port nginx 8080)"
 ```
 
 ## Import systems and reports
+
 ```sh
-docker compose exec phpfpm bin/console itstyr:import:system PATH
-docker compose exec phpfpm bin/console itstyr:import:report PATH
+docker compose exec phpfpm bin/console itstyr:import:system <URL>
+docker compose exec phpfpm bin/console itstyr:import:report <URL>
 ```
 
 ### Flowchart
 
 A helpful flowchart over the Entities, and Joinedtables.
 Ilustrative figures meaning:
+
 1. Database = Database
 2. Black square = Entities
 3. Grey square = relations
