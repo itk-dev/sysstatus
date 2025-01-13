@@ -25,25 +25,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, Group>
+     */
     #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
     #[ORM\JoinTable(name: 'fos_user_user_group')]
     private Collection $groups;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $username = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
     #[ORM\Column]
-    private ?bool $enabled = null;
+    private bool $enabled = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLogin = null;
 
+    /**
+     * @var array<string>
+     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -65,9 +71,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->groups;
     }
 
-    public function setGroups(Collection $groups): void
+    /**
+     * @param Collection<int, Group> $groups
+     */
+    public function setGroups(Collection $groups): self
     {
         $this->groups = $groups;
+
+        return $this;
     }
 
     public function addGroup(Group $group): self
@@ -120,7 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isEnabled(): ?bool
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }

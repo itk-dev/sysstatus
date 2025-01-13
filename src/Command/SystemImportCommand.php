@@ -16,7 +16,7 @@ class SystemImportCommand extends AbstractImportCommand
         parent::__construct($systemImporter, $entityManager);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('itstyr:import:system')

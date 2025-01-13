@@ -30,7 +30,9 @@
     "require-dev": {
         "ergebnis/composer-normalize": "^2.43",
         "friendsofphp/php-cs-fixer": "^3.66",
+        "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
         "symfony/maker-bundle": "^1.48",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "6.4.*",
@@ -64,6 +66,7 @@
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -92,7 +95,7 @@
         "coding-standards-check": [
             "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run"
         ],
-        "phpstan": [
+        "analysis": [
             "./vendor/bin/phpstan analyse src"
         ]
 

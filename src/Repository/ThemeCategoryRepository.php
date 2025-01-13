@@ -8,11 +8,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<ThemeCategory>
- *
- * @method ThemeCategory|null find($id, $lockMode = null, $lockVersion = null)
- * @method ThemeCategory|null findOneBy(array $criteria, array $orderBy = null)
- * @method ThemeCategory[]    findAll()
- * @method ThemeCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ThemeCategoryRepository extends ServiceEntityRepository
 {
@@ -38,29 +33,4 @@ class ThemeCategoryRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-    //    /**
-    //     * @return ThemeCategory[] Returns an array of ThemeCategory objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ThemeCategory
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

@@ -18,35 +18,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExportController extends AbstractController
 {
     /**
-     * @Route("/export/report", name="export_report")
-     *
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportReports(
-        DataExporter $dataExporter,
-    ) {
+    #[Route(path: '/export/report', name: 'export_report')]
+    public function exportReports(DataExporter $dataExporter): void
+    {
         $dataExporter->exportReport();
     }
 
     /**
-     * @Route("/export/system", name="export_system")
-     *
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportSystems(
-        DataExporter $dataExporter,
-    ) {
+    #[Route(path: '/export/system', name: 'export_system')]
+    public function exportSystems(DataExporter $dataExporter): void
+    {
         $dataExporter->exportSystem();
     }
 
     /**
-     * @Route("/export", name="export_page")
-     *
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
+    #[Route(path: '/export', name: 'export_page')]
     public function exportPage(Request $request, DataExporter $dataExporter, GroupRepository $groupRepository): Response
     {
         $groups = $groupRepository->findAll();

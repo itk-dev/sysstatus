@@ -15,12 +15,15 @@ class SelfServiceAvailableFromItem
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, System>
+     */
     #[ORM\ManyToMany(targetEntity: System::class, inversedBy: 'selfServiceAvailableFromItems')]
     private Collection $systems;
 

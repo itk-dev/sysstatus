@@ -19,13 +19,13 @@ class ThemeCategory
 
     #[ORM\ManyToOne(inversedBy: 'themeCategories')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Theme $theme = null;
+    private Theme $theme;
 
     #[ORM\ManyToOne(inversedBy: 'themeCategories')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
+    private Category $category;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ['default' => 0])]
     private ?int $sortOrder = 0;
 
     public function getId(): ?int

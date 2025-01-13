@@ -20,12 +20,12 @@ class Answer
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'answers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Question $question = null;
+    private Question $question;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Versioned]

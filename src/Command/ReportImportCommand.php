@@ -16,7 +16,7 @@ class ReportImportCommand extends AbstractImportCommand
         parent::__construct($reportImporter, $entityManager);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('itstyr:import:report')
@@ -25,7 +25,10 @@ class ReportImportCommand extends AbstractImportCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @throws \Exception
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->import(Report::class, $input->getArgument('src'), $output);
 

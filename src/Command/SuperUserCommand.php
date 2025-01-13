@@ -19,13 +19,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 )]
 class SuperUserCommand extends Command
 {
-    private $entitManager;
-    private $passwordHasher;
-
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserPasswordHasherInterface $passwordHasher
+    )
     {
-        $this->passwordHasher = $passwordHasher;
-        $this->entitManager = $entityManager;
         parent::__construct();
     }
 
@@ -46,8 +44,8 @@ class SuperUserCommand extends Command
         $user->setPassword($this->passwordHasher->hashPassword($user, 'a'));
         $user->setRoles(['ROLE_SUPER_ADMIN']);
         $user->setEnabled(true);
-        $this->entitManager->persist($user);
-        $this->entitManager->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         $io->success('you have created email:: a@a , with password:: a');
 

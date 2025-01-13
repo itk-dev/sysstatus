@@ -23,16 +23,22 @@ class System
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, SelfServiceAvailableFromItem>
+     */
     #[ORM\ManyToMany(targetEntity: SelfServiceAvailableFromItem::class, mappedBy: 'systems')]
     private Collection $selfServiceAvailableFromItems;
 
+    /**
+     * @var Collection<int, Answer>
+     */
     #[ORM\OneToMany(mappedBy: 'system', targetEntity: Answer::class)]
     private Collection $answers;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Versioned]
     private ?string $name = null;
 
@@ -40,7 +46,7 @@ class System
     #[Versioned]
     private ?string $text = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Versioned]
     private ?string $sysSystemOwner = null;
 
@@ -119,7 +125,7 @@ class System
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $sysOwnerSub = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $sysLink = null;
 
     #[ORM\Column(nullable: true)]
@@ -131,6 +137,9 @@ class System
     #[ORM\Column(name: 'edoc_url', length: 255, nullable: true)]
     private ?string $eDocUrl = null;
 
+    /**
+     * @var Collection<int, Group>
+     */
     #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'systems')]
     private Collection $groups;
 
@@ -667,7 +676,7 @@ class System
     /**
      * Virtual property.
      */
-    public function getSysIdAsLink()
+    public function getSysIdAsLink(): ?string
     {
         return $this->getSysId();
     }
@@ -675,23 +684,25 @@ class System
     /**
      * Virtual property.
      */
-    public function getShowableName()
+    public function getShowableName(): ?string
     {
-        return isset($this->sysTitle) ? $this->sysTitle : $this->getName();
+        return $this->sysTitle ?? $this->getName();
     }
 
     /**
      * Virtual property.
      */
-    public function getTextSet()
+    public function getTextSet(): bool
     {
         return isset($this->text);
     }
 
     /**
      * Virtual property.
+     *
+     * @return array<Theme>
      */
-    public function getAnswerArea()
+    public function getAnswerArea(): array
     {
         $themes = [];
         $groups = $this->getGroups();
@@ -703,9 +714,11 @@ class System
         return $themes;
     }
 
-    public function setSysNumberOfUsers($sysNumberOfUsers)
+    public function setSysNumberOfUsers(string $sysNumberOfUsers): self
     {
         $this->sysNumberOfUsers = $sysNumberOfUsers;
+
+        return $this;
     }
 
     public function getSysNumberOfUsers(): ?string

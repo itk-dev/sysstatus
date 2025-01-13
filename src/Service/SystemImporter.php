@@ -25,7 +25,7 @@ class SystemImporter extends BaseImporter
         $this->selfServiceAvailableFromItemRepository = $selfServiceAvailableFromItemRepository;
     }
 
-    public function import(string $src)
+    public function import(string $src): void
     {
         $systemURL = getenv('SYSTEM_URL');
 
@@ -41,7 +41,7 @@ class SystemImporter extends BaseImporter
         $sysInternalIds = [];
 
         foreach ($entries as $entry) {
-            $sysInternalId = $this->sanitizeText($entry->{'Id'});
+            $sysInternalId = (int) $this->sanitizeText($entry->{'Id'});
             $sysInternalIds[] = $sysInternalId;
 
             $system = $this->systemRepository->findOneBy(['sysInternalId' => $entry->{'Id'}]);
@@ -53,7 +53,7 @@ class SystemImporter extends BaseImporter
                 $this->entityManager->persist($system);
             }
             // Un-archive the system.
-            $system->setArchivedAt(null);
+            $system->setArchivedAt();
 
             $system->setSysId($entry->{'Id'});
             $system->setSysInternalId($sysInternalId);

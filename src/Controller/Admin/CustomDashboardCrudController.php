@@ -6,8 +6,8 @@ use App\Entity\Group;
 use App\Entity\Report;
 use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
-use App\Repository\CategoryRepository;
-use App\Repository\ThemeCategoryRepository;
+use App\Repository\ReportRepository;
+use App\Repository\SystemRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -16,41 +16,38 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomDashboardCrudController extends AbstractSystatusDashboardController
 {
-    private $categoryRepository;
-    private $themeCategoryRepository;
-    protected $entityManager;
-    private $paginator;
-    protected $translator;
-
     /**
      * AdminController constructor.
      */
     public function __construct(
-        CategoryRepository $categoryRepository,
-        ThemeCategoryRepository $themeCategoryRepository,
-        EntityManagerInterface $entityManager,
-        PaginatorInterface $paginator,
-        TranslatorInterface $translator,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly PaginatorInterface $paginator,
+        private readonly TranslatorInterface $translator,
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->themeCategoryRepository = $themeCategoryRepository;
-        $this->entityManager = $entityManager;
-        $this->paginator = $paginator;
-        $this->translator = $translator;
     }
 
-    #[Route('admin/{entityType}', name: 'dashboard')]
-    public function dashboard(Request $request, $entityType): mixed
+    /**
+     * @throws \Exception
+     */
+    #[Route(path: 'admin/{entityType}', name: 'dashboard')]
+    public function dashboard(Request $request, string $entityType): Response
     {
         $queryParameters = $request->query;
-        $queryParams = $request->query->all(); // Fetch all query parameters as an array.
-        $formData = $queryParams['form'] ?? []; // Safely retrieve 'form' as an array.
+
+        // Fetch all query parameters as an array.
+        $queryParams = $request->query->all();
+
+        // Safely retrieve 'form' as an array.
+        $formData = $queryParams['form'] ?? [];
 
         // Ensure `formData` is always an array.
         if (!is_array($formData)) {
@@ -133,7 +130,15 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         ]);
     }
 
-    private function getUserGroupsThemesAndCategories(array $userGroups, $entityType)
+    /**
+     * @param array<Group> $userGroups
+     * @param string $entityType
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    private function getUserGroupsThemesAndCategories(array $userGroups, string $entityType): mixed
     {
         return array_reduce($userGroups,
             function ($carry, Group $group) use ($entityType) {
@@ -159,8 +164,12 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
     /**
      * Get repository for entity type.
+     *
+     * @param string $entityType
+     *
+     * @return ReportRepository|SystemRepository|null
      */
-    private function getRepository($entityType): ?EntityRepository
+    private function getRepository(string $entityType): ReportRepository|SystemRepository|null
     {
         return match ($entityType) {
             'system' => $this->entityManager->getRepository(System::class),
@@ -171,11 +180,13 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
     /**
      * Apply common filters for report and system query.
+     *
+     * @param QueryBuilder $query
+     * @param array<string, mixed> $formParameters
+     * @param string|null $entityType
+     * @return QueryBuilder
      */
-    private function applyFilters(
-        QueryBuilder $query,
-        array $formParameters,
-        $entityType = null,
+    private function applyFilters(QueryBuilder $query, array $formParameters, ?string $entityType = null,
     ): QueryBuilder {
         $query->andWhere('e.archivedAt IS NULL');
 
@@ -222,9 +233,9 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     }
 
     /**
-     * Get subowners for selected group.
+     * Get sub-owners for selected group.
      */
-    private function getSubOwnerOptions($repository, $selectedGroups): mixed
+    private function getSubOwnerOptions(mixed $repository, mixed $selectedGroups): mixed
     {
         $groups = $this->entityManager->getRepository(Group::class)->findBy([
             'id' => $selectedGroups,
@@ -260,9 +271,13 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     }
 
     /**
-     * Get options for self service filter.
+     * Get options for self-service filter.
+     *
+     * @param string $entityType
+     *
+     * @return array<string, int>
      */
-    private function getSelfServiceOptions($entityType): array
+    private function getSelfServiceOptions(string $entityType): array
     {
         $selfServiceOptions = [];
         if ('system' == $entityType) {
@@ -279,15 +294,23 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
     /**
      * Get filter form builder.
+     *
+     * @param mixed $userGroupsThemesAndCategories
+     * @param array<string, mixed> $formParameters
+     * @param mixed $subownerOptions
+     * @param bool $filterThemes
+     * @param bool $filterCategories
+     * @param array<int> $filterSelfServiceOptions
+     * @return FormBuilderInterface
      */
     private function getFilterFormBuilder(
-        $userGroupsThemesAndCategories,
-        $formParameters,
-        $subownerOptions,
+        mixed $userGroupsThemesAndCategories,
+        array $formParameters,
+        mixed $subownerOptions,
         bool $filterThemes = false,
         bool $filterCategories = false,
         array $filterSelfServiceOptions = [],
-    ): \Symfony\Component\Form\FormBuilderInterface {
+    ): FormBuilderInterface {
         $filterFormBuilder = $this->createFormBuilder();
         $filterFormBuilder->add('groups', ChoiceType::class, [
             'label' => 'filter.groups',
@@ -367,9 +390,9 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     /**
      * Overrides EasyAdmin show action.
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
-    public function showAction()
+    public function showAction(): RedirectResponse|Response
     {
         $entityArray = $this->entity;
         if (Report::class == $entityArray['class'] || System::class == $entityArray['class']) {
@@ -386,8 +409,14 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         return parent::showAction();
     }
 
-    private function getEntity($className, $id): ?object
+    /**
+     * @param string $entityName
+     * @param mixed $id
+     *
+     * @return object|null
+     */
+    private function getEntity(string $entityName, mixed $id): object|null
     {
-        return $this->entityManager->getRepository($className)->find($id);
+        return $this->entityManager->getRepository($entityName)->find($id);
     }
 }

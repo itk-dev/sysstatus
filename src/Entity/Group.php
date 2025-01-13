@@ -14,29 +14,47 @@ class Group
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, Theme>
+     */
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'systemGroups')]
     #[ORM\JoinTable(name: 'group_system_themes')]
     private Collection $systemThemes;
 
+    /**
+     * @var Collection<int, Theme>
+     */
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'reportGroups')]
     #[ORM\JoinTable(name: 'group_report_themes')]
     private Collection $reportThemes;
 
+    /**
+     * @var Collection<int, Report>
+     */
     #[ORM\ManyToMany(targetEntity: Report::class, mappedBy: 'groups')]
     private Collection $reports;
 
+    /**
+     * @var Collection<int, System>
+     */
     #[ORM\ManyToMany(targetEntity: System::class, mappedBy: 'groups')]
     private Collection $systems;
 
+    /**
+     * @var Collection<int, User>
+     */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups')]
     private Collection $users;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
+    /**
+     * @var array<string>
+     */
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
@@ -206,11 +224,19 @@ class Group
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array<string> $roles
+     *
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;

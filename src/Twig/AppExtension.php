@@ -2,6 +2,8 @@
 
 namespace App\Twig;
 
+use App\Entity\Answer;
+use App\Entity\Question;
 use Doctrine\Common\Collections\ArrayCollection;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -9,7 +11,7 @@ use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('getclass', [$this, 'getClass']),
@@ -18,22 +20,19 @@ class AppExtension extends AbstractExtension
         ];
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('sort_order', [$this, 'sortOrder']),
         ];
     }
 
-    /**
-     * @return bool
-     */
-    public function getClass($instance)
+    public function getClass(mixed $instance): bool
     {
         return get_class($instance);
     }
 
-    public function getAnswer($entity, $question)
+    public function getAnswer(mixed $entity, Question $question): mixed
     {
         $answers = $entity->getAnswers();
 
@@ -48,13 +47,15 @@ class AppExtension extends AbstractExtension
 
     /**
      * String split for unicode.
+     *
      * From: http://php.net/manual/en/function.str-split.php#107658.
      *
+     * @param string $str
      * @param int $l
      *
-     * @return array|array[]|false|string[]
+     * @return array<string>|false
      */
-    private function str_split_unicode($str, $l = 0)
+    private function str_split_unicode(string $str, int $l = 0): array|false
     {
         if ($l > 0) {
             $ret = [];
@@ -75,7 +76,7 @@ class AppExtension extends AbstractExtension
      *
      * @return string
      */
-    public function breakIntoLines($text, $chuckSize, $numberOfLines)
+    public function breakIntoLines(string $text, int $chuckSize, int $numberOfLines): string
     {
         $split = $this->str_split_unicode($text, $chuckSize);
         $numberOfSplits = count($split);
@@ -86,6 +87,7 @@ class AppExtension extends AbstractExtension
         for ($addedEmptyLines; $addedEmptyLines < $numberOfLines - min($numberOfSplits, $numberOfLines); ++$addedEmptyLines) {
             $render[] = '';
         }
+
         for ($i = 0; $i < $numberOfLines - $addedEmptyLines; ++$i) {
             $render[] = $split[$i];
         }
@@ -102,9 +104,11 @@ class AppExtension extends AbstractExtension
     /**
      * Sort by sortOrder.
      *
-     * @return ArrayCollection
+     * @param mixed $item
+     *
+     * @return mixed
      */
-    public function sortOrder($item)
+    public function sortOrder(mixed $item): mixed
     {
         $iterator = $item->getIterator();
 

@@ -13,6 +13,7 @@ use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use App\Repository\ThemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use JetBrains\PhpStorm\NoReturn;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
@@ -25,56 +26,56 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  */
 class DataExporter
 {
-    protected $reportRepository;
-    protected $systemRepository;
-    protected $themeRepository;
-    protected $basePath;
-
     /**
      * DataExporter constructor.
      *
-     * @throws \Exception
+     * @param string $basePath
+     * @param ReportRepository $reportRepository
+     * @param SystemRepository $systemRepository
+     * @param ThemeRepository $themeRepository
      */
     public function __construct(
-        string $basePath,
-        ReportRepository $reportRepository,
-        SystemRepository $systemRepository,
-        ThemeRepository $themeRepository,
+        protected string $basePath,
+        protected ReportRepository $reportRepository,
+        protected SystemRepository $systemRepository,
+        protected ThemeRepository $themeRepository,
     ) {
-        $this->reportRepository = $reportRepository;
-        $this->systemRepository = $systemRepository;
-        $this->themeRepository = $themeRepository;
-
-        $this->basePath = $basePath;
     }
 
     /**
      * Export reports or systems.
      *
-     * @param string $filenamePrefix     the filename prefix
-     * @param string $type               the type of the entities that are exported
-     * @param array  $entities           the entities to export
-     * @param bool   $splitIntoSubOwners Should the results be split into subowners?
-     * @param bool   $onlyComments       Should the answer notes be displayed instead of results?
-     * @param bool   $withColor          whether or not colors should be displayed for answers
+     * @param string $filenamePrefix
+     *   The filename prefix
+     * @param string $type
+     *   The type of the entities that are exported
+     * @param array<mixed> $entities
+     *   The entities to export
+     * @param bool $splitIntoSubOwners
+     *   Should the results be split into sub-owners?
+     * @param bool $onlyComments
+     *   Should the answer notes be displayed instead of results?
+     * @param bool $withColor
+     *   Whether colors should be displayed for answers
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function export(
-        $filenamePrefix,
-        $type,
-        $entities,
-        $splitIntoSubOwners = false,
-        $onlyComments = false,
-        $withColor = false,
-    ) {
+        string $filenamePrefix,
+        string $type,
+        array $entities,
+        bool $splitIntoSubOwners = false,
+        bool $onlyComments = false,
+        bool $withColor = false,
+    ): void
+    {
         $spreadsheet = new Spreadsheet();
 
         $filename = $filenamePrefix.'-'.date('Y-m-d-H_i_s');
 
-        // If $splitIntoSubOwners is true, each entity that belongs to a subowner
-        // will be gathered in its own work sheet in the spreadsheet.
+        // If $splitIntoSubOwners is true, each entity that belongs to a sub-owner will be gathered in its own work
+        // sheet in the spreadsheet.
         if (!$splitIntoSubOwners) {
             $sheet = $spreadsheet->getActiveSheet();
             $this->writeSheet($spreadsheet, $sheet, 0, $type, $entities,
@@ -89,7 +90,7 @@ class DataExporter
 
             $sheetNr = 0;
 
-            // Create a WorkSheet for each subowner.
+            // Create a WorkSheet for each sub-owner.
             foreach ($subOwnerEntities as $key => $entities) {
                 $workSheet = null;
                 if ($sheetNr > 0) {
@@ -124,13 +125,20 @@ class DataExporter
     /**
      * Write $entities to a $sheet in the $spreadsheet.
      *
-     * @param Spreadsheet $spreadsheet  the spreadsheet
-     * @param Worksheet   $sheet        the worksheet to write to
-     * @param int         $sheetIndex   the index of the worksheet
-     * @param string      $type         classname of the entities to export
-     * @param array       $entities     the entities
-     * @param bool        $onlyComments if true only export comments for each answer
-     * @param bool        $withColor    if true set the answer color as background to each answer
+     * @param Spreadsheet $spreadsheet
+     *   The spreadsheet
+     * @param Worksheet $sheet
+     *   The worksheet to write to
+     * @param int $sheetIndex
+     *   The index of the worksheet
+     * @param string $type
+     *   Classname of the entities to export
+     * @param array<mixed> $entities
+     *   The entities
+     * @param bool $onlyComments
+     *   If true only export comments for each answer
+     * @param bool $withColor
+     *   If true set the answer color as background to each answer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -142,7 +150,8 @@ class DataExporter
         array $entities,
         bool $onlyComments = false,
         bool $withColor = false,
-    ) {
+    ): void
+    {
         $spreadsheet->setActiveSheetIndex($sheetIndex);
 
         $themesThatApply = [];
@@ -386,7 +395,7 @@ class DataExporter
             }
         }
 
-        // Add image describing values to the bottom of the excel sheet.
+        // Add image describing values to the bottom of the Excel sheet.
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName('Values');
         $drawing->setDescription('Values');
@@ -399,11 +408,11 @@ class DataExporter
      * Test if a category applies to an entity.
      *
      * @param Report|System $entity
-     * @param Category      $category
+     * @param Category $category
      *
      * @return bool
      */
-    private function categoryAppliesToEntity($entity, $category)
+    private function categoryAppliesToEntity(Report|System $entity, Category $category): bool
     {
         $groupIds = $entity->getGroups()->map(function ($item) {
             return $item->getId();
@@ -428,7 +437,7 @@ class DataExporter
             }, [])
         );
 
-        return array_intersect($groupIds, $categoryGroupIds) > 0;
+        return count(array_intersect($groupIds, $categoryGroupIds)) > 0;
     }
 
     /**
@@ -436,7 +445,7 @@ class DataExporter
      *
      * @return string
      */
-    private function getColumnLetter($columnNr)
+    private function getColumnLetter(int $columnNr): string
     {
         $res = '';
 
@@ -458,19 +467,20 @@ class DataExporter
      * Export reports.
      *
      * @param int|null $groupId            the group id
-     * @param bool     $splitIntoSubOwners split the report into subowner worksheets
-     * @param bool     $onlyComments       only export comments for each answer
-     * @param bool     $withColor          show answer color as cell background
+     * @param bool $splitIntoSubOwners split the report into subowner worksheets
+     * @param bool $onlyComments       only export comments for each answer
+     * @param bool $withColor          show answer color as cell background
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportReport(
-        $groupId = null,
-        $splitIntoSubOwners = false,
-        $onlyComments = false,
-        $withColor = false,
-    ) {
+        ?int  $groupId = null,
+        bool $splitIntoSubOwners = false,
+        bool $onlyComments = false,
+        bool $withColor = false,
+    ): void
+    {
         $qb = $this->reportRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
             ->andWhere($qb->expr()
@@ -499,19 +509,20 @@ class DataExporter
      * Export systems.
      *
      * @param int|null $groupId            the group id
-     * @param bool     $splitIntoSubOwners split the report into subowner worksheets
-     * @param bool     $onlyComments       only export comments for each answer
-     * @param bool     $withColor          show answer color as cell background
+     * @param bool $splitIntoSubOwners split the report into subowner worksheets
+     * @param bool $onlyComments       only export comments for each answer
+     * @param bool $withColor          show answer color as cell background
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportSystem(
-        $groupId = null,
-        $splitIntoSubOwners = false,
-        $onlyComments = false,
-        $withColor = false,
-    ) {
+        ?int $groupId = null,
+        bool $splitIntoSubOwners = false,
+        bool $onlyComments = false,
+        bool $withColor = false,
+    ): void
+    {
         $qb = $this->systemRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
             ->andWhere($qb->expr()
@@ -542,18 +553,13 @@ class DataExporter
      *
      * @return int
      */
-    private function getAnswerValue(Answer $answer)
+    private function getAnswerValue(Answer $answer): int
     {
-        switch ($answer->getSmiley()) {
-            case SmileyType::BLUE:
-            case SmileyType::GREEN:
-                return 2;
-            case SmileyType::YELLOW:
-                return 1;
-            case SmileyType::RED:
-            default:
-                return 0;
-        }
+        return match ($answer->getSmiley()) {
+            SmileyType::BLUE, SmileyType::GREEN => 2,
+            SmileyType::YELLOW => 1,
+            default => 0,
+        };
     }
 
     /**
@@ -561,19 +567,14 @@ class DataExporter
      *
      * @return string|null
      */
-    private function getAnswerColor(Answer $answer)
+    private function getAnswerColor(Answer $answer): ?string
     {
-        switch ($answer->getSmiley()) {
-            case SmileyType::BLUE:
-                return '3661D8';
-            case SmileyType::GREEN:
-                return '008855';
-            case SmileyType::RED:
-                return 'D32F2F';
-            case SmileyType::YELLOW:
-                return 'F6BD1D';
-            default:
-                return null;
-        }
+        return match ($answer->getSmiley()) {
+            SmileyType::BLUE => '3661D8',
+            SmileyType::GREEN => '008855',
+            SmileyType::RED => 'D32F2F',
+            SmileyType::YELLOW => 'F6BD1D',
+            default => null,
+        };
     }
 }

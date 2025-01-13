@@ -25,27 +25,30 @@ class Theme
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, ThemeCategory>
+     */
     #[ORM\OneToMany(mappedBy: 'theme', targetEntity: ThemeCategory::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $themeCategories;
 
     /**
-     * @var ArrayCollection
+     * @var Collection<int, Group>
      */
-    private $categories;
-
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'systemThemes')]
     private Collection $systemGroups;
 
+    /**
+     * @var Collection<int, Group>
+     */
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'reportThemes')]
     private Collection $reportGroups;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Versioned]
     private ?string $name = null;
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->themeCategories = new ArrayCollection();
         $this->systemGroups = new ArrayCollection();
         $this->reportGroups = new ArrayCollection();
@@ -93,6 +96,10 @@ class Theme
 
     /**
      * Virtual.
+     *
+     * @return array<Category>
+     *
+     * @throws \Exception
      */
     public function getOrderedCategories(): array
     {
@@ -104,6 +111,7 @@ class Theme
             return (int) $first->getSortOrder() < (int) $second->getSortOrder() ? 1 : -1;
         });
 
+        /** @var ThemeCategory $item */
         foreach ($iterator as $i => $item) {
             $list[] = $item->getCategory();
         }

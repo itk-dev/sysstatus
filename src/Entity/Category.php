@@ -22,16 +22,22 @@ class Category
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     #[Versioned]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, ThemeCategory>
+     */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: ThemeCategory::class, orphanRemoval: true)]
     private Collection $themeCategories;
 
+    /**
+     * @var Collection<int, Question>
+     */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Question::class, cascade: ['persist'])]
     private Collection $questions;
 
@@ -83,8 +89,12 @@ class Category
 
     /**
      * Virtual.
+     *
+     * @return array<Theme>
+     *
+     * @throws \Exception
      */
-    public function getThemes()
+    public function getThemes(): array
     {
         $list = [];
         $iterator = $this->themeCategories->getIterator();
