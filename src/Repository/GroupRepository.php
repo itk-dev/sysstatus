@@ -3,11 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Group;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Group>
+ *
  * @method Group|null find($id, $lockMode = null, $lockVersion = null)
  * @method Group|null findOneBy(array $criteria, array $orderBy = null)
  * @method Group[]    findAll()
@@ -15,21 +16,49 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class GroupRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Group::class);
     }
 
+    public function save(Group $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Group $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     /**
-     * @param $user
      * @return Group[] Returns an array of Group objects
      */
-    public function findByUser($user)
+    public function findByUser($user): array
     {
         return $this->createQueryBuilder('g')
             ->andWhere(':val MEMBER OF g.users')
             ->setParameter('val', $user)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
+
+    //    public function findOneBySomeField($value): ?Group
+    //    {
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

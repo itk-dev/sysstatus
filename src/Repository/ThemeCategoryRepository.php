@@ -4,9 +4,11 @@ namespace App\Repository;
 
 use App\Entity\ThemeCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<ThemeCategory>
+ *
  * @method ThemeCategory|null find($id, $lockMode = null, $lockVersion = null)
  * @method ThemeCategory|null findOneBy(array $criteria, array $orderBy = null)
  * @method ThemeCategory[]    findAll()
@@ -14,37 +16,51 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ThemeCategoryRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ThemeCategory::class);
     }
 
-//    /**
-//     * @return ThemeCategory[] Returns an array of ThemeCategory objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function save(ThemeCategory $entity, bool $flush = false): void
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $this->getEntityManager()->persist($entity);
 
-    /*
-    public function findOneBySomeField($value): ?ThemeCategory
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
-    */
+
+    public function remove(ThemeCategory $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    //    /**
+    //     * @return ThemeCategory[] Returns an array of ThemeCategory objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('t')
+    //            ->andWhere('t.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('t.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?ThemeCategory
+    //    {
+    //        return $this->createQueryBuilder('t')
+    //            ->andWhere('t.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

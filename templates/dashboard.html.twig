@@ -1,15 +1,18 @@
-{% extends '@EasyAdmin/default/layout.html.twig' %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title %}
-  {{ ('dashboard.'~entityType)|trans }}
-{% endblock %}
 
-{% block content_title %}
-  {{ ('dashboard.'~entityType)|trans }}
-{% endblock %}
+  {% block page_title %}
+    {{ ('dashboard.'~entityType)|trans }}
+  {% endblock %}
 
-{% block global_actions_wrapper %}
-  <div class="global-actions w-75 dashboard-filters" style="justify-content: flex-end">
+  {% block content_title %}
+    {{ ('dashboard.'~entityType)|trans }}
+  {% endblock %}
+
+
+
+{% block main %}
+  <div class="global-actions w-100 dashboard-filters mt-2 mb-5" style="justify-content: flex-end">
     {{ form_start(filters, { attr: { class: 'w-100' } }) }}
     <div class="row w-100 flex-row no-gutters align-items-center">
       <div class="col">
@@ -39,9 +42,7 @@
     </div>
     {{ form_end(filters) }}
   </div>
-{% endblock %}
 
-{% block main %}
   <div class="dashboard--table">
     <table class="table table-bordered table-striped table-sm">
       <thead class="">
@@ -49,10 +50,15 @@
       {% for item in paginator %}
         <th class="rotate">
           <div>
-          <span>
-            <a href="{{ path('easyadmin', { action: 'show', id: item.id, entity: entityType|capitalize }) }}" title="{{ item.showableName }}">
-              {{ item.showableName }}
-            </a>
+            {% if entityType == 'system' %}
+              <a href="{{ ea_url().setController('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
+                {{ item.showableName }}
+              </a>
+            {% elseif entityType == 'report' %}
+              <a href="{{ ea_url().setController('App\\Controller\\Admin\\ReportCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
+                {{ item.showableName }}
+              </a>
+            {% endif %}
           </span>
           </div>
         </th>
@@ -109,6 +115,9 @@
 
 {% block body_javascript %}
   {{ parent() }}
+
+  <!-- Your CSS link tag -->
+  <link href="{{ asset('styles.css') }}" rel="stylesheet">
 
   <script type="text/javascript">
     $('.dashboard-filters select').bind('change', function () {

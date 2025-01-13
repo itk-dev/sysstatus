@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
 use App\Entity\Question;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,13 +14,13 @@ class QuestionType extends AbstractType
         $builder
             ->add('sortOrder', null, [
                 'attr' => [
-                    'class' => 'form-control'
-                ]
+                    'class' => 'form-control',
+                ],
             ])
             ->add('question', null, [
                 'attr' => [
-                    'class' => 'form-control'
-                ]
+                    'class' => 'form-control',
+                ],
             ])
         ;
     }

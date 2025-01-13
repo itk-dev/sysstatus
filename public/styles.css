@@ -222,6 +222,10 @@ body.list table tbody td.dashboard--table-answer {
   justify-content: center;
 }
 
+.current, .page, .next, .last {
+  margin: 5px;
+
+}
 .dashboard--table-cell {
   display: flex;
   justify-content: center;
@@ -234,4 +238,9 @@ body.list table tbody td.dashboard--table-answer {
 
 .question-form-textarea {
   width: 300px;
+}
+
+.ea-detail .field-group .field-label {
+  width: 200px !important;
+
 }

@@ -2,43 +2,33 @@
 
 namespace App\Entity;
 
+use App\Repository\ThemeCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ThemeCategoryRepository")
- */
+#[ORM\Entity(repositoryClass: ThemeCategoryRepository::class)]
 class ThemeCategory
 {
     use BlameableEntity;
     use TimestampableEntity;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\ManyToOne(inversedBy: 'themeCategories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Theme $theme = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Theme", inversedBy="themeCategories")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $theme;
+    #[ORM\ManyToOne(inversedBy: 'themeCategories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="themeCategories")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private ?int $sortOrder = 0;
 
-    /**
-     * @ORM\Column(type="integer", options={"default" : 0})
-     */
-    private $sortOrder;
-
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -77,14 +67,5 @@ class ThemeCategory
         $this->sortOrder = $sortOrder;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        if (isset($this->category)) {
-            return $this->sortOrder . ': ' . $this->category->getName();
-        }
-
-        return "".$this->id;
     }
 }

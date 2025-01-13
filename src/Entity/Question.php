@@ -2,70 +2,54 @@
 
 namespace App\Entity;
 
+use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Mapping\Annotation\Loggable;
+use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
- * @Gedmo\Loggable
- */
+#[ORM\Entity(repositoryClass: QuestionRepository::class)]
+#[Loggable]
 class Question
 {
     use BlameableEntity;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Gedmo\Versioned
-     */
-    private $question;
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    private ?Category $category = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="questions")
-     */
-    private $category;
+    #[ORM\Column(type: Types::TEXT)]
+    #[Versioned]
+    private ?string $question = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $sortOrder;
+    #[ORM\Column]
+    private ?int $sortOrder = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question", orphanRemoval=true)
-     */
-    private $answers;
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, orphanRemoval: 'true')]
+    private Collection $answers;
 
     public function __construct()
     {
         $this->answers = new ArrayCollection();
     }
 
-    public function getId()
+    public function __toString()
+    {
+        return $this->getQuestion() ?: $this->getId();
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getQuestion(): ?string
-    {
-        return $this->question;
-    }
-
-    public function setQuestion(string $question): self
-    {
-        $this->question = $question;
-
-        return $this;
     }
 
     public function getCategory(): ?Category
@@ -80,8 +64,38 @@ class Question
         return $this;
     }
 
+    public function getQuestion(): ?string
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(string $question): self
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
     /**
-     * @return Collection|Answer[]
+     * @return mixed
+     */
+    public function getSortOrder(): ?int
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param mixed $sortOrder
+     */
+    public function setSortOrder(int $sortOrder): self
+    {
+        $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Answer>
      */
     public function getAnswers(): Collection
     {
@@ -91,7 +105,7 @@ class Question
     public function addAnswer(Answer $answer): self
     {
         if (!$this->answers->contains($answer)) {
-            $this->answers[] = $answer;
+            $this->answers->add($answer);
             $answer->setQuestion($this);
         }
 
@@ -100,37 +114,12 @@ class Question
 
     public function removeAnswer(Answer $answer): self
     {
-        if ($this->answers->contains($answer)) {
-            $this->answers->removeElement($answer);
+        if ($this->answers->removeElement($answer)) {
             // set the owning side to null (unless already changed)
             if ($answer->getQuestion() === $this) {
                 $answer->setQuestion(null);
             }
         }
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getQuestion() ?: $this->getId();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSortOrder()
-    {
-        return $this->sortOrder;
-    }
-
-    /**
-     * @param mixed $sortOrder
-     * @return Question
-     */
-    public function setSortOrder($sortOrder): Question
-    {
-        $this->sortOrder = $sortOrder;
 
         return $this;
     }

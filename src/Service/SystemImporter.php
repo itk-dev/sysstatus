@@ -7,29 +7,24 @@ use App\Repository\GroupRepository;
 use App\Repository\ReportRepository;
 use App\Repository\SelfServiceAvailableFromItemRepository;
 use App\Repository\SystemRepository;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SystemImporter extends BaseImporter
 {
-    /** @var \App\Repository\SelfServiceAvailableFromItemRepository */
-    private $selfServiceAvailableFromItemRepository;
+    private SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository;
 
     public function __construct(
-      ReportRepository $reportRepository,
-      SystemRepository $systemRepository,
-      GroupRepository $groupRepository,
-      SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
-      EntityManagerInterface $entityManager
+        ReportRepository $reportRepository,
+        SystemRepository $systemRepository,
+        GroupRepository $groupRepository,
+        SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
+        EntityManagerInterface $entityManager,
     ) {
         parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager);
 
         $this->selfServiceAvailableFromItemRepository = $selfServiceAvailableFromItemRepository;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function import(string $src)
     {
         $systemURL = getenv('SYSTEM_URL');
@@ -66,7 +61,7 @@ class SystemImporter extends BaseImporter
             $system->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $system->setSysTitle($this->sanitizeText($entry->{'Titel'}));
 
-            $system->setSysLink($systemURL . '/' .  $entry->{'Sti'} . '/DispForm.aspx?ID=' . $entry->{'Id'});
+            $system->setSysLink($systemURL.'/'.$entry->{'Sti'}.'/DispForm.aspx?ID='.$entry->{'Id'});
 
             $system->setSysAlternativeTitle($this->sanitizeText($entry->{'Kaldenavn'}));
             $system->setSysDescription($this->sanitizeText($entry->{'Beskrivelse'}));
@@ -97,16 +92,19 @@ class SystemImporter extends BaseImporter
             $system->setSysSystemOwner($this->sanitizeText($entry->{'Systemejer'}));
 
             $selfServiceAvailableFromText = $this->sanitizeText($entry->{'Selvbetjening tilgængelig fra'});
+
             if (isset($selfServiceAvailableFromText)) {
-                $selfServiceAvailableFromTitles = $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, null, PREG_SPLIT_NO_EMPTY);
+                $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, -1, PREG_SPLIT_NO_EMPTY);
 
                 $addToSelfServiceGroup = false;
 
                 foreach ($selfServiceAvailableFromTitles as $title) {
                     $addToSelfServiceGroup = true;
 
-                    $name = (string)$title;
+                    $name = (string) $title;
+
                     $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
+
                     $system->addSelfServiceAvailableFromItem($item);
                 }
 
@@ -143,17 +141,20 @@ class SystemImporter extends BaseImporter
                     $system->setSysOwnerSub($subGroupName);
                 }
             }
-        };
+        }
 
         // Archive systems that no longer exist in Systemoversigten.
+
         $this->systemRepository->createQueryBuilder('e')
             ->update()
             ->set('e.archivedAt', ':now')
-            ->setParameter('now', new \DateTime(), Type::DATETIME)
+            ->setParameter('now', new \DateTime())
             ->where('e.sysInternalId NOT IN (:sysInternalIds)')
-            ->setParameter('sysInternalIds', $sysInternalIds)
+           ->setParameter('sysInternalIds', $sysInternalIds)
+
             ->getQuery()
-            ->execute();
+            ->execute()
+        ;
 
         $this->entityManager->flush();
     }

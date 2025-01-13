@@ -2,76 +2,193 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use FOS\UserBundle\Model\GroupInterface;
-use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="fos_user")
- */
-class User extends BaseUser
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'fos_user')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use BlameableEntity;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
-     * @ORM\JoinTable(name="fos_user_user_group")
-     */
-    protected $groups;
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'fos_user_user_group')]
+    private Collection $groups;
+
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
+
+    #[ORM\Column]
+    private ?string $password = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
+
+    #[ORM\Column]
+    private ?bool $enabled = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastLogin = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->groups = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     /**
-     * @return Collection|Group[]
+     * @return Collection<int, Group>
      */
-    public function getGroups()
+    public function getGroups(): Collection
     {
         return $this->groups;
     }
 
-    /**
-     * @param \Doctrine\Common\Collections\Collection $groups
-     */
-    public function setGroups($groups): void
+    public function setGroups(Collection $groups): void
     {
         $this->groups = $groups;
     }
 
-    public function addGroup(GroupInterface $group): self
+    public function addGroup(Group $group): self
     {
         if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-            $group->addUser($this);
+            $this->groups->add($group);
         }
 
         return $this;
     }
 
-    public function removeGroup(GroupInterface $group): self
+    public function removeGroup(Group $group): self
     {
-        if ($this->groups->contains($group)) {
-            $this->groups->removeElement($group);
-            $group->removeUser($this);
-        }
+        $this->groups->removeElement($group);
 
         return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

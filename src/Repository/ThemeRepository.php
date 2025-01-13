@@ -4,9 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Theme;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Theme>
+ *
  * @method Theme|null find($id, $lockMode = null, $lockVersion = null)
  * @method Theme|null findOneBy(array $criteria, array $orderBy = null)
  * @method Theme[]    findAll()
@@ -14,37 +16,51 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ThemeRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Theme::class);
     }
 
-//    /**
-//     * @return Theme[] Returns an array of Theme objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function save(Theme $entity, bool $flush = false): void
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $this->getEntityManager()->persist($entity);
 
-    /*
-    public function findOneBySomeField($value): ?Theme
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
-    */
+
+    public function remove(Theme $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    //    /**
+    //     * @return Theme[] Returns an array of Theme objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('t')
+    //            ->andWhere('t.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('t.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Theme
+    //    {
+    //        return $this->createQueryBuilder('t')
+    //            ->andWhere('t.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

@@ -4,58 +4,48 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\JoinTable;
-use FOS\UserBundle\Model\Group as BaseGroup;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="fos_group")
- */
-class Group extends BaseGroup
+// #[ORM\Entity(repositoryClass: GroupRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'fos_group')]
+class Group
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Report", mappedBy="groups")
-     */
-    private $reports;
+    #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'systemGroups')]
+    #[ORM\JoinTable(name: 'group_system_themes')]
+    private Collection $systemThemes;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\System", mappedBy="groups")
-     */
-    private $systems;
+    #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'reportGroups')]
+    #[ORM\JoinTable(name: 'group_report_themes')]
+    private Collection $reportThemes;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", inversedBy="systemGroups")
-     * @JoinTable(name="group_system_themes")
-     */
-    private $systemThemes;
+    #[ORM\ManyToMany(targetEntity: Report::class, mappedBy: 'groups')]
+    private Collection $reports;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Theme", inversedBy="reportGroups")
-     * @JoinTable(name="group_report_themes")
-     */
-    private $reportThemes;
+    #[ORM\ManyToMany(targetEntity: System::class, mappedBy: 'groups')]
+    private Collection $systems;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="groups")
-     */
-    private $users;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups')]
+    private Collection $users;
+
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
 
     public function __construct()
     {
-        parent::__construct(NULL, ['ROLE_USER']);
-        $this->themes = new ArrayCollection();
-        $this->reports = new ArrayCollection();
-        $this->systems = new ArrayCollection();
         $this->systemThemes = new ArrayCollection();
         $this->reportThemes = new ArrayCollection();
+        $this->reports = new ArrayCollection();
+        $this->systems = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
 
@@ -64,64 +54,13 @@ class Group extends BaseGroup
         return $this->name;
     }
 
-    /**
-     * @return Collection|Report[]
-     */
-    public function getReports(): Collection
+    public function getId(): ?int
     {
-        return $this->reports;
-    }
-
-    public function addReport(Report $report): self
-    {
-        if (!$this->reports->contains($report)) {
-            $this->reports[] = $report;
-            $report->addGroup($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReport(Report $report): self
-    {
-        if ($this->reports->contains($report)) {
-            $this->reports->removeElement($report);
-            $report->removeGroup($this);
-        }
-
-        return $this;
+        return $this->id;
     }
 
     /**
-     * @return Collection|System[]
-     */
-    public function getSystems(): Collection
-    {
-        return $this->systems;
-    }
-
-    public function addSystem(System $system): self
-    {
-        if (!$this->systems->contains($system)) {
-            $this->systems[] = $system;
-            $system->addGroup($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSystem(System $system): self
-    {
-        if ($this->systems->contains($system)) {
-            $this->systems->removeElement($system);
-            $system->removeGroup($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Theme[]
+     * @return Collection<int, Theme>
      */
     public function getSystemThemes(): Collection
     {
@@ -131,7 +70,8 @@ class Group extends BaseGroup
     public function addSystemTheme(Theme $systemTheme): self
     {
         if (!$this->systemThemes->contains($systemTheme)) {
-            $this->systemThemes[] = $systemTheme;
+            $this->systemThemes->add($systemTheme);
+            $systemTheme->addSystemGroup($this);
         }
 
         return $this;
@@ -139,15 +79,15 @@ class Group extends BaseGroup
 
     public function removeSystemTheme(Theme $systemTheme): self
     {
-        if ($this->systemThemes->contains($systemTheme)) {
-            $this->systemThemes->removeElement($systemTheme);
+        if ($this->systemThemes->removeElement($systemTheme)) {
+            $systemTheme->removeSystemGroup($this);
         }
 
         return $this;
     }
 
     /**
-     * @return Collection|Theme[]
+     * @return Collection<int, Theme>
      */
     public function getReportThemes(): Collection
     {
@@ -157,7 +97,8 @@ class Group extends BaseGroup
     public function addReportTheme(Theme $reportTheme): self
     {
         if (!$this->reportThemes->contains($reportTheme)) {
-            $this->reportThemes[] = $reportTheme;
+            $this->reportThemes->add($reportTheme);
+            $reportTheme->addReportGroup($this);
         }
 
         return $this;
@@ -165,15 +106,69 @@ class Group extends BaseGroup
 
     public function removeReportTheme(Theme $reportTheme): self
     {
-        if ($this->reportThemes->contains($reportTheme)) {
-            $this->reportThemes->removeElement($reportTheme);
+        if ($this->reportThemes->removeElement($reportTheme)) {
+            $reportTheme->removeReportGroup($this);
         }
 
         return $this;
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection<int, Report>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            $report->removeGroup($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, System>
+     */
+    public function getSystems(): Collection
+    {
+        return $this->systems;
+    }
+
+    public function addSystem(System $system): self
+    {
+        if (!$this->systems->contains($system)) {
+            $this->systems->add($system);
+            $system->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSystem(System $system): self
+    {
+        if ($this->systems->removeElement($system)) {
+            $system->removeGroup($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
      */
     public function getUsers(): Collection
     {
@@ -183,7 +178,7 @@ class Group extends BaseGroup
     public function addUser(User $user): self
     {
         if (!$this->users->contains($user)) {
-            $this->users[] = $user;
+            $this->users->add($user);
             $user->addGroup($this);
         }
 
@@ -192,10 +187,33 @@ class Group extends BaseGroup
 
     public function removeUser(User $user): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
+        if ($this->users->removeElement($user)) {
             $user->removeGroup($this);
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }

@@ -2,253 +2,164 @@
 
 namespace App\Entity;
 
+use App\Repository\ReportRepository;
 use App\Traits\ArchivableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Mapping\Annotation\Loggable;
+use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ReportRepository")
- * @Gedmo\Loggable
- */
+#[ORM\Entity(repositoryClass: ReportRepository::class)]
+#[Loggable]
 class Report
 {
     use BlameableEntity;
     use TimestampableEntity;
     use ArchivableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
-     */
-    private $name;
+    #[ORM\OneToMany(mappedBy: 'report', targetEntity: Answer::class)]
+    private Collection $answers;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Gedmo\Versioned
-     */
-    private $text;
+    #[ORM\Column(length: 255)]
+    #[Versioned]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
-     */
-    protected $sysSystemOwner;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Versioned]
+    private ?string $text = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $sysId;
+    #[ORM\Column(length: 255)]
+    #[Versioned]
+    private ?string $sysSystemOwner = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysTitle;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sysId = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysAlternativeTitle;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysTitle = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $sysUpdated;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysAlternativeTitle = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysOwner;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $sysUpdated = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $sysConfidentialInformation;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysOwner = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysPurpose;
+    #[ORM\Column(nullable: true)]
+    private ?bool $sysConfidentialInformation = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysClassification;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysPurpose = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $sysDateForRevision;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysClassification = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysPersons;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $sysDateForRevision = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysInformationTypes;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysPersons = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataLocation;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysInformationTypes = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysLatestDeletionDate;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysDataLocation = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataProcessors;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysLatestDeletionDate = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataProcessingAgreement;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysDataProcessors = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataProcessingAgreementLink;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysDataProcessingAgreement = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysAuditorStatement;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysDataProcessingAgreementLink = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysAuditorStatementLink;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysAuditorStatement = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysUsage;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysAuditorStatementLink = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysRequestForInsight;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysUsage = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $sysDateUse;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysRequestForInsight = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysStatus;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $sysDateUse = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysRemarks;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysStatus = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysObligationToInform;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysRemarks = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysLegalBasis;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysObligationToInform = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysConsent;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysLegalBasis = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysImpactAnalysis;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysConsent = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysAuthorizationProcedure;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysImpactAnalysis = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysVersion;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysAuthorizationProcedure = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="report")
-     */
-    private $answers;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysVersion = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysOwnerSub;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysOwnerSub = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysInternalInformation;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysInternalInformation = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $sysLink;
+    #[ORM\Column(length: 255)]
+    private ?string $sysLink = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $sysInternalId;
+    #[ORM\Column(nullable: true)]
+    private ?int $sysInternalId = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataSentTo;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysDataSentTo = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataComeFrom;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysDataComeFrom = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataWorthSaving;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysDataWorthSaving = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysDataToScience;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysDataToScience = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $sysImpactAnalysisLink;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sysImpactAnalysisLink = null;
 
-    /**
-     * @ORM\Column(name="edoc_url", type="string", length=255, nullable=true)
-     */
-    private $eDocUrl;
+    #[ORM\Column(length: 255, nullable: true, name: 'edoc_url')]
+    private ?string $eDocUrl = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="reports")
-     */
-    private $groups;
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'reports')]
+    private Collection $groups;
 
     public function __construct()
     {
@@ -261,9 +172,39 @@ class Report
         return $this->getName();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getReport() === $this) {
+                $answer->setReport(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -271,11 +212,19 @@ class Report
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Virtual property.
+     */
+    public function getTextSet()
+    {
+        return isset($this->text);
     }
 
     public function getText(): ?string
@@ -290,469 +239,364 @@ class Report
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysId()
+    public function getSysSystemOwner(): ?string
+    {
+        return $this->sysSystemOwner;
+    }
+
+    public function setSysSystemOwner(string $sysSystemOwner): self
+    {
+        $this->sysSystemOwner = $sysSystemOwner;
+
+        return $this;
+    }
+
+    public function getSysId(): ?string
     {
         return $this->sysId;
     }
 
-    /**
-     * @param mixed $sysId
-     */
-    public function setSysId($sysId)
+    public function setSysId(?string $sysId): self
     {
         $this->sysId = $sysId;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysTitle()
+    public function getSysTitle(): ?string
     {
         return $this->sysTitle;
     }
 
-    /**
-     * @param mixed $sysTitle
-     */
-    public function setSysTitle($sysTitle)
+    public function setSysTitle(?string $sysTitle): self
     {
         $this->sysTitle = $sysTitle;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysAlternativeTitle()
+    public function getSysAlternativeTitle(): ?string
     {
         return $this->sysAlternativeTitle;
     }
 
-    /**
-     * @param mixed $sysAlternativeTitle
-     */
-    public function setSysAlternativeTitle($sysAlternativeTitle)
+    public function setSysAlternativeTitle(?string $sysAlternativeTitle): self
     {
         $this->sysAlternativeTitle = $sysAlternativeTitle;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysUpdated()
+    public function getSysUpdated(): ?\DateTimeInterface
     {
         return $this->sysUpdated;
     }
 
-    /**
-     * @param mixed $sysUpdated
-     */
-    public function setSysUpdated($sysUpdated)
+    public function setSysUpdated(?\DateTimeInterface $sysUpdated): self
     {
         $this->sysUpdated = $sysUpdated;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysOwner()
+    public function getSysOwner(): ?string
     {
         return $this->sysOwner;
     }
 
-    /**
-     * @param mixed $sysOwner
-     */
-    public function setSysOwner($sysOwner)
+    public function setSysOwner(?string $sysOwner): self
     {
         $this->sysOwner = $sysOwner;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysConfidentialInformation()
+    public function isSysConfidentialInformation(): ?bool
     {
         return $this->sysConfidentialInformation;
     }
 
-    /**
-     * @param mixed $sysConfidentialInformation
-     */
-    public function setSysConfidentialInformation($sysConfidentialInformation)
+    public function setSysConfidentialInformation(?bool $sysConfidentialInformation): self
     {
         $this->sysConfidentialInformation = $sysConfidentialInformation;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysPurpose()
+    public function getSysPurpose(): ?string
     {
         return $this->sysPurpose;
     }
 
-    /**
-     * @param mixed $sysPurpose
-     */
-    public function setSysPurpose($sysPurpose)
+    public function setSysPurpose(?string $sysPurpose): self
     {
         $this->sysPurpose = $sysPurpose;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysClassification()
+    public function getSysClassification(): ?string
     {
         return $this->sysClassification;
     }
 
-    /**
-     * @param mixed $sysClassification
-     */
-    public function setSysClassification($sysClassification)
+    public function setSysClassification(?string $sysClassification): self
     {
         $this->sysClassification = $sysClassification;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysDateForRevision()
+    public function getSysDateForRevision(): ?\DateTimeInterface
     {
         return $this->sysDateForRevision;
     }
 
-    /**
-     * @param mixed $sysDateForRevision
-     */
-    public function setSysDateForRevision($sysDateForRevision)
+    public function setSysDateForRevision(?\DateTimeInterface $sysDateForRevision): self
     {
         $this->sysDateForRevision = $sysDateForRevision;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysPersons()
+    public function getSysPersons(): ?string
     {
         return $this->sysPersons;
     }
 
-    /**
-     * @param mixed $sysPersons
-     */
-    public function setSysPersons($sysPersons)
+    public function setSysPersons(?string $sysPersons): self
     {
         $this->sysPersons = $sysPersons;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysInformationTypes()
+    public function getSysInformationTypes(): ?string
     {
         return $this->sysInformationTypes;
     }
 
-    /**
-     * @param mixed $sysInformationTypes
-     */
-    public function setSysInformationTypes($sysInformationTypes)
+    public function setSysInformationTypes(?string $sysInformationTypes): self
     {
         $this->sysInformationTypes = $sysInformationTypes;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysDataLocation()
+    public function getSysDataLocation(): ?string
     {
         return $this->sysDataLocation;
     }
 
-    /**
-     * @param mixed $sysDataLocation
-     */
-    public function setSysDataLocation($sysDataLocation)
+    public function setSysDataLocation(?string $sysDataLocation): self
     {
         $this->sysDataLocation = $sysDataLocation;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysLatestDeletionDate()
+    public function getSysLatestDeletionDate(): ?string
     {
         return $this->sysLatestDeletionDate;
     }
 
-    /**
-     * @param mixed $sysLatestDeletionDate
-     */
-    public function setSysLatestDeletionDate($sysLatestDeletionDate)
+    public function setSysLatestDeletionDate(?string $sysLatestDeletionDate): self
     {
         $this->sysLatestDeletionDate = $sysLatestDeletionDate;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysDataProcessors()
+    public function getSysDataProcessors(): ?string
     {
         return $this->sysDataProcessors;
     }
 
-    /**
-     * @param mixed $sysDataProcessors
-     */
-    public function setSysDataProcessors($sysDataProcessors)
+    public function setSysDataProcessors(?string $sysDataProcessors): self
     {
         $this->sysDataProcessors = $sysDataProcessors;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysDataProcessingAgreement()
+    public function getSysDataProcessingAgreement(): ?string
     {
         return $this->sysDataProcessingAgreement;
     }
 
-    /**
-     * @param mixed $sysDataProcessingAgreement
-     */
-    public function setSysDataProcessingAgreement($sysDataProcessingAgreement)
+    public function setSysDataProcessingAgreement(?string $sysDataProcessingAgreement): self
     {
         $this->sysDataProcessingAgreement = $sysDataProcessingAgreement;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysDataProcessingAgreementLink()
+    public function getSysDataProcessingAgreementLink(): ?string
     {
         return $this->sysDataProcessingAgreementLink;
     }
 
-    /**
-     * @param mixed $sysDataProcessingAgreementLink
-     */
-    public function setSysDataProcessingAgreementLink(
-        $sysDataProcessingAgreementLink
-    ) {
+    public function setSysDataProcessingAgreementLink(?string $sysDataProcessingAgreementLink): self
+    {
         $this->sysDataProcessingAgreementLink = $sysDataProcessingAgreementLink;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysAuditorStatement()
+    public function getSysAuditorStatement(): ?string
     {
         return $this->sysAuditorStatement;
     }
 
-    /**
-     * @param mixed $sysAuditorStatement
-     */
-    public function setSysAuditorStatement($sysAuditorStatement)
+    public function setSysAuditorStatement(?string $sysAuditorStatement): self
     {
         $this->sysAuditorStatement = $sysAuditorStatement;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysAuditorStatementLink()
+    public function getSysAuditorStatementLink(): ?string
     {
         return $this->sysAuditorStatementLink;
     }
 
-    /**
-     * @param mixed $sysAuditorStatementLink
-     */
-    public function setSysAuditorStatementLink($sysAuditorStatementLink)
+    public function setSysAuditorStatementLink(?string $sysAuditorStatementLink): self
     {
         $this->sysAuditorStatementLink = $sysAuditorStatementLink;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysUsage()
+    public function getSysUsage(): ?string
     {
         return $this->sysUsage;
     }
 
-    /**
-     * @param mixed $sysUsage
-     */
-    public function setSysUsage($sysUsage)
+    public function setSysUsage(string $sysUsage): self
     {
         $this->sysUsage = $sysUsage;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysRequestForInsight()
+    public function getSysRequestForInsight(): ?string
     {
         return $this->sysRequestForInsight;
     }
 
-    /**
-     * @param mixed $sysRequestForInsight
-     */
-    public function setSysRequestForInsight($sysRequestForInsight)
+    public function setSysRequestForInsight(?string $sysRequestForInsight): self
     {
         $this->sysRequestForInsight = $sysRequestForInsight;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysDateUse()
+    public function getSysDateUse(): ?\DateTimeInterface
     {
         return $this->sysDateUse;
     }
 
-    /**
-     * @param mixed $sysDateUse
-     */
-    public function setSysDateUse($sysDateUse)
+    public function setSysDateUse(?\DateTimeInterface $sysDateUse): self
     {
         $this->sysDateUse = $sysDateUse;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysStatus()
+    public function getSysStatus(): ?string
     {
         return $this->sysStatus;
     }
 
-    /**
-     * @param mixed $sysStatus
-     */
-    public function setSysStatus($sysStatus)
+    public function setSysStatus(?string $sysStatus): self
     {
         $this->sysStatus = $sysStatus;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysRemarks()
+    public function getSysRemarks(): ?string
     {
         return $this->sysRemarks;
     }
 
-    /**
-     * @param mixed $sysRemarks
-     */
-    public function setSysRemarks($sysRemarks)
+    public function setSysRemarks(?string $sysRemarks): self
     {
         $this->sysRemarks = $sysRemarks;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysObligationToInform()
+    public function getSysObligationToInform(): ?string
     {
         return $this->sysObligationToInform;
     }
 
-    /**
-     * @param mixed $sysObligationToInform
-     */
-    public function setSysObligationToInform($sysObligationToInform)
+    public function setSysObligationToInform(?string $sysObligationToInform): self
     {
         $this->sysObligationToInform = $sysObligationToInform;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysLegalBasis()
+    public function getSysLegalBasis(): ?string
     {
         return $this->sysLegalBasis;
     }
 
-    /**
-     * @param mixed $sysLegalBasis
-     */
-    public function setSysLegalBasis($sysLegalBasis)
+    public function setSysLegalBasis(?string $sysLegalBasis): self
     {
         $this->sysLegalBasis = $sysLegalBasis;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysConsent()
+    public function getSysConsent(): ?string
     {
         return $this->sysConsent;
     }
 
-    /**
-     * @param mixed $sysConsent
-     */
-    public function setSysConsent($sysConsent)
+    public function setSysConsent(?string $sysConsent): self
     {
         $this->sysConsent = $sysConsent;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysImpactAnalysis()
+    public function getSysImpactAnalysis(): ?string
     {
         return $this->sysImpactAnalysis;
     }
 
-    /**
-     * @param mixed $sysImpactAnalysis
-     */
-    public function setSysImpactAnalysis($sysImpactAnalysis)
+    public function setSysImpactAnalysis(?string $sysImpactAnalysis): self
     {
         $this->sysImpactAnalysis = $sysImpactAnalysis;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysAuthorizationProcedure()
+    public function getSysAuthorizationProcedure(): ?string
     {
         return $this->sysAuthorizationProcedure;
     }
 
-    /**
-     * @param mixed $sysAuthorizationProcedure
-     */
-    public function setSysAuthorizationProcedure($sysAuthorizationProcedure)
+    public function setSysAuthorizationProcedure(?string $sysAuthorizationProcedure): self
     {
         $this->sysAuthorizationProcedure = $sysAuthorizationProcedure;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSysVersion()
+    public function getSysVersion(): ?string
     {
         return $this->sysVersion;
     }
 
-    /**
-     * @param mixed $sysVersion
-     */
-    public function setSysVersion($sysVersion)
+    public function setSysVersion(?string $sysVersion): self
     {
         $this->sysVersion = $sysVersion;
+
+        return $this;
     }
 
     /**
@@ -763,75 +607,16 @@ class Report
         return isset($this->sysTitle) ? $this->sysTitle : $this->getName();
     }
 
-    /**
-     * Virtual property.
-     */
-    public function getTextSet()
-    {
-        return isset($this->text);
-    }
-
-    /**
-     * @return Collection|Answer[]
-     */
-    public function getAnswers(): Collection
-    {
-        return $this->answers;
-    }
-
-    public function addAnswer(Answer $answer): self
-    {
-        if (!$this->answers->contains($answer)) {
-            $this->answers[] = $answer;
-            $answer->setReport($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnswer(Answer $answer): self
-    {
-        if ($this->answers->contains($answer)) {
-            $this->answers->removeElement($answer);
-            // set the owning side to null (unless already changed)
-            if ($answer->getReport() === $this) {
-                $answer->setReport(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysSystemOwner()
-    {
-        return $this->sysSystemOwner;
-    }
-
-    /**
-     * @param mixed $sysSystemOwner
-     */
-    public function setSysSystemOwner($sysSystemOwner): void
-    {
-        $this->sysSystemOwner = $sysSystemOwner;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSysOwnerSub()
+    public function getSysOwnerSub(): ?string
     {
         return $this->sysOwnerSub;
     }
 
-    /**
-     * @param mixed $sysOwnerSub
-     */
-    public function setSysOwnerSub($sysOwnerSub): void
+    public function setSysOwnerSub(?string $sysOwnerSub): self
     {
         $this->sysOwnerSub = $sysOwnerSub;
+
+        return $this;
     }
 
     /**
@@ -904,7 +689,7 @@ class Report
 
     public function setSysDataComeFrom(?string $sysDataComeFrom): self
     {
-        $this->sydDataComeFrom = $sysDataComeFrom;
+        $this->sysDataComeFrom = $sysDataComeFrom;
 
         return $this;
     }
@@ -958,7 +743,7 @@ class Report
     }
 
     /**
-     * @return Collection|Group[]
+     * @return Collection<int, Group>
      */
     public function getGroups(): Collection
     {
@@ -968,7 +753,7 @@ class Report
     public function addGroup(Group $group): self
     {
         if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
+            $this->groups->add($group);
         }
 
         return $this;
@@ -976,9 +761,7 @@ class Report
 
     public function removeGroup(Group $group): self
     {
-        if ($this->groups->contains($group)) {
-            $this->groups->removeElement($group);
-        }
+        $this->groups->removeElement($group);
 
         return $this;
     }

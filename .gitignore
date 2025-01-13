@@ -1,21 +1,28 @@
+### IDE ###
+.idea
+## IDE ###
 ###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
 /vendor/
+/testdata/
 ###< symfony/framework-bundle ###
 
-###> symfony/webpack-encore-pack ###
-/node_modules/
-/public/build/
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-pack ###
-
 ###> symfony/phpunit-bridge ###
-.phpunit
+.phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-###> symfony/web-server-bundle ###
-/.web-server-pid
-###< symfony/web-server-bundle ###
+### <Coding standard> ###
+.php-cs-fixer.cache
+### <Coding standard> ###
+
+### OTHER ###
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
