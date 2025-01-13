@@ -14,8 +14,11 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [2.1.0] - 01-22-2020
 
-* Merged https://github.com/aakb/itstyr/pull/14 - Upgraded symfony to 4.4.2.
-* Merged https://github.com/aakb/itstyr/pull/13 - Added import run entity to track import run success. Changed report fields that are imported after change in Anmeldelsesportalen.
+* Merged [https://github.com/aakb/itstyr/pull/14](https://github.com/aakb/itstyr/pull/14)
+  Upgraded symfony to 4.4.2.
+* Merged [https://github.com/aakb/itstyr/pull/13](https://github.com/aakb/itstyr/pull/13)
+  Added import run entity to track import run success. Changed report fields that are imported after change in
+  Anmeldelsesportalen.
 
 ## 2.0.0
 
@@ -112,8 +115,7 @@ See [keep a changelog] for information about writing changes to this log.
 * Added responsible user to systems and reports.
 * Changed NULL values to display as empty instead of black square.
 * Added reports/systems dashboards.
-* Added script (itstyr:group:assign) to extract group from sysOwner for reports
-  and systems.
+* Added script (itstyr:group:assign) to extract group from sysOwner for reports and systems.
 
 ## 1.1.0
 
@@ -137,5 +139,7 @@ See [keep a changelog] for information about writing changes to this log.
 * Basic user management.
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
+
 [unreleased]: https://github.com/itk-dev/sysstatus/compare/main...develop
+
 [2.1.0]: https://github.com/itk-dev/sysstatus/releases/tag/2.1.0
