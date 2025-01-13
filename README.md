@@ -1,6 +1,6 @@
-# itstyr
+# ITStyr
 
-Styringsværktøj til IT projekter
+Styringsværktøj til IT projekter.
 
 ## Setup locally
 
@@ -10,7 +10,7 @@ Make sure you have a set of JSON files for testing import Commands.
 
 ### Start Docker containers
 
-```sh
+```shell
 docker compose up -d
 docker compose exec phpfpm composer install
 docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
@@ -26,15 +26,13 @@ docker compose exec phpfpm bin/console SuperUser
 
 You should now be able to browse to the application
 
-```
-
+```shell
 open "http://$(docker-compose port nginx 8080)"
-
 ```
 
 ## Import systems and reports
 
-```sh
+```shell
 docker compose exec phpfpm bin/console itstyr:import:system <URL>
 docker compose exec phpfpm bin/console itstyr:import:report <URL>
 ```
@@ -42,6 +40,7 @@ docker compose exec phpfpm bin/console itstyr:import:report <URL>
 ### Flowchart
 
 A helpful flowchart over the Entities, and Joinedtables.
+
 Ilustrative figures meaning:
 
 1. Database = Database
@@ -51,6 +50,7 @@ Ilustrative figures meaning:
 5. arrow = relation between DB and Entity
 6. bulletin = shows the mapping Entities in Jointables, and JoinCollums
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TD
  Answers[Answers]
@@ -96,4 +96,4 @@ flowchart TD
 
  Question --- |ManyToOne| Category
 ```
-
+<!-- markdownlint-enable MD013 -->
