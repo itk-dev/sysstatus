@@ -13,7 +13,6 @@ use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use App\Repository\ThemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use JetBrains\PhpStorm\NoReturn;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
@@ -68,8 +67,7 @@ class DataExporter
         bool $splitIntoSubOwners = false,
         bool $onlyComments = false,
         bool $withColor = false,
-    ): void
-    {
+    ): void {
         $spreadsheet = new Spreadsheet();
 
         $filename = $filenamePrefix.'-'.date('Y-m-d-H_i_s');
@@ -150,8 +148,7 @@ class DataExporter
         array $entities,
         bool $onlyComments = false,
         bool $withColor = false,
-    ): void
-    {
+    ): void {
         $spreadsheet->setActiveSheetIndex($sheetIndex);
 
         $themesThatApply = [];
@@ -475,12 +472,11 @@ class DataExporter
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportReport(
-        ?int  $groupId = null,
+        ?int $groupId = null,
         bool $splitIntoSubOwners = false,
         bool $onlyComments = false,
         bool $withColor = false,
-    ): void
-    {
+    ): void {
         $qb = $this->reportRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
             ->andWhere($qb->expr()
@@ -521,8 +517,7 @@ class DataExporter
         bool $splitIntoSubOwners = false,
         bool $onlyComments = false,
         bool $withColor = false,
-    ): void
-    {
+    ): void {
         $qb = $this->systemRepository->createQueryBuilder('e');
         $qb->where($qb->expr()->isNull('e.archivedAt'))
             ->andWhere($qb->expr()

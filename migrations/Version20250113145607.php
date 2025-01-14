@@ -50,43 +50,47 @@ final class Version20250113145607 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        // Insert groups.
         foreach ($this->groups as $group) {
-            $this->addSql("INSERT INTO `group` (`id`, `name`, `roles`) VALUES (".$group['id'].", '" . $group['name'] . "', '".json_encode($group['roles'])."')");
+            $this->addSql('INSERT INTO `group` (`id`, `name`, `roles`) VALUES ('.$group['id'].", '".$group['name']."', '".json_encode($group['roles'])."')");
         }
 
+        // Insert users.
         foreach ($this->users as $user) {
             $data = [
                 $user['id'],
-                "'" . $user['username'] . "'",
-                "'" . $user['password'] . "'",
-                "'" . $user['email'] . "'",
+                "'".$user['username']."'",
+                "'".$user['password']."'",
+                "'".$user['email']."'",
                 $user['enabled'],
-                !empty($user['last_login']) ? "'" . $user['last_login'] . "'" : "NULL",
-                "'" . json_encode($user['roles']) . "'",
-                "'" . $user['created_by']. "'",
-                "'" . $user['updated_by']. "'",
-                !empty($user['created_at']) ? "'" . $user['created_at']. "'" : "NULL",
-                !empty($user['updated_at']) ? "'" . $user['updated_at'] . "'" : "NULL",
+                !empty($user['last_login']) ? "'".$user['last_login']."'" : 'NULL',
+                "'".json_encode($user['roles'])."'",
+                "'".$user['created_by']."'",
+                "'".$user['updated_by']."'",
+                !empty($user['created_at']) ? "'".$user['created_at']."'" : 'NULL',
+                !empty($user['updated_at']) ? "'".$user['updated_at']."'" : 'NULL',
             ];
-            $this->addSql("INSERT INTO `user` (`id`, `username`, `password`, `email`, `enabled`, `last_login`, `roles`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES (".implode(',', $data).")");
+            $this->addSql('INSERT INTO `user` (`id`, `username`, `password`, `email`, `enabled`, `last_login`, `roles`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES ('.implode(',', $data).')');
         }
 
+        // Link users and groups.
         foreach ($this->mapping as $mapping) {
-            $this->addSql("INSERT INTO `user_group` (`user_id`, `group_id`) VALUES (".$mapping['user_id'].", ".$mapping['group_id'].")");
+            $this->addSql('INSERT INTO `user_group` (`user_id`, `group_id`) VALUES ('.$mapping['user_id'].', '.$mapping['group_id'].')');
         }
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
+        // There is now down for this migration. So left empty.
     }
 
     /**
      * @throws Exception
      */
-    private function getData(string $sql):array
+    private function getData(string $sql): array
     {
         $stmt = $this->connection->executeQuery($sql);
+
         return $stmt->fetchAllAssociative();
     }
 }

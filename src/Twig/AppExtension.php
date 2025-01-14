@@ -2,7 +2,6 @@
 
 namespace App\Twig;
 
-use App\Entity\Answer;
 use App\Entity\Question;
 use Doctrine\Common\Collections\ArrayCollection;
 use Twig\Extension\AbstractExtension;

@@ -108,5 +108,4 @@ class AssignGroupsCommand extends Command
 
         return Command::SUCCESS;
     }
-
 }

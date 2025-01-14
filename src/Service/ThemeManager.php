@@ -15,9 +15,8 @@ class ThemeManager
      */
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly CategoryRepository $categoryRepository
-    )
-    {
+        private readonly CategoryRepository $categoryRepository,
+    ) {
     }
 
     /**

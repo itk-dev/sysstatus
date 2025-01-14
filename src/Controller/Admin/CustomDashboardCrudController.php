@@ -10,7 +10,6 @@ use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -184,6 +183,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
      * @param QueryBuilder $query
      * @param array<string, mixed> $formParameters
      * @param string|null $entityType
+     *
      * @return QueryBuilder
      */
     private function applyFilters(QueryBuilder $query, array $formParameters, ?string $entityType = null,
@@ -301,6 +301,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
      * @param bool $filterThemes
      * @param bool $filterCategories
      * @param array<int> $filterSelfServiceOptions
+     *
      * @return FormBuilderInterface
      */
     private function getFilterFormBuilder(
@@ -415,7 +416,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
      *
      * @return object|null
      */
-    private function getEntity(string $entityName, mixed $id): object|null
+    private function getEntity(string $entityName, mixed $id): ?object
     {
         return $this->entityManager->getRepository($entityName)->find($id);
     }

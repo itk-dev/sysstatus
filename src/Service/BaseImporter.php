@@ -20,7 +20,7 @@ abstract class BaseImporter implements ImportInterface
         $this->url = getenv('SYSTEM_URL');
     }
 
-    protected function sanitizeText(string $str): string|null
+    protected function sanitizeText(string $str): ?string
     {
         $str = strip_tags($str, '<p><div><strong><a><ul><li><span><br><br/>');
 
