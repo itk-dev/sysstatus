@@ -8,9 +8,13 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
-* Added github actions
-* Added PHPStan
-* Updated composer setup
+* Added github actions.
+* Added PHPStan.
+* Updated composer setup.
+* Update Symfony major version.
+* Update EasyAdmin major version.
+* Updated all packages to the newest version
+* User migration away form FOS user bundel to custom entity types.
 
 ## [2.1.0] - 01-22-2020
 
