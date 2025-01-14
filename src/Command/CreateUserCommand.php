@@ -37,7 +37,7 @@ class CreateUserCommand extends Command
             ->addOption('password', null, InputOption::VALUE_REQUIRED, 'The password of the user, if not set, a random password will be generated')
             ->addOption('super', null, InputOption::VALUE_NONE, 'Add "super admin" user role to the user')
             ->addOption('group-id', null, InputOption::VALUE_REQUIRED, 'The ID of the group to add the user to')
-            ->addOption('roles', null, (InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY), 'Roles to add to the user', ["ROLE_ADMIN"])
+            ->addOption('roles', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Roles to add to the user', ['ROLE_ADMIN'])
         ;
     }
 

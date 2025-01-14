@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\User;
 use App\Repository\GroupRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +39,7 @@ class UpdateUserCommand extends Command
             ->addOption('generate-password', null, InputOption::VALUE_NONE, 'Generate a random password for the user')
             ->addOption('super', null, InputOption::VALUE_NONE, 'Add "super admin" user role to the user')
             ->addOption('group-id', null, InputOption::VALUE_REQUIRED, 'The ID of the group to add the user to')
-            ->addOption('roles', null, (InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY), 'Roles to add to the user')
+            ->addOption('roles', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Roles to add to the user')
             ->addOption('enable', null, InputOption::VALUE_NONE, 'Enable the user')
             ->addOption('disable', null, InputOption::VALUE_NONE, 'Disable the user')
         ;
@@ -70,11 +69,11 @@ class UpdateUserCommand extends Command
         }
 
         if ($generatePassword) {
-            if ($password !== null) {
+            if (null !== $password) {
                 $io->info('Random password will be generated. As you can not use supplied password with --generate-password in same command');
             }
             $password = bin2hex(random_bytes(5));
-            $io->note('Password: ' . $password);
+            $io->note('Password: '.$password);
         }
 
         $user = $this->userRepository->findOneBy(['username' => $username]);
