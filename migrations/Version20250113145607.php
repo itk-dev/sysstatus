@@ -85,7 +85,16 @@ final class Version20250113145607 extends AbstractMigration
     }
 
     /**
+     * Helper function to get data from the database.
+     *
+     * @param string $sql
+     *   SQL statement to fetch data
+     *
+     * @return array<int, mixed>
+     *   The data fetched from the database as associative array
+     *
      * @throws Exception
+     *   Database error
      */
     private function getData(string $sql): array
     {

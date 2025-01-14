@@ -95,8 +95,11 @@
         "coding-standards-check": [
             "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run"
         ],
-        "analysis": [
-            "./vendor/bin/phpstan analyse src"
+        "coding-standards-analysis": [
+            "./vendor/bin/phpstan analyse src migrations"
+        ],
+        "coding-standards-baseline": [
+            "./vendor/bin/phpstan analyse src migrations --generate-baseline"
         ]
 
     }
