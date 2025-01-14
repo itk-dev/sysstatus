@@ -12,8 +12,6 @@ If your change affects the user interface you should include a screenshot of the
 
 #### Checklist
 
-- [ ] My code is covered by test cases.
-- [ ] My code passes our test (all our tests).
 - [ ] My code passes our static analysis suite.
 - [ ] My code passes our continuous integration process.
 
