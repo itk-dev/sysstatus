@@ -35,6 +35,15 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     }
 
     /**
+     * Redirect /admin to the reports page to hidde easyAdmin's default front page.
+     */
+    #[Route('/admin')]
+    public function index(): Response
+    {
+        return $this->redirectToRoute('dashboard', ['entityType' => 'report']);
+    }
+
+    /**
      * @throws \Exception
      */
     #[Route(path: 'admin/{entityType}', name: 'dashboard')]
