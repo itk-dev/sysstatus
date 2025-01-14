@@ -64,15 +64,19 @@ class CreateUserCommand extends Command
             $password = bin2hex(random_bytes(5));
             $io->note('Password: '.$password);
         }
-        $group = $this->groupRepository->find($groupId);
 
         $user = new User();
+
+        if (!$groupId) {
+            $group = $this->groupRepository->find($groupId);
+            $user->addGroup($group);
+        }
+
         $user->setUsername($username);
         $user->setEmail($email);
         $user->setPassword($this->passwordHasher->hashPassword($user, $password));
         $user->setRoles(array_unique($roles));
         $user->setEnabled(true);
-        $user->addGroup($group);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
