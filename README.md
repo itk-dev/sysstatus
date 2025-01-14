@@ -7,11 +7,13 @@ Styringsværktøj til IT projekter.
 To upgrade the database you have to do some manual steps to make the new doctrine 3.x migration work.
 
 First create the new migration table.
+
 ```shell
 docker compose exec phpfpm bin/console doctrine:migrations:sync-metadata-storage
 ```
 
 Move old migrations and remove old table. Then run the migrations.
+
 ```shell
 docker compose exec phpfpm bin/console doctrine:query:sql 'INSERT INTO doctrine_migration_versions (version, executed_at, execution_time) SELECT concat("DoctrineMigrations\\Version", version), NULL, 1 FROM migration_versions;'
 docker compose exec phpfpm bin/console doctrine:query:sql 'DROP TABLE migration_versions;'

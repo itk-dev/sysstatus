@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
-    name: 'app:user:create ',
+    name: 'app:user:create',
     description: 'Create a user',
 )]
 class CreateUserCommand extends Command

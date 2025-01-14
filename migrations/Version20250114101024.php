@@ -40,7 +40,7 @@ final class Version20250114101024 extends AbstractMigration
         $this->addSql('CREATE TABLE report_user_group (report_id INT NOT NULL, user_group_id INT NOT NULL, INDEX IDX_9C4093A64BD2A4C0 (report_id), INDEX IDX_9C4093A61ED93D47 (user_group_id), PRIMARY KEY(report_id, user_group_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE system_user_group (system_id INT NOT NULL, user_group_id INT NOT NULL, INDEX IDX_3AD1AFA4D0952FA5 (system_id), INDEX IDX_3AD1AFA41ED93D47 (user_group_id), PRIMARY KEY(system_id, user_group_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
-        // Add
+        // Add new foreign keys mapping report and system with the new user_group table
         $this->addSql('ALTER TABLE report_user_group ADD CONSTRAINT FK_9C4093A64BD2A4C0 FOREIGN KEY (report_id) REFERENCES report (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE report_user_group ADD CONSTRAINT FK_9C4093A61ED93D47 FOREIGN KEY (user_group_id) REFERENCES user_group (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE system_user_group ADD CONSTRAINT FK_3AD1AFA4D0952FA5 FOREIGN KEY (system_id) REFERENCES system (id) ON DELETE CASCADE');
@@ -83,7 +83,7 @@ final class Version20250114101024 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // There is now down for this migration. So left empty.
+        // There is no down for this migration. So left empty.
     }
 
     /**

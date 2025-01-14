@@ -14,7 +14,7 @@ See [keep a changelog] for information about writing changes to this log.
 * Update Symfony major version.
 * Update EasyAdmin major version.
 * Updated all packages to the newest version
-* User migration away form FOS user bundel to custom entity types.
+* User migration away form FOS user bundle to custom entity types.
 
 ## [2.1.0] - 01-22-2020
 

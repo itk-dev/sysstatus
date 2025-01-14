@@ -43,6 +43,6 @@ final class Version20250114085724 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // There is now down for this migration. So left empty.
+        // There is no down for this migration. So left empty.
     }
 }

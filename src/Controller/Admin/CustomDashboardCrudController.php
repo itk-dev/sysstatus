@@ -35,7 +35,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     }
 
     /**
-     * Redirect /admin to the reports page to hidde easyAdmin's default front page.
+     * Redirect /admin to the reports page to hide easyAdmin's default front page.
      */
     #[Route('/admin')]
     public function index(): Response
