@@ -77,6 +77,11 @@ class UpdateUserCommand extends Command
         }
 
         $user = $this->userRepository->findOneBy(['username' => $username]);
+        if (is_null($user)) {
+            $io->error('User not found');
+
+            return Command::FAILURE;
+        }
 
         if ($email) {
             $user->setEmail($email);
@@ -99,6 +104,11 @@ class UpdateUserCommand extends Command
 
         if ($groupId) {
             $group = $this->groupRepository->find($groupId);
+            if (is_null($group)) {
+                $io->error('Group not found');
+
+                return Command::FAILURE;
+            }
             $user->addGroup($group);
         }
 

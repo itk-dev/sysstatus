@@ -69,6 +69,11 @@ class CreateUserCommand extends Command
 
         if ($groupId) {
             $group = $this->groupRepository->find($groupId);
+            if (is_null($group)) {
+                $io->error('Group not found');
+
+                return Command::FAILURE;
+            }
             $user->addGroup($group);
         }
 
