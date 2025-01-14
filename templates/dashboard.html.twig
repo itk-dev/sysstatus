@@ -1,15 +1,12 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block page_title %}
+  {{ ('dashboard.'~entityType)|trans }}
+{% endblock %}
 
-  {% block page_title %}
-    {{ ('dashboard.'~entityType)|trans }}
-  {% endblock %}
-
-  {% block content_title %}
-    {{ ('dashboard.'~entityType)|trans }}
-  {% endblock %}
-
-
+{% block content_title %}
+  {{ ('dashboard.'~entityType)|trans }}
+{% endblock %}
 
 {% block main %}
   <div class="global-actions w-100 dashboard-filters mt-2 mb-5" style="justify-content: flex-end">
