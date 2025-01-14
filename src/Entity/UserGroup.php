@@ -7,9 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-// #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Entity]
-class Group
+class UserGroup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

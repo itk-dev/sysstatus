@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Group;
 use App\Entity\Report;
 use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
+use App\Entity\UserGroup;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use Doctrine\Common\Collections\Collection;
@@ -62,7 +62,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             'search' => '',
         ], $formData);
 
-        $userGroups = $this->entityManager->getRepository(Group::class)->findAll();
+        $userGroups = $this->entityManager->getRepository(UserGroup::class)->findAll();
         $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories($userGroups ?: [], $entityType);
 
         // Get a query for the entity type.
@@ -83,7 +83,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $themes = [];
 
         if (!empty($formParameters['groups'])) {
-            $groups = $this->entityManager->getRepository(Group::class)->findBy([
+            $groups = $this->entityManager->getRepository(UserGroup::class)->findBy([
                 'id' => $formParameters['groups'],
             ]);
         } else {
@@ -130,7 +130,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     }
 
     /**
-     * @param array<Group> $userGroups
+     * @param array<UserGroup> $userGroups
      * @param string $entityType
      *
      * @return mixed
@@ -140,7 +140,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     private function getUserGroupsThemesAndCategories(array $userGroups, string $entityType): mixed
     {
         return array_reduce($userGroups,
-            function ($carry, Group $group) use ($entityType) {
+            function ($carry, UserGroup $group) use ($entityType) {
                 $carry['groups'][$group->getId()] = $group->getName();
 
                 $groupThemes = 'report' == $entityType ? $group->getReportThemes() : $group->getSystemThemes();
@@ -199,7 +199,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
         // Get the groups the user can search in.
         if (!empty($formParameters['groups'])) {
-            $groups = $this->entityManager->getRepository(Group::class)->findBy([
+            $groups = $this->entityManager->getRepository(UserGroup::class)->findBy([
                 'id' => $formParameters['groups'],
             ]);
 
@@ -237,7 +237,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
      */
     private function getSubOwnerOptions(mixed $repository, mixed $selectedGroups): mixed
     {
-        $groups = $this->entityManager->getRepository(Group::class)->findBy([
+        $groups = $this->entityManager->getRepository(UserGroup::class)->findBy([
             'id' => $selectedGroups,
         ]);
 

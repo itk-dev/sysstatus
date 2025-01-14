@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Group;
 use App\Entity\User;
+use App\Entity\UserGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Group>
+ * @extends ServiceEntityRepository<UserGroup>
  */
 class GroupRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Group::class);
+        parent::__construct($registry, UserGroup::class);
     }
 
-    public function save(Group $entity, bool $flush = false): void
+    public function save(UserGroup $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -26,7 +26,7 @@ class GroupRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Group $entity, bool $flush = false): void
+    public function remove(UserGroup $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -36,7 +36,7 @@ class GroupRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Group[] Returns an array of Group objects
+     * @return UserGroup[] Returns an array of Group objects
      */
     public function findByUser(User $user): array
     {

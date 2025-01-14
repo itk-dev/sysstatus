@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Group;
+use App\Entity\UserGroup;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -18,7 +18,7 @@ class GroupCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Group::class;
+        return UserGroup::class;
     }
 
     public function configureActions(Actions $actions): Actions

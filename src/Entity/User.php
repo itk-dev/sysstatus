@@ -25,9 +25,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     /**
-     * @var Collection<int, Group>
+     * @var Collection<int, UserGroup>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, inversedBy: 'users')]
     private Collection $groups;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -62,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Group>
+     * @return Collection<int, UserGroup>
      */
     public function getGroups(): Collection
     {
@@ -70,7 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @param Collection<int, Group> $groups
+     * @param Collection<int, UserGroup> $groups
      */
     public function setGroups(Collection $groups): self
     {
@@ -79,7 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function addGroup(Group $group): self
+    public function addGroup(UserGroup $group): self
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -88,7 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeGroup(Group $group): self
+    public function removeGroup(UserGroup $group): self
     {
         $this->groups->removeElement($group);
 

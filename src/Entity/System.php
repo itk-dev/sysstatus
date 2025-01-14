@@ -138,9 +138,9 @@ class System
     private ?string $eDocUrl = null;
 
     /**
-     * @var Collection<int, Group>
+     * @var Collection<int, UserGroup>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'systems')]
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, inversedBy: 'systems')]
     private Collection $groups;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -614,14 +614,14 @@ class System
     }
 
     /**
-     * @return Collection<int, Group>
+     * @return Collection<int, UserGroup>
      */
     public function getGroups(): Collection
     {
         return $this->groups;
     }
 
-    public function addGroup(Group $group): self
+    public function addGroup(UserGroup $group): self
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -630,7 +630,7 @@ class System
         return $this;
     }
 
-    public function removeGroup(Group $group): self
+    public function removeGroup(UserGroup $group): self
     {
         $this->groups->removeElement($group);
 

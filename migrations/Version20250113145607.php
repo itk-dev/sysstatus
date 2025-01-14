@@ -52,7 +52,7 @@ final class Version20250113145607 extends AbstractMigration
     {
         // Insert groups.
         foreach ($this->groups as $group) {
-            $this->addSql('INSERT INTO `group` (`id`, `name`, `roles`) VALUES ('.$group['id'].", '".$group['name']."', '".json_encode($group['roles'])."')");
+            $this->addSql('INSERT INTO `user_group` (`id`, `name`, `roles`) VALUES ('.$group['id'].", '".$group['name']."', '".json_encode($group['roles'])."')");
         }
 
         // Insert users.
@@ -75,7 +75,7 @@ final class Version20250113145607 extends AbstractMigration
 
         // Link users and groups.
         foreach ($this->mapping as $mapping) {
-            $this->addSql('INSERT INTO `user_group` (`user_id`, `group_id`) VALUES ('.$mapping['user_id'].', '.$mapping['group_id'].')');
+            $this->addSql('INSERT INTO `user_user_group` (`user_id`, `user_group_id`) VALUES ('.$mapping['user_id'].', '.$mapping['group_id'].')');
         }
     }
 

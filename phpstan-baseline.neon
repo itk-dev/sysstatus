@@ -1,13 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to undefined constant Symfony\\Component\\HttpFoundation\\Request\:\:HEADER_X_FORWARDED_ALL\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: public/index.php
-
-		-
-			message: '#^Call to function is_null\(\) with Doctrine\\Common\\Collections\\Collection\<int, App\\Entity\\Group\> will always evaluate to false\.$#'
+			message: '#^Call to function is_null\(\) with Doctrine\\Common\\Collections\\Collection\<int, App\\Entity\\UserGroup\> will always evaluate to false\.$#'
 			identifier: function.impossibleType
 			count: 2
 			path: src/Command/AssignGroupsCommand.php
@@ -41,9 +35,3 @@ parameters:
 			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: src/Service/DataExporter.php
-
-		-
-			message: '#^Call to function method_exists\(\) with ''Symfony\\\\Component\\\\Dotenv\\\\Dotenv'' and ''bootEnv'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: tests/bootstrap.php

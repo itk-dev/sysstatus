@@ -3,12 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
-use App\Entity\Group;
 use App\Entity\ImportRun;
 use App\Entity\Report;
 use App\Entity\System;
 use App\Entity\Theme;
 use App\Entity\User;
+use App\Entity\UserGroup;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -48,7 +48,7 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
 
             MenuItem::section('Administration'),
             MenuItem::linkToCrud('User', 'fas fa-user', User::class),
-            MenuItem::linkToCrud('Group', 'fas fa-users', Group::class),
+            MenuItem::linkToCrud('Group', 'fas fa-users', UserGroup::class),
             MenuItem::linkToCrud('Import kørsler ', 'fas fa-file-excel', ImportRun::class),
             MenuItem::linkToRoute('Eksport', 'fas fa-file-import', 'export_page'),
 

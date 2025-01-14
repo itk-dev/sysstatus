@@ -162,9 +162,9 @@ class Report
     private ?string $eDocUrl = null;
 
     /**
-     * @var Collection<int, Group>
+     * @var Collection<int, UserGroup>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'reports')]
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, inversedBy: 'reports')]
     private Collection $groups;
 
     public function __construct()
@@ -751,14 +751,14 @@ class Report
     }
 
     /**
-     * @return Collection<int, Group>
+     * @return Collection<int, UserGroup>
      */
     public function getGroups(): Collection
     {
         return $this->groups;
     }
 
-    public function addGroup(Group $group): self
+    public function addGroup(UserGroup $group): self
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -767,7 +767,7 @@ class Report
         return $this;
     }
 
-    public function removeGroup(Group $group): self
+    public function removeGroup(UserGroup $group): self
     {
         $this->groups->removeElement($group);
 

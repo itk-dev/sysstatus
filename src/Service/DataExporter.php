@@ -5,10 +5,10 @@ namespace App\Service;
 use App\DBAL\Types\SmileyType;
 use App\Entity\Answer;
 use App\Entity\Category;
-use App\Entity\Group;
 use App\Entity\Report;
 use App\Entity\System;
 use App\Entity\Theme;
+use App\Entity\UserGroup;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use App\Repository\ThemeRepository;
@@ -160,7 +160,7 @@ class DataExporter
             }
         }
 
-        /* @var Group $group */
+        /* @var UserGroup $group */
         foreach ($groupsThatApply as $group) {
             $themes = Report::class == $type ? $group->getReportThemes() : $group->getSystemThemes();
             foreach ($themes as $theme) {
@@ -318,7 +318,7 @@ class DataExporter
                 $entity->getSysInternalId(),
                 $entity->getSysTitle(),
                 $entity->getSysStatus(),
-                implode(',', $entity->getGroups()->map(function (Group $group) {
+                implode(',', $entity->getGroups()->map(function (UserGroup $group) {
                     return $group->getName();
                 })->getValues()),
                 $entity->getSysOwnerSub(),

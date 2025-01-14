@@ -32,15 +32,15 @@ class Theme
     private Collection $themeCategories;
 
     /**
-     * @var Collection<int, Group>
+     * @var Collection<int, UserGroup>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'systemThemes')]
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: 'systemThemes')]
     private Collection $systemGroups;
 
     /**
-     * @var Collection<int, Group>
+     * @var Collection<int, UserGroup>
      */
-    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'reportThemes')]
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: 'reportThemes')]
     private Collection $reportGroups;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -120,14 +120,14 @@ class Theme
     }
 
     /**
-     * @return Collection<int, Group>
+     * @return Collection<int, UserGroup>
      */
     public function getSystemGroups(): Collection
     {
         return $this->systemGroups;
     }
 
-    public function addSystemGroup(Group $systemGroup): self
+    public function addSystemGroup(UserGroup $systemGroup): self
     {
         if (!$this->systemGroups->contains($systemGroup)) {
             $this->systemGroups->add($systemGroup);
@@ -137,7 +137,7 @@ class Theme
         return $this;
     }
 
-    public function removeSystemGroup(Group $systemGroup): self
+    public function removeSystemGroup(UserGroup $systemGroup): self
     {
         if ($this->systemGroups->removeElement($systemGroup)) {
             $systemGroup->removeSystemTheme($this);
@@ -147,14 +147,14 @@ class Theme
     }
 
     /**
-     * @return Collection<int, Group>
+     * @return Collection<int, UserGroup>
      */
     public function getReportGroups(): Collection
     {
         return $this->reportGroups;
     }
 
-    public function addReportGroup(Group $reportGroup): self
+    public function addReportGroup(UserGroup $reportGroup): self
     {
         if (!$this->reportGroups->contains($reportGroup)) {
             $this->reportGroups->add($reportGroup);
@@ -164,7 +164,7 @@ class Theme
         return $this;
     }
 
-    public function removeReportGroup(Group $reportGroup): self
+    public function removeReportGroup(UserGroup $reportGroup): self
     {
         if ($this->reportGroups->removeElement($reportGroup)) {
             $reportGroup->removeSystemTheme($this);
