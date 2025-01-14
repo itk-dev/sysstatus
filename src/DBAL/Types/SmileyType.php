@@ -9,10 +9,10 @@ use Fresh\DoctrineEnumBundle\DBAL\Types\AbstractEnumType;
  */
 final class SmileyType extends AbstractEnumType
 {
-    public const GREEN = 'GREEN';
-    public const RED = 'RED';
-    public const BLUE = 'BLUE';
-    public const YELLOW = 'YELLOW';
+    public const string GREEN = 'GREEN';
+    public const string RED = 'RED';
+    public const string BLUE = 'BLUE';
+    public const string YELLOW = 'YELLOW';
 
     protected static array $choices = [
         self::GREEN => 'Green',

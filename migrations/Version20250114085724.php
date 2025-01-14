@@ -39,7 +39,6 @@ final class Version20250114085724 extends AbstractMigration
         $this->addSql('ALTER TABLE group_report_themes ADD CONSTRAINT FK_63582903FE54D947 FOREIGN KEY (group_id) REFERENCES `group` (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE report_group ADD CONSTRAINT FK_47DC43BCFE54D947 FOREIGN KEY (group_id) REFERENCES `group` (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE system_group ADD CONSTRAINT FK_390FDF5FFE54D947 FOREIGN KEY (group_id) REFERENCES `group` (id) ON DELETE CASCADE');
-
     }
 
     public function down(Schema $schema): void
