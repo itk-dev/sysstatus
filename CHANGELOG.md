@@ -15,6 +15,7 @@ See [keep a changelog] for information about writing changes to this log.
 * Update EasyAdmin major version.
 * Updated all packages to the newest version
 * User migration away form FOS user bundle to custom entity types.
+* Added user create/update CLI commands
 
 ## [2.1.0] - 01-22-2020
 
