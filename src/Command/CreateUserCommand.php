@@ -67,7 +67,7 @@ class CreateUserCommand extends Command
 
         $user = new User();
 
-        if (!$groupId) {
+        if ($groupId) {
             $group = $this->groupRepository->find($groupId);
             $user->addGroup($group);
         }
