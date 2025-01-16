@@ -82,17 +82,19 @@
   <script type="text/javascript">
     {{ parent() }}
 
-    $('.list-filters select').bind('change', function () {
-      $('.list-filters form').submit();
-    });
+    document.addEventListener("DOMContentLoaded", function() {
+      $('.list-filters select').bind('change', function () {
+        $('.list-filters form').submit();
+      });
 
-    $(document).ready(function() {
-      $('#form_groups').select2();
-    });
+      $(document).ready(function () {
+        $('#form_groups').select2();
+      });
 
-    $('#form_groups').on('select2:opening select2:closing', function( event ) {
-      var $searchfield = $(this).parent().find('.select2-search__field');
-      $searchfield.prop('disabled', true);
-    });
+      $('#form_groups').on('select2:opening select2:closing', function (event) {
+        const searchField = $(this).parent().find('.select2-search__field');
+        searchField.prop('disabled', true);
+      });
+    }, { once: true }););
   </script>
 {% endblock %}

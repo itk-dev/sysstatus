@@ -18,9 +18,9 @@
   <script type="text/javascript" src="/form_theme.js"></script>
 
   <script type="text/javascript">
-    $(document).ready(function() {
+    document.addEventListener("DOMContentLoaded", function() {
       $('#theme_systemGroups').select2();
       $('#theme_reportGroups').select2();
-    });
+    }, { once: true });
   </script>
 {% endblock %}

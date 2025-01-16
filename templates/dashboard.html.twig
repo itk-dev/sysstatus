@@ -110,24 +110,25 @@
   </div>
 {% endblock main %}
 
+
 {% block body_javascript %}
+  // Called more than once, so we need to check if it's already been called
   {{ parent() }}
 
-  <!-- Your CSS link tag -->
-  <link href="{{ asset('styles.css') }}" rel="stylesheet">
-
   <script type="text/javascript">
-    $('.dashboard-filters select').bind('change', function () {
-      $('.dashboard-filters form').submit();
-    });
+      document.addEventListener("DOMContentLoaded", function() {
+        $('#form_groups').once('select-processed').each(function () {
+          let groups = $('#form_groups');
+          groups.select2();
+          groups.on('select2:opening select2:closing', function (event) {
+            let searchField = $(this).parent().find('.select2-search__field');
+            searchField.prop('disabled', true);
+          });
+        });
 
-    $(document).ready(function() {
-      $('#form_groups').select2();
-    });
-
-    $('#form_groups').on('select2:opening select2:closing', function( event ) {
-      var $searchfield = $(this).parent().find('.select2-search__field');
-      $searchfield.prop('disabled', true);
-    });
+        $('.dashboard-filters select').bind('change', function () {
+          $('.dashboard-filters form').submit();
+        });
+      }, { once: true });
   </script>
 {% endblock %}

@@ -1,23 +1,19 @@
-// See https://symfony.com/doc/current/form/form_collections.html
+const addThemeCategoryButton = $('<button type="button" class="btn btn-primary">+ Tilføj</button>');
+const wrapper = $('<td colspan="3"></td>').append(addThemeCategoryButton);
+const newLinkLi = $('<tr></tr>').append(wrapper);
 
-var $collectionHolder;
-
-var $addThemeCategoryButton = $('<button type="button" class="btn btn-primary">+ Tilføj</button>');
-var wrapper = $('<td colspan="3"></td>').append($addThemeCategoryButton);
-var $newLinkLi = $('<tr></tr>').append(wrapper);
-
-function addThemeCategoryForm ($collectionHolder, $newLinkLi) {
-  var prototype = $collectionHolder.data('prototype');
-  var index = $collectionHolder.data('index');
-  var newForm = prototype;
+function addThemeCategoryForm (collectionHolder, $newLinkLi) {
+  const prototype = collectionHolder.data('prototype');
+  const index = collectionHolder.data('index');
+  let newForm = prototype;
   newForm = newForm.replace(/__name__/g, index);
-  $collectionHolder.data('index', index + 1);
+  collectionHolder.data('index', index + 1);
   $newLinkLi.before(newForm);
   addThemeCategoryFormDeleteLink($newLinkLi.prev());
 }
 
 function addThemeCategoryFormDeleteLink ($themeCategoryForm) {
-  var $removeFormButton = $('<td><button type="button" class="btn btn-danger">- Fjern</button></td>');
+  const $removeFormButton = $('<td><button type="button" class="btn btn-danger">- Fjern</button></td>');
 
   $themeCategoryForm.append($removeFormButton);
 
@@ -27,17 +23,17 @@ function addThemeCategoryFormDeleteLink ($themeCategoryForm) {
 }
 
 jQuery(document).ready(function () {
-  $collectionHolder = $('tbody.themeCategories');
+  collectionHolder = $('tbody.themeCategories');
 
-  $collectionHolder.find('tr').each(function () {
+  collectionHolder.find('tr').each(function () {
     addThemeCategoryFormDeleteLink($(this));
   });
 
-  $collectionHolder.append($newLinkLi);
+  collectionHolder.append(newLinkLi);
 
-  $collectionHolder.data('index', $collectionHolder.find(':input').length);
+  collectionHolder.data('index', collectionHolder.find(':input').length);
 
-  $addThemeCategoryButton.on('click', function (e) {
-    addThemeCategoryForm($collectionHolder, $newLinkLi);
+  addThemeCategoryButton.on('click', function (e) {
+    addThemeCategoryForm(collectionHolder, newLinkLi);
   });
 });
