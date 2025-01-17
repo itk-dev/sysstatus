@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block main %}
-  <div class="global-actions w-100 dashboard-filters mt-2 mb-5" style="justify-content: flex-end">
+  <div class="global-actions w-100 mt-2 mb-3">
     {{ form_start(filters, { attr: { class: 'w-100' } }) }}
-    <div class="row w-100 flex-row no-gutters align-items-center">
+    <div class="d-flex flex-column flex-md-row gap-2 mb-2">
       <div class="col">
         {{ form_widget(filters.groups) }}
       </div>
@@ -24,17 +24,18 @@
       <div class="col">
         {{ form_widget(filters.category) }}
       </div>
-      <div class="w-100"></div>
       {% if filters.self_service is defined %}
         <div class="col">
           {{ form_widget(filters.self_service) }}
         </div>
       {% endif %}
-      <div class="col">
+    </div>
+    <div class="d-flex gap-2">
+      <div class="col-8 col-md-10">
         {{ form_widget(filters.search) }}
       </div>
-      <div class="col-1">
-        {{ form_widget(filters.save, { attr: { class: 'btn btn-primary' }}) }}
+      <div class="col">
+        {{ form_widget(filters.save, { attr: { class: 'btn btn-primary w-100 h-100' }}) }}
       </div>
     </div>
     {{ form_end(filters) }}
@@ -45,7 +46,7 @@
       <thead class="">
       <th></th>
       {% for item in paginator %}
-        <th class="rotate">
+        <th>
           <div>
             {% if entityType == 'system' %}
               <a href="{{ ea_url().setController('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
@@ -60,7 +61,7 @@
           </div>
         </th>
       {% endfor %}
-      <th class="table-right-column rotate"><div><span></span></div></th>
+      <th class="table-right-column"><div><span></span></div></th>
       </thead>
       <tbody>
       {% if categories|length > 0 %}
@@ -70,7 +71,7 @@
             {% for result in paginator %}
               <td></td>
             {% endfor %}
-            <td class="table-right-column rotate"><div><span></span></div></td>
+            <td class="table-right-column"><div><span></span></div></td>
           </tr>
           {% for question in (category.questions)|sort_order %}
             <tr>
