@@ -8,6 +8,7 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* Login and dashboard styling cleanup
 * Added github actions.
 * Added PHPStan.
 * Updated composer setup.

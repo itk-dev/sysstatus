@@ -1,59 +1,7 @@
 {# templates/login/index.html.twig #}
-{% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        body { font-family: Arial, sans-serif; }
-        form {
-            width: 300px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            box-shadow: 1px 1px 5px rgba(0, 0, 0, .1);
-        }
-        label {
-            display: block;
-            margin: 8px 0;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #aaa;
-            box-shadow: 1px 1px 5px rgba(0, 0, 0, .1);
-        }
-        button {
-            display: block;
-            width: 100%;
-            padding: 8px;
-            border: 0;
-            color: #fff;
-            background: #007bff;
-            text-align: center;
-            text-decoration: none;
-            font-size: .9em;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-    </style>
-{% endblock %}
+{% extends "@EasyAdmin/page/login.html.twig" %}
 
-{# ... #}
-
-{% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    <form action="{{ path('app_login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" required>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password" required>
-
-        <input type="hidden" name="_target_path" value="/admin/system">
-
-        <button type="submit">login</button>
-    </form>
+{% block header_logo %}
+    <h1 class="mb-3">{{ "Sysstatus login"|trans }}</h1>
 {% endblock %}

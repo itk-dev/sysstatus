@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route(path: '/', name: 'app_login')]
+    #[Route(path: '/login', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         // Get the login error if there is one.
@@ -22,6 +22,7 @@ class LoginController extends AbstractController
         return $this->render('login/index.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+            'target_path' => $this->generateUrl('admin'),
         ]);
     }
 
