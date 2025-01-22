@@ -24,6 +24,7 @@ steps:
         from_secret: user
       actions:
         - git reset --hard
+        - git fetch origin ${CI_COMMIT_BRANCH}
         - git checkout ${CI_COMMIT_BRANCH}
         - git pull
         - itkdev-docker-compose-server up -d --force-recreate
