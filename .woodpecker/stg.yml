@@ -24,7 +24,7 @@ steps:
         from_secret: user
       actions:
         - git reset --hard
-        - git checkout .
+        - git checkout ${CI_COMMIT_BRANCH}
         - git pull
         - itkdev-docker-compose-server up -d --force-recreate
         - itkdev-docker-compose-server exec phpfpm composer install
