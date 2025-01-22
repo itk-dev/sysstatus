@@ -1,0 +1,28 @@
+when:
+  - event: push
+  - branch: release/*
+
+skip_clone: true
+
+steps:
+  - name: Run test site update
+    image: itkdev/ansible-plugin:1
+    pull: true
+    settings:
+      id:
+        from_secret: id
+      secret:
+        from_secret: secret
+      host:
+        from_secret: stg_host
+      path:
+        from_secret: stg_path
+      user:
+        from_secret: user
+      actions:
+        - git reset --hard
+        - git checkout .
+        - git pull
+        - itkdev-docker-compose-server up -d --force-recreate
+        - itkdev-docker-compose-server exec phpfpm composer install
+        - itkdev-docker-compose-server exec phpfpm bin/console cache:clear
