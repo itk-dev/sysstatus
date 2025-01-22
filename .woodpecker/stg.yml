@@ -1,6 +1,6 @@
 when:
-  - event: push
   - branch: release/*
+    event: push
 
 skip_clone: true
 
@@ -9,6 +9,7 @@ steps:
     image: itkdev/ansible-plugin:1
     when:
       branch: release/*
+      event: push
     pull: true
     settings:
       id:
