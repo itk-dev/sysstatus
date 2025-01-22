@@ -7,6 +7,8 @@ skip_clone: true
 steps:
   - name: Run test site update
     image: itkdev/ansible-plugin:1
+    when:
+      branch: release/*
     pull: true
     settings:
       id:
