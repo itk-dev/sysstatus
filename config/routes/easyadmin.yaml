@@ -1,0 +1,4 @@
+# https://symfony.com/bundles/EasyAdminBundle/current/dashboards.html#pretty-admin-urls
+easyadmin:
+    resource: .
+    type: easyadmin.routes

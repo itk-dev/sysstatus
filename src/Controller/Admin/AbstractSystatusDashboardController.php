@@ -35,8 +35,8 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
     {
         return [
             MenuItem::section('Dashboard '),
-            MenuItem::linkToRoute('menu.dashboard.reports', 'fas fa-file-alt', 'dashboard', ['entityType' => 'report']),
-            MenuItem::linkToRoute('menu.dashboard.systems', 'fas fa-cogs', 'dashboard', ['entityType' => 'system']),
+            MenuItem::linkToUrl('menu.dashboard.reports', 'fas fa-file-alt', $this->generateUrl('dashboard', ['entityType' => 'report'])),
+            MenuItem::linkToUrl('menu.dashboard.systems', 'fas fa-cogs', $this->generateUrl('dashboard', ['entityType' => 'system'])),
 
             MenuItem::section('Sysstatus'),
             MenuItem::linkToCrud('menu.list.reports', 'fas fa-list', Report::class),
@@ -49,11 +49,8 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
             MenuItem::section('Administration'),
             MenuItem::linkToCrud('User', 'fas fa-user', User::class),
             MenuItem::linkToCrud('Group', 'fas fa-users', UserGroup::class),
-            MenuItem::linkToCrud('Import kørsler ', 'fas fa-file-excel', ImportRun::class),
+            MenuItem::linkToCrud('Import', 'fas fa-file-excel', ImportRun::class),
             MenuItem::linkToRoute('Eksport', 'fas fa-file-import', 'export_page'),
-
-            MenuItem::section('LogOut '),
-            MenuItem::linkToRoute('Logout', 'fas fa-sign-out-alt', 'admin_logout'),
         ];
     }
 }

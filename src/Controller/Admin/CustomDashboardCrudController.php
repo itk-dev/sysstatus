@@ -11,6 +11,7 @@ use App\Repository\SystemRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class CustomDashboardCrudController extends AbstractSystatusDashboardController
 {
     /**
@@ -37,7 +39,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     /**
      * Redirect /admin to the reports page to hide easyAdmin's default front page.
      */
-    #[Route('/admin', name: 'admin')]
+    #[Route(path: '/dashboard')]
     public function index(): Response
     {
         return $this->redirectToRoute('dashboard', ['entityType' => 'report']);
@@ -46,7 +48,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     /**
      * @throws \Exception
      */
-    #[Route(path: 'admin/{entityType}', name: 'dashboard')]
+    #[Route(path: '/dashboard/{entityType}', name: 'dashboard')]
     public function dashboard(Request $request, string $entityType): Response
     {
         $queryParameters = $request->query;
