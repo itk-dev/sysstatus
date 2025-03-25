@@ -1,16 +1,16 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block page_title %}
-  {{ ('dashboard.'~entityType)|trans }}
+  {{ ('dashboard.' ~ entityType)|trans }}
 {% endblock %}
 
 {% block content_title %}
-  {{ ('dashboard.'~entityType)|trans }}
+  {{ ('dashboard.' ~ entityType)|trans }}
 {% endblock %}
 
 {% block main %}
   <div class="global-actions w-100 mt-2 mb-3">
-    {{ form_start(filters, { attr: { class: 'w-100' } }) }}
+    {{ form_start(filters, {attr: {class: 'w-100'}}) }}
     <div class="d-flex flex-column flex-md-row gap-2 mb-2">
       <div class="col">
         {{ form_widget(filters.groups) }}
@@ -35,7 +35,7 @@
         {{ form_widget(filters.search) }}
       </div>
       <div class="col">
-        {{ form_widget(filters.save, { attr: { class: 'btn btn-primary w-100 h-100' }}) }}
+        {{ form_widget(filters.save, {attr: {class: 'btn btn-primary w-100 h-100'}}) }}
       </div>
     </div>
     {{ form_end(filters) }}
@@ -81,7 +81,7 @@
                   <div class="dashboard--table-cell">
                     {% set answer = getanswer(result, question) %}
                     {% if answer is not null %}
-                      {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note, 'width': 30 } %}
+                      {{ include('easy_admin_overrides/field_smiley.html.twig', {value: answer.smiley, title: answer.note, width: 30}) }}
                     {% endif %}
                   </div>
                 </td>
@@ -97,8 +97,8 @@
         {% endfor %}
       {% else %}
         <tr>
-          <td colspan="{{paginator|length + 2}}">
-            <div>{{ 'dashboard.no_categories_for_result' | trans }}</div>
+          <td colspan="{{ paginator|length + 2 }}">
+            <div>{{ 'dashboard.no_categories_for_result'|trans }}</div>
           </td>
         </tr>
       {% endif %}
@@ -110,7 +110,6 @@
     </div>
   </div>
 {% endblock main %}
-
 
 {% block body_javascript %}
   // Called more than once, so we need to check if it's already been called

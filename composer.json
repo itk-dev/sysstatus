@@ -17,19 +17,19 @@
         "knplabs/knp-paginator-bundle": "^6.1",
         "phpoffice/phpspreadsheet": "^1.28",
         "stof/doctrine-extensions-bundle": "^1.7",
-        "symfony/asset": "6.4.*",
-        "symfony/asset-mapper": "6.4.*",
-        "symfony/console": "6.4.*",
-        "symfony/dotenv": "6.4.*",
+        "symfony/asset": "~6.4.0",
+        "symfony/asset-mapper": "~6.4.0",
+        "symfony/console": "~6.4.0",
+        "symfony/dotenv": "~6.4.0",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.4.*",
-        "symfony/runtime": "6.4.*",
-        "symfony/security-bundle": "6.4.*",
-        "symfony/twig-bundle": "6.4.*",
-        "symfony/validator": "6.4.*",
-        "symfony/yaml": "6.4.*",
-        "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "symfony/framework-bundle": "~6.4.0",
+        "symfony/runtime": "~6.4.0",
+        "symfony/security-bundle": "~6.4.0",
+        "symfony/twig-bundle": "~6.4.0",
+        "symfony/validator": "~6.4.0",
+        "symfony/yaml": "~6.4.0",
+        "twig/extra-bundle": "^2.12 || ^3.0",
+        "twig/twig": "^2.12 || ^3.0"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.43",
@@ -37,11 +37,12 @@
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "^2.0",
-        "symfony/debug-bundle": "6.4.*",
+        "symfony/debug-bundle": "~6.4.0",
         "symfony/maker-bundle": "^1.48",
         "symfony/phpunit-bridge": "*",
-        "symfony/stopwatch": "6.4.*",
-        "symfony/web-profiler-bundle": "6.4.*"
+        "symfony/stopwatch": "~6.4.0",
+        "symfony/web-profiler-bundle": "~6.4.0",
+        "vincentlanglet/twig-cs-fixer": "^3.5"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
@@ -79,7 +80,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "6.4.*"
         }
     },
@@ -95,18 +96,17 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd"
         },
-        "coding-standards-apply": [
-            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix"
-        ],
-        "coding-standards-check": [
-            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run"
-        ],
         "coding-standards-analysis": [
             "./vendor/bin/phpstan analyse src migrations"
         ],
+        "coding-standards-apply": [
+            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix"
+        ],
         "coding-standards-baseline": [
             "./vendor/bin/phpstan analyse src migrations --generate-baseline"
+        ],
+        "coding-standards-check": [
+            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run"
         ]
-
     }
 }
