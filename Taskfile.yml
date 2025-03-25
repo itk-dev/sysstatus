@@ -58,6 +58,7 @@ tasks:
     desc: "Apply and check coding standards for Composer"
     cmds:
       - task: coding-standards:composer:apply
+      - task composer -- audit
       - task composer -- normalize --dry-run
       - task composer -- validate --strict
 
