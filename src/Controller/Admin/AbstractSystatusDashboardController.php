@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 abstract class AbstractSystatusDashboardController extends AbstractDashboardController
 {
+    #[\Override]
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
@@ -24,6 +25,7 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
         ;
     }
 
+    #[\Override]
     public function configureCrud(): Crud
     {
         return Crud::new()
@@ -31,6 +33,7 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
         ;
     }
 
+    #[\Override]
     public function configureMenuItems(): iterable
     {
         return [

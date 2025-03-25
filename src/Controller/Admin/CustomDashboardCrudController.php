@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
@@ -40,6 +40,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
      * Redirect /admin to the reports page to hide easyAdmin's default front page.
      */
     #[Route(path: '/dashboard')]
+    #[\Override]
     public function index(): Response
     {
         return $this->redirectToRoute('dashboard', ['entityType' => 'report']);
@@ -491,7 +492,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
      *
      * @return RedirectResponse|Response
      */
-    public function showAction(): RedirectResponse|Response
+    public function show(): RedirectResponse|Response
     {
         $entityArray = $this->entity;
         if (
@@ -508,7 +509,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 );
 
                 return $this->redirectToRoute('list', [
-                    'entityType' => strtolower($entityArray['name']),
+                    'entityType' => strtolower((string) $entityArray['name']),
                 ]);
             }
         }

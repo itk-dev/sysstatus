@@ -76,6 +76,7 @@ tasks:
   coding-standards:php:apply:
     desc: "Apply coding standards for PHP"
     cmds:
+      - task compose -- exec phpfpm vendor/bin/rector
       - task compose -- exec phpfpm vendor/bin/php-cs-fixer fix
     silent: true
 
@@ -83,6 +84,7 @@ tasks:
     desc: "Apply and check coding standards for PHP"
     cmds:
       - task: coding-standards:php:apply
+      - task compose -- exec phpfpm vendor/bin/rector --dry-run
       - task compose -- exec phpfpm vendor/bin/php-cs-fixer check
     silent: true
 

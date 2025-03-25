@@ -14,7 +14,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[Loggable]
-class Question
+class Question implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -45,9 +45,9 @@ class Question
         $this->answers = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getQuestion() ?: $this->getId();
+        return (string) ($this->getQuestion() ?: $this->getId());
     }
 
     public function getId(): ?int

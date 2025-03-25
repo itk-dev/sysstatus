@@ -21,6 +21,7 @@ class ThemeCrudController extends AbstractCrudController
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');

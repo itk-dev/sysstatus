@@ -318,9 +318,7 @@ class DataExporter
                 $entity->getSysInternalId(),
                 $entity->getSysTitle(),
                 $entity->getSysStatus(),
-                implode(',', $entity->getGroups()->map(function (UserGroup $group) {
-                    return $group->getName();
-                })->getValues()),
+                implode(',', $entity->getGroups()->map(fn (UserGroup $group) => $group->getName())->getValues()),
                 $entity->getSysOwnerSub(),
             ];
 
@@ -363,7 +361,7 @@ class DataExporter
             // Count the number of questions.
             $nrOfQuestions = 0;
             foreach ($categories as $category) {
-                $nrOfQuestions = $nrOfQuestions + count($category->getQuestions());
+                $nrOfQuestions += count($category->getQuestions());
             }
 
             // Add bottom summations if questions have been set for the given entities.
@@ -411,11 +409,9 @@ class DataExporter
      */
     private function categoryAppliesToEntity(Report|System $entity, Category $category): bool
     {
-        $groupIds = $entity->getGroups()->map(function ($item) {
-            return $item->getId();
-        })->getValues();
+        $groupIds = $entity->getGroups()->map(fn ($item) => $item->getId())->getValues();
 
-        $entityClassName = get_class($entity);
+        $entityClassName = $entity::class;
 
         $categoryGroupIds = array_values(
             array_reduce($category->getThemes(), function ($carry, Theme $theme) use ($entityClassName) {

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Form\QuestionType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -20,6 +21,7 @@ class CategoryCrudController extends AbstractCrudController
         return Category::class;
     }
 
+    #[\Override]
     public function configureActions(Actions $actions): Actions
     {
         $actions
@@ -32,6 +34,7 @@ class CategoryCrudController extends AbstractCrudController
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');
@@ -39,7 +42,7 @@ class CategoryCrudController extends AbstractCrudController
         $created_by = TextField::new('created_by');
         $updated_by = TextField::new('updated_by');
         $number_of_questions = AssociationField::new('questions');
-        $coll_question = CollectionField::new('questions')->setEntryType('App\Form\QuestionType');
+        $coll_question = CollectionField::new('questions')->setEntryType(QuestionType::class);
 
         $time_created_at = TimeField::new('created_at');
         $time_updated_at = TimeField::new('time_updated_at');

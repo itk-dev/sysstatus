@@ -37,6 +37,7 @@
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "^2.0",
+        "rector/rector": "^2.0",
         "symfony/debug-bundle": "~6.4.0",
         "symfony/maker-bundle": "^1.48",
         "symfony/phpunit-bridge": "*",

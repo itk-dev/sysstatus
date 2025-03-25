@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: ThemeRepository::class)]
 #[Loggable]
 #[UniqueEntity('name')]
-class Theme
+class Theme implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -54,9 +54,9 @@ class Theme
         $this->reportGroups = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName() ?: $this->getId();
+        return (string) ($this->getName() ?: $this->getId());
     }
 
     public function getId(): ?int
@@ -107,12 +107,10 @@ class Theme
 
         $themeCategories = $this->themeCategories;
         $iterator = $themeCategories->getIterator();
-        $iterator->uasort(function ($first, $second) {
-            return (int) $first->getSortOrder() < (int) $second->getSortOrder() ? 1 : -1;
-        });
+        $iterator->uasort(static fn ($first, $second) => (int) $first->getSortOrder() <=> (int) $second->getSortOrder());
 
         /** @var ThemeCategory $item */
-        foreach ($iterator as $i => $item) {
+        foreach ($iterator as $item) {
             $list[] = $item->getCategory();
         }
 

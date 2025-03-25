@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: SelfServiceAvailableFromItemRepository::class)]
-class SelfServiceAvailableFromItem
+class SelfServiceAvailableFromItem implements \Stringable
 {
     use TimestampableEntity;
 
@@ -32,9 +32,9 @@ class SelfServiceAvailableFromItem
         $this->systems = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name ?? __CLASS__;
+        return $this->name ?? self::class;
     }
 
     public function getId(): ?int
