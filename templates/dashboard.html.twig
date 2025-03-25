@@ -35,7 +35,8 @@
         {{ form_widget(filters.search) }}
       </div>
       <div class="col">
-        {{ form_widget(filters.save, {attr: {class: 'btn btn-primary w-100 h-100'}}) }}
+        {# We don't need the submit button name (`form[save]`) when submitting the filters, so we add `full_name: false` remove the name (make it empty) #}
+        {{ form_widget(filters.save, {full_name: false, attr: {class: 'btn btn-primary w-100 h-100'}}) }}
       </div>
     </div>
     {{ form_end(filters) }}
@@ -112,7 +113,7 @@
 {% endblock main %}
 
 {% block body_javascript %}
-  // Called more than once, so we need to check if it's already been called
+  {# // Called more than once, so we need to check if it's already been called ?! #}
   {{ parent() }}
 
   <script type="text/javascript">

@@ -157,7 +157,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             $selfServiceOptions
         );
         $filterFormBuilder
-            ->setMethod('GET')
+            ->setMethod(Request::METHOD_GET)
             ->setAction(
                 $this->generateUrl('dashboard', ['entityType' => $entityType])
             );
@@ -404,7 +404,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         bool $filterCategories = false,
         array $filterSelfServiceOptions = [],
     ): FormBuilderInterface {
-        $filterFormBuilder = $this->createFormBuilder();
+        $filterFormBuilder = $this->createFormBuilder(options: ['csrf_protection' => false]);
         $filterFormBuilder->add('groups', ChoiceType::class, [
             'label' => 'filter.groups',
             'placeholder' => 'filter.placeholder.groups',
