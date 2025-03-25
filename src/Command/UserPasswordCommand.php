@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -16,10 +15,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\ByteString;
 
 #[AsCommand(
-    name: 'app:user:create',
-    description: 'Create user',
+    name: 'app:user:password',
+    description: 'Set password for user',
 )]
-class UserCreateCommand extends Command
+class UserPasswordCommand extends Command
 {
     public function __construct(
         private readonly UserRepository $userRepository,
@@ -33,7 +32,6 @@ class UserCreateCommand extends Command
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email')
             ->addOption('password', null, InputOption::VALUE_REQUIRED, 'The password')
-            ->addOption('role', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'The roles')
         ;
     }
 
@@ -41,31 +39,16 @@ class UserCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $email = $input->getArgument('email');
-        while (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException(sprintf('Invalid email: %s', $email));
-        }
-
         $user = $this->userRepository->findOneBy(['email' => $email]);
-        if ($user) {
-            throw new InvalidArgumentException(sprintf('User with email %s already exists', $email));
+        if (!$user) {
+            throw new InvalidArgumentException(sprintf('User not found: %s', $email));
         }
-
-        $roles = array_unique([
-            ...(array) $input->getOption('role'),
-            'ROLE_USER',
-        ]);
 
         $password = $input->getOption('password') ?? ByteString::fromRandom(12);
-
-        $user = new User();
-        $user->setUsername($email);
-        $user->setEmail($email);
         $user->setPassword($this->passwordHasher->hashPassword($user, $password));
-        $user->setRoles($roles);
-        $user->setEnabled(true);
         $this->userRepository->save($user, true);
 
-        $io->success(sprintf('User %s (%s) created with password %s and roles %s', $user->getUsername(), $user->getEmail(), $password, implode(', ', $user->getRoles())));
+        $io->success(sprintf('User %s (%s) now has password %s', $user->getUsername(), $user->getEmail(), $password));
 
         return Command::SUCCESS;
     }
