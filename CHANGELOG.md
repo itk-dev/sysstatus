@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-30](https://github.com/itk-dev/sysstatus/pull/30)
+  Upgraded and cleaned up
 * Login and dashboard styling cleanup
 * Added github actions.
 * Added PHPStan.
