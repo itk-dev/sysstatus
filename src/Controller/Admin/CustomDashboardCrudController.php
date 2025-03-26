@@ -413,6 +413,9 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             'multiple' => true,
             'attr' => [
                 'class' => 'form-control',
+                // @todo Find documentation reference for why setting data-ea-widget actually works
+                // (https://github.com/search?q=repo%3AEasyCorp%2FEasyAdminBundle%20data-ea-widget&type=code)
+                'data-ea-widget' => 'ea-autocomplete',
                 'data-placeholder' => $this->translator->trans(
                     'filter.placeholder.groups'
                 ),
@@ -426,6 +429,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             'choices' => $subownerOptions,
             'attr' => [
                 'class' => 'form-control',
+                'data-ea-widget' => 'ea-autocomplete',
             ],
             'required' => false,
             'disabled' => 0 == count($subownerOptions),
@@ -440,6 +444,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 ),
                 'attr' => [
                     'class' => 'form-control',
+                    'data-ea-widget' => 'ea-autocomplete',
                 ],
                 'required' => false,
                 'data' => $formParameters['theme'] ?? null,
@@ -454,6 +459,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 ),
                 'attr' => [
                     'class' => 'form-control',
+                    'data-ea-widget' => 'ea-autocomplete',
                 ],
                 'required' => false,
                 'data' => $formParameters['category'] ?? null,
@@ -466,6 +472,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 'choices' => $filterSelfServiceOptions,
                 'attr' => [
                     'class' => 'form-control',
+                    'data-ea-widget' => 'ea-autocomplete',
                 ],
                 'required' => false,
                 'data' => $formParameters['self_service'] ?? null,

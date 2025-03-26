@@ -5,13 +5,3 @@
  * which should already be in your base.html.twig.
  */
 import './styles/app.css';
-
-import jquery from 'jquery';
-const $ = jquery;
-window.$ = $;
-
-import once from 'jquery-once';
-
-import "select2/dist/css/select2.min.css";
-import select2 from 'select2';
-select2($);
