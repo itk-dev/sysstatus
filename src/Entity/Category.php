@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[Loggable]
 #[UniqueEntity('name')]
-class Category
+class Category implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -47,9 +47,9 @@ class Category
         $this->questions = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName() ?: $this->getId();
+        return (string) ($this->getName() ?: $this->getId());
     }
 
     public function getId(): ?int
@@ -99,7 +99,7 @@ class Category
         $list = [];
         $iterator = $this->themeCategories->getIterator();
 
-        foreach ($iterator as $i => $item) {
+        foreach ($iterator as $item) {
             $list[$item->getTheme()->getId()] = $item->getTheme();
         }
 

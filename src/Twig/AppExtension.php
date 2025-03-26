@@ -10,25 +10,27 @@ use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
+    #[\Override]
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('getclass', [$this, 'getClass']),
-            new TwigFunction('getanswer', [$this, 'getAnswer']),
-            new TwigFunction('breakintolines', [$this, 'breakIntoLines']),
+            new TwigFunction('getclass', $this->getClass(...)),
+            new TwigFunction('getanswer', $this->getAnswer(...)),
+            new TwigFunction('breakintolines', $this->breakIntoLines(...)),
         ];
     }
 
+    #[\Override]
     public function getFilters(): array
     {
         return [
-            new TwigFilter('sort_order', [$this, 'sortOrder']),
+            new TwigFilter('sort_order', $this->sortOrder(...)),
         ];
     }
 
     public function getClass(mixed $instance): bool
     {
-        return get_class($instance);
+        return $instance::class;
     }
 
     public function getAnswer(mixed $entity, Question $question): mixed
@@ -83,7 +85,7 @@ class AppExtension extends AbstractExtension
         $render = [];
 
         $addedEmptyLines = 0;
-        for ($addedEmptyLines; $addedEmptyLines < $numberOfLines - min($numberOfSplits, $numberOfLines); ++$addedEmptyLines) {
+        for (; $addedEmptyLines < $numberOfLines - min($numberOfSplits, $numberOfLines); ++$addedEmptyLines) {
             $render[] = '';
         }
 
@@ -111,9 +113,7 @@ class AppExtension extends AbstractExtension
     {
         $iterator = $item->getIterator();
 
-        $iterator->uasort(function ($a, $b) {
-            return ($a->getSortOrder() > $b->getSortOrder()) ? -1 : 1;
-        });
+        $iterator->uasort(static fn ($a, $b) => $a->getSortOrder() <=> $b->getSortOrder());
 
         return new ArrayCollection(iterator_to_array($iterator));
     }

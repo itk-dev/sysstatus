@@ -21,6 +21,7 @@ class ThemeCrudController extends AbstractCrudController
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');
@@ -34,7 +35,7 @@ class ThemeCrudController extends AbstractCrudController
             ->setFormTypeOption('by_reference', false)->setLabel('Anmeldelser')
         ;
 
-        $categoriesField = CollectionField::new('themeCategories')->setLabel('Tilføj Tema og Kategori')
+        $categoriesField = CollectionField::new('themeCategories')->setLabel('Kategorier')
             ->setEntryType(ThemeCategoryType::class)
             ->setFormTypeOptions([
                 'by_reference' => false, // important for OneToMany associations

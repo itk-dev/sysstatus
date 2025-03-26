@@ -1,24 +1,24 @@
-# ITSTYR - trin for trin opsætning.
+# ITSTYR - trin for trin opsætning
 
-## Setup 
+## Setup
 
-*Hvis der ikke er data, på 'admin/system' eller 'admin/group', eller oprettet en bruger' skal punkterne i README.md først følges*
-
+*Hvis der ikke er data, på 'admin/system' eller 'admin/group', eller oprettet en bruger' skal punkterne i README.md
+først følges*
 
 ## Generelt
 
 Itstyr er et Smiley-oversigts-site over systemer og anmeldelser.
 
-Websitet skal konfigurers i den rigtige rækkefølge for at få vist smileys. 
+Websitet skal konfigurers i den rigtige rækkefølge for at få vist smileys.
 
-Først skal der oprettets en Gruppe, og efterfølgende: Kategori, og Tema. 
+Først skal der oprettets en Gruppe, og efterfølgende: Kategori, og Tema.
 
 Til sidst skal man gå ind på dashboarded hvorfra man tilføje status smileys.
 
 ## 1. Gruppe
 
 - Klik på Easyadmin Menupunktet Gruppe
-    - du er nu på gruppes index-side
+  - du er nu på gruppes index-side
 - Klik på "tilføj gruppe"
   - du er nu på gruppes new-side
     - udfyld textfeltet "Navn"
@@ -49,9 +49,10 @@ Til sidst skal man gå ind på dashboarded hvorfra man tilføje status smileys.
       - udfyld "Vægt" med et tal (required)
       - klik på 'Kategori' og tilføj en kategori
 
-## 3. Dashboard Systemer 
+## 3. Dashboard Systemer
 
-*(Samme fremgangsmåde i Dashboard Anmeldelse)*
+(Samme fremgangsmåde i Dashboard Anmeldelse)
+
 - Klik på Easyadmin Menupunktet Dashboard Systemer
   - du er nu på DashboardSystemer index-side
 - Klik på et system i den skrå bjælke.

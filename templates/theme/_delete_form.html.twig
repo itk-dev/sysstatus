@@ -1,6 +1,0 @@
-<form class="form col" method="post" action="{{ path('theme_delete', {'id': theme.id}) }}"
-      onsubmit="return confirm({{ "'" ~ ('common.actions.confirm.delete'|trans) ~ "'" }});">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ theme.id) }}">
-    <button class="btn btn-danger">{{ 'common.actions.delete'|trans }}</button>
-</form>

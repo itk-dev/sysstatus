@@ -15,7 +15,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
 #[Loggable]
-class Report
+class Report implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -173,9 +173,9 @@ class Report
         $this->groups = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function getId(): ?int

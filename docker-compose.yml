@@ -1,4 +1,4 @@
-# itk-version: 3.2.1
+# itk-version: 3.2.3
 networks:
   frontend:
     external: true
@@ -28,6 +28,7 @@ services:
 
   phpfpm:
     image: itkdev/php8.3-fpm:latest
+    user: ${COMPOSE_USER:-deploy}
     networks:
       - app
     extra_hosts:
@@ -39,7 +40,6 @@ services:
       # Depending on the setup, you may have to remove --read-envelope-from from msmtp (cf. https://marlam.de/msmtp/msmtp.html) or use SMTP to send mail
       - PHP_SENDMAIL_PATH=/usr/bin/msmtp --host=mail --port=1025 --read-recipients --read-envelope-from
       - DOCKER_HOST_DOMAIN=${COMPOSE_DOMAIN}
-      - COMPOSER_VERSION=2
       - PHP_IDE_CONFIG=serverName=localhost
     depends_on:
       mariadb:

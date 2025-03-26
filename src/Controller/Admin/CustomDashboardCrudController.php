@@ -11,6 +11,7 @@ use App\Repository\SystemRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -19,9 +20,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class CustomDashboardCrudController extends AbstractSystatusDashboardController
 {
     /**
@@ -37,7 +39,8 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     /**
      * Redirect /admin to the reports page to hide easyAdmin's default front page.
      */
-    #[Route('/admin', name: 'admin')]
+    #[Route(path: '/dashboard')]
+    #[\Override]
     public function index(): Response
     {
         return $this->redirectToRoute('dashboard', ['entityType' => 'report']);
@@ -46,7 +49,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     /**
      * @throws \Exception
      */
-    #[Route(path: 'admin/{entityType}', name: 'dashboard')]
+    #[Route(path: '/dashboard/{entityType}', name: 'dashboard')]
     public function dashboard(Request $request, string $entityType): Response
     {
         $queryParameters = $request->query;
@@ -155,7 +158,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             $selfServiceOptions
         );
         $filterFormBuilder
-            ->setMethod('GET')
+            ->setMethod(Request::METHOD_GET)
             ->setAction(
                 $this->generateUrl('dashboard', ['entityType' => $entityType])
             );
@@ -402,7 +405,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         bool $filterCategories = false,
         array $filterSelfServiceOptions = [],
     ): FormBuilderInterface {
-        $filterFormBuilder = $this->createFormBuilder();
+        $filterFormBuilder = $this->createFormBuilder(options: ['csrf_protection' => false]);
         $filterFormBuilder->add('groups', ChoiceType::class, [
             'label' => 'filter.groups',
             'placeholder' => 'filter.placeholder.groups',
@@ -410,6 +413,9 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             'multiple' => true,
             'attr' => [
                 'class' => 'form-control',
+                // @todo Find documentation reference for why setting data-ea-widget actually works
+                // (https://github.com/search?q=repo%3AEasyCorp%2FEasyAdminBundle%20data-ea-widget&type=code)
+                'data-ea-widget' => 'ea-autocomplete',
                 'data-placeholder' => $this->translator->trans(
                     'filter.placeholder.groups'
                 ),
@@ -423,6 +429,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             'choices' => $subownerOptions,
             'attr' => [
                 'class' => 'form-control',
+                'data-ea-widget' => 'ea-autocomplete',
             ],
             'required' => false,
             'disabled' => 0 == count($subownerOptions),
@@ -437,6 +444,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 ),
                 'attr' => [
                     'class' => 'form-control',
+                    'data-ea-widget' => 'ea-autocomplete',
                 ],
                 'required' => false,
                 'data' => $formParameters['theme'] ?? null,
@@ -451,6 +459,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 ),
                 'attr' => [
                     'class' => 'form-control',
+                    'data-ea-widget' => 'ea-autocomplete',
                 ],
                 'required' => false,
                 'data' => $formParameters['category'] ?? null,
@@ -463,6 +472,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 'choices' => $filterSelfServiceOptions,
                 'attr' => [
                     'class' => 'form-control',
+                    'data-ea-widget' => 'ea-autocomplete',
                 ],
                 'required' => false,
                 'data' => $formParameters['self_service'] ?? null,
@@ -489,7 +499,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
      *
      * @return RedirectResponse|Response
      */
-    public function showAction(): RedirectResponse|Response
+    public function show(): RedirectResponse|Response
     {
         $entityArray = $this->entity;
         if (
@@ -506,7 +516,7 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                 );
 
                 return $this->redirectToRoute('list', [
-                    'entityType' => strtolower($entityArray['name']),
+                    'entityType' => strtolower((string) $entityArray['name']),
                 ]);
             }
         }

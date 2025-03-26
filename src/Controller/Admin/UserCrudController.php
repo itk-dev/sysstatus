@@ -22,6 +22,7 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    #[\Override]
     public function configureActions(Actions $actions): Actions
     {
         $actions
@@ -36,6 +37,7 @@ class UserCrudController extends AbstractCrudController
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         $username = TextField::new('username');

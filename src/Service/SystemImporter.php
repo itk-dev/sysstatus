@@ -11,18 +11,14 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SystemImporter extends BaseImporter
 {
-    private SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository;
-
     public function __construct(
         ReportRepository $reportRepository,
         SystemRepository $systemRepository,
         GroupRepository $groupRepository,
-        SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
+        private readonly SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
         EntityManagerInterface $entityManager,
     ) {
         parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager);
-
-        $this->selfServiceAvailableFromItemRepository = $selfServiceAvailableFromItemRepository;
     }
 
     public function import(string $src): void

@@ -8,7 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-class UserGroup
+class UserGroup implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -65,9 +65,9 @@ class UserGroup
         $this->users = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     public function getId(): ?int

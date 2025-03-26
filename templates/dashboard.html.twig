@@ -1,16 +1,16 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block page_title %}
-  {{ ('dashboard.'~entityType)|trans }}
+  {{ ('dashboard.' ~ entityType)|trans }}
 {% endblock %}
 
 {% block content_title %}
-  {{ ('dashboard.'~entityType)|trans }}
+  {{ ('dashboard.' ~ entityType)|trans }}
 {% endblock %}
 
 {% block main %}
   <div class="global-actions w-100 mt-2 mb-3">
-    {{ form_start(filters, { attr: { class: 'w-100' } }) }}
+    {{ form_start(filters, {attr: {class: 'w-100'}}) }}
     <div class="d-flex flex-column flex-md-row gap-2 mb-2">
       <div class="col">
         {{ form_widget(filters.groups) }}
@@ -35,7 +35,8 @@
         {{ form_widget(filters.search) }}
       </div>
       <div class="col">
-        {{ form_widget(filters.save, { attr: { class: 'btn btn-primary w-100 h-100' }}) }}
+        {# We don't need the submit button name (`form[save]`) when submitting the filters, so we add `full_name: false` remove the name (make it empty) #}
+        {{ form_widget(filters.save, {full_name: false, attr: {class: 'btn btn-primary w-100 h-100'}}) }}
       </div>
     </div>
     {{ form_end(filters) }}
@@ -81,7 +82,7 @@
                   <div class="dashboard--table-cell">
                     {% set answer = getanswer(result, question) %}
                     {% if answer is not null %}
-                      {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note, 'width': 30 } %}
+                      {{ include('easy_admin_overrides/field_smiley.html.twig', {value: answer.smiley, title: answer.note, width: 30}) }}
                     {% endif %}
                   </div>
                 </td>
@@ -97,8 +98,8 @@
         {% endfor %}
       {% else %}
         <tr>
-          <td colspan="{{paginator|length + 2}}">
-            <div>{{ 'dashboard.no_categories_for_result' | trans }}</div>
+          <td colspan="{{ paginator|length + 2 }}">
+            <div>{{ 'dashboard.no_categories_for_result'|trans }}</div>
           </td>
         </tr>
       {% endif %}
@@ -111,25 +112,21 @@
   </div>
 {% endblock main %}
 
-
 {% block body_javascript %}
-  // Called more than once, so we need to check if it's already been called
   {{ parent() }}
 
-  <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", function() {
-        $('#form_groups').once('select-processed').each(function () {
-          let groups = $('#form_groups');
-          groups.select2();
-          groups.on('select2:opening select2:closing', function (event) {
-            let searchField = $(this).parent().find('.select2-search__field');
-            searchField.prop('disabled', true);
-          });
-        });
-
-        $('.dashboard-filters select').bind('change', function () {
-          $('.dashboard-filters form').submit();
-        });
-      }, { once: true });
+  <script>
+    {# Subowner options depend on selected groups, so we submit the form when groups are changed to reflect the new subowners. #}
+    addEventListener('load', () => {
+      const el = document.getElementById('form_groups')
+      if (el) {
+        el.addEventListener('change', (event) => {
+          const form = event.target.form
+          if (form) {
+            form.submit()
+          }
+        })
+      }
+    })
   </script>
 {% endblock %}

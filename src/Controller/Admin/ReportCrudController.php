@@ -22,6 +22,7 @@ class ReportCrudController extends AbstractCrudController
         return Report::class;
     }
 
+    #[\Override]
     public function configureActions(Actions $actions): Actions
     {
         $actions
@@ -32,6 +33,7 @@ class ReportCrudController extends AbstractCrudController
         return $actions;
     }
 
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         $title = TextField::new('sys_title')->setLabel('entity.report.sys_title');

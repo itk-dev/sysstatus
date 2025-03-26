@@ -27,6 +27,8 @@ steps:
         - git fetch origin ${CI_COMMIT_BRANCH}
         - git checkout ${CI_COMMIT_BRANCH}
         - git pull
-        - itkdev-docker-compose-server up -d --force-recreate
-        - itkdev-docker-compose-server exec phpfpm composer install
+        - itkdev-docker-compose-server up --detach --force-recreate
+        - itkdev-docker-compose-server exec phpfpm composer install --no-dev --classmap-authoritative
+        # https://symfony.com/doc/current/frontend/asset_mapper.html#serving-assets-in-dev-vs-prod
+        - itkdev-docker-compose-server exec phpfpm bin/console asset-map:compile
         - itkdev-docker-compose-server exec phpfpm bin/console cache:clear

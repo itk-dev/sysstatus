@@ -21,6 +21,7 @@ class GroupCrudController extends AbstractCrudController
         return UserGroup::class;
     }
 
+    #[\Override]
     public function configureActions(Actions $actions): Actions
     {
         $actions
@@ -34,6 +35,7 @@ class GroupCrudController extends AbstractCrudController
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');

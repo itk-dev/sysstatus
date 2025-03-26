@@ -13,7 +13,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
 #[\Gedmo\Mapping\Annotation\Loggable]
-class Answer
+class Answer implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -42,7 +42,7 @@ class Answer
     #[ORM\ManyToOne(inversedBy: 'answers')]
     private ?Report $report = null;
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getNote() ?? '';
     }
