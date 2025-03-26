@@ -103,7 +103,7 @@ tasks:
 
   code-analysis:
     cmds:
-      - task composer -- code-analysis
+      - task compose -- exec phpfpm vendor/bin/phpstan
 
   docker-pull:
     desc: "Pull all development docker images"
