@@ -285,3 +285,8 @@ export:
 group.placeholder: Magistrat
 sysOwnerSub.placeholder: Afdeling
 selfServiceAvailableFromItems.placeholder: Selvbetjeningsløsning
+
+smiley.GREEN: 'Grøn'
+smiley.RED: 'Rød'
+smiley.BLUE: 'Blå'
+smiley.YELLOW: 'Gul'
