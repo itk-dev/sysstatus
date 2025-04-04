@@ -217,3 +217,10 @@ body.list table tbody td.dashboard--table-answer {
         }
     }
 }
+
+/* Don't let fragment links stand out */
+h2 {
+    a {
+        color: inherit;
+    }
+}
