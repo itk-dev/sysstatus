@@ -102,7 +102,8 @@ class AnswerCrudController extends AbstractCrudController
                 'BLUE' => new TranslatableMessage('smiley.BLUE'),
                 'YELLOW' => new TranslatableMessage('smiley.YELLOW'),
             ])
-        //    ->setRequired(true)
+            // We want to use fancy smileys in the options (cf. translations/messages.da.yml).
+            ->escapeHtml(false)
         ;
         yield TextareaField::new('note');
     }
