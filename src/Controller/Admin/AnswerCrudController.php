@@ -8,7 +8,6 @@ use App\Entity\System;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -95,9 +94,6 @@ class AnswerCrudController extends AbstractCrudController
     {
         $question = TextField::new('question')
             ->setFormTypeOptions(['disabled' => true]);
-        if (Crud::PAGE_NEW === $pageName) {
-            //            $question->setRequired(false);
-        }
         yield $question;
         yield ChoiceField::new('smiley')
             ->setTranslatableChoices([
