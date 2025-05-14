@@ -30,6 +30,7 @@ abstract class AbstractSystatusDashboardController extends AbstractDashboardCont
     {
         return Crud::new()
             ->overrideTemplate('label/null', 'easy_admin_overrides/label_null.html.twig')
+            ->showEntityActionsInlined()
         ;
     }
 

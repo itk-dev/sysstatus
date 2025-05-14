@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-33](https://github.com/itk-dev/sysstatus/pull/33)
+  * Inlined actions
 * [PR-32](https://github.com/itk-dev/sysstatus/pull/32)
   3644: Cleaned up template and controller
 * [PR-31](https://github.com/itk-dev/sysstatus/pull/31)
