@@ -6,3 +6,7 @@ LICENSE.md
 web/*.md
 web/core/
 web/*/contrib/
+
+# Project ignores
+mappings.md
+templates/svg/font-awesome-info.md
