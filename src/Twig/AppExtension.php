@@ -113,7 +113,7 @@ class AppExtension extends AbstractExtension
     {
         $iterator = $item->getIterator();
 
-        $iterator->uasort(static fn ($a, $b) => $a->getSortOrder() <=> $b->getSortOrder());
+        $iterator->uasort(static fn ($a, $b) => $a->getSortOrder() > $b->getSortOrder() ? -1 : 1);
 
         return new ArrayCollection(iterator_to_array($iterator));
     }
