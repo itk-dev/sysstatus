@@ -49,6 +49,17 @@ tasks:
       - task: coding-standards:twig:check
     silent: true
 
+  coding-standards:assets:apply:
+    desc: "Apply coding standards for assets"
+    cmds:
+      - task compose -- run --rm prettier 'assets/' --write
+
+  coding-standards:assets:check:
+    desc: "Apply and check coding standards for assets"
+    cmds:
+      - task: coding-standards:assets:apply
+      - task compose -- run --rm prettier 'assets/' --check
+
   coding-standards:composer:apply:
     desc: "Apply coding standards for Composer"
     cmds:
