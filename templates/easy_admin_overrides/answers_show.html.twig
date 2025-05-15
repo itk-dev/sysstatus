@@ -2,12 +2,12 @@
 {% set alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'] %}
 {% set categoryCounter = 0 %}
 
-{% for theme in entity.instance.getAnswerArea %}
+{% for theme in field.value %}
   {% for themeCategory in theme.themeCategories|sort_order %}
     {% set category = themeCategory.category %}
     {% set categoryCounter = categoryCounter + 1 %}
-      {% set section_id = category.name|slug|lower %}
-      <h2 id="{{ section_id }}"><a href="#{{ section_id }}">{{ category.name }}</a></h2>
+    {% set section_id = category.name|slug|lower %}
+    <h2 id="{{ section_id }}"><a href="#{{ section_id }}">{{ category.name }}</a></h2>
     <table class="smiley-table table table-hover">
       <thead>
       <tr>
@@ -22,7 +22,7 @@
         {% set questionCounter = questionCounter + 1 %}
         {% set question_id = section_id ~ '-' ~ questionCounter %}
         <tr id="{{ question_id }}">
-          <td>{{ alphabet[categoryCounter - 1] }}{{ questionCounter }}</td>
+          <td>{{ alphabet[(categoryCounter - 1) % alphabet|length] }}{{ questionCounter }}</td>
           <td>
             <a class="" href="{{ ea_url()
               .setController('App\\Controller\\Admin\\AnswerCrudController')
@@ -36,7 +36,7 @@
           {% set answers = question.answers|filter(a => a in entity.instance.answers) %}
 
           {% set referer = app.request.pathinfo ~ '#' ~ question_id %}
-          {# @todo The layout will break if ww have more that one answer #}
+          {# @todo The layout will break if we have more that one answer #}
           {% for answer in answers %}
             <td>
               {{ include('easy_admin_overrides/field_smiley.html.twig', {value: answer.smiley, title: answer.note, width: 25}) }}
@@ -65,7 +65,8 @@
                          .setAction('new')
                          .setEntityId(null)
                        }}">
-                <i class="fa fa-add new-icon"></i> {{ 'Opret Ny'|trans }}
+                {# <i class="fa fa-add new-icon"></i> {{ 'Opret Ny'|trans }} #}
+                <i class="fa fa-edit edit-icon"></i> {{ 'answers_show.edit'|trans }}
               </a>
             </td>
           {% endfor %}
