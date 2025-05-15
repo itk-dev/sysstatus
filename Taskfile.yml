@@ -34,6 +34,7 @@ tasks:
   coding-standards:apply:
     desc: "Apply coding standards"
     cmds:
+      - task: coding-standards:assets:apply
       - task: coding-standards:composer:apply
       - task: coding-standards:markdown:apply
       - task: coding-standards:php:apply
@@ -43,6 +44,7 @@ tasks:
   coding-standards:check:
     desc: "Apply coding standards"
     cmds:
+      - task: coding-standards:assets:check
       - task: coding-standards:composer:check
       - task: coding-standards:markdown:check
       - task: coding-standards:php:check

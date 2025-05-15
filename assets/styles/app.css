@@ -75,6 +75,10 @@
   display: none;
 }
 
+.table-bordered thead > tr > th {
+  border: 0px;
+}
+
 .table td,
 .table th {
   vertical-align: middle;
@@ -88,6 +92,15 @@
 td.dashboard--table-answer {
   width: 55px;
   height: 45px;
+}
+
+body.list table thead th.rotate a {
+  color: #337ab7;
+  padding: 0;
+}
+
+body.list table thead th.rotate a:hover {
+  background: transparent;
 }
 
 body.list table tbody td.dashboard--table-answer {
@@ -203,6 +216,7 @@ body.list table tbody td.dashboard--table-answer {
   width: 300px;
 }
 
+/*
 .ea-detail .field-group .field-label {
   width: 200px !important;
 }
@@ -217,6 +231,7 @@ body.list table tbody td.dashboard--table-answer {
     }
   }
 }
+*/
 
 /* Don't let fragment links stand out */
 h2 {
@@ -241,5 +256,35 @@ h2 {
     inline-size: initial;
     min-inline-size: initial;
     text-align: initial;
+  }
+}
+
+th.rotate {
+  height: 200px;
+  white-space: nowrap;
+  max-width: 55px;
+  padding: 0;
+  vertical-align: bottom;
+
+  > div {
+    transform-origin: top left;
+    transform: translate(0px, 55px) rotate(315deg);
+    width: 300px;
+    max-height: 55px;
+    border-top: 1px solid #dee2e6;
+    padding: 5px 0 0 40px;
+    height: 55px;
+
+    > span {
+      padding: 5px 10px 5px 0px;
+      display: block;
+      width: 265px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      a {
+        width: 800px;
+      }
+    }
   }
 }

@@ -47,8 +47,9 @@
       <thead class="">
       <th></th>
       {% for item in paginator %}
-        <th>
+        <th class="rotate">
           <div>
+            <span>
             {% if entityType == 'system' %}
               <a href="{{ ea_url().setController('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
                 {{ item.showableName }}
@@ -62,7 +63,7 @@
           </div>
         </th>
       {% endfor %}
-      <th class="table-right-column"><div><span></span></div></th>
+      <th class="table-right-column rotate"><div><span></span></div></th>
       </thead>
       <tbody>
       {% if categories|length > 0 %}
