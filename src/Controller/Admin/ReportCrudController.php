@@ -50,7 +50,8 @@ class ReportCrudController extends AbstractCrudController
                 yield UrlField::new('sysLink')->setLabel('entity.report.sys_id')->setLabel('entity.report.sys_link')
                     ->formatValue(static fn ($value) => new TranslatableMessage('Link'));
                 yield BooleanField::new('textSet')->setLabel('entity.report.text')
-                    ->renderAsSwitch(false);
+                    ->renderAsSwitch(false)
+                    ->hideValueWhenFalse();
 
                 return;
 

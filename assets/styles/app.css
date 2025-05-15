@@ -224,3 +224,22 @@ h2 {
         color: inherit;
     }
 }
+
+/* Un-flex label and value for boolean fields back to label: value */
+.ea-detail .field-group.field-boolean {
+  flex-direction: initial;
+
+  .field-label {
+    flex: initial;
+    margin: 0 15px 0 0;
+    min-inline-size: initial;
+    text-align: right;
+  }
+
+  .field-value {
+    flex: initial;
+    inline-size: initial;
+    min-inline-size: initial;
+    text-align: initial;
+  }
+}
