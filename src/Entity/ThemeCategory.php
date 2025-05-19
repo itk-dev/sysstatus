@@ -18,8 +18,8 @@ class ThemeCategory
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'themeCategories')]
-    #[ORM\JoinColumn(nullable: false)]
-    private Theme $theme;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Theme $theme = null;
 
     #[ORM\ManyToOne(inversedBy: 'themeCategories')]
     #[ORM\JoinColumn(nullable: false)]

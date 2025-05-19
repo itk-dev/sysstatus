@@ -37,6 +37,7 @@ class ThemeCrudController extends AbstractCrudController
 
         $categoriesField = CollectionField::new('themeCategories')->setLabel('Kategorier')
             ->setEntryType(ThemeCategoryType::class)
+            ->renderExpanded()
             ->setFormTypeOptions([
                 'by_reference' => false, // important for OneToMany associations
             ])
