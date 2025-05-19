@@ -29,6 +29,8 @@ theme:
         theme_categories: Kategorier
         sort_order: Sortering
         category: Kategori
+        delete_item: Fjern
+        add_new_item: Tilføj
 
 filter:
     submit: Søg

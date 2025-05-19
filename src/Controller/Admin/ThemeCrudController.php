@@ -18,6 +18,14 @@ class ThemeCrudController extends AbstractCrudController
         return Theme::class;
     }
 
+    #[\Override]
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            // https://symfony.com/bundles/EasyAdminBundle/current/design.html#form-field-templates
+            ->addFormTheme('admin/form.html.twig');
+    }
+
     /**
      * @throws \Exception
      */
@@ -35,6 +43,7 @@ class ThemeCrudController extends AbstractCrudController
             ->setFormTypeOption('by_reference', false)->setLabel('Anmeldelser')
         ;
 
+        // See templates/admin/form.html.twig for details on how we show this as a table.
         $categoriesField = CollectionField::new('themeCategories')->setLabel('Kategorier')
             ->setEntryType(ThemeCategoryType::class)
             ->renderExpanded()

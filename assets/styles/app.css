@@ -288,3 +288,20 @@ th.rotate {
     }
   }
 }
+
+/* Help our theme.themeCategories table stuff fall into place visually (cf. template/admin/form.html.twig) */
+#form-theme-themeCategories {
+  td {
+    vertical-align: top;
+  }
+
+  tr.field-collection-item {
+    display: table-row;
+
+    .field-collection-delete-button {
+      inset-block-start: initial;
+      inset-inline-end: initial;
+      position: initial;
+    }
+  }
+}
