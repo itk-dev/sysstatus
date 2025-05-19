@@ -107,8 +107,11 @@
       </tbody>
     </table>
 
-    <div class="pagination mt-5">
-      {{ knp_pagination_render(paginator) }}
+    {# Wrap in .pager and add .pagination to pick up styling from EasyAdmin #}
+    <div class="pager float-end">
+      <div class="pagination mt-5">
+        {{ knp_pagination_render(paginator) }}
+      </div>
     </div>
   </div>
 {% endblock main %}
