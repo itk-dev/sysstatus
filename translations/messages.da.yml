@@ -17,6 +17,8 @@ category:
     form:
         sort_order: Sortering
         question: Spørgsmål
+        delete_item: Fjern
+        add_new_item: Tilføj
 
 theme:
     new:
@@ -68,7 +70,7 @@ entity:
     category:
         id: ID
         name: Navn
-        questions: Antal spørgsmål
+        questions: Spørgsmål
     question:
         id: ID
         question: Spørgsmål
@@ -188,8 +190,9 @@ entity:
         sys_data_to_science: Videregivelse af oplysninger til forskning
         sys_system_owner: Systemejer
 menu:
-    import_runs: Import kørsler
+    import_runs: Importkørsler
     configuration: Konfiguration
+    administration: Administration
     notes: Notater
     systemportal: Fra systemportalen
     general: Redigerbar Data
@@ -215,8 +218,11 @@ menu:
     theme_category: Tema-Kategori
     exports: Eksport
 ImportRun: Import kørsler
+Empty: Tom
 System: System
 Systems: Systemer
+UserGroup: Gruppe
+UserGroups: Grupper
 User: Bruger
 Report: Anmeldelse
 Reports: Anmeldelser
@@ -252,10 +258,10 @@ answers_show:
     actions: Handlinger
     edit: Ret
     no_active_theme: Intet tilkoblet tema.
-'Created by': Oprettet af
-'Updated by': Opdateret af
-'Created at': Oprettet
-'Updated at': Opdateret
+'Created By': Oprettet af
+'Updated By': Opdateret af
+'Created At': Oprettet
+'Updated At': Opdateret
 custom_filters:
     none: Alle
 Apply: Udfør

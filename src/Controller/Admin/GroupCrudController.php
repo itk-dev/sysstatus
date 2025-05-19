@@ -10,9 +10,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Translation\TranslatableMessage;
 
 class GroupCrudController extends AbstractCrudController
 {
@@ -24,12 +24,17 @@ class GroupCrudController extends AbstractCrudController
     #[\Override]
     public function configureActions(Actions $actions): Actions
     {
-        $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->remove(Crud::PAGE_INDEX, Action::DELETE)
-        ;
+        return parent::configureActions($actions)
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
+    }
 
-        return $actions;
+    #[\Override]
+    public function configureCrud(Crud $crud): Crud
+    {
+        return parent::configureCrud($crud)
+            ->setEntityLabelInSingular(new TranslatableMessage('UserGroup'))
+            ->setEntityLabelInPlural(new TranslatableMessage('UserGroups'))
+        ;
     }
 
     /**
@@ -38,33 +43,20 @@ class GroupCrudController extends AbstractCrudController
     #[\Override]
     public function configureFields(string $pageName): iterable
     {
-        $id = IdField::new('id');
-        $name = TextField::new('name');
-        $roles = ArrayField::new('roles');
-        $system = ArrayField::new('systems');
-        $report = ArrayField::new('reports');
-        $systemtheme = ArrayField::new('systemThemes');
-        $reporttheme = ArrayField::new('reportTheme');
-        $users = IntegerField::new('users');
-
-        $asoc_report = AssociationField::new('reports');
-        $asoc_systems = AssociationField::new('systems');
-
-        $choice_roles = ChoiceField::new('roles')->setChoices([
+        yield TextField::new('name');
+        yield ChoiceField::new('roles')->setChoices([
             'User' => 'ROLE_USER',
             'Admin' => 'ROLE_ADMIN',
-        ])->allowMultipleChoices(true)->renderExpanded()->setEmptyData(false);
-
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$name, $asoc_report, $asoc_systems];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $name, $roles, $system, $report, $systemtheme, $reporttheme, $users];
-        } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$name, $choice_roles];
-        } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$id, $name, $roles];
-        } else {
-            throw new \Exception('Invalid page: '.$pageName);
-        }
+        ])->allowMultipleChoices()->renderExpanded()->setEmptyData(false);
+        yield CollectionField::new('reports')
+            ->setTemplatePath('admin/collection.html.twig');
+        yield AssociationField::new('systems')
+            ->setTemplatePath('admin/collection.html.twig');
+        yield ArrayField::new('systemThemes')
+            ->setTemplatePath('admin/collection.html.twig');
+        yield ArrayField::new('reportThemes')
+            ->setTemplatePath('admin/collection.html.twig');
+        yield ArrayField::new('users')
+            ->setTemplatePath('admin/collection.html.twig');
     }
 }

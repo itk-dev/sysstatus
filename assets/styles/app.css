@@ -304,8 +304,8 @@ th.rotate {
   }
 }
 
-/* Help our theme.themeCategories table stuff fall into place visually (cf. template/admin/form.html.twig) */
-#form-theme-themeCategories {
+/* Help our theme.themeCategories and category.questions table stuff fall into place visually (cf. template/admin/form.html.twig) */
+.field-collection .table-ea-collection {
   td {
     vertical-align: top;
   }
