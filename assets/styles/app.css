@@ -240,22 +240,37 @@ h2 {
   }
 }
 
-/* Un-flex label and value for boolean fields back to label: value */
-.ea-detail .field-group.field-boolean {
-  flex-direction: initial;
+.ea-detail {
+  .field-group {
+    /* Show field values like input controls for improved (?) readability */
+    .field-label {
+      margin-top: 5px;
+    }
 
-  .field-label {
-    flex: initial;
-    margin: 0 15px 0 0;
-    min-inline-size: initial;
-    text-align: right;
+    .field-value {
+      border: var(--border-width) var(--border-style) var(--border-color);
+      padding: 4px 7px 5px;
+      border-radius: var(--border-radius);
+    }
   }
 
-  .field-value {
-    flex: initial;
-    inline-size: initial;
-    min-inline-size: initial;
-    text-align: initial;
+  /* Un-flex label and value for boolean fields back to label: value */
+  .field-group.field-boolean {
+    flex-direction: initial;
+
+    .field-label {
+      flex: initial;
+      margin: 0 15px 0 0;
+      min-inline-size: initial;
+      text-align: right;
+    }
+
+    .field-value {
+      flex: initial;
+      inline-size: initial;
+      min-inline-size: initial;
+      text-align: initial;
+    }
   }
 }
 
