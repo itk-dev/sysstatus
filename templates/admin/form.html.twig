@@ -3,8 +3,8 @@
     {% set id = 'form-theme-themeCategories' %}
     <table class="table table-striped table-ea-collection" id="{{ id }}">
       <thead>
-        <th>{{ 'theme.form.sort_order'|trans }}</th>
-        <th>{{ 'theme.form.category'|trans }}</th>
+        <th scope="col">{{ 'theme.form.sort_order'|trans }}</th>
+        <th scope="col">{{ 'theme.form.category'|trans }}</th>
         <th></th>
       </thead>
       <tbody class="ea-form-collection-items field-array">
@@ -70,9 +70,10 @@
 {% block _Category_questions_widget %}
     {% set id = 'form-category-questions' %}
     <table class="table table-striped table-ea-collection" id="{{ id }}">
+
       <thead>
-        <th>{{ 'category.form.sort_order'|trans }}</th>
-        <th>{{ 'category.form.question'|trans }}</th>
+        <th scope="col">{{ 'category.form.sort_order'|trans }}</th>
+        <th scope="col">{{ 'category.form.question'|trans }}</th>
         <th></th>
       </thead>
       <tbody class="ea-form-collection-items field-array">
