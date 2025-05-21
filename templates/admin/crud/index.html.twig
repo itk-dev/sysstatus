@@ -1,0 +1,9 @@
+{% extends '@EasyAdmin/crud/index.html.twig' %}
+
+{% block main %}
+  {% if custom_filters is defined %}
+    {{ include('_partials/custom_filters.html.twig', {custom_filters}) }}
+  {% endif %}
+
+  {{ parent() }}
+{% endblock %}

@@ -35,12 +35,17 @@ theme:
         add_new_item: Tilføj
 
 filter:
+    groups: Grupper
+    subowner: Undergruppe
+    theme: Tema
+    category: Kategori
+    search: Søgetekst
     submit: Søg
     placeholder:
-        groups: -- Vælg grupper --
-        subowner: -- Vælg undergruppe --
-        theme: -- Vælg tema --
-        category: -- Vælg kategori --
+        groups: Vælg grupper
+        subowner: Vælg undergruppe
+        theme: Vælg tema
+        category: Vælg kategori
         search: Søg på navn
         self_service: Filtrér på selvbetjening
 
