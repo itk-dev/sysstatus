@@ -27,6 +27,12 @@ doctrine:
                 prefix: Gedmo\Loggable\Entity
                 dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Loggable/Entity"
                 is_bundle: false
+        filters:
+            entity_active:
+                class: App\Doctrine\EntityActiveFilter
+                enabled: true
+                parameters:
+                    active_value: Aktiv
 
 when@test:
     doctrine:
