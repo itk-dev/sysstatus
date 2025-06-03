@@ -119,13 +119,13 @@ tasks:
   coding-standards:yaml:apply:
     desc: "Apply coding standards for YAML"
     cmds:
-      - task compose -- run --rm prettier 'config/**/*.{yml,yaml}' --write
+      - task compose -- run --rm prettier --parser yaml phpstan*.neon 'config/**/*.{yml,yaml}' --write
 
   coding-standards:yaml:check:
     desc: "Apply and check coding standards for YAML"
     cmds:
       - task: coding-standards:yaml:apply
-      - task compose -- run --rm prettier 'config/**/*.{yml,yaml}' --check
+      - task compose -- run --rm prettier --parser yaml phpstan*.neon 'config/**/*.{yml,yaml}' --check
 
   code-analysis:
     cmds:

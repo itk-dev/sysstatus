@@ -132,6 +132,8 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
 
     /**
      * Get repository for entity type.
+     *
+     * @return EntityRepository<object>
      */
     private function getRepository(
         string $entityType,

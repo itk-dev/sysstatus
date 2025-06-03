@@ -6,6 +6,7 @@ use App\Entity\Report;
 use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
 use App\Entity\UserGroup;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -133,11 +134,11 @@ trait EntityFilterTrait
     /**
      * Get array of a user's groups, themes and categories.
      *
-     * @param array $userGroups
+     * @param UserGroup[] $userGroups
      *
      * @return mixed
      */
-    private function getUserGroupsThemesAndCategories(array $userGroups, $entityType)
+    private function getUserGroupsThemesAndCategories(array $userGroups, string $entityType)
     {
         return array_reduce($userGroups,
             function ($carry, UserGroup $group) use ($entityType) {
@@ -164,12 +165,12 @@ trait EntityFilterTrait
     /**
      * Get subowners for selected group.
      *
-     * @param $repository
-     * @param $selectedGroups
+     * @param EntityRepository<object> $repository
+     * @param UserGroup[] $selectedGroups
      *
      * @return mixed
      */
-    private function getSubOwnerOptions($repository, $selectedGroups)
+    private function getSubOwnerOptions(EntityRepository $repository, array $selectedGroups)
     {
         $groups = $this->entityManager->getRepository(UserGroup::class)->findBy([
             'id' => $selectedGroups,
@@ -207,11 +208,9 @@ trait EntityFilterTrait
     /**
      * Get options for self service filter.
      *
-     * @param $entityType
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    private function getSelfServiceOptions($entityType)
+    private function getSelfServiceOptions(string $entityType): array
     {
         $selfServiceOptions = [];
         if (System::class === $entityType) {
@@ -226,6 +225,9 @@ trait EntityFilterTrait
         return $selfServiceOptions;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getFilterParameters(Request $request): array
     {
         $formData = (array) ($request->query->all()['form'] ?? null);
