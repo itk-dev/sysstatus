@@ -2,19 +2,30 @@
 # github/workflows/markdown.yaml in
 # https://github.com/itk-dev/devops_itkdev-docker if need be.
 
-### ## Markdown
+### ### Markdown
 ###
-### Uses [itkdev/markdownlint](https://hub.docker.com/r/itkdev/markdownlint) to
-### link all Markdown files (`**/*.md`) in the project.
+### Lints Markdown files (`**/*.md`) in the project.
 ###
-### [markdownlint-cli configuration ### files](https://github.com/igorshubovych/markdownlint-cli?tab=readme-ov-file#configuration),
-### `.markdownlint.jsonc` and `.markdownlintignore` control what is actually linted and how.
+### [markdownlint-cli configuration
+### files](https://github.com/igorshubovych/markdownlint-cli?tab=readme-ov-file#configuration),
+### `.markdownlint.jsonc` and `.markdownlintignore`, control what is actually
+### linted and how.
+###
+### #### Assumptions
+###
+### 1. A docker compose service named `markdownlint` for running `markdownlint`
+###    (from
+###    [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli))
+###    exists.
 
 name: Markdown
 
 on:
   pull_request:
   push:
+    branches:
+      - main
+      - develop
 
 jobs:
   markdown-lint:
@@ -26,4 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - run: |
-          docker run --rm --volume "$PWD":/md itkdev/markdownlint '**/*.md'
+          docker network create frontend
+
+      - run: |
+          docker compose run --rm markdownlint markdownlint '**/*.md'
