@@ -167,7 +167,7 @@ class Theme implements \Stringable
     public function removeReportGroup(UserGroup $reportGroup): self
     {
         if ($this->reportGroups->removeElement($reportGroup)) {
-            $reportGroup->removeSystemTheme($this);
+            $reportGroup->removeReportTheme($this);
         }
 
         return $this;
