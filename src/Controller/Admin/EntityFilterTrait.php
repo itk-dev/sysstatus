@@ -18,6 +18,7 @@ trait EntityFilterTrait
 {
     protected function createFilterFormBuilder(): FormBuilderInterface
     {
+        // We don't want a CSRF token on our filter form.
         return $this->createFormBuilder(options: ['csrf_protection' => false])
             ->setMethod(Request::METHOD_GET);
     }
