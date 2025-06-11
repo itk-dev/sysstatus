@@ -23,14 +23,7 @@
         {% set question_id = section_id ~ '-' ~ questionCounter %}
         <tr id="{{ question_id }}">
           <td>{{ alphabet[(categoryCounter - 1) % alphabet|length] }}{{ questionCounter }}</td>
-          <td>
-            <a class="" href="{{ ea_url()
-              .setController('App\\Controller\\Admin\\AnswerCrudController')
-              .setAction('detail')
-            }}">
-              {{ question.question }}
-            </a>
-          </td>
+          <td>{{ question.question }}</td>
 
           {# Get a list of answers within the system #}
           {% set answers = question.answers|filter(a => a in entity.instance.answers) %}
