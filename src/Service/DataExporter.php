@@ -474,10 +474,6 @@ class DataExporter
         bool $withColor = false,
     ): void {
         $qb = $this->reportRepository->createQueryBuilder('e');
-        $qb->where($qb->expr()->isNull('e.archivedAt'))
-            ->andWhere($qb->expr()
-                ->eq('e.sysStatus', $qb->expr()->literal('Aktiv')))
-        ;
 
         if (isset($groupId)) {
             $qb->andWhere($qb->expr()->isMemberOf(':group', 'e.groups'))
@@ -515,11 +511,6 @@ class DataExporter
         bool $withColor = false,
     ): void {
         $qb = $this->systemRepository->createQueryBuilder('e');
-        $qb->where($qb->expr()->isNull('e.archivedAt'))
-            ->andWhere($qb->expr()
-                ->neq('e.sysStatus',
-                    $qb->expr()->literal('Systemet bruges ikke længere')))
-        ;
 
         if (isset($groupId)) {
             $qb->andWhere($qb->expr()->isMemberOf(':group', 'e.groups'))

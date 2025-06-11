@@ -181,16 +181,6 @@ trait EntityFilterTrait
         $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
         $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
 
-        // Filter inactives out.
-        $subOwnersQueryBuilder->andWhere('e.archivedAt IS NULL');
-
-        $class = $repository->getClassName();
-        if (Report::class === $class) {
-            $subOwnersQueryBuilder->andWhere('e.sysStatus = \'Aktiv\'');
-        } elseif (System::class === $class) {
-            $subOwnersQueryBuilder->andWhere('e.sysStatus <> \'Systemet bruges ikke længere\'');
-        }
-
         foreach ($groups as $group) {
             $subOwnersQueryBuilder->andWhere($subOwnersQueryBuilder->expr()->isMemberOf(':group'.$group->getId(), 'e.groups'));
             $subOwnersQueryBuilder->setParameter(':group'.$group->getId(), $group);
@@ -264,14 +254,6 @@ trait EntityFilterTrait
         $alias ??= $query->getRootAliases()[0];
         if (empty($alias)) {
             throw new \RuntimeException('Cannot get root alias for query');
-        }
-        $query->andWhere($alias.'.archivedAt IS NULL');
-
-        // Filter inactives out.
-        if (Report::class === $entityType) {
-            $query->andWhere($alias.'.sysStatus = \'Aktiv\'');
-        } elseif (System::class === $entityType) {
-            $query->andWhere($alias.'.sysStatus <> \'Systemet bruges ikke længere\'');
         }
 
         // Get the groups the user can search in.

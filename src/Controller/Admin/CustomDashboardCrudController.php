@@ -169,18 +169,6 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
         $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
 
-        // Filter inactives out.
-        $subOwnersQueryBuilder->andWhere('e.archivedAt IS NULL');
-
-        $class = $repository->getClassName();
-        if (Report::class === $class) {
-            $subOwnersQueryBuilder->andWhere('e.sysStatus = \'Aktiv\'');
-        } elseif (System::class === $class) {
-            $subOwnersQueryBuilder->andWhere(
-                'e.sysStatus <> \'Systemet bruges ikke længere\''
-            );
-        }
-
         foreach ($groups as $group) {
             $subOwnersQueryBuilder->andWhere(
                 $subOwnersQueryBuilder

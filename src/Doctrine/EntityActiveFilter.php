@@ -13,9 +13,17 @@ class EntityActiveFilter extends SQLFilter
     {
         switch ($targetEntity->getName()) {
             case Report::class:
-                return sprintf('%s.sys_status = %s', $targetTableAlias, $this->getConnection()->quote('Aktiv'));
+                return sprintf(
+                    '(%1$s.archived_at IS NULL AND %1$s.sys_status = %2$s)',
+                    $targetTableAlias,
+                    $this->getConnection()->quote(Report::STATUS_ACTIVE)
+                );
             case System::class:
-                return sprintf('%s.sys_status <> %s', $targetTableAlias, $this->getConnection()->quote('Systemet bruges ikke længere'));
+                return sprintf(
+                    '(%1$s.archived_at IS NULL AND %1$s.sys_status <> %2$s)',
+                    $targetTableAlias,
+                    $this->getConnection()->quote(System::STATUS_NOT_ACTIVE)
+                );
         }
 
         return '';
