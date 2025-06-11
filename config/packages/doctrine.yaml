@@ -31,8 +31,6 @@ doctrine:
             entity_active:
                 class: App\Doctrine\EntityActiveFilter
                 enabled: true
-                parameters:
-                    active_value: Aktiv
 
 when@test:
     doctrine:
