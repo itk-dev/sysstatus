@@ -20,6 +20,7 @@ class Report implements \Stringable
     use BlameableEntity;
     use TimestampableEntity;
     use ArchivableEntity;
+    public const string STATUS_ACTIVE = 'Aktiv';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -2,11 +2,11 @@
 # github/workflows/composer.yaml in
 # https://github.com/itk-dev/devops_itkdev-docker if need be.
 
-### ## Composer
+### ### Composer
 ###
 ### Validates composer.json and checks that it's normalized.
 ###
-### ### Assumptions
+### #### Assumptions
 ###
 ### 1. A docker compose service named `phpfpm` can be run and `composer` can be
 ###    run inside the `phpfpm` service.
@@ -31,6 +31,9 @@ env:
 on:
   pull_request:
   push:
+    branches:
+      - main
+      - develop
 
 jobs:
   composer-validate:

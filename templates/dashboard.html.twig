@@ -9,46 +9,18 @@
 {% endblock %}
 
 {% block main %}
-  <div class="global-actions w-100 mt-2 mb-3">
-    {{ form_start(filters, {attr: {class: 'w-100'}}) }}
-    <div class="d-flex flex-column flex-md-row gap-2 mb-2">
-      <div class="col">
-        {{ form_widget(filters.groups) }}
-      </div>
-      <div class="col">
-        {{ form_widget(filters.subowner) }}
-      </div>
-      <div class="col">
-        {{ form_widget(filters.theme) }}
-      </div>
-      <div class="col">
-        {{ form_widget(filters.category) }}
-      </div>
-      {% if filters.self_service is defined %}
-        <div class="col">
-          {{ form_widget(filters.self_service) }}
-        </div>
-      {% endif %}
-    </div>
-    <div class="d-flex gap-2">
-      <div class="col-8 col-md-10">
-        {{ form_widget(filters.search) }}
-      </div>
-      <div class="col">
-        {# We don't need the submit button name (`form[save]`) when submitting the filters, so we add `full_name: false` remove the name (make it empty) #}
-        {{ form_widget(filters.save, {full_name: false, attr: {class: 'btn btn-primary w-100 h-100'}}) }}
-      </div>
-    </div>
-    {{ form_end(filters) }}
-  </div>
+  {% if custom_filters is defined %}
+    {{ include('_partials/custom_filters.html.twig', {custom_filters}) }}
+  {% endif %}
 
   <div class="dashboard--table">
     <table class="table table-bordered table-striped table-sm">
       <thead class="">
       <th></th>
       {% for item in paginator %}
-        <th>
+        <th class="rotate">
           <div>
+            <span>
             {% if entityType == 'system' %}
               <a href="{{ ea_url().setController('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
                 {{ item.showableName }}
@@ -62,7 +34,7 @@
           </div>
         </th>
       {% endfor %}
-      <th class="table-right-column"><div><span></span></div></th>
+      <th class="table-right-column rotate"><div><span></span></div></th>
       </thead>
       <tbody>
       {% if categories|length > 0 %}
@@ -106,27 +78,11 @@
       </tbody>
     </table>
 
-    <div class="pagination mt-5">
-      {{ knp_pagination_render(paginator) }}
+    {# Wrap in .pager and add .pagination to pick up styling from EasyAdmin #}
+    <div class="pager float-end">
+      <div class="pagination mt-5">
+        {{ knp_pagination_render(paginator) }}
+      </div>
     </div>
   </div>
 {% endblock main %}
-
-{% block body_javascript %}
-  {{ parent() }}
-
-  <script>
-    {# Subowner options depend on selected groups, so we submit the form when groups are changed to reflect the new subowners. #}
-    addEventListener('load', () => {
-      const el = document.getElementById('form_groups')
-      if (el) {
-        el.addEventListener('change', (event) => {
-          const form = event.target.form
-          if (form) {
-            form.submit()
-          }
-        })
-      }
-    })
-  </script>
-{% endblock %}

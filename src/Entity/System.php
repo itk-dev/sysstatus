@@ -20,6 +20,7 @@ class System implements \Stringable
     use BlameableEntity;
     use TimestampableEntity;
     use ArchivableEntity;
+    public const string STATUS_NOT_ACTIVE = 'Systemet bruges ikke længere';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

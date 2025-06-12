@@ -3,20 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Report;
-use App\Entity\SelfServiceAvailableFromItem;
 use App\Entity\System;
 use App\Entity\UserGroup;
-use App\Repository\ReportRepository;
-use App\Repository\SystemRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +18,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class CustomDashboardCrudController extends AbstractSystatusDashboardController
 {
+    use EntityFilterTrait;
+
     /**
      * AdminController constructor.
      */
@@ -54,47 +48,15 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
     {
         $queryParameters = $request->query;
 
-        // Fetch all query parameters as an array.
-        $queryParams = $request->query->all();
-
-        // Safely retrieve 'form' as an array.
-        $formData = $queryParams['form'] ?? [];
-
-        // Ensure `formData` is always an array.
-        if (!is_array($formData)) {
-            $formData = [];
-        }
-
-        $formParameters = array_merge(
-            [
-                'groups' => [],
-                'subowner' => '',
-                'theme' => '',
-                'category' => '',
-                'self_service' => '',
-                'search' => '',
-            ],
-            $formData
-        );
-
+        $filterParameters = $this->getFilterParameters($request);
         $userGroups = $this->entityManager
             ->getRepository(UserGroup::class)
             ->findAll();
-        $userGroupsThemesAndCategories = $this->getUserGroupsThemesAndCategories(
-            $userGroups ?: [],
-            $entityType
-        );
 
         // Get a query for the entity type.
         $repository = $this->getRepository($entityType);
         $query = $repository->createQueryBuilder('e');
-        $query = $this->applyFilters($query, $formParameters, $entityType);
-
-        // Get sub owners if a group has been selected.
-        $subOwnerOptions = $this->getSubOwnerOptions(
-            $repository,
-            $formParameters['groups']
-        );
+        $query = $this->applyFilters($query, $filterParameters, $this->getEntityClassName($entityType));
 
         $paginator = $this->paginator->paginate(
             $query,
@@ -105,11 +67,11 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $availableCategories = [];
         $themes = [];
 
-        if (!empty($formParameters['groups'])) {
+        if (!empty($filterParameters['groups'])) {
             $groups = $this->entityManager
                 ->getRepository(UserGroup::class)
                 ->findBy([
-                    'id' => $formParameters['groups'],
+                    'id' => $filterParameters['groups'],
                 ]);
         } else {
             $groups = $userGroups;
@@ -122,8 +84,8 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                     : $group->getSystemThemes();
 
             foreach ($groupThemes as $theme) {
-                if ('' != $formParameters['theme']) {
-                    if ($theme->getId() != $formParameters['theme']) {
+                if ('' != $filterParameters['theme']) {
+                    if ($theme->getId() != $filterParameters['theme']) {
                         continue;
                     }
                 }
@@ -132,10 +94,10 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
                     $themes[$theme->getId()] = $theme;
 
                     foreach ($theme->getOrderedCategories() as $category) {
-                        if ('' != $formParameters['category']) {
+                        if ('' != $filterParameters['category']) {
                             if (
                                 $category->getId() !=
-                                $formParameters['category']
+                                $filterParameters['category']
                             ) {
                                 continue;
                             }
@@ -147,164 +109,47 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             }
         }
 
-        $selfServiceOptions = $this->getSelfServiceOptions($entityType);
-
-        $filterFormBuilder = $this->getFilterFormBuilder(
-            $userGroupsThemesAndCategories,
-            $formParameters,
-            $subOwnerOptions,
-            true,
-            true,
-            $selfServiceOptions
-        );
-        $filterFormBuilder
-            ->setMethod(Request::METHOD_GET)
+        $filterFormBuilder = $this->createFilterFormBuilder()
             ->setAction(
                 $this->generateUrl('dashboard', ['entityType' => $entityType])
             );
 
+        $this->buildCustomFilters(
+            $request,
+            $this->getEntityClassName($entityType),
+            $filterFormBuilder,
+            filterThemes: true,
+            filterCategories: true
+        );
+
         return $this->render('dashboard.html.twig', [
             'paginator' => $paginator,
             'categories' => $availableCategories,
-            'filters' => $filterFormBuilder->getForm()->createView(),
+            'custom_filters' => $filterFormBuilder->getForm()->createView(),
             'entityType' => $entityType,
         ]);
     }
 
     /**
-     * @param array<UserGroup> $userGroups
-     * @param string $entityType
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    private function getUserGroupsThemesAndCategories(
-        array $userGroups,
-        string $entityType,
-    ): mixed {
-        return array_reduce(
-            $userGroups,
-            function ($carry, UserGroup $group) use ($entityType) {
-                $carry['groups'][$group->getId()] = $group->getName();
-
-                $groupThemes =
-                    'report' == $entityType
-                        ? $group->getReportThemes()
-                        : $group->getSystemThemes();
-
-                foreach ($groupThemes as $theme) {
-                    $carry['themes'][$theme->getId()] = $theme->getName();
-
-                    foreach ($theme->getOrderedCategories() as $category) {
-                        $carry['categories'][
-                            $category->getId()
-                        ] = $category->getName();
-                    }
-                }
-
-                return $carry;
-            },
-            [
-                'groups' => [],
-                'themes' => [],
-                'categories' => [],
-            ]
-        );
-    }
-
-    /**
      * Get repository for entity type.
      *
-     * @param string $entityType
-     *
-     * @return ReportRepository|SystemRepository|null
+     * @return EntityRepository<object>
      */
     private function getRepository(
         string $entityType,
-    ): ReportRepository|SystemRepository|null {
-        return match ($entityType) {
-            'system' => $this->entityManager->getRepository(System::class),
-            'report' => $this->entityManager->getRepository(Report::class),
-            default => null,
-        };
+    ): EntityRepository {
+        $className = $this->getEntityClassName($entityType);
+
+        return $this->entityManager->getRepository($className);
     }
 
-    /**
-     * Apply common filters for report and system query.
-     *
-     * @param QueryBuilder $query
-     * @param array<string, mixed> $formParameters
-     * @param string|null $entityType
-     *
-     * @return QueryBuilder
-     */
-    private function applyFilters(
-        QueryBuilder $query,
-        array $formParameters,
-        ?string $entityType = null,
-    ): QueryBuilder {
-        $query->andWhere('e.archivedAt IS NULL');
-
-        // Filter inactives out.
-        if ('report' == $entityType) {
-            $query->andWhere('e.sysStatus = \'Aktiv\'');
-        } elseif ('system' == $entityType) {
-            $query->andWhere('e.sysStatus <> \'Systemet bruges ikke længere\'');
-        }
-
-        // Get the groups the user can search in.
-        if (!empty($formParameters['groups'])) {
-            $groups = $this->entityManager
-                ->getRepository(UserGroup::class)
-                ->findBy([
-                    'id' => $formParameters['groups'],
-                ]);
-
-            foreach ($groups as $group) {
-                $query->andWhere(
-                    $query
-                        ->expr()
-                        ->isMemberOf(':group'.$group->getId(), 'e.groups')
-                );
-                $query->setParameter(':group'.$group->getId(), $group);
-            }
-        }
-
-        if (
-            isset($formParameters['self_service'])
-            && '' != $formParameters['self_service']
-        ) {
-            $item = $this->entityManager
-                ->getRepository(SelfServiceAvailableFromItem::class)
-                ->findOneBy([
-                    'id' => $formParameters['self_service'],
-                ]);
-            if (null != $item) {
-                $query->andWhere(
-                    ':self_service MEMBER OF e.selfServiceAvailableFromItems'
-                );
-                $query->setParameter('self_service', $item);
-            }
-        }
-
-        if (
-            isset($formParameters['search'])
-            && '' != $formParameters['search']
-        ) {
-            $query->andWhere('e.name LIKE :name');
-            $query->setParameter('name', '%'.$formParameters['search'].'%');
-        }
-
-        if (
-            isset($formParameters['subowner'])
-            && '' != $formParameters['subowner']
-        ) {
-            $query->andWhere('e.sysOwnerSub = :subowner');
-            $query->setParameter('subowner', $formParameters['subowner']);
-        }
-
-        return $query;
+    private function getEntityClassName(string $entityType): ?string
+    {
+        return match ($entityType) {
+            'system' => System::class,
+            'report' => Report::class,
+            default => null,
+        };
     }
 
     /**
@@ -323,18 +168,6 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
         $subOwnersQueryBuilder = $repository->createQueryBuilder('e');
         $subOwnersQueryBuilder->select('DISTINCT e.sysOwnerSub');
         $subOwnersQueryBuilder->andWhere('e.sysOwnerSub IS NOT NULL');
-
-        // Filter inactives out.
-        $subOwnersQueryBuilder->andWhere('e.archivedAt IS NULL');
-
-        $class = $repository->getClassName();
-        if (Report::class === $class) {
-            $subOwnersQueryBuilder->andWhere('e.sysStatus = \'Aktiv\'');
-        } elseif (System::class === $class) {
-            $subOwnersQueryBuilder->andWhere(
-                'e.sysStatus <> \'Systemet bruges ikke længere\''
-            );
-        }
 
         foreach ($groups as $group) {
             $subOwnersQueryBuilder->andWhere(
@@ -359,139 +192,6 @@ class CustomDashboardCrudController extends AbstractSystatusDashboardController
             },
             []
         );
-    }
-
-    /**
-     * Get options for self-service filter.
-     *
-     * @param string $entityType
-     *
-     * @return array<string, int>
-     */
-    private function getSelfServiceOptions(string $entityType): array
-    {
-        $selfServiceOptions = [];
-        if ('system' == $entityType) {
-            /* @var Collection $selfServiceAvailableFromItems */
-            $selfServiceAvailableFromItems = $this->entityManager
-                ->getRepository(SelfServiceAvailableFromItem::class)
-                ->findAll();
-            /* @var SelfServiceAvailableFromItem $item */
-            foreach ($selfServiceAvailableFromItems as $item) {
-                $selfServiceOptions[$item->getName()] = $item->getId();
-            }
-        }
-
-        return $selfServiceOptions;
-    }
-
-    /**
-     * Get filter form builder.
-     *
-     * @param mixed $userGroupsThemesAndCategories
-     * @param array<string, mixed> $formParameters
-     * @param mixed $subownerOptions
-     * @param bool $filterThemes
-     * @param bool $filterCategories
-     * @param array<int> $filterSelfServiceOptions
-     *
-     * @return FormBuilderInterface
-     */
-    private function getFilterFormBuilder(
-        mixed $userGroupsThemesAndCategories,
-        array $formParameters,
-        mixed $subownerOptions,
-        bool $filterThemes = false,
-        bool $filterCategories = false,
-        array $filterSelfServiceOptions = [],
-    ): FormBuilderInterface {
-        $filterFormBuilder = $this->createFormBuilder(options: ['csrf_protection' => false]);
-        $filterFormBuilder->add('groups', ChoiceType::class, [
-            'label' => 'filter.groups',
-            'placeholder' => 'filter.placeholder.groups',
-            'choices' => array_flip($userGroupsThemesAndCategories['groups']),
-            'multiple' => true,
-            'attr' => [
-                'class' => 'form-control',
-                // @todo Find documentation reference for why setting data-ea-widget actually works
-                // (https://github.com/search?q=repo%3AEasyCorp%2FEasyAdminBundle%20data-ea-widget&type=code)
-                'data-ea-widget' => 'ea-autocomplete',
-                'data-placeholder' => $this->translator->trans(
-                    'filter.placeholder.groups'
-                ),
-            ],
-            'required' => false,
-            'data' => $formParameters['groups'] ?? null,
-        ]);
-        $filterFormBuilder->add('subowner', ChoiceType::class, [
-            'label' => 'filter.subowner',
-            'placeholder' => 'filter.placeholder.subowner',
-            'choices' => $subownerOptions,
-            'attr' => [
-                'class' => 'form-control',
-                'data-ea-widget' => 'ea-autocomplete',
-            ],
-            'required' => false,
-            'disabled' => 0 == count($subownerOptions),
-            'data' => $formParameters['subowner'] ?? null,
-        ]);
-        if ($filterThemes) {
-            $filterFormBuilder->add('theme', ChoiceType::class, [
-                'label' => 'filter.theme',
-                'placeholder' => 'filter.placeholder.theme',
-                'choices' => array_flip(
-                    $userGroupsThemesAndCategories['themes']
-                ),
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-ea-widget' => 'ea-autocomplete',
-                ],
-                'required' => false,
-                'data' => $formParameters['theme'] ?? null,
-            ]);
-        }
-        if ($filterCategories) {
-            $filterFormBuilder->add('category', ChoiceType::class, [
-                'label' => 'filter.category',
-                'placeholder' => 'filter.placeholder.category',
-                'choices' => array_flip(
-                    $userGroupsThemesAndCategories['categories']
-                ),
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-ea-widget' => 'ea-autocomplete',
-                ],
-                'required' => false,
-                'data' => $formParameters['category'] ?? null,
-            ]);
-        }
-        if (count($filterSelfServiceOptions) > 0) {
-            $filterFormBuilder->add('self_service', ChoiceType::class, [
-                'label' => 'filter.self_service',
-                'placeholder' => 'filter.placeholder.self_service',
-                'choices' => $filterSelfServiceOptions,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-ea-widget' => 'ea-autocomplete',
-                ],
-                'required' => false,
-                'data' => $formParameters['self_service'] ?? null,
-            ]);
-        }
-        $filterFormBuilder->add('search', TextType::class, [
-            'label' => 'filter.search',
-            'attr' => [
-                'class' => 'form-control',
-                'placeholder' => 'filter.placeholder.search',
-            ],
-            'required' => false,
-            'data' => $formParameters['search'] ?? null,
-        ]);
-        $filterFormBuilder->add('save', SubmitType::class, [
-            'label' => 'filter.submit',
-        ]);
-
-        return $filterFormBuilder;
     }
 
     /**

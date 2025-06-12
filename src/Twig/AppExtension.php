@@ -4,17 +4,24 @@ namespace App\Twig;
 
 use App\Entity\Question;
 use Doctrine\Common\Collections\ArrayCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Registry\CrudControllerRegistry;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
+    public function __construct(
+        private readonly CrudControllerRegistry $crudControllerRegistry,
+    ) {
+    }
+
     #[\Override]
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('getclass', $this->getClass(...)),
+            new TwigFunction('get_class', $this->getClass(...)),
+            new TwigFunction('get_crud_fqcn', $this->getCrudFqcn(...)),
             new TwigFunction('getanswer', $this->getAnswer(...)),
             new TwigFunction('breakintolines', $this->breakIntoLines(...)),
         ];
@@ -28,9 +35,14 @@ class AppExtension extends AbstractExtension
         ];
     }
 
-    public function getClass(mixed $instance): bool
+    public function getClass(mixed $instance): string
     {
         return $instance::class;
+    }
+
+    public function getCrudFqcn(mixed $entity): ?string
+    {
+        return $this->crudControllerRegistry->findCrudFqcnByEntityFqcn($entity::class);
     }
 
     public function getAnswer(mixed $entity, Question $question): mixed
@@ -113,7 +125,7 @@ class AppExtension extends AbstractExtension
     {
         $iterator = $item->getIterator();
 
-        $iterator->uasort(static fn ($a, $b) => $a->getSortOrder() <=> $b->getSortOrder());
+        $iterator->uasort(static fn ($a, $b) => $a->getSortOrder() > $b->getSortOrder() ? -1 : 1);
 
         return new ArrayCollection(iterator_to_array($iterator));
     }

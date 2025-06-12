@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,6 +21,7 @@ class UserGroup implements \Stringable
      */
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'systemGroups')]
     #[ORM\JoinTable(name: 'group_system_themes')]
+    #[ORM\OrderBy(['name' => Order::Ascending->value])]
     private Collection $systemThemes;
 
     /**
@@ -27,18 +29,21 @@ class UserGroup implements \Stringable
      */
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'reportGroups')]
     #[ORM\JoinTable(name: 'group_report_themes')]
+    #[ORM\OrderBy(['name' => Order::Ascending->value])]
     private Collection $reportThemes;
 
     /**
      * @var Collection<int, Report>
      */
     #[ORM\ManyToMany(targetEntity: Report::class, mappedBy: 'groups')]
+    #[ORM\OrderBy(['name' => Order::Ascending->value])]
     private Collection $reports;
 
     /**
      * @var Collection<int, System>
      */
     #[ORM\ManyToMany(targetEntity: System::class, mappedBy: 'groups')]
+    #[ORM\OrderBy(['name' => Order::Ascending->value])]
     private Collection $systems;
 
     /**

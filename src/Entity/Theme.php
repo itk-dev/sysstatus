@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ThemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation\Loggable;
@@ -29,6 +30,7 @@ class Theme implements \Stringable
      * @var Collection<int, ThemeCategory>
      */
     #[ORM\OneToMany(mappedBy: 'theme', targetEntity: ThemeCategory::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['sortOrder' => Criteria::ASC])]
     private Collection $themeCategories;
 
     /**
@@ -165,7 +167,7 @@ class Theme implements \Stringable
     public function removeReportGroup(UserGroup $reportGroup): self
     {
         if ($this->reportGroups->removeElement($reportGroup)) {
-            $reportGroup->removeSystemTheme($this);
+            $reportGroup->removeReportTheme($this);
         }
 
         return $this;
