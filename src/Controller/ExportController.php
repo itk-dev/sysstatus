@@ -2,61 +2,49 @@
 
 namespace App\Controller;
 
+use App\Repository\GroupRepository;
 use App\Service\DataExporter;
+use PhpOffice\PhpSpreadsheet\Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class ExportController
- * @package App\Controller
+ * Class ExportController.
  */
-class ExportController extends Controller
+class ExportController extends AbstractController
 {
     /**
-     * @Route("/export/report", name="export_report")
-     *
-     * @param \App\Service\DataExporter $dataExporter
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportReports(
-        DataExporter $dataExporter
-    ) {
+    #[Route(path: '/export/report', name: 'export_report')]
+    public function exportReports(DataExporter $dataExporter): void
+    {
         $dataExporter->exportReport();
     }
 
     /**
-     * @Route("/export/system", name="export_system")
-     *
-     * @param \App\Service\DataExporter $dataExporter
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportSystems(
-        DataExporter $dataExporter
-    ) {
+    #[Route(path: '/export/system', name: 'export_system')]
+    public function exportSystems(DataExporter $dataExporter): void
+    {
         $dataExporter->exportSystem();
     }
 
     /**
-     * @Route("/export", name="export_page")
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\Service\DataExporter $dataExporter
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportPage(Request $request, DataExporter $dataExporter)
+    #[Route(path: '/export', name: 'export_page')]
+    public function exportPage(Request $request, DataExporter $dataExporter, GroupRepository $groupRepository): Response
     {
-        $groups = $this->get('doctrine.orm.default_entity_manager')->getRepository('App:Group')->findAll();
+        $groups = $groupRepository->findAll();
 
         $choices = [];
 
@@ -65,17 +53,17 @@ class ExportController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('entity', ChoiceType::class, array('label' => 'Entitet', 'choices' => [
+            ->add('entity', ChoiceType::class, ['label' => 'Entitet', 'choices' => [
                 'report' => 'report',
                 'system' => 'system',
-            ]))
-            ->add('group', ChoiceType::class, array('label' => 'Gruppe', 'choices' => $choices))
+            ]])
+            ->add('group', ChoiceType::class, ['label' => 'Gruppe', 'choices' => $choices])
             ->add('export_type', ChoiceType::class, [
                 'label' => 'Eksport type',
                 'choices' => [
                     'Resultater' => 'results',
                     'Kommentarer' => 'comments',
-                ]
+                ],
             ])
             ->add('color', ChoiceType::class, [
                 'label' => 'Farve',
@@ -84,8 +72,9 @@ class ExportController extends Controller
                     'Med farver' => true,
                 ],
             ])
-            ->add('submit', SubmitType::class, array('label' => 'Hent'))
-            ->getForm();
+            ->add('submit', SubmitType::class, ['label' => 'Hent'])
+            ->getForm()
+        ;
 
         $form->handleRequest($request);
 
@@ -96,11 +85,10 @@ class ExportController extends Controller
             $selectedExportType = $data['export_type'];
             $withColor = $data['color'];
 
-            if ($selectedEntity == 'report') {
-                $dataExporter->exportReport($selectedGroupId, true, $selectedExportType === 'comments', $withColor);
-            }
-            else if ($selectedEntity == 'system') {
-                $dataExporter->exportSystem($selectedGroupId, true, $selectedExportType === 'comments', $withColor);
+            if ('report' == $selectedEntity) {
+                $dataExporter->exportReport($selectedGroupId, true, 'comments' === $selectedExportType, $withColor);
+            } elseif ('system' == $selectedEntity) {
+                $dataExporter->exportSystem($selectedGroupId, true, 'comments' === $selectedExportType, $withColor);
             }
         }
 

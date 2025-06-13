@@ -3,29 +3,23 @@
 {% set id = random() %}
 
 {% if value == '' %}
-  <div class="smiley-icon smiley-icon-grey smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width}}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+  <div class="smiley-icon smiley-icon-grey smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
     {{ source('svg/question-circle-solid.svg') }}
   </div>
 {% elseif value == 'BLUE' %}
-  <div class="smiley-icon smiley-icon-blue smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width}}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+  <div class="smiley-icon smiley-icon-blue smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
     {{ source('svg/info-circle-solid.svg') }}
   </div>
 {% elseif value == 'GREEN' %}
-  <div class="smiley-icon smiley-icon-green smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width}}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+  <div class="smiley-icon smiley-icon-green smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
     {{ source('svg/check-circle-solid.svg') }}
   </div>
 {% elseif value == 'YELLOW' %}
-  <div class="smiley-icon smiley-icon-yellow smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width}}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+  <div class="smiley-icon smiley-icon-yellow smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
     {{ source('svg/check-circle-solid.svg') }}
   </div>
 {% elseif value == 'RED' %}
-  <div class="smiley-icon smiley-icon-red smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width}}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
+  <div class="smiley-icon smiley-icon-red smiley-icon-{{ id }}" style="width: {{ width }}px; height: {{ width }}px;" data-toggle="tooltip" data-placement="top" {% if title is defined %}title="{{ title }}"{% endif %}>
     {{ source('svg/exclamation-circle-solid.svg') }}
   </div>
 {% endif %}
-
-<script type="text/javascript">
-    $(function () {
-        $('.smiley-icon-{{ id }}[data-toggle="tooltip"]').tooltip();
-    })
-</script>

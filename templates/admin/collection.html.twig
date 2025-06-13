@@ -1,0 +1,25 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if ea.crud.currentAction == 'detail' %}
+  {% if field.value|length %}
+  <ul>
+    {% for index, item in field.value %}
+      {% set crud_fqcn = get_crud_fqcn(item) %}
+      {% set item_url = crud_fqcn ? ea_url().setController(crud_fqcn).setAction('detail').setEntityId(item.id) %}
+
+      <li>
+        {% if item_url %}
+          <a href="{{ item_url }}">{{ item }}</a>
+        {% else %}
+          {{ item }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <span class="badge badge-secondary">{{ 'Empty'|trans }}</span>
+  {% endif %}
+{% else %}
+  <span class="badge badge-secondary">{{ field.value|length }}</span>
+{% endif %}

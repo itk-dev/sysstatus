@@ -2,90 +2,72 @@
 
 namespace App\Entity;
 
+use App\Repository\ThemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Mapping\Annotation\Loggable;
+use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
- * @Gedmo\Loggable
- * @UniqueEntity("name")
- */
-class Theme
+#[ORM\Entity(repositoryClass: ThemeRepository::class)]
+#[Loggable]
+#[UniqueEntity('name')]
+class Theme implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true))
-     * @Gedmo\Versioned
+     * @var Collection<int, ThemeCategory>
      */
-    private $name;
+    #[ORM\OneToMany(mappedBy: 'theme', targetEntity: ThemeCategory::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['sortOrder' => Criteria::ASC])]
+    private Collection $themeCategories;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ThemeCategory", mappedBy="theme", orphanRemoval=true, cascade={"persist"})
+     * @var Collection<int, UserGroup>
      */
-    private $themeCategories;
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: 'systemThemes')]
+    private Collection $systemGroups;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection<int, UserGroup>
      */
-    private $categories;
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: 'reportThemes')]
+    private Collection $reportGroups;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", mappedBy="systemThemes")
-     */
-    private $systemGroups;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", mappedBy="reportThemes")
-     */
-    private $reportGroups;
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Versioned]
+    private ?string $name = null;
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->themeCategories = new ArrayCollection();
-        $this->groups = new ArrayCollection();
         $this->systemGroups = new ArrayCollection();
         $this->reportGroups = new ArrayCollection();
     }
 
-    public function getId()
+    public function __toString(): string
+    {
+        return (string) ($this->getName() ?: $this->getId());
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getName() ?: $this->getId();
-    }
-
     /**
-     * @return Collection|ThemeCategory[]
+     * @return Collection<int, ThemeCategory>
      */
     public function getThemeCategories(): Collection
     {
@@ -95,7 +77,7 @@ class Theme
     public function addThemeCategory(ThemeCategory $themeCategory): self
     {
         if (!$this->themeCategories->contains($themeCategory)) {
-            $this->themeCategories[] = $themeCategory;
+            $this->themeCategories->add($themeCategory);
             $themeCategory->setTheme($this);
         }
 
@@ -104,8 +86,7 @@ class Theme
 
     public function removeThemeCategory(ThemeCategory $themeCategory): self
     {
-        if ($this->themeCategories->contains($themeCategory)) {
-            $this->themeCategories->removeElement($themeCategory);
+        if ($this->themeCategories->removeElement($themeCategory)) {
             // set the owning side to null (unless already changed)
             if ($themeCategory->getTheme() === $this) {
                 $themeCategory->setTheme(null);
@@ -117,17 +98,21 @@ class Theme
 
     /**
      * Virtual.
+     *
+     * @return array<Category>
+     *
+     * @throws \Exception
      */
-    public function getOrderedCategories() {
+    public function getOrderedCategories(): array
+    {
         $list = [];
 
         $themeCategories = $this->themeCategories;
         $iterator = $themeCategories->getIterator();
-        $iterator->uasort(function ($first, $second) {
-            return (int) $first->getSortOrder() < (int) $second->getSortOrder() ? 1 : -1;
-        });
+        $iterator->uasort(static fn ($first, $second) => (int) $first->getSortOrder() <=> (int) $second->getSortOrder());
 
-        foreach($iterator as $i => $item) {
+        /** @var ThemeCategory $item */
+        foreach ($iterator as $item) {
             $list[] = $item->getCategory();
         }
 
@@ -135,27 +120,26 @@ class Theme
     }
 
     /**
-     * @return Collection|Group[]
+     * @return Collection<int, UserGroup>
      */
     public function getSystemGroups(): Collection
     {
         return $this->systemGroups;
     }
 
-    public function addSystemGroup(Group $systemGroup): self
+    public function addSystemGroup(UserGroup $systemGroup): self
     {
         if (!$this->systemGroups->contains($systemGroup)) {
-            $this->systemGroups[] = $systemGroup;
+            $this->systemGroups->add($systemGroup);
             $systemGroup->addSystemTheme($this);
         }
 
         return $this;
     }
 
-    public function removeSystemGroup(Group $systemGroup): self
+    public function removeSystemGroup(UserGroup $systemGroup): self
     {
-        if ($this->systemGroups->contains($systemGroup)) {
-            $this->systemGroups->removeElement($systemGroup);
+        if ($this->systemGroups->removeElement($systemGroup)) {
             $systemGroup->removeSystemTheme($this);
         }
 
@@ -163,29 +147,40 @@ class Theme
     }
 
     /**
-     * @return Collection|Group[]
+     * @return Collection<int, UserGroup>
      */
     public function getReportGroups(): Collection
     {
         return $this->reportGroups;
     }
 
-    public function addReportGroup(Group $reportGroup): self
+    public function addReportGroup(UserGroup $reportGroup): self
     {
         if (!$this->reportGroups->contains($reportGroup)) {
-            $this->reportGroups[] = $reportGroup;
+            $this->reportGroups->add($reportGroup);
             $reportGroup->addReportTheme($this);
         }
 
         return $this;
     }
 
-    public function removeReportGroup(Group $reportGroup): self
+    public function removeReportGroup(UserGroup $reportGroup): self
     {
-        if ($this->reportGroups->contains($reportGroup)) {
-            $this->reportGroups->removeElement($reportGroup);
+        if ($this->reportGroups->removeElement($reportGroup)) {
             $reportGroup->removeReportTheme($this);
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

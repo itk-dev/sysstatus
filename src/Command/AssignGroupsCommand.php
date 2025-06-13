@@ -2,48 +2,42 @@
 
 namespace App\Command;
 
+use App\Entity\Report;
 use App\Repository\GroupRepository;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class AssignGroupsCommand extends Command
 {
-    private $reportRepository;
-    private $systemRepository;
-    private $groupRepository;
-    private $entityManager;
-
     public function __construct(
-        ReportRepository $reportRepository,
-        SystemRepository $systemRepository,
-        GroupRepository $groupRepository,
-        EntityManagerInterface $entityManager
+        private readonly ReportRepository $reportRepository,
+        private readonly SystemRepository $systemRepository,
+        private readonly GroupRepository $groupRepository,
+        private readonly EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
-        $this->reportRepository = $reportRepository;
-        $this->systemRepository = $systemRepository;
-        $this->groupRepository = $groupRepository;
-        $this->entityManager = $entityManager;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('itstyr:group:assign')
             ->setDescription(
                 'Assign groups based on sysOwner if not already set.'
-            );
+            )
+        ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $reports = $this->reportRepository->findAll();
         $systems = $this->systemRepository->findAll();
 
+        /** @var Report $report */
         foreach ($reports as $report) {
             if (!is_null($report->getSysOwner())) {
                 $e = $report->getSysOwner();
@@ -58,8 +52,8 @@ class AssignGroupsCommand extends Command
                 );
 
                 if ($findGroup) {
-                    if (is_null($report->getGroup())) {
-                        $report->setGroup($findGroup);
+                    if (is_null($report->getGroups())) {
+                        $report->addGroup($findGroup);
                     }
 
                     if (is_null($report->getSysOwnerSub())) {
@@ -67,13 +61,12 @@ class AssignGroupsCommand extends Command
                     }
 
                     $output->writeln('"'.$report->getName().'" set group "'.$groupName.'" and subGroup: "'.$subGroupName.'"');
-                }
-                else {
-                    $output->writeln($groupName . " not found, ignored.");
+                } else {
+                    $output->writeln($groupName.' not found, ignored.');
                 }
             } else {
                 $output->writeln(
-                    $report->getName()." - ".$report->getSysOwner().' - ignored'
+                    $report->getName().' - '.$report->getSysOwner().' - ignored'
                 );
             }
         }
@@ -92,8 +85,8 @@ class AssignGroupsCommand extends Command
                 );
 
                 if ($findGroup) {
-                    if (is_null($system->getGroup())) {
-                        $system->setGroup($findGroup);
+                    if (is_null($system->getGroups())) {
+                        $system->addGroup($findGroup);
                     }
 
                     if (is_null($system->getSysOwnerSub())) {
@@ -101,17 +94,18 @@ class AssignGroupsCommand extends Command
                     }
 
                     $output->writeln('"'.$system->getName().'" set group "'.$groupName.'" and subGroup: "'.$subGroupName.'"');
-                }
-                else {
-                    $output->writeln($groupName . " not found, ignored.");
+                } else {
+                    $output->writeln($groupName.' not found, ignored.');
                 }
             } else {
                 $output->writeln(
-                    $system->getName()." - ".$system->getSysOwner().' - ignored'
+                    $system->getName().' - '.$system->getSysOwner().' - ignored'
                 );
             }
         }
 
         $this->entityManager->flush();
+
+        return Command::SUCCESS;
     }
 }

@@ -1,0 +1,134 @@
+{# @see https://symfony.com/bundles/EasyAdminBundle/current/design.html#form-field-templates #}
+{% block _Theme_themeCategories_widget %}
+    {% set id = 'form-theme-themeCategories' %}
+    <table class="table table-striped table-ea-collection" id="{{ id }}">
+      <thead>
+        <th scope="col">{{ 'theme.form.sort_order'|trans }}</th>
+        <th scope="col">{{ 'theme.form.category'|trans }}</th>
+        <th></th>
+      </thead>
+      <tbody class="ea-form-collection-items field-array">
+        {{ block('_Theme_themeCategories_collection_widget') }}
+      </tbody>
+    </table>
+    {# Pretend that the collection is an array collection to make "add item" not assume that we have an accordion, cf. vendor/easycorp/easyadmin-bundle/assets/js/field-collection.js #}
+    <script>
+      const el = document.getElementById({{ id|json_encode|raw }}).closest('[data-ea-collection-field]');
+      if (el) {
+        el.classList.add('field-array')
+      }
+    </script>
+
+    {% if allow_add|default(false) and not disabled %}
+      <button type="button" class="btn btn-link field-collection-add-button">
+        <twig:ea:Icon name="internal:plus" class="pr-1" />
+        {{ 'theme.form.add_new_item'|trans }}
+      </button>
+    {% endif %}
+{% endblock %}
+
+{% block _Theme_themeCategories_collection_widget %}
+  {% set isEmptyCollection = value is null or (value is iterable and value is empty) %}
+
+  {% if isEmptyCollection %}
+    {{ block('_Theme_themeCategories_empty_collection') }}
+  {% else %}
+    {{ block('form_widget') }}
+  {% endif %}
+{% endblock %}
+
+{% block _Theme_themeCategories_empty_collection %}
+  <tr>
+    <td colspan="3">
+      {{ 'No theme categories'|trans }}
+    </td>
+  </tr>
+{% endblock %}
+
+{% block _Theme_themeCategories_entry_row %}
+  {# See block collection_entry_row in @EasyAdmin:crud/form_theme.html.twig for details on which bits and pieces are used to stitch this together #}
+  <tr class="field-collection-item">
+    <td>
+      {{ form_widget(form.sortOrder) }}
+      {{ form_errors(form.sortOrder) }}
+    </td>
+    <td>
+      {{ form_widget(form.category) }}
+      {{ form_errors(form.category) }}
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger field-collection-delete-button">
+        {{ 'theme.form.delete_item'|trans }}
+      </button>
+    </td>
+  </tr>
+{% endblock %}
+
+{# ---------------------------------------------------------------------------- #}
+
+{# @see https://symfony.com/bundles/EasyAdminBundle/current/design.html#form-field-templates #}
+{% block _Category_questions_widget %}
+    {% set id = 'form-category-questions' %}
+    <table class="table table-striped table-ea-collection" id="{{ id }}">
+
+      <thead>
+        <th scope="col">{{ 'category.form.sort_order'|trans }}</th>
+        <th scope="col">{{ 'category.form.question'|trans }}</th>
+        <th></th>
+      </thead>
+      <tbody class="ea-form-collection-items field-array">
+        {{ block('_Category_questions_collection_widget') }}
+      </tbody>
+    </table>
+    {# Pretend that the collection is an array collection to make "add item" not assume that we have an accordion, cf. vendor/easycorp/easyadmin-bundle/assets/js/field-collection.js #}
+    <script>
+      const el = document.getElementById({{ id|json_encode|raw }}).closest('[data-ea-collection-field]');
+      if (el) {
+        el.classList.add('field-array')
+      }
+    </script>
+
+    {% if allow_add|default(false) and not disabled %}
+      <button type="button" class="btn btn-link field-collection-add-button">
+        <twig:ea:Icon name="internal:plus" class="pr-1" />
+        {{ 'category.form.add_new_item'|trans }}
+      </button>
+    {% endif %}
+{% endblock %}
+
+{% block _Category_questions_collection_widget %}
+  {% set isEmptyCollection = value is null or (value is iterable and value is empty) %}
+
+  {% if isEmptyCollection %}
+    {{ block('_Category_questions_empty_collection') }}
+  {% else %}
+    {{ block('form_widget') }}
+  {% endif %}
+{% endblock %}
+
+{% block _Category_questions_empty_collection %}
+  <tr>
+    <td colspan="3">
+      {{ 'No questions'|trans }}
+    </td>
+  </tr>
+{% endblock %}
+
+{% block _Category_questions_entry_row %}
+  {# See block collection_entry_row in @EasyAdmin:crud/form_theme.html.twig for details on which bits and pieces are used to stitch this together #}
+  <tr class="field-collection-item">
+    <td>
+      {{ form_widget(form.sortOrder) }}
+      {{ form_errors(form.sortOrder) }}
+    </td>
+    <td>
+      {{ form_widget(form.question) }}
+      {{ form_errors(form.question) }}
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger field-collection-delete-button">
+        {{ 'category.form.delete_item'|trans }}
+      </button>
+    </td>
+  </tr>
+{% endblock %}

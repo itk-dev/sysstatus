@@ -10,34 +10,27 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ThemeCategoryType extends AbstractType
 {
-    private $themeManager;
-
-    /**
-     * ThemeCategoryType constructor.
-     * @param \App\Service\ThemeManager $themeManager
-     */
-    public function __construct(ThemeManager $themeManager)
+    public function __construct(private readonly ThemeManager $themeManager)
     {
-        $this->themeManager = $themeManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('sortOrder', null, [
-                'label' => false,
+                'label' => 'vægt',
                 'required' => true,
                 'empty_data' => 0,
             ])
             ->add('category', null, [
-                'label' => false,
+                'label' => 'Kategorier',
                 'choices' => $this->themeManager->getCategoriesForCurrentUser(),
                 'required' => true,
             ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ThemeCategory::class,

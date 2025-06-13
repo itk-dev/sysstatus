@@ -1,43 +1,18 @@
-{% extends '@EasyAdmin/default/layout.html.twig' %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block page_title %}
-  {{ ('dashboard.'~entityType)|trans }}
+  {{ ('dashboard.' ~ entityType)|trans }}
 {% endblock %}
 
 {% block content_title %}
-  {{ ('dashboard.'~entityType)|trans }}
-{% endblock %}
-
-{% block global_actions_wrapper %}
-  <div class="global-actions w-75 dashboard-filters" style="justify-content: flex-end">
-    {{ form_start(filters, { attr: { class: 'w-100' } }) }}
-    <div class="row w-100 flex-row">
-      <div class="col">
-        {{ form_widget(filters.groups) }}
-      </div>
-      <div class="col">
-        {{ form_widget(filters.subowner) }}
-      </div>
-      <div class="col">
-        {{ form_widget(filters.theme) }}
-      </div>
-      <div class="col">
-        {{ form_widget(filters.category) }}
-      </div>
-      {% if filters.self_service is defined %}
-        <div class="col">
-          {{ form_widget(filters.self_service) }}
-        </div>
-      {% endif %}
-      <div class="col-4">
-        {{ form_widget(filters.search) }}
-      </div>
-    </div>
-    {{ form_end(filters) }}
-  </div>
+  {{ ('dashboard.' ~ entityType)|trans }}
 {% endblock %}
 
 {% block main %}
+  {% if custom_filters is defined %}
+    {{ include('_partials/custom_filters.html.twig', {custom_filters}) }}
+  {% endif %}
+
   <div class="dashboard--table">
     <table class="table table-bordered table-striped table-sm">
       <thead class="">
@@ -45,15 +20,21 @@
       {% for item in paginator %}
         <th class="rotate">
           <div>
-          <span>
-            <a href="{{ path('easyadmin', { action: 'show', id: item.id, entity: entityType|capitalize }) }}" title="{{ item.showableName }}">
-              {{ breakintolines(item.showableName, 35, 2) | raw }}
-            </a>
+            <span>
+            {% if entityType == 'system' %}
+              <a href="{{ ea_url().setController('App\\Controller\\Admin\\SystemCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
+                {{ item.showableName }}
+              </a>
+            {% elseif entityType == 'report' %}
+              <a href="{{ ea_url().setController('App\\Controller\\Admin\\ReportCrudController').setAction('detail').setEntityId(item.id) }}" title="{{ item.showableName }}">
+                {{ item.showableName }}
+              </a>
+            {% endif %}
           </span>
           </div>
         </th>
       {% endfor %}
-      <th class="table-right-column"></th>
+      <th class="table-right-column rotate"><div><span></span></div></th>
       </thead>
       <tbody>
       {% if categories|length > 0 %}
@@ -63,7 +44,7 @@
             {% for result in paginator %}
               <td></td>
             {% endfor %}
-            <td class="table-right-column"></td>
+            <td class="table-right-column"><div><span></span></div></td>
           </tr>
           {% for question in (category.questions)|sort_order %}
             <tr>
@@ -73,7 +54,7 @@
                   <div class="dashboard--table-cell">
                     {% set answer = getanswer(result, question) %}
                     {% if answer is not null %}
-                      {% include 'easy_admin_overrides/field_smiley.html.twig' with { 'value': answer.smiley, 'title': answer.note, 'width': 30 } %}
+                      {{ include('easy_admin_overrides/field_smiley.html.twig', {value: answer.smiley, title: answer.note, width: 30}) }}
                     {% endif %}
                   </div>
                 </td>
@@ -89,35 +70,19 @@
         {% endfor %}
       {% else %}
         <tr>
-          <td colspan="{{paginator|length + 2}}">
-            <div>{{ 'dashboard.no_categories_for_result' | trans }}</div>
+          <td colspan="{{ paginator|length + 2 }}">
+            <div>{{ 'dashboard.no_categories_for_result'|trans }}</div>
           </td>
         </tr>
       {% endif %}
       </tbody>
     </table>
 
-    <div class="pagination mt-5">
-      {{ knp_pagination_render(paginator) }}
+    {# Wrap in .pager and add .pagination to pick up styling from EasyAdmin #}
+    <div class="pager float-end">
+      <div class="pagination mt-5">
+        {{ knp_pagination_render(paginator) }}
+      </div>
     </div>
   </div>
 {% endblock main %}
-
-{% block body_javascript %}
-  {{ parent() }}
-
-  <script type="text/javascript">
-    $('.dashboard-filters select').bind('change', function () {
-      $('.dashboard-filters form').submit();
-    });
-
-    $(document).ready(function() {
-      $('#form_groups').select2();
-    });
-
-    $('#form_groups').on('select2:opening select2:closing', function( event ) {
-      var $searchfield = $(this).parent().find('.select2-search__field');
-      $searchfield.prop('disabled', true);
-    });
-  </script>
-{% endblock %}

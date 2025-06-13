@@ -7,30 +7,21 @@ use App\Repository\GroupRepository;
 use App\Repository\ReportRepository;
 use App\Repository\SelfServiceAvailableFromItemRepository;
 use App\Repository\SystemRepository;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SystemImporter extends BaseImporter
 {
-    /** @var \App\Repository\SelfServiceAvailableFromItemRepository */
-    private $selfServiceAvailableFromItemRepository;
-
     public function __construct(
-      ReportRepository $reportRepository,
-      SystemRepository $systemRepository,
-      GroupRepository $groupRepository,
-      SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
-      EntityManagerInterface $entityManager
+        ReportRepository $reportRepository,
+        SystemRepository $systemRepository,
+        GroupRepository $groupRepository,
+        private readonly SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
+        EntityManagerInterface $entityManager,
     ) {
         parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager);
-
-        $this->selfServiceAvailableFromItemRepository = $selfServiceAvailableFromItemRepository;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function import(string $src)
+    public function import(string $src): void
     {
         $systemURL = getenv('SYSTEM_URL');
 
@@ -46,7 +37,7 @@ class SystemImporter extends BaseImporter
         $sysInternalIds = [];
 
         foreach ($entries as $entry) {
-            $sysInternalId = $this->sanitizeText($entry->{'Id'});
+            $sysInternalId = (int) $this->sanitizeText($entry->{'Id'});
             $sysInternalIds[] = $sysInternalId;
 
             $system = $this->systemRepository->findOneBy(['sysInternalId' => $entry->{'Id'}]);
@@ -58,7 +49,7 @@ class SystemImporter extends BaseImporter
                 $this->entityManager->persist($system);
             }
             // Un-archive the system.
-            $system->setArchivedAt(null);
+            $system->setArchivedAt();
 
             $system->setSysId($entry->{'Id'});
             $system->setSysInternalId($sysInternalId);
@@ -66,7 +57,7 @@ class SystemImporter extends BaseImporter
             $system->setSysUpdated($this->convertDate($entry->{'Ændret'}));
             $system->setSysTitle($this->sanitizeText($entry->{'Titel'}));
 
-            $system->setSysLink($systemURL . '/' .  $entry->{'Sti'} . '/DispForm.aspx?ID=' . $entry->{'Id'});
+            $system->setSysLink($systemURL.'/'.$entry->{'Sti'}.'/DispForm.aspx?ID='.$entry->{'Id'});
 
             $system->setSysAlternativeTitle($this->sanitizeText($entry->{'Kaldenavn'}));
             $system->setSysDescription($this->sanitizeText($entry->{'Beskrivelse'}));
@@ -97,16 +88,19 @@ class SystemImporter extends BaseImporter
             $system->setSysSystemOwner($this->sanitizeText($entry->{'Systemejer'}));
 
             $selfServiceAvailableFromText = $this->sanitizeText($entry->{'Selvbetjening tilgængelig fra'});
+
             if (isset($selfServiceAvailableFromText)) {
-                $selfServiceAvailableFromTitles = $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, null, PREG_SPLIT_NO_EMPTY);
+                $selfServiceAvailableFromTitles = preg_split('/;#/', $selfServiceAvailableFromText, -1, PREG_SPLIT_NO_EMPTY);
 
                 $addToSelfServiceGroup = false;
 
                 foreach ($selfServiceAvailableFromTitles as $title) {
                     $addToSelfServiceGroup = true;
 
-                    $name = (string)$title;
+                    $name = (string) $title;
+
                     $item = $this->selfServiceAvailableFromItemRepository->getItem($name);
+
                     $system->addSelfServiceAvailableFromItem($item);
                 }
 
@@ -143,17 +137,20 @@ class SystemImporter extends BaseImporter
                     $system->setSysOwnerSub($subGroupName);
                 }
             }
-        };
+        }
 
         // Archive systems that no longer exist in Systemoversigten.
+
         $this->systemRepository->createQueryBuilder('e')
             ->update()
             ->set('e.archivedAt', ':now')
-            ->setParameter('now', new \DateTime(), Type::DATETIME)
+            ->setParameter('now', new \DateTime())
             ->where('e.sysInternalId NOT IN (:sysInternalIds)')
-            ->setParameter('sysInternalIds', $sysInternalIds)
+           ->setParameter('sysInternalIds', $sysInternalIds)
+
             ->getQuery()
-            ->execute();
+            ->execute()
+        ;
 
         $this->entityManager->flush();
     }

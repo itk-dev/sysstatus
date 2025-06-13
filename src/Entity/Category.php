@@ -2,56 +2,108 @@
 
 namespace App\Entity;
 
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Mapping\Annotation\Loggable;
+use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- * @Gedmo\Loggable
- * @UniqueEntity("name")
- */
-class Category
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[Loggable]
+#[UniqueEntity('name')]
+class Category implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(nullable: true)]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    #[Versioned]
+    private ?string $name = null;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @Gedmo\Versioned
+     * @var Collection<int, ThemeCategory>
      */
-    private $name;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: ThemeCategory::class, orphanRemoval: true)]
+    private Collection $themeCategories;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="category", cascade={"persist"})
+     * @var Collection<int, Question>
      */
-    private $questions;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ThemeCategory", mappedBy="category", orphanRemoval=true)
-     */
-    private $themeCategories;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Question::class, cascade: ['persist'])]
+    private Collection $questions;
 
     public function __construct()
     {
-        $this->questions = new ArrayCollection();
         $this->themeCategories = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
-    public function getId()
+    public function __toString(): string
+    {
+        return (string) ($this->getName() ?: $this->getId());
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, ThemeCategory>
+     */
+    public function getThemeCategories(): Collection
+    {
+        return $this->themeCategories;
+    }
+
+    public function addThemeCategory(ThemeCategory $themeCategory): self
+    {
+        if (!$this->themeCategories->contains($themeCategory)) {
+            $this->themeCategories->add($themeCategory);
+            $themeCategory->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThemeCategory(ThemeCategory $themeCategory): self
+    {
+        if ($this->themeCategories->removeElement($themeCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($themeCategory->getCategory() === $this) {
+                $themeCategory->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Virtual.
+     *
+     * @return array<Theme>
+     *
+     * @throws \Exception
+     */
+    public function getThemes(): array
+    {
+        $list = [];
+        $iterator = $this->themeCategories->getIterator();
+
+        foreach ($iterator as $item) {
+            $list[$item->getTheme()->getId()] = $item->getTheme();
+        }
+
+        return $list;
     }
 
     public function getName(): ?string
@@ -67,7 +119,7 @@ class Category
     }
 
     /**
-     * @return Collection|Question[]
+     * @return Collection<int, Question>
      */
     public function getQuestions(): Collection
     {
@@ -77,7 +129,7 @@ class Category
     public function addQuestion(Question $question): self
     {
         if (!$this->questions->contains($question)) {
-            $this->questions[] = $question;
+            $this->questions->add($question);
             $question->setCategory($this);
         }
 
@@ -86,8 +138,7 @@ class Category
 
     public function removeQuestion(Question $question): self
     {
-        if ($this->questions->contains($question)) {
-            $this->questions->removeElement($question);
+        if ($this->questions->removeElement($question)) {
             // set the owning side to null (unless already changed)
             if ($question->getCategory() === $this) {
                 $question->setCategory(null);
@@ -95,55 +146,5 @@ class Category
         }
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getName() ?: $this->getId();
-    }
-
-    /**
-     * @return Collection|ThemeCategory[]
-     */
-    public function getThemeCategories(): Collection
-    {
-        return $this->themeCategories;
-    }
-
-    public function addThemeCategory(ThemeCategory $themeCategory): self
-    {
-        if (!$this->themeCategories->contains($themeCategory)) {
-            $this->themeCategories[] = $themeCategory;
-            $themeCategory->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeThemeCategory(ThemeCategory $themeCategory): self
-    {
-        if ($this->themeCategories->contains($themeCategory)) {
-            $this->themeCategories->removeElement($themeCategory);
-            // set the owning side to null (unless already changed)
-            if ($themeCategory->getCategory() === $this) {
-                $themeCategory->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Virtual.
-     */
-    public function getThemes() {
-        $list = [];
-        $iterator = $this->themeCategories->getIterator();
-
-        foreach($iterator as $i => $item) {
-            $list[$item->getTheme()->getId()] = $item->getTheme();
-        }
-
-        return $list;
     }
 }

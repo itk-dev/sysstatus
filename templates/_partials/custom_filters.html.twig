@@ -1,0 +1,46 @@
+<div class="app-custom-filters w-100 mt-2 mb-3">
+  {% form_theme custom_filters 'bootstrap_5_layout.html.twig' %}
+  {{ form_start(custom_filters, {attr: {class: 'w-100'}}) }}
+    <div class="d-flex flex-column flex-md-row gap-2 mb-2">
+      {% for child in [
+        'groups',
+        'subowner',
+        'theme',
+        'category',
+        'self_service',
+        ] %}
+        {% if custom_filters[child] is defined %}
+          <div class="col">
+            {{ form_widget(custom_filters[child]) }}
+          </div>
+        {% endif %}
+      {% endfor %}
+  </div>
+  <div class="d-flex gap-2">
+    <div class="col-8 col-md-10">
+      {% if custom_filters.search is defined %}
+        {{ form_widget(custom_filters.search) }}
+      {% endif %}
+    </div>
+    <div class="col">
+      {# We don't need the submit button name (`form[save]`) when submitting the filters, so we add `full_name: false` remove the name (make it empty) #}
+      {{ form_widget(custom_filters.save, {full_name: false, attr: {class: 'btn btn-primary w-100 h-100'}}) }}
+    </div>
+  </div>
+  {{ form_end(custom_filters) }}
+</div>
+
+<script>
+  {# Subowner options depend on selected groups, so we submit the form when groups are changed to reflect the new subowners. #}
+  addEventListener('load', () => {
+    const el = document.getElementById('form_groups')
+    if (el) {
+      el.addEventListener('change', (event) => {
+        const form = event.target.form
+        if (form) {
+          form.submit()
+        }
+      })
+    }
+  })
+</script>

@@ -2,37 +2,51 @@
 
 namespace App\Twig;
 
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
-use Twig\TwigFilter;
+use App\Entity\Question;
 use Doctrine\Common\Collections\ArrayCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Registry\CrudControllerRegistry;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
-    public function getFunctions() {
-        return [
-            new TwigFunction('getclass', [$this, 'getClass']),
-            new TwigFunction('getanswer', [$this, 'getAnswer']),
-            new TwigFunction('breakintolines', [$this, 'breakIntoLines']),
-        ];
+    public function __construct(
+        private readonly CrudControllerRegistry $crudControllerRegistry,
+    ) {
     }
 
-    public function getFilters() {
-        return [
-            new TwigFilter('sort_order', [$this, 'sortOrder']),
-        ];
-    }
-
-    /**
-     * @param $instance
-     * @return bool
-     */
-    public function getClass($instance)
+    #[\Override]
+    public function getFunctions(): array
     {
-        return get_class($instance);
+        return [
+            new TwigFunction('get_class', $this->getClass(...)),
+            new TwigFunction('get_crud_fqcn', $this->getCrudFqcn(...)),
+            new TwigFunction('getanswer', $this->getAnswer(...)),
+            new TwigFunction('breakintolines', $this->breakIntoLines(...)),
+        ];
     }
 
-    public function getAnswer($entity, $question) {
+    #[\Override]
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('sort_order', $this->sortOrder(...)),
+        ];
+    }
+
+    public function getClass(mixed $instance): string
+    {
+        return $instance::class;
+    }
+
+    public function getCrudFqcn(mixed $entity): ?string
+    {
+        return $this->crudControllerRegistry->findCrudFqcnByEntityFqcn($entity::class);
+    }
+
+    public function getAnswer(mixed $entity, Question $question): mixed
+    {
         $answers = $entity->getAnswers();
 
         foreach ($answers as $answer) {
@@ -46,34 +60,36 @@ class AppExtension extends AbstractExtension
 
     /**
      * String split for unicode.
-     * From: http://php.net/manual/en/function.str-split.php#107658
      *
-     * @param $str
+     * From: http://php.net/manual/en/function.str-split.php#107658.
+     *
+     * @param string $str
      * @param int $l
-     * @return array|array[]|false|string[]
+     *
+     * @return array<string>|false
      */
-    private function str_split_unicode($str, $l = 0) {
+    private function str_split_unicode(string $str, int $l = 0): array|false
+    {
         if ($l > 0) {
             $ret = [];
-            $len = mb_strlen($str, "UTF-8");
+            $len = mb_strlen($str, 'UTF-8');
             for ($i = 0; $i < $len; $i += $l) {
-                $ret[] = mb_substr($str, $i, $l, "UTF-8");
+                $ret[] = mb_substr($str, $i, $l, 'UTF-8');
             }
+
             return $ret;
         }
-        return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
+
+        return preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
     }
 
     /**
      * Break the text into $numberOfLines of $chuckSize length. Prepends with
      *   empty lines.
      *
-     * @param $text
-     * @param $chuckSize
-     * @param $numberOfLines
      * @return string
      */
-    public function breakIntoLines($text, $chuckSize, $numberOfLines)
+    public function breakIntoLines(string $text, int $chuckSize, int $numberOfLines): string
     {
         $split = $this->str_split_unicode($text, $chuckSize);
         $numberOfSplits = count($split);
@@ -81,34 +97,35 @@ class AppExtension extends AbstractExtension
         $render = [];
 
         $addedEmptyLines = 0;
-        for ($addedEmptyLines; $addedEmptyLines < $numberOfLines - min($numberOfSplits, $numberOfLines); $addedEmptyLines++) {
+        for (; $addedEmptyLines < $numberOfLines - min($numberOfSplits, $numberOfLines); ++$addedEmptyLines) {
             $render[] = '';
         }
-        for ($i = 0; $i < $numberOfLines - $addedEmptyLines; $i++) {
+
+        for ($i = 0; $i < $numberOfLines - $addedEmptyLines; ++$i) {
             $render[] = $split[$i];
         }
 
-        $result = implode("<br/>", $render);
+        $result = implode('<br/>', $render);
 
         if ($numberOfSplits > $numberOfLines) {
-            $result .= "...";
+            $result .= '...';
         }
 
         return $result;
     }
 
     /**
-     * Sort by sortOrder
+     * Sort by sortOrder.
      *
-     * @param $item
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @param mixed $item
+     *
+     * @return mixed
      */
-    public function sortOrder($item){
+    public function sortOrder(mixed $item): mixed
+    {
         $iterator = $item->getIterator();
 
-        $iterator->uasort(function ($a, $b) {
-            return ($a->getSortOrder() > $b->getSortOrder()) ? -1 : 1;
-        });
+        $iterator->uasort(static fn ($a, $b) => $a->getSortOrder() > $b->getSortOrder() ? -1 : 1);
 
         return new ArrayCollection(iterator_to_array($iterator));
     }

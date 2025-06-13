@@ -1,0 +1,5 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{% if 'detail' == ea.crud.currentAction %}
+  {{ field.formattedValue|raw }}
+{% endif %}

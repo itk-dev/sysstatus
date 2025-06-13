@@ -2,39 +2,29 @@
 
 namespace App\Entity;
 
+use App\Repository\ImportRunRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ImportRunRepository")
- */
+#[ORM\Entity(repositoryClass: ImportRunRepository::class)]
 class ImportRun
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(nullable: true)]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $datetime;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $datetime = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $result;
+    #[ORM\Column(nullable: true)]
+    private ?bool $result = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $output;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $output = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $type = null;
 
     public function getId(): ?int
     {
@@ -53,7 +43,7 @@ class ImportRun
         return $this;
     }
 
-    public function getResult(): ?bool
+    public function isResult(): ?bool
     {
         return $this->result;
     }

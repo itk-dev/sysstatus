@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Service;
 
 interface ImportInterface
@@ -11,5 +10,5 @@ interface ImportInterface
      * @param string $src
      *   Path to the source
      */
-    function import(string $src);
+    public function import(string $src): void;
 }
