@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [3.0.0] - 2025-06-13
+
 * [PR-33](https://github.com/itk-dev/sysstatus/pull/33)
   * Inlined actions
   * Cleaned up report views
@@ -27,7 +29,7 @@ See [keep a changelog] for information about writing changes to this log.
 * User migration away form FOS user bundle to custom entity types.
 * Added user create/update CLI commands
 
-## [2.1.0] - 01-22-2020
+## [2.1.0] - 2020-01-22
 
 * Merged [https://github.com/aakb/itstyr/pull/14](https://github.com/aakb/itstyr/pull/14)
   Upgraded symfony to 4.4.2.
@@ -155,6 +157,6 @@ See [keep a changelog] for information about writing changes to this log.
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
 
-[unreleased]: https://github.com/itk-dev/sysstatus/compare/main...develop
-
+[Unreleased]: https://github.com/itk-dev/sysstatus/compare/main...develop
+[3.0.0]: https://github.com/itk-dev/sysstatus/releases/tag/3.0.0
 [2.1.0]: https://github.com/itk-dev/sysstatus/releases/tag/2.1.0
