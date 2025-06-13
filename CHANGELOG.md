@@ -1,9 +1,41 @@
-# ITStyr CHANGELOG
+# Changelog
 
-## 2.1.0
+![keep a changelog](https://img.shields.io/badge/Keep%20a%20Changelog-v1.1.0-brightgreen.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmMTVkMzAiIHZpZXdCb3g9IjAgMCAxODcgMTg1Ij48cGF0aCBkPSJNNjIgN2MtMTUgMy0yOCAxMC0zNyAyMmExMjIgMTIyIDAgMDAtMTggOTEgNzQgNzQgMCAwMDE2IDM4YzYgOSAxNCAxNSAyNCAxOGE4OSA4OSAwIDAwMjQgNCA0NSA0NSAwIDAwNiAwbDMtMSAxMy0xYTE1OCAxNTggMCAwMDU1LTE3IDYzIDYzIDAgMDAzNS01MiAzNCAzNCAwIDAwLTEtNWMtMy0xOC05LTMzLTE5LTQ3LTEyLTE3LTI0LTI4LTM4LTM3QTg1IDg1IDAgMDA2MiA3em0zMCA4YzIwIDQgMzggMTQgNTMgMzEgMTcgMTggMjYgMzcgMjkgNTh2MTJjLTMgMTctMTMgMzAtMjggMzhhMTU1IDE1NSAwIDAxLTUzIDE2bC0xMyAyaC0xYTUxIDUxIDAgMDEtMTItMWwtMTctMmMtMTMtNC0yMy0xMi0yOS0yNy01LTEyLTgtMjQtOC0zOWExMzMgMTMzIDAgMDE4LTUwYzUtMTMgMTEtMjYgMjYtMzMgMTQtNyAyOS05IDQ1LTV6TTQwIDQ1YTk0IDk0IDAgMDAtMTcgNTQgNzUgNzUgMCAwMDYgMzJjOCAxOSAyMiAzMSA0MiAzMiAyMSAyIDQxLTIgNjAtMTRhNjAgNjAgMCAwMDIxLTE5IDUzIDUzIDAgMDA5LTI5YzAtMTYtOC0zMy0yMy01MWE0NyA0NyAwIDAwLTUtNWMtMjMtMjAtNDUtMjYtNjctMTgtMTIgNC0yMCA5LTI2IDE4em0xMDggNzZhNTAgNTAgMCAwMS0yMSAyMmMtMTcgOS0zMiAxMy00OCAxMy0xMSAwLTIxLTMtMzAtOS01LTMtOS05LTEzLTE2YTgxIDgxIDAgMDEtNi0zMiA5NCA5NCAwIDAxOC0zNSA5MCA5MCAwIDAxNi0xMmwxLTJjNS05IDEzLTEzIDIzLTE2IDE2LTUgMzItMyA1MCA5IDEzIDggMjMgMjAgMzAgMzYgNyAxNSA3IDI5IDAgNDJ6bS00My03M2MtMTctOC0zMy02LTQ2IDUtMTAgOC0xNiAyMC0xOSAzN2E1NCA1NCAwIDAwNSAzNGM3IDE1IDIwIDIzIDM3IDIyIDIyLTEgMzgtOSA0OC0yNGE0MSA0MSAwIDAwOC0yNCA0MyA0MyAwIDAwLTEtMTJjLTYtMTgtMTYtMzEtMzItMzh6bS0yMyA5MWgtMWMtNyAwLTE0LTItMjEtN2EyNyAyNyAwIDAxLTEwLTEzIDU3IDU3IDAgMDEtNC0yMCA2MyA2MyAwIDAxNi0yNWM1LTEyIDEyLTE5IDI0LTIxIDktMyAxOC0yIDI3IDIgMTQgNiAyMyAxOCAyNyAzM3MtMiAzMS0xNiA0MGMtMTEgOC0yMSAxMS0zMiAxMXptMS0zNHYxNGgtOFY2OGg4djI4bDEwLTEwaDExbC0xNCAxNSAxNyAxOEg5NnoiLz48L3N2Zz4K)
 
-* Merged https://github.com/aakb/itstyr/pull/14 - Upgraded symfony to 4.4.2.
-* Merged https://github.com/aakb/itstyr/pull/13 - Added import run entity to track import run success. Changed report fields that are imported after change in Anmeldelsesportalen.
+All notable changes to this project will be documented in this file.
+
+See [keep a changelog] for information about writing changes to this log.
+
+## [Unreleased]
+
+## [3.0.0] - 2025-06-13
+
+* [PR-33](https://github.com/itk-dev/sysstatus/pull/33)
+  * Inlined actions
+  * Cleaned up report views
+* [PR-32](https://github.com/itk-dev/sysstatus/pull/32)
+  3644: Cleaned up template and controller
+* [PR-31](https://github.com/itk-dev/sysstatus/pull/31)
+  Upgraded to Symfony 7.2
+* [PR-30](https://github.com/itk-dev/sysstatus/pull/30)
+  Upgraded and cleaned up
+* Login and dashboard styling cleanup
+* Added github actions.
+* Added PHPStan.
+* Updated composer setup.
+* Update Symfony major version.
+* Update EasyAdmin major version.
+* Updated all packages to the newest version
+* User migration away form FOS user bundle to custom entity types.
+* Added user create/update CLI commands
+
+## [2.1.0] - 2020-01-22
+
+* Merged [https://github.com/aakb/itstyr/pull/14](https://github.com/aakb/itstyr/pull/14)
+  Upgraded symfony to 4.4.2.
+* Merged [https://github.com/aakb/itstyr/pull/13](https://github.com/aakb/itstyr/pull/13)
+  Added import run entity to track import run success. Changed report fields that are imported after change in
+  Anmeldelsesportalen.
 
 ## 2.0.0
 
@@ -100,8 +132,7 @@
 * Added responsible user to systems and reports.
 * Changed NULL values to display as empty instead of black square.
 * Added reports/systems dashboards.
-* Added script (itstyr:group:assign) to extract group from sysOwner for reports
-  and systems.
+* Added script (itstyr:group:assign) to extract group from sysOwner for reports and systems.
 
 ## 1.1.0
 
@@ -123,3 +154,9 @@
 * Adding notes to each system and report.
 * Adding general notes.
 * Basic user management.
+
+[keep a changelog]: https://keepachangelog.com/en/1.1.0/
+
+[Unreleased]: https://github.com/itk-dev/sysstatus/compare/main...develop
+[3.0.0]: https://github.com/itk-dev/sysstatus/releases/tag/3.0.0
+[2.1.0]: https://github.com/itk-dev/sysstatus/releases/tag/2.1.0

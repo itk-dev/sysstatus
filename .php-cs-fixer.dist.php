@@ -1,18 +1,23 @@
 <?php
+// This file is copied from config/symfony/php/.php-cs-fixer.dist.php in https://github.com/itk-dev/devops_itkdev-docker.
+// Feel free to edit the file, but consider making a pull request if you find a general issue with the file.
 
-$finder = (new PhpCsFixer\Finder())
-    ->in(__DIR__)
-    ->exclude(['var', 'vendor', 'node_modules'])
+// https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/config.rst
 
-;
+$finder = new PhpCsFixer\Finder();
+// Check all files …
+$finder->in(__DIR__);
+// … that are not ignored by VCS
+$finder->ignoreVCSIgnored(true);
 
-return (new PhpCsFixer\Config())
-    ->setRules([
-        '@Symfony' => true,
-        'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],
-        // @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/rules/import/ordered_imports.rst
-        'ordered_imports' => ['imports_order' => ['const', 'class', 'function']],
-    ])
+$config = new PhpCsFixer\Config();
+$config->setFinder($finder);
 
-    ->setFinder($finder)
-;
+$config->setRules([
+  '@Symfony' => true,
+  'phpdoc_align' => false,
+  // Don't remove @param that define collection and array generics (yes they should have complete comments, but).
+  'no_superfluous_phpdoc_tags' => false,
+]);
+
+return $config;

@@ -13,19 +13,19 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
 #[\Gedmo\Mapping\Annotation\Loggable]
-class Answer
+class Answer implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'answers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Question $question = null;
+    private Question $question;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Versioned]
@@ -42,7 +42,7 @@ class Answer
     #[ORM\ManyToOne(inversedBy: 'answers')]
     private ?Report $report = null;
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getNote() ?? '';
     }

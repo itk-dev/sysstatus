@@ -15,24 +15,31 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: SystemRepository::class)]
 #[Loggable]
-class System
+class System implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
     use ArchivableEntity;
+    public const string STATUS_NOT_ACTIVE = 'Systemet bruges ikke længere';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, SelfServiceAvailableFromItem>
+     */
     #[ORM\ManyToMany(targetEntity: SelfServiceAvailableFromItem::class, mappedBy: 'systems')]
     private Collection $selfServiceAvailableFromItems;
 
+    /**
+     * @var Collection<int, Answer>
+     */
     #[ORM\OneToMany(mappedBy: 'system', targetEntity: Answer::class)]
     private Collection $answers;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Versioned]
     private ?string $name = null;
 
@@ -40,7 +47,7 @@ class System
     #[Versioned]
     private ?string $text = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Versioned]
     private ?string $sysSystemOwner = null;
 
@@ -119,7 +126,7 @@ class System
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $sysOwnerSub = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $sysLink = null;
 
     #[ORM\Column(nullable: true)]
@@ -131,7 +138,10 @@ class System
     #[ORM\Column(name: 'edoc_url', length: 255, nullable: true)]
     private ?string $eDocUrl = null;
 
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'systems')]
+    /**
+     * @var Collection<int, UserGroup>
+     */
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, inversedBy: 'systems')]
     private Collection $groups;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -153,9 +163,9 @@ class System
         $this->groups = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 
     public function getId(): ?int
@@ -605,14 +615,14 @@ class System
     }
 
     /**
-     * @return Collection<int, Group>
+     * @return Collection<int, UserGroup>
      */
     public function getGroups(): Collection
     {
         return $this->groups;
     }
 
-    public function addGroup(Group $group): self
+    public function addGroup(UserGroup $group): self
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -621,7 +631,7 @@ class System
         return $this;
     }
 
-    public function removeGroup(Group $group): self
+    public function removeGroup(UserGroup $group): self
     {
         $this->groups->removeElement($group);
 
@@ -667,7 +677,7 @@ class System
     /**
      * Virtual property.
      */
-    public function getSysIdAsLink()
+    public function getSysIdAsLink(): ?string
     {
         return $this->getSysId();
     }
@@ -675,23 +685,25 @@ class System
     /**
      * Virtual property.
      */
-    public function getShowableName()
+    public function getShowableName(): ?string
     {
-        return isset($this->sysTitle) ? $this->sysTitle : $this->getName();
+        return $this->sysTitle ?? $this->getName();
     }
 
     /**
      * Virtual property.
      */
-    public function getTextSet()
+    public function getTextSet(): bool
     {
         return isset($this->text);
     }
 
     /**
      * Virtual property.
+     *
+     * @return array<Theme>
      */
-    public function getAnswerArea()
+    public function getAnswerArea(): array
     {
         $themes = [];
         $groups = $this->getGroups();
@@ -703,9 +715,11 @@ class System
         return $themes;
     }
 
-    public function setSysNumberOfUsers($sysNumberOfUsers)
+    public function setSysNumberOfUsers(string $sysNumberOfUsers): self
     {
         $this->sysNumberOfUsers = $sysNumberOfUsers;
+
+        return $this;
     }
 
     public function getSysNumberOfUsers(): ?string

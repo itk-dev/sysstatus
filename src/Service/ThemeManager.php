@@ -3,26 +3,28 @@
 namespace App\Service;
 
 use App\Entity\Category;
-use App\Entity\Group;
+use App\Entity\User;
+use App\Entity\UserGroup;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ThemeManager
 {
-    private $tokenStorage;
-    private $categoryRepository;
-
     /**
      * ThemeManager constructor.
      */
-    public function __construct(TokenStorageInterface $tokenStorage, CategoryRepository $categoryRepository)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->categoryRepository = $categoryRepository;
+    public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly CategoryRepository $categoryRepository,
+    ) {
     }
 
-    public function getCategoriesForCurrentUser()
+    /**
+     * @return array<string>
+     */
+    public function getCategoriesForCurrentUser(): array
     {
+        /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
         $roles = $user->getRoles();
 
@@ -48,7 +50,7 @@ class ThemeManager
         $userGroups = $user->getGroups();
         $userThemes = [];
 
-        /* @var Group $userGroup */
+        /* @var UserGroup $userGroup */
         foreach ($userGroups as $userGroup) {
             foreach ($userGroup->getSystemThemes() as $theme) {
                 $userThemes[$theme->getId()] = $theme;

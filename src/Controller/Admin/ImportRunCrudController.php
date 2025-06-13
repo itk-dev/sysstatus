@@ -19,6 +19,7 @@ class ImportRunCrudController extends AbstractCrudController
         return ImportRun::class;
     }
 
+    #[\Override]
     public function configureActions(Actions $actions): Actions
     {
         $actions
@@ -32,6 +33,7 @@ class ImportRunCrudController extends AbstractCrudController
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id');

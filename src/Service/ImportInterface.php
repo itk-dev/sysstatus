@@ -8,7 +8,7 @@ interface ImportInterface
      * Import the given source.
      *
      * @param string $src
-     *                    Path to the source
+     *   Path to the source
      */
-    public function import(string $src);
+    public function import(string $src): void;
 }

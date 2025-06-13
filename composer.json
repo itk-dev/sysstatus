@@ -4,36 +4,47 @@
     "license": "proprietary",
     "type": "project",
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/annotations": "^2.0",
-        "doctrine/dbal": "^3.6",
-        "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.14",
-        "easycorp/easyadmin-bundle": "^4.6",
-        "fresh/doctrine-enum-bundle": "^9.0",
-        "gedmo/doctrine-extensions": "^3.16",
-        "knplabs/knp-paginator-bundle": "^6.1",
-        "phpoffice/phpspreadsheet": "^1.28",
-        "stof/doctrine-extensions-bundle": "^1.7",
-        "symfony/console": "6.4.*",
-        "symfony/dotenv": "6.4.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.4.*",
-        "symfony/runtime": "6.4.*",
-        "symfony/security-bundle": "6.4.*",
-        "symfony/validator": "6.4.*",
-        "symfony/yaml": "6.4.*"
+        "doctrine/dbal": "^3.9.4",
+        "doctrine/doctrine-bundle": "^2.14",
+        "doctrine/doctrine-migrations-bundle": "^3.4.1",
+        "doctrine/orm": "^2.20.2",
+        "easycorp/easyadmin-bundle": "^4.24",
+        "fresh/doctrine-enum-bundle": "^10.1",
+        "gedmo/doctrine-extensions": "^3.19",
+        "knplabs/knp-paginator-bundle": "^6.7",
+        "phpoffice/phpspreadsheet": "^1.29.10",
+        "stof/doctrine-extensions-bundle": "^1.13",
+        "symfony/asset": "~7.2.0",
+        "symfony/asset-mapper": "~7.2.3",
+        "symfony/console": "~7.2.1",
+        "symfony/dotenv": "~7.2.0",
+        "symfony/flex": "^2.5",
+        "symfony/framework-bundle": "~7.2.4",
+        "symfony/runtime": "~7.2.3",
+        "symfony/security-bundle": "~7.2.3",
+        "symfony/twig-bundle": "~7.2.0",
+        "symfony/validator": "~7.2.4",
+        "symfony/yaml": "~7.2.3",
+        "twig/extra-bundle": "^2.12 || ^3.20",
+        "twig/string-extra": "^3.20",
+        "twig/twig": "^2.12 || ^3.20"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.43",
-        "friendsofphp/php-cs-fixer": "^3.66",
-        "symfony/maker-bundle": "^1.48",
-        "symfony/phpunit-bridge": "*",
-        "symfony/stopwatch": "6.4.*",
-        "symfony/web-profiler-bundle": "6.4.*"
+        "ergebnis/composer-normalize": "^2.45",
+        "friendsofphp/php-cs-fixer": "^3.73.1",
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan": "^2.1.11",
+        "phpstan/phpstan-doctrine": "^2.0.2",
+        "rector/rector": "^2.0.10",
+        "symfony/debug-bundle": "~7.2.0",
+        "symfony/maker-bundle": "^1.62.1",
+        "symfony/phpunit-bridge": ">=7.2",
+        "symfony/stopwatch": "~7.2.4",
+        "symfony/web-profiler-bundle": "~7.2.4",
+        "vincentlanglet/twig-cs-fixer": "^3.5.1"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
@@ -63,6 +74,7 @@
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -70,8 +82,8 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
-            "require": "6.4.*"
+            "allow-contrib": true,
+            "require": "7.2.*"
         }
     },
     "scripts": {
@@ -83,7 +95,20 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        }
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
+        },
+        "coding-standards-analysis": [
+            "./vendor/bin/phpstan analyse src migrations"
+        ],
+        "coding-standards-apply": [
+            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix"
+        ],
+        "coding-standards-baseline": [
+            "./vendor/bin/phpstan analyse src migrations --generate-baseline"
+        ],
+        "coding-standards-check": [
+            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run"
+        ]
     }
 }

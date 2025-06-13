@@ -9,18 +9,21 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: SelfServiceAvailableFromItemRepository::class)]
-class SelfServiceAvailableFromItem
+class SelfServiceAvailableFromItem implements \Stringable
 {
     use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, System>
+     */
     #[ORM\ManyToMany(targetEntity: System::class, inversedBy: 'selfServiceAvailableFromItems')]
     private Collection $systems;
 
@@ -29,9 +32,9 @@ class SelfServiceAvailableFromItem
         $this->systems = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name ?? __CLASS__;
+        return $this->name ?? self::class;
     }
 
     public function getId(): ?int

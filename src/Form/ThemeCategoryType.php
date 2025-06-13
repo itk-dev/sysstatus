@@ -10,11 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ThemeCategoryType extends AbstractType
 {
-    private ThemeManager $themeManager;
-
-    public function __construct(ThemeManager $themeManager)
+    public function __construct(private readonly ThemeManager $themeManager)
     {
-        $this->themeManager = $themeManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

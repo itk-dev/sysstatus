@@ -10,15 +10,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractImportCommand extends Command
 {
-    protected EntityManagerInterface $entityManager;
-    protected BaseImporter $importer;
-
-    public function __construct(BaseImporter $importer, EntityManagerInterface $entityManager)
+    public function __construct(
+        protected BaseImporter $importer,
+        protected EntityManagerInterface $entityManager)
     {
         parent::__construct();
-
-        $this->entityManager = $entityManager;
-        $this->importer = $importer;
     }
 
     /**
@@ -26,7 +22,7 @@ abstract class AbstractImportCommand extends Command
      *
      * @throws \Exception
      */
-    protected function import(string $type, string $src, OutputInterface $output)
+    protected function import(string $type, string $src, OutputInterface $output): void
     {
         $success = true;
         $errorMessage = null;
@@ -45,16 +41,16 @@ abstract class AbstractImportCommand extends Command
     /**
      * Record import run.
      *
-     * @param string      $type
-     *                             The type of the import
-     * @param bool        $success
-     *                             Success of run
+     * @param string $type
+     *  The type of the import
+     * @param bool $success
+     *  Success of run
      * @param string|null $output
-     *                             Output message or null
+     *  Output message or null
      *
      * @throws \Exception
      */
-    protected function recordImportRun(string $type, bool $success, ?string $output = null)
+    protected function recordImportRun(string $type, bool $success, ?string $output = null): void
     {
         $importRun = new ImportRun();
         $importRun->setDatetime(new \DateTime());

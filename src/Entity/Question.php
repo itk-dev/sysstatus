@@ -14,27 +14,30 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[Loggable]
-class Question
+class Question implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
     private ?Category $category = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Versioned]
     private ?string $question = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $sortOrder = null;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, orphanRemoval: 'true')]
+    /**
+     * @var Collection<int, Answer>
+     */
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, orphanRemoval: true)]
     private Collection $answers;
 
     public function __construct()
@@ -42,9 +45,9 @@ class Question
         $this->answers = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getQuestion() ?: $this->getId();
+        return (string) ($this->getQuestion() ?: $this->getId());
     }
 
     public function getId(): ?int
@@ -76,17 +79,11 @@ class Question
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSortOrder(): ?int
     {
         return $this->sortOrder;
     }
 
-    /**
-     * @param mixed $sortOrder
-     */
     public function setSortOrder(int $sortOrder): self
     {
         $this->sortOrder = $sortOrder;

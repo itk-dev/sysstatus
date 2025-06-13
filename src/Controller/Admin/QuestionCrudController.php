@@ -16,6 +16,7 @@ class QuestionCrudController extends AbstractCrudController
         return Question::class;
     }
 
+    #[\Override]
     public function configureActions(Actions $actions): Actions
     {
         return $actions
@@ -28,6 +29,7 @@ class QuestionCrudController extends AbstractCrudController
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new('id')->setLabel('entity.system.id');

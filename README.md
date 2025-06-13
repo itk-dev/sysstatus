@@ -1,14 +1,34 @@
-# itstyr
-Styringsværktøj til IT projekter
+# ITStyr
+
+Styringsværktøj til IT projekter.
+
+## Upgrade 2.x -> 3.x
+
+To upgrade the database you have to do some manual steps to make the new doctrine 3.x migration work.
+
+First create the new migration table.
+
+```shell
+docker compose exec phpfpm bin/console doctrine:migrations:sync-metadata-storage
+```
+
+Move old migrations and remove old table. Then run the migrations.
+
+```shell
+docker compose exec phpfpm bin/console doctrine:query:sql 'INSERT INTO doctrine_migration_versions (version, executed_at, execution_time) SELECT concat("DoctrineMigrations\\Version", version), NULL, 1 FROM migration_versions;'
+docker compose exec phpfpm bin/console doctrine:query:sql 'DROP TABLE migration_versions;'
+docker compose exec phpfpm bin/console doctrine:migration:migrate
+```
 
 ## Setup locally
 
 ### Preset
+
 Make sure you have a set of JSON files for testing import Commands.
 
 ### Start Docker containers
 
-```sh
+```shell
 docker compose up -d
 docker compose exec phpfpm composer install
 docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
@@ -24,22 +44,23 @@ docker compose exec phpfpm bin/console SuperUser
 
 You should now be able to browse to the application
 
-```
-
+```shell
 open "http://$(docker-compose port nginx 8080)"
-
 ```
 
 ## Import systems and reports
-```sh
-docker compose exec phpfpm bin/console itstyr:import:system PATH
-docker compose exec phpfpm bin/console itstyr:import:report PATH
+
+```shell
+docker compose exec phpfpm bin/console itstyr:import:system <URL>
+docker compose exec phpfpm bin/console itstyr:import:report <URL>
 ```
 
 ### Flowchart
 
 A helpful flowchart over the Entities, and Joinedtables.
+
 Ilustrative figures meaning:
+
 1. Database = Database
 2. Black square = Entities
 3. Grey square = relations
@@ -47,6 +68,7 @@ Ilustrative figures meaning:
 5. arrow = relation between DB and Entity
 6. bulletin = shows the mapping Entities in Jointables, and JoinCollums
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TD
  Answers[Answers]
@@ -92,4 +114,4 @@ flowchart TD
 
  Question --- |ManyToOne| Category
 ```
-
+<!-- markdownlint-enable MD013 -->

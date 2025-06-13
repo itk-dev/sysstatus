@@ -4,39 +4,60 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-// #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Entity]
-#[ORM\Table(name: 'fos_group')]
-class Group
+class UserGroup implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, Theme>
+     */
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'systemGroups')]
     #[ORM\JoinTable(name: 'group_system_themes')]
+    #[ORM\OrderBy(['name' => Order::Ascending->value])]
     private Collection $systemThemes;
 
+    /**
+     * @var Collection<int, Theme>
+     */
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'reportGroups')]
     #[ORM\JoinTable(name: 'group_report_themes')]
+    #[ORM\OrderBy(['name' => Order::Ascending->value])]
     private Collection $reportThemes;
 
+    /**
+     * @var Collection<int, Report>
+     */
     #[ORM\ManyToMany(targetEntity: Report::class, mappedBy: 'groups')]
+    #[ORM\OrderBy(['name' => Order::Ascending->value])]
     private Collection $reports;
 
+    /**
+     * @var Collection<int, System>
+     */
     #[ORM\ManyToMany(targetEntity: System::class, mappedBy: 'groups')]
+    #[ORM\OrderBy(['name' => Order::Ascending->value])]
     private Collection $systems;
 
+    /**
+     * @var Collection<int, User>
+     */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups')]
     private Collection $users;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
+    /**
+     * @var array<string>
+     */
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
@@ -49,9 +70,9 @@ class Group
         $this->users = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     public function getId(): ?int
@@ -206,11 +227,19 @@ class Group
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array<string> $roles
+     *
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;

@@ -11,19 +11,19 @@ class ImportRun
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $datetime = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $result = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $output = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
 
     public function getId(): ?int

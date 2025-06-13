@@ -8,7 +8,7 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ThemeCategoryRepository::class)]
-class ThemeCategory
+class ThemeCategory implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -18,15 +18,20 @@ class ThemeCategory
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'themeCategories')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Theme $theme = null;
 
     #[ORM\ManyToOne(inversedBy: 'themeCategories')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
+    private Category $category;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ['default' => 0])]
     private ?int $sortOrder = 0;
+
+    public function __toString(): string
+    {
+        return sprintf('%d: %s', $this->sortOrder, $this->getCategory()?->getName());
+    }
 
     public function getId(): ?int
     {

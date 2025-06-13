@@ -13,9 +13,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: 'fos_user')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\UniqueConstraint(fields: ['email'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -25,25 +25,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'fos_user_user_group')]
+    /**
+     * @var Collection<int, UserGroup>
+     */
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, inversedBy: 'users')]
     private Collection $groups;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $username = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
     #[ORM\Column]
-    private ?bool $enabled = null;
+    private bool $enabled = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLogin = null;
 
+    /**
+     * @var array<string>
+     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -52,25 +57,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->groups = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->username;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return Collection<int, Group>
+     * @return Collection<int, UserGroup>
      */
     public function getGroups(): Collection
     {
         return $this->groups;
     }
 
-    public function setGroups(Collection $groups): void
+    /**
+     * @param Collection<int, UserGroup> $groups
+     */
+    public function setGroups(Collection $groups): self
     {
         $this->groups = $groups;
+
+        return $this;
     }
 
-    public function addGroup(Group $group): self
+    public function addGroup(UserGroup $group): self
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -79,7 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeGroup(Group $group): self
+    public function removeGroup(UserGroup $group): self
     {
         $this->groups->removeElement($group);
 
@@ -120,7 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isEnabled(): ?bool
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }

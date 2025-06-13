@@ -44,9 +44,10 @@ class AnswerController extends AbstractController
         }
 
         if (isset($reportId)) {
-            $answer = $answerRepository->findOneBy(
-                ['question' => $questionId, 'report' => $reportId]
-            );
+            $answer = $answerRepository->findOneBy([
+                'question' => $questionId,
+                'report' => $reportId,
+            ]);
 
             if (!$answer) {
                 $answer = new Answer();
@@ -56,9 +57,10 @@ class AnswerController extends AbstractController
             }
         }
         if (isset($systemId)) {
-            $answer = $answerRepository->findOneBy(
-                ['question' => $questionId, 'system' => $systemId]
-            );
+            $answer = $answerRepository->findOneBy([
+                'question' => $questionId,
+                'system' => $systemId,
+            ]);
 
             if (!$answer) {
                 $answer = new Answer();
@@ -70,14 +72,11 @@ class AnswerController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute(
-            'app_admin_customdashboardcrud_index',
-            [
-                'crudAction' => 'edit',
-                'entityId' => $answer->getId(),
-                'referer' => $request->query->get('referer'),
-                'crudControllerFqcn' => AnswerCrudController::class,
-            ]
-        );
+        return $this->redirectToRoute('admin', [
+            'crudAction' => 'edit',
+            'entityId' => $answer->getId(),
+            'referer' => $request->query->get('referer'),
+            'crudControllerFqcn' => AnswerCrudController::class,
+        ]);
     }
 }

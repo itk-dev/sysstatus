@@ -15,23 +15,29 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[Loggable]
 #[UniqueEntity('name')]
-class Category
+class Category implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     #[Versioned]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, ThemeCategory>
+     */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: ThemeCategory::class, orphanRemoval: true)]
     private Collection $themeCategories;
 
+    /**
+     * @var Collection<int, Question>
+     */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Question::class, cascade: ['persist'])]
     private Collection $questions;
 
@@ -41,9 +47,9 @@ class Category
         $this->questions = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName() ?: $this->getId();
+        return (string) ($this->getName() ?: $this->getId());
     }
 
     public function getId(): ?int
@@ -83,13 +89,17 @@ class Category
 
     /**
      * Virtual.
+     *
+     * @return array<Theme>
+     *
+     * @throws \Exception
      */
-    public function getThemes()
+    public function getThemes(): array
     {
         $list = [];
         $iterator = $this->themeCategories->getIterator();
 
-        foreach ($iterator as $i => $item) {
+        foreach ($iterator as $item) {
             $list[$item->getTheme()->getId()] = $item->getTheme();
         }
 
