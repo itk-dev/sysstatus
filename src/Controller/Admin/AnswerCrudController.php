@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Answer;
 use App\Entity\Question;
+use App\Entity\Report;
 use App\Entity\System;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -59,24 +60,28 @@ class AnswerCrudController extends AbstractCrudController
     #[\Override]
     public function createEntity(string $entityFqcn): Answer
     {
+        // Set question and report OR system on new answers.
+        $params = $this->getContext()->getRequest()->query->all();
+        // Question is required.
+        $question = isset($params['question']) ? $this->entityManager->getRepository(Question::class)->find($params['question']) : null;
+        if (null === $question) {
+            throw new BadRequestHttpException('Missing or invalid question');
+        }
+        // One of report or system is required.
+        $report = isset($params['report']) ? $this->entityManager->getRepository(Report::class)->find($params['report']) : null;
+        $system = isset($params['system']) ? $this->entityManager->getRepository(System::class)->find($params['system']) : null;
+
+        if (null === $report && null === $system) {
+            throw new BadRequestHttpException('Either report or system must be set');
+        }
+
         /** @var Answer $entity */
         $entity = parent::createEntity($entityFqcn);
 
-        // Set system and question on new answers.
-        $params = $this->getContext()->getRequest()->query->all();
-        if (isset($params['system'], $params['question'])) {
-            $system = $this->entityManager->getRepository(System::class)->find($params['system']);
-            $question = $this->entityManager->getRepository(Question::class)->find($params['question']);
-            if ($system && $question) {
-                $entity
-                    ->setSystem($system)
-                    ->setQuestion($question);
-            } else {
-                throw new BadRequestHttpException();
-            }
-        }
-
-        return $entity;
+        return $entity
+            ->setQuestion($question)
+            ->setReport($report)
+            ->setSystem($system);
     }
 
     #[\Override]
