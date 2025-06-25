@@ -45,22 +45,22 @@ class ReportImporter extends BaseImporter
             $report->setSysLink($systemURL.'/'.$entry->{'Sti'}.'/DispForm.aspx?ID='.$entry->{'Id'});
 
             $report->setSysConfidentialInformation($this->convertBoolean($entry->{'Følsomme personoplysninger'}));
-            $report->setSysAlternativeTitle($this->sanitizeText($entry->{'Systemnavn'}));
+            $report->setSysAlternativeTitle($this->sanitizeText($entry->{'Systemnavn'} ?? ''));
             $report->setSysOwner($this->sanitizeText($entry->{'Systemejerskab'}));
             $report->setSysPurpose($this->sanitizeText($entry->{'Formål'}));
             $report->setSysClassification($this->sanitizeText($entry->{'Systemets klassifikation'}));
             // @TODO: $report->setSysDateForRevision($this->convertDate($entry->{'Dato for revision'}));
             $report->setSysPersons($this->sanitizeText($entry->{'Personkreds'}));
             $report->setSysInformationTypes($this->sanitizeText($entry->{'Oplysningstyper'}));
-            $report->setSysDataSentTo($this->sanitizeText($entry->{'Hvor overføres data til?'}));
+            $report->setSysDataSentTo($this->sanitizeText($entry->{'Hvor overføres data til?'} ?? ''));
             $report->setSysDataComeFrom($this->sanitizeText($entry->{'Hvor kommer data fra?'}));
             $report->setSysDataLocation($this->sanitizeText($entry->{'Placering af data'}));
             $report->setSysLatestDeletionDate($this->sanitizeText($entry->{'Sletning'}));
             $report->setSysDataProcessors($this->sanitizeText($entry->{'Databehandler'}));
-            $report->setSysDataProcessingAgreement($this->sanitizeText($entry->{'Databehandleraftale/fortrolighedsaftale'}));
-            $report->setSysDataProcessingAgreementLink($this->sanitizeText($entry->{'Link til databehandleraftale/fortrolighedsaftale'}));
+            $report->setSysDataProcessingAgreement($this->sanitizeText($entry->{'Databehandleraftale/fortrolighedsaftale'} ?? ''));
+            $report->setSysDataProcessingAgreementLink($this->sanitizeText($entry->{'Link til databehandleraftale/fortrolighedsaftale'} ?? ''));
             $report->setSysAuditorStatement($this->sanitizeText($entry->{'Revisorerklæring/tilsyn'}));
-            $report->setSysAuditorStatementLink($this->sanitizeText($entry->{'Link til revisorerklæring'}));
+            $report->setSysAuditorStatementLink($this->sanitizeText($entry->{'Link til revisorerklæring'} ?? ''));
             $report->setSysUsage($this->sanitizeText($entry->{'Systembrug'}));
             // @TODO: $report->setSysRequestForInsight($this->sanitizeText($entry->{'Anmodning om indsigt'}));
             $report->setSysDateUse($this->convertDate($entry->{'Ibrugtagning'}));
@@ -72,11 +72,11 @@ class ReportImporter extends BaseImporter
             $report->setSysImpactAnalysis($this->sanitizeText($entry->{'Konsekvensanalyse'}));
             // @TODO: $report->setSysImpactAnalysisLink($this->sanitizeText($entry->{'Link til konsekvensanalyse'}));
             $report->setSysAuthorizationProcedure($this->sanitizeText($entry->{'Autorisationsprocedure'}));
-            $report->setSysInternalInformation($this->sanitizeText($entry->{'Indsigt - interne oplysninger'}));
+            $report->setSysInternalInformation($this->sanitizeText($entry->{'Indsigt - interne oplysninger'} ?? ''));
             $report->setSysDataWorthSaving($this->sanitizeText($entry->{'Indeholder systemet bevaringsværdige data?'}));
             $report->setSysDataToScience($this->sanitizeText($entry->{'Videregivelse af oplysninger til forskning'}));
 
-            $report->setSysSystemOwner($this->sanitizeText($entry->{'Systemejer/projektejer'}));
+            $report->setSysSystemOwner($this->sanitizeText($entry->{'Systemejer/projektejer'} ?? ''));
 
             // Set group and subGroup.
             if (!is_null($report->getSysOwner())) {
