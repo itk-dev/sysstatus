@@ -8,6 +8,11 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [3.0.2] - 2025-06-25
+
+* [PR-35](https://github.com/itk-dev/sysstatus/pull/35)
+  4802: Handled non-existing fields.
+
 ## [3.0.1] - 2025-06-23
 
 * [PR-34](https://github.com/itk-dev/sysstatus/pull/34)
@@ -163,6 +168,7 @@ See [keep a changelog] for information about writing changes to this log.
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
 
 [Unreleased]: https://github.com/itk-dev/sysstatus/compare/main...develop
+[3.0.2]: https://github.com/itk-dev/sysstatus/releases/tag/3.0.2
 [3.0.1]: https://github.com/itk-dev/sysstatus/releases/tag/3.0.1
 [3.0.0]: https://github.com/itk-dev/sysstatus/releases/tag/3.0.0
 [2.1.0]: https://github.com/itk-dev/sysstatus/releases/tag/2.1.0
