@@ -8,6 +8,7 @@ use App\Repository\ReportRepository;
 use App\Repository\SelfServiceAvailableFromItemRepository;
 use App\Repository\SystemRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class SystemImporter extends BaseImporter
 {
@@ -21,7 +22,7 @@ class SystemImporter extends BaseImporter
         parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager);
     }
 
-    public function import(string $src): void
+    public function import(string $src, ProgressBar $progressBar = null): void
     {
         $systemURL = getenv('SYSTEM_URL');
 
@@ -32,6 +33,8 @@ class SystemImporter extends BaseImporter
         if (0 === \count($entries)) {
             return;
         }
+
+        $progressBar?->setMaxSteps(\count($entries));
 
         // List of ids from Systemoversigten.
         $sysInternalIds = [];
@@ -137,9 +140,13 @@ class SystemImporter extends BaseImporter
                     $system->setSysOwnerSub($subGroupName);
                 }
             }
+
+            $progressBar?->advance();
         }
 
         // Archive systems that no longer exist in Systemoversigten.
+
+        $progressBar?->setMessage('Starting archiving ...');
 
         $this->systemRepository->createQueryBuilder('e')
             ->update()
@@ -152,6 +159,10 @@ class SystemImporter extends BaseImporter
             ->execute()
         ;
 
+        $progressBar?->setMessage('Flushing ...');
+
         $this->entityManager->flush();
+
+        $progressBar?->finish();
     }
 }

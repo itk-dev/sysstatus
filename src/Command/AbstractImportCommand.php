@@ -6,6 +6,7 @@ use App\Entity\ImportRun;
 use App\Service\BaseImporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractImportCommand extends Command
@@ -22,13 +23,15 @@ abstract class AbstractImportCommand extends Command
      *
      * @throws \Exception
      */
-    protected function import(string $type, string $src, OutputInterface $output): void
+    protected function import(string $type, string $src, OutputInterface $output, bool $progress = false): void
     {
         $success = true;
         $errorMessage = null;
 
+        $progressBar = $progress ? new ProgressBar($output) : null;
+
         try {
-            $this->importer->import($src);
+            $this->importer->import($src, $progressBar);
         } catch (\Exception $e) {
             $success = false;
             $errorMessage = $e->getMessage();

@@ -3,10 +3,11 @@
 namespace App\Service;
 
 use App\Entity\Report;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class ReportImporter extends BaseImporter
 {
-    public function import(string $src): void
+    public function import(string $src, ProgressBar $progressBar = null): void
     {
         $systemURL = getenv('SYSTEM_URL');
 
@@ -17,6 +18,8 @@ class ReportImporter extends BaseImporter
         if (0 === \count($entries)) {
             return;
         }
+
+        $progressBar?->setMaxSteps(\count($entries));
 
         // List of ids from Anmeldelsesportalen.
         $sysInternalIds = [];
@@ -99,7 +102,11 @@ class ReportImporter extends BaseImporter
                     $report->setSysOwnerSub($subGroupName);
                 }
             }
+
+            $progressBar?->advance();
         }
+
+        $progressBar?->setMessage('Starting archiving ...');
 
         // Archive reports that no longer exist in anmeldelsesportalen.
         $this->reportRepository->createQueryBuilder('e')
@@ -112,6 +119,10 @@ class ReportImporter extends BaseImporter
             ->execute()
         ;
 
+        $progressBar?->setMessage('Flushing ...');
+
         $this->entityManager->flush();
+
+        $progressBar?->finish();
     }
 }
