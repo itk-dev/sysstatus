@@ -7,6 +7,7 @@ use App\Service\ReportImporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportImportCommand extends AbstractImportCommand
@@ -22,6 +23,7 @@ class ReportImportCommand extends AbstractImportCommand
             ->setName('itstyr:import:report')
             ->setDescription('Import reports from feed.')
             ->addArgument('src', InputArgument::REQUIRED, 'The src of the feed.')
+            ->addOption('progress', 'p', InputOption::VALUE_NONE, 'The src of the feed.')
         ;
     }
 
@@ -30,7 +32,7 @@ class ReportImportCommand extends AbstractImportCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->import(Report::class, $input->getArgument('src'), $output);
+        $this->import(Report::class, $input->getArgument('src'), $output, $input->getOption('progress'));
 
         return 0;
     }

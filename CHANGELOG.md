@@ -8,6 +8,11 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [3.0.3] - 2025-07-29
+
+* [PR-37](https://github.com/itk-dev/sysstatus/pull/37)
+  5050: Optimize db structure and indexes, Add progressbar to import jobs
+
 ## [3.0.2] - 2025-06-25
 
 * [PR-35](https://github.com/itk-dev/sysstatus/pull/35)
