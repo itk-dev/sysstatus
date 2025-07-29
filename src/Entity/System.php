@@ -14,6 +14,8 @@ use Gedmo\Mapping\Annotation\Versioned;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: SystemRepository::class)]
+#[ORM\Index(columns: ['archived_at', 'sys_status', 'sys_owner_sub'], name: 'archived_status_owner_idx')]
+#[ORM\Index(columns: ['sys_internal_id'], name: 'sys_internal_id_idx')]
 #[Loggable]
 class System implements \Stringable
 {
@@ -123,7 +125,7 @@ class System implements \Stringable
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $sysVersion = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $sysOwnerSub = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -132,7 +134,7 @@ class System implements \Stringable
     #[ORM\Column(nullable: true)]
     private ?int $sysInternalId = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $sysStatus = null;
 
     #[ORM\Column(name: 'edoc_url', length: 255, nullable: true)]
