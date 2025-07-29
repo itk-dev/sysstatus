@@ -22,7 +22,7 @@ class SystemImporter extends BaseImporter
         parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager);
     }
 
-    public function import(string $src, ProgressBar $progressBar = null): void
+    public function import(string $src, ?ProgressBar $progressBar = null): void
     {
         $systemURL = getenv('SYSTEM_URL');
 

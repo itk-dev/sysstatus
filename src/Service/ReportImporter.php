@@ -7,7 +7,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class ReportImporter extends BaseImporter
 {
-    public function import(string $src, ProgressBar $progressBar = null): void
+    public function import(string $src, ?ProgressBar $progressBar = null): void
     {
         $systemURL = getenv('SYSTEM_URL');
 

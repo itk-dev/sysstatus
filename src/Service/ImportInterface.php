@@ -12,5 +12,5 @@ interface ImportInterface
      * @param string $src
      *   Path to the source
      */
-    public function import(string $src, ProgressBar $progressBar = null): void;
+    public function import(string $src, ?ProgressBar $progressBar = null): void;
 }
