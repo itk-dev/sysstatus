@@ -32,11 +32,11 @@ abstract class BaseImporter implements ImportInterface
         return $str;
     }
 
-  /**
-   * @param array<int,mixed>|null $list
-   *
-   * @return string|null
-   */
+    /**
+     * @param array<int,mixed>|null $list
+     *
+     * @return string|null
+     */
     protected function convertList(?array $list): ?string
     {
         if ($list) {
@@ -46,12 +46,12 @@ abstract class BaseImporter implements ImportInterface
         return '';
     }
 
-  /**
-   * @param $obj
-   *
-   * @return string|null
-   */
-    protected function convertLink(?Object $obj): ?string
+    /**
+     * @param $obj
+     *
+     * @return string|null
+     */
+    protected function convertLink(?object $obj): ?string
     {
         if ($obj && $obj->Url && $obj->Description) {
             return '<a href="'.$obj->Url.'">'.$obj->Description.'</a>';
