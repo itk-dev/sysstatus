@@ -6,6 +6,8 @@ use App\Repository\GroupRepository;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class BaseImporter implements ImportInterface
 {
@@ -16,11 +18,12 @@ abstract class BaseImporter implements ImportInterface
         protected SystemRepository $systemRepository,
         protected GroupRepository $groupRepository,
         protected EntityManagerInterface $entityManager,
+        protected ParameterBagInterface $params
     ) {
-        $this->url = getenv('SYSTEM_URL');
+        $this->url = $this->params->get('system_url') ?? '';
     }
 
-    protected function sanitizeText(string $str): ?string
+    protected function sanitizeText($str): ?string
     {
         $str = strip_tags($str, '<p><div><strong><a><ul><li><span><br><br/>');
 
@@ -30,12 +33,39 @@ abstract class BaseImporter implements ImportInterface
         return $str;
     }
 
+    protected function convertList(?array $list): ?string
+    {
+      if ($list) {
+        return implode(', ', $list);
+      }
+
+      return '';
+    }
+    protected function convertLink($obj): ?string
+    {
+      if ($obj && $obj->Url && $obj->Description) {
+        return '<a href="'.$obj->Url.'">'.$obj->Description.'</a>';
+      }
+
+      return '';
+    }
+
     /**
      * @throws \Exception
      */
     protected function convertDate(string $date): \DateTime
     {
         return new \DateTime($date);
+    }
+
+  /**
+   * @param array $systemOwner
+   *
+   * @return string
+   */
+    protected function convertSystemOwner($systemOwner): string
+    {
+      return $systemOwner[0]->LookupValue ?? '';
     }
 
     protected function convertBoolean(string $str): bool
