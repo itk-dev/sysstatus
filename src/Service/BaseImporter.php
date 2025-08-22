@@ -7,7 +7,6 @@ use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class BaseImporter implements ImportInterface
 {
@@ -18,14 +17,14 @@ abstract class BaseImporter implements ImportInterface
         protected SystemRepository $systemRepository,
         protected GroupRepository $groupRepository,
         protected EntityManagerInterface $entityManager,
-        protected ParameterBagInterface $params
+        protected ParameterBagInterface $params,
     ) {
         $this->url = $this->params->get('system_url') ?? '';
     }
 
     protected function sanitizeText($str): ?string
     {
-        $str = strip_tags($str, '<p><div><strong><a><ul><li><span><br><br/>');
+        $str = strip_tags((string) $str, '<p><div><strong><a><ul><li><span><br><br/>');
 
         $str = preg_replace("/<([a-z][a-z0-9]*)(?:[^>]*(\shref=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/i", '<$1$2$3>', $str);
         $str = preg_replace("#(<\s*a\s+[^>]*href\s*=\s*[\"'])(?!http|mailto)([^\"'>]+)([\"'>]+)#", '$1'.$this->url.'$2$3', (string) $str);
@@ -35,19 +34,20 @@ abstract class BaseImporter implements ImportInterface
 
     protected function convertList(?array $list): ?string
     {
-      if ($list) {
-        return implode(', ', $list);
-      }
+        if ($list) {
+            return implode(', ', $list);
+        }
 
-      return '';
+        return '';
     }
+
     protected function convertLink($obj): ?string
     {
-      if ($obj && $obj->Url && $obj->Description) {
-        return '<a href="'.$obj->Url.'">'.$obj->Description.'</a>';
-      }
+        if ($obj && $obj->Url && $obj->Description) {
+            return '<a href="'.$obj->Url.'">'.$obj->Description.'</a>';
+        }
 
-      return '';
+        return '';
     }
 
     /**
@@ -58,14 +58,14 @@ abstract class BaseImporter implements ImportInterface
         return new \DateTime($date);
     }
 
-  /**
-   * @param array $systemOwner
-   *
-   * @return string
-   */
+    /**
+     * @param array $systemOwner
+     *
+     * @return string
+     */
     protected function convertSystemOwner($systemOwner): string
     {
-      return $systemOwner[0]->LookupValue ?? '';
+        return $systemOwner[0]->LookupValue ?? '';
     }
 
     protected function convertBoolean(string $str): bool

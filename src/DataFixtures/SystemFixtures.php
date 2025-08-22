@@ -10,17 +10,18 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class SystemFixtures extends Fixture implements FixtureGroupInterface
 {
-  public function __construct(protected SystemImporter $systemImporter, protected KernelInterface $kernel)
-  {
-  }
+    public function __construct(protected SystemImporter $systemImporter, protected KernelInterface $kernel)
+    {
+    }
 
-  public function load(ObjectManager $manager): void
-  {
-    $rootPath = $this->kernel->getProjectDir();
-    $this->systemImporter->import($rootPath . '/example_data/systems.json');
-  }
+    public function load(ObjectManager $manager): void
+    {
+        $rootPath = $this->kernel->getProjectDir();
+        $this->systemImporter->import($rootPath.'/example_data/systems.json');
+    }
 
-  public static function getGroups(): array {
-    return ['imported_data'];
-  }
+    public static function getGroups(): array
+    {
+        return ['imported_data'];
+    }
 }

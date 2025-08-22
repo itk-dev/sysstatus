@@ -16,11 +16,12 @@ class ReportFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager): void
     {
-      $rootPath = $this->kernel->getProjectDir();
-      $this->reportImporter->import($rootPath . '/example_data/reports.json');
+        $rootPath = $this->kernel->getProjectDir();
+        $this->reportImporter->import($rootPath.'/example_data/reports.json');
     }
 
-    public static function getGroups(): array {
-      return ['imported_data'];
+    public static function getGroups(): array
+    {
+        return ['imported_data'];
     }
 }

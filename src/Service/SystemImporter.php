@@ -19,7 +19,7 @@ class SystemImporter extends BaseImporter
         GroupRepository $groupRepository,
         private readonly SelfServiceAvailableFromItemRepository $selfServiceAvailableFromItemRepository,
         EntityManagerInterface $entityManager,
-        protected ParameterBagInterface $params
+        protected ParameterBagInterface $params,
     ) {
         parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager, $params);
     }
@@ -60,7 +60,7 @@ class SystemImporter extends BaseImporter
             $system->setSysUpdated($this->convertDate($entry->{'Modified'}));
             $system->setSysTitle($this->sanitizeText($entry->{'Title'}));
 
-            $system->setSysLink($this->url . $entry->{'FileDirRef'}.'/DispForm.aspx?ID='.$entry->{'ID'});
+            $system->setSysLink($this->url.$entry->{'FileDirRef'}.'/DispForm.aspx?ID='.$entry->{'ID'});
 
             $system->setSysAlternativeTitle($this->sanitizeText($entry->{'Kaldenavn'} ?? ''));
             $system->setSysDescription($this->sanitizeText($entry->{'Beskrivelse'} ?? ''));

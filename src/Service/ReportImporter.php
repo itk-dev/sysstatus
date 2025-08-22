@@ -7,11 +7,10 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class ReportImporter extends BaseImporter
 {
-
-  /**
-   * @throws \Exception
-   */
-  public function import(string $src, ?ProgressBar $progressBar = null): void
+    /**
+     * @throws \Exception
+     */
+    public function import(string $src, ?ProgressBar $progressBar = null): void
     {
         $json = file_get_contents($src);
         $entries = json_decode($json);
@@ -45,7 +44,7 @@ class ReportImporter extends BaseImporter
             $report->setSysInternalId($sysInternalId);
             $report->setSysUpdated($this->convertDate($entry->{'Modified'}));
             $report->setSysTitle($this->sanitizeText($entry->{'Title'}));
-            $report->setSysLink($this->url . $entry->{'FileDirRef'}.'/DispForm.aspx?ID='.$entry->{'ID'});
+            $report->setSysLink($this->url.$entry->{'FileDirRef'}.'/DispForm.aspx?ID='.$entry->{'ID'});
             $report->setSysConfidentialInformation($this->convertBoolean($entry->{'Fortrolige_x0020_oplysninger'} ?? ''));
             $report->setSysAlternativeTitle($this->sanitizeText($entry->{'Title'} ?? ''));
             $report->setSysOwner($this->sanitizeText($entry->{'Systemejerskab2'} ?? ''));
