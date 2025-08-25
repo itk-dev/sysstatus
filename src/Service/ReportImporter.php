@@ -7,10 +7,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class ReportImporter extends BaseImporter
 {
-    /**
-     * @throws \Exception
-     */
-    public function import(string $src, ?ProgressBar $progressBar = null): void
+  public function import(string $src, ?ProgressBar $progressBar = null): void
     {
         $json = file_get_contents($src);
         $entries = json_decode($json);
