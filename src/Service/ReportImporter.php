@@ -75,7 +75,7 @@ class ReportImporter extends BaseImporter
             $report->setSysDataToScience($this->sanitizeText($entry->{'Videregivelse_x0020_af_x0020_opl'} ?? ''));
 
             // @todo Handle array of objects
-            $report->setSysSystemOwner($this->convertSystemOwner($entry->{'Systemejer2'} ?? ''));
+            $report->setSysSystemOwner($this->convertSystemOwner($entry->{'Systemejer2'} ?? []));
 
             // Set group and subGroup.
             if (!is_null($report->getSysOwner())) {

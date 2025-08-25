@@ -75,6 +75,10 @@ abstract class BaseImporter implements ImportInterface
      */
     protected function convertSystemOwner(array $systemOwner): string
     {
+        if (empty($systemOwner)) {
+          return '';
+        }
+
         return $systemOwner[0]->LookupValue ?? '';
     }
 
