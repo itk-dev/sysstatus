@@ -54,7 +54,7 @@ abstract class BaseImporter implements ImportInterface
     protected function convertLink(?object $obj): ?string
     {
         if ($obj && $obj->Url && $obj->Description) {
-            return '<a href="'.$obj->Url.'">'.$obj->Description.'</a>';
+            return '<a href="'.htmlspecialchars($obj->Url).'">'.$obj->Description.'</a>';
         }
 
         return '';
