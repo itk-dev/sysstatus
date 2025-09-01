@@ -55,6 +55,12 @@ docker compose exec phpfpm bin/console itstyr:import:system <URL>
 docker compose exec phpfpm bin/console itstyr:import:report <URL>
 ```
 
+## Apply fixtures
+
+```shell
+docker compose exec phpfpm bin/console doctrine:fixtures:load --group=imported_data --purge-exclusions=user
+```
+
 ### Flowchart
 
 A helpful flowchart over the Entities, and Joinedtables.

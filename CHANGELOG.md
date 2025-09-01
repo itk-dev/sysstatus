@@ -8,6 +8,11 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-38](https://github.com/itk-dev/sysstatus/pull/38)
+  * Update importers
+  * Add example data
+  * Add fixtures
+
 ## [3.0.3] - 2025-07-29
 
 * [PR-37](https://github.com/itk-dev/sysstatus/pull/37)
