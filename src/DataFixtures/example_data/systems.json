@@ -1,0 +1,980 @@
+[
+  {
+    "Overf_x00f8_rt_x0020_til_x0020_K": null,
+    "Title": "Ring Management System",
+    "Kaldenavn": "RMS",
+    "Beskrivelse": "<div class=\"ExternalClass749C3986169A42E38971BD44D024552C\"><div>The central platform for <div>monitoring magical artifacts and tracking</div> across Middle-earth</div></div>",
+    "Systemejerskab": "MSB-Council of Elrond: Artifact Protection",
+    "Systemejerskab_x0020__x002d__x00": "Security",
+    "Systemejer2": [
+      {
+        "Email": "elrond@rivendell.me",
+        "TypeId": "{a843cb51f8b7d2c19a5ec96f42718e}",
+        "LookupId": 112,
+        "LookupValue": "Elrond Halfelven"
+      }
+    ],
+    "System_x0020_stedfortr_x00e6_der": [
+      {
+        "Email": "galadriel@lothlorien.me",
+        "TypeId": "{b723ab43c9ef3d18b4f7c85e31629d}",
+        "LookupId": 87,
+        "LookupValue": "Lady Galadriel"
+      }
+    ],
+    "Intern_x0020_driftsansvarlig2": [
+      {
+        "Email": "gandalf@istari.me",
+        "TypeId": "{c956ab54c16bd4c1889d2996f57282}",
+        "LookupId": 204,
+        "LookupValue": "Gandalf the Grey"
+      }
+    ],
+    "Ekstern_x0020_driftsansvarlig": "<div class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\"><strong>Support hours dawn till dusk</strong> via the following channels:</div><ul><li class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\">Palantír communication <span>+45 11 22 33 44</span></li><li><span>Messenger Ravens: </span><a href=\"mailto:council@whitetower.me\">council@whitetower.me</a></li><li>Service manager: <br>Celeborn Phone: <span>+45 55 66 77 88</span> | Mobile: <span>+45 99 88 77 66</span></li></ul>",
+    "Systemleverand_x00f8_r": "<div class=\"ExternalClassA02C452DED0E464598DEEA20288C3655\">Noldor Craft Industries</div>",
+    "Urgency_x0020_rating": "World-Saving Critical",
+    "Antal_x0020_brugere": "> 100",
+    "Teknisk_x0020_dokumentation2": {
+      "Description": "Elvish Technical Documentation",
+      "Url": "https://middleearth.sharepoint.com/Teams/council-of-elrond/RMS/Documentation",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Interne_x0020_systemafh_x00e6_ng": [
+      {
+        "LookupId": 177,
+        "LookupValue": "Palantír Network System",
+        "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+      }
+    ],
+    "Systemafh_x00e6_ngigheder_x0020_": [],
+    "Eksterne_x0020_systemafh_x00e6_n": "<div class=\"ExternalClass2DF7EE5ABA124E6D89233BB7D558BD76\"><p>Integration with Gondorian defense systems</p></div>",
+    "Kommentarer": "<div class=\"ExternalClass7580E16CC15D4C01AEAB97115961E035\"><p>System enhancement planned after Council meeting in Q1 2025</p></div>",
+    "Servernavne": null,
+    "Brugervejledninger": {
+      "Description": "Ring Bearer's Guide",
+      "Url": "https://middleearth.sharepoint.com/Teams/council-of-elrond/RMS/UserGuides",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Superbrugerorganisation": {
+      "Description": "White Council",
+      "Url": "https://middleearth.sharepoint.com/Teams/white-council/Members",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "IT_x002d_sikkerheds_x0020_katego": "Med magiske artefaktdata",
+    "Intern_x0020_IT_x002d_Sikkerheds": {
+      "Description": "Artifact Security Protocols",
+      "Url": "https://middleearth.sharepoint.com/Teams/security/Documents/RMS-Security",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontrakt_x0020_beskrivelse": {
+      "Description": "Alliance Treaty",
+      "Url": "https://middleearth.sharepoint.com/Teams/contracts/LastAlliance-Treaty",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontraktudl_x00f8_bsdato": "2025-03-25T00:00:00Z",
+    "Udbudstype": "Council Selection",
+    "End_x002d_of_x002d_Life": "2025-10-31T00:00:00Z",
+    "End_x002d_of_x002d_Life_x0020_be": "Migration to Valinor platform planned",
+    "Arkivering": "Systemet er i drift, under beskyttelse",
+    "Open_x0020_Data": "nej",
+    "Open_x0020_Source_x0020_system": "Nej",
+    "Digital_x0020_post": "Ja",
+    "Systemkategori": [
+      "Artifact Management",
+      "Tracking"
+    ],
+    "Tilg_x00e6_ngelighedserkl_x00e6_": "Godkendt",
+    "Antal_x0020_digitale_x0020_trans": "3000",
+    "Antal_x0020_totale_x0020_transak": "5000",
+    "Selvbetjenings_x002d_URL": "https://rms.middleearth.me",
+    "Selvbetjening_x0020_tilg_x00e6_n": [
+      "palantír",
+      "scroll"
+    ],
+    "Loginmetoder": "Elvish Authentication",
+    "F_x00e6_llesbegreb": [
+      "Rings",
+      "Magic"
+    ],
+    "Software_x0020_pakke": "Mithrilian Guardian Suite",
+    "Versions_x0020_nummer_x002f_rele": "v3.0.1",
+    "LikesCount": null,
+    "ContentTypeId": {
+      "StringValue": "0x01004C8D264DE7164D4ABF2189003B5EB697",
+      "TypeId": "{da0f1e90-296f-480e-bc27-cefe51eff241}"
+    },
+    "_ModerationComments": null,
+    "File_x0020_Type": null,
+    "ComplianceAssetId": null,
+    "_ColorHex": null,
+    "_ColorTag": null,
+    "_Emoji": null,
+    "ID": 45,
+    "Modified": "2025-02-14T11:30:22Z",
+    "Created": "2025-01-03T08:45:12Z",
+    "Author": {
+      "Email": "frodo@shire.me",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 156,
+      "LookupValue": "Frodo Baggins"
+    },
+    "Editor": {
+      "Email": "aragorn@rangers.me",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 203,
+      "LookupValue": "Aragorn II Elessar"
+    },
+    "_HasCopyDestinations": null,
+    "_CopySource": null,
+    "owshiddenversion": 7,
+    "WorkflowVersion": 1,
+    "_UIVersion": 1536,
+    "_UIVersionString": "3.0",
+    "Attachments": false,
+    "_ModerationStatus": 0,
+    "InstanceID": null,
+    "Order": 100.0,
+    "GUID": "bd5c3217-ec06-6dc4-0820-f9c6fe87396g",
+    "WorkflowInstanceID": null,
+    "FileRef": "/Teams/council-of-elrond/Lists/Systemoversigt/45_.000",
+    "FileDirRef": "/Teams/council-of-elrond/Lists/Systemoversigt",
+    "Last_x0020_Modified": "2025-02-14T11:30:22Z",
+    "Created_x0020_Date": "2025-01-03T08:45:12Z",
+    "FSObjType": "0",
+    "SortBehavior": {
+      "LookupId": 1,
+      "LookupValue": "0",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "FileLeafRef": "45_.000",
+    "UniqueId": "7b132c4g-25f5-5e79-9b18-5223d0gd01cg",
+    "ParentUniqueId": "{E7686D23-1DF8-5583-CF3B-F53390A8EDC}",
+    "SyncClientId": {
+      "LookupId": 1,
+      "LookupValue": null,
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "ProgId": "",
+    "ScopeId": "{543F09E8-0356-5F9C-CF35-53BDCB166CEE}",
+    "MetaInfo": "",
+    "_Level": 1,
+    "_IsCurrentVersion": true,
+    "ItemChildCount": "0",
+    "FolderChildCount": "0",
+    "Restricted": "",
+    "OriginatorId": "",
+    "NoExecute": "0",
+    "ContentVersion": "0",
+    "_ComplianceFlags": "",
+    "_ComplianceTag": "",
+    "_ComplianceTagWrittenTime": "",
+    "_ComplianceTagUserId": "",
+    "AccessPolicy": "",
+    "_VirusStatus": "",
+    "_VirusVendorID": "",
+    "_VirusInfo": "",
+    "_RansomwareAnomalyMetaInfo": "",
+    "_DraftOwnerId": "",
+    "AppAuthor": null,
+    "AppEditor": null,
+    "SMTotalSize": {
+      "LookupId": 35620,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "SMLastModifiedDate": "2025-02-14T11:30:22Z",
+    "SMTotalFileStreamSize": "0",
+    "SMTotalFileCount": {
+      "LookupId": 0,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "_CommentFlags": "",
+    "_CommentCount": ""
+  },
+  {
+    "Overf_x00f8_rt_x0020_til_x0020_K": null,
+    "Title": "Shire Resource Planning System",
+    "Kaldenavn": "SRPS",
+    "Beskrivelse": "<div class=\"ExternalClass749C3986169A42E38971BD44D024552C\"><div>Comprehensive platform for <div>managing agricultural resources and hobbit meals</div> across the Shire</div></div>",
+    "Systemejerskab": "BA-Shire Administration: Food Management",
+    "Systemejerskab_x0020__x002d__x00": "Agriculture",
+    "Systemejer2": [
+      {
+        "Email": "samwise@gardener.sh",
+        "TypeId": "{a843cb51f8b7d2c19a5ec96f42718e}",
+        "LookupId": 143,
+        "LookupValue": "Samwise Gamgee"
+      }
+    ],
+    "System_x0020_stedfortr_x00e6_der": [
+      {
+        "Email": "merry@brandybuck.sh",
+        "TypeId": "{b723ab43c9ef3d18b4f7c85e31629d}",
+        "LookupId": 91,
+        "LookupValue": "Meriadoc Brandybuck"
+      }
+    ],
+    "Intern_x0020_driftsansvarlig2": [
+      {
+        "Email": "pippin@took.sh",
+        "TypeId": "{c956ab54c16bd4c1889d2996f57282}",
+        "LookupId": 157,
+        "LookupValue": "Peregrin Took"
+      }
+    ],
+    "Ekstern_x0020_driftsansvarlig": "<div class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\"><strong>Support available all seven meals daily</strong> via:</div><ul><li class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\">Messenger <span>+45 33 44 55 66</span></li><li><span>Raven mail: </span><a href=\"mailto:support@shiretech.me\">support@shiretech.me</a></li><li>Service manager: <br>Rosie Cotton Phone: <span>+45 88 99 00 11</span> | Mobile: <span>+45 22 33 44 55</span></li></ul>",
+    "Systemleverand_x00f8_r": "<div class=\"ExternalClassA02C452DED0E464598DEEA20288C3655\">Shire Information Systems</div>",
+    "Urgency_x0020_rating": "Meal Critical Service",
+    "Antal_x0020_brugere": "> 500",
+    "Teknisk_x0020_dokumentation2": {
+      "Description": "Hobbit-Friendly Documentation",
+      "Url": "https://shire.sharepoint.com/Teams/hobbit-council/SRPS/Documentation",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Interne_x0020_systemafh_x00e6_ng": [
+      {
+        "LookupId": 123,
+        "LookupValue": "Hobbit Census Registry",
+        "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+      }
+    ],
+    "Systemafh_x00e6_ngigheder_x0020_": [],
+    "Eksterne_x0020_systemafh_x00e6_n": "<div class=\"ExternalClass2DF7EE5ABA124E6D89233BB7D558BD76\"><p>Integration with Bree trading systems</p></div>",
+    "Kommentarer": "<div class=\"ExternalClass7580E16CC15D4C01AEAB97115961E035\"><p>Second breakfast module update scheduled for Q3 2025</p></div>",
+    "Servernavne": null,
+    "Brugervejledninger": {
+      "Description": "Hobbit User Guide",
+      "Url": "https://shire.sharepoint.com/Teams/hobbit-council/SRPS/UserManuals",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Superbrugerorganisation": {
+      "Description": "Mayor's Office",
+      "Url": "https://shire.sharepoint.com/Teams/mayors-office/SRPS/Admins",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "IT_x002d_sikkerheds_x0020_katego": "Med hobbitdata",
+    "Intern_x0020_IT_x002d_Sikkerheds": {
+      "Description": "Shire Security Protocols",
+      "Url": "https://shire.sharepoint.com/Teams/security/Documents/SRPS-Security",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontrakt_x0020_beskrivelse": {
+      "Description": "Shire Service Agreement",
+      "Url": "https://shire.sharepoint.com/Teams/contracts/SRPS-Agreement",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontraktudl_x00f8_bsdato": "2025-06-22T00:00:00Z",
+    "Udbudstype": "Shire Selection",
+    "End_x002d_of_x002d_Life": null,
+    "End_x002d_of_x002d_Life_x0020_be": null,
+    "Arkivering": "Systemet er i drift, under vedligeholdelse",
+    "Open_x0020_Data": "ja",
+    "Open_x0020_Source_x0020_system": "Ja",
+    "Digital_x0020_post": "Ja",
+    "Systemkategori": [
+      "Resource Planning",
+      "Agriculture"
+    ],
+    "Tilg_x00e6_ngelighedserkl_x00e6_": "Godkendt",
+    "Antal_x0020_digitale_x0020_trans": "12000",
+    "Antal_x0020_totale_x0020_transak": "15000",
+    "Selvbetjenings_x002d_URL": "https://srps.shire.me",
+    "Selvbetjening_x0020_tilg_x00e6_n": [
+      "scroll",
+      "hobbit-device"
+    ],
+    "Loginmetoder": "Hobbit Identification",
+    "F_x00e6_llesbegreb": [
+      "Agriculture",
+      "Food",
+      "Planning"
+    ],
+    "Software_x0020_pakke": "ShireSoft Resource Suite",
+    "Versions_x0020_nummer_x002f_rele": "v2.5.7",
+    "LikesCount": null,
+    "ContentTypeId": {
+      "StringValue": "0x01004C8D264DE7164D4ABF2189003B5EB697",
+      "TypeId": "{da0f1e90-296f-480e-bc27-cefe51eff241}"
+    },
+    "_ModerationComments": null,
+    "File_x0020_Type": null,
+    "ComplianceAssetId": null,
+    "_ColorHex": null,
+    "_ColorTag": null,
+    "_Emoji": null,
+    "ID": 52,
+    "Modified": "2025-05-16T15:20:33Z",
+    "Created": "2025-01-20T11:33:45Z",
+    "Author": {
+      "Email": "bilbo@bagend.sh",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 189,
+      "LookupValue": "Bilbo Baggins"
+    },
+    "Editor": {
+      "Email": "gaffer@gardener.sh",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 231,
+      "LookupValue": "Hamfast Gamgee"
+    },
+    "_HasCopyDestinations": null,
+    "_CopySource": null,
+    "owshiddenversion": 9,
+    "WorkflowVersion": 1,
+    "_UIVersion": 1536,
+    "_UIVersionString": "3.0",
+    "Attachments": false,
+    "_ModerationStatus": 0,
+    "InstanceID": null,
+    "Order": 100.0,
+    "GUID": "ac4b2106-db95-5cb3-9719-e8b5ed76285f",
+    "WorkflowInstanceID": null,
+    "FileRef": "/Teams/hobbit-council/Lists/Systemoversigt/52_.000",
+    "FileDirRef": "/Teams/hobbit-council/Lists/Systemoversigt",
+    "Last_x0020_Modified": "2025-05-16T15:20:33Z",
+    "Created_x0020_Date": "2025-01-20T11:33:45Z",
+    "FSObjType": "0",
+    "SortBehavior": {
+      "LookupId": 1,
+      "LookupValue": "0",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "FileLeafRef": "52_.000",
+    "UniqueId": "8c243d5h-36g6-6f80-0c29-6334e1he12dh",
+    "ParentUniqueId": "{F8797E34-2GH9-6694-DG4C-G64401B9FED}",
+    "SyncClientId": {
+      "LookupId": 1,
+      "LookupValue": null,
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "ProgId": "",
+    "ScopeId": "{654G10F9-1467-6G0D-DG46-64CEDC277DFF}",
+    "MetaInfo": "",
+    "_Level": 1,
+    "_IsCurrentVersion": true,
+    "ItemChildCount": "0",
+    "FolderChildCount": "0",
+    "Restricted": "",
+    "OriginatorId": "",
+    "NoExecute": "0",
+    "ContentVersion": "0",
+    "_ComplianceFlags": "",
+    "_ComplianceTag": "",
+    "_ComplianceTagWrittenTime": "",
+    "_ComplianceTagUserId": "",
+    "AccessPolicy": "",
+    "_VirusStatus": "",
+    "_VirusVendorID": "",
+    "_VirusInfo": "",
+    "_RansomwareAnomalyMetaInfo": "",
+    "_DraftOwnerId": "",
+    "AppAuthor": null,
+    "AppEditor": null,
+    "SMTotalSize": {
+      "LookupId": 45200,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "SMLastModifiedDate": "2025-05-16T15:20:33Z",
+    "SMTotalFileStreamSize": "0",
+    "SMTotalFileCount": {
+      "LookupId": 0,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "_CommentFlags": "",
+    "_CommentCount": ""
+  },
+  {
+    "Overf_x00f8_rt_x0020_til_x0020_K": null,
+    "Title": "Gondorian Defense System",
+    "Kaldenavn": "GDS",
+    "Beskrivelse": "<div class=\"ExternalClass749C3986169A42E38971BD44D024552C\"><div>Integrated system for <div>monitoring borders and coordinating defense forces</div> across the realm of Gondor</div></div>",
+    "Systemejerskab": "MBU-Citadel Command: Strategic Defense",
+    "Systemejerskab_x0020__x002d__x00": "Military",
+    "Systemejer2": [
+      {
+        "Email": "denethor@gondor.me",
+        "TypeId": "{a843cb51f8b7d2c19a5ec96f42718e}",
+        "LookupId": 175,
+        "LookupValue": "Denethor II"
+      }
+    ],
+    "System_x0020_stedfortr_x00e6_der": [
+      {
+        "Email": "boromir@gondor.me",
+        "TypeId": "{b723ab43c9ef3d18b4f7c85e31629d}",
+        "LookupId": 133,
+        "LookupValue": "Boromir of Gondor"
+      }
+    ],
+    "Intern_x0020_driftsansvarlig2": [
+      {
+        "Email": "faramir@gondor.me",
+        "TypeId": "{c956ab54c16bd4c1889d2996f57282}",
+        "LookupId": 198,
+        "LookupValue": "Faramir of Gondor"
+      }
+    ],
+    "Ekstern_x0020_driftsansvarlig": "<div class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\"><strong>Support available day and night</strong> via:</div><ul><li class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\">Beacon signals <span>+45 10 20 30 40</span></li><li><span>Messenger pigeons: </span><a href=\"mailto:watchtower@gondor.me\">watchtower@gondor.me</a></li><li>Defense commander: <br>Beregond Phone: <span>+45 11 22 33 44</span> | Mobile: <span>+45 55 66 77 88</span></li></ul>",
+    "Systemleverand_x00f8_r": "<div class=\"ExternalClassA02C452DED0E464598DEEA20288C3655\">White Tower Defense Technologies</div>",
+    "Urgency_x0020_rating": "Realm Critical Service",
+    "Antal_x0020_brugere": "> 1000",
+    "Teknisk_x0020_dokumentation2": {
+      "Description": "Defense System Architecture",
+      "Url": "https://gondor.sharepoint.com/Teams/citadel-command/GDS/Technical",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Interne_x0020_systemafh_x00e6_ng": [
+      {
+        "LookupId": 201,
+        "LookupValue": "Beacon Alert Network",
+        "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+      },
+      {
+        "LookupId": 215,
+        "LookupValue": "Ranger Tracking System",
+        "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+      }
+    ],
+    "Systemafh_x00e6_ngigheder_x0020_": [],
+    "Eksterne_x0020_systemafh_x00e6_n": "<div class=\"ExternalClass2DF7EE5ABA124E6D89233BB7D558BD76\"><p>Integration with Rohan messenger network</p><p>Connection to Elven early warning systems</p></div>",
+    "Kommentarer": "<div class=\"ExternalClass7580E16CC15D4C01AEAB97115961E035\"><p>Mordor threat detection module upgrade planned for Q1 2025</p></div>",
+    "Servernavne": null,
+    "Brugervejledninger": {
+      "Description": "Soldier's Field Manual",
+      "Url": "https://gondor.sharepoint.com/Teams/citadel-command/GDS/Manuals",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Superbrugerorganisation": {
+      "Description": "Captain's Council",
+      "Url": "https://gondor.sharepoint.com/Teams/captains-council/Members",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "IT_x002d_sikkerheds_x0020_katego": "Med militære hemmeligheder",
+    "Intern_x0020_IT_x002d_Sikkerheds": {
+      "Description": "Defense Protocols",
+      "Url": "https://gondor.sharepoint.com/Teams/security/Documents/GDS-Security",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontrakt_x0020_beskrivelse": {
+      "Description": "Royal Defense Commission",
+      "Url": "https://gondor.sharepoint.com/Teams/contracts/GDS-Royal-Commission",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontraktudl_x00f8_bsdato": "2025-11-30T00:00:00Z",
+    "Udbudstype": "Royal Appointment",
+    "End_x002d_of_x002d_Life": "2025-12-31T00:00:00Z",
+    "End_x002d_of_x002d_Life_x0020_be": "Replacement with Fourth Age Defense System",
+    "Arkivering": "Systemet er i drift, under krigsberedskab",
+    "Open_x0020_Data": "nej",
+    "Open_x0020_Source_x0020_system": "Nej",
+    "Digital_x0020_post": "Ja",
+    "Systemkategori": [
+      "Defense",
+      "Monitoring",
+      "Command"
+    ],
+    "Tilg_x00e6_ngelighedserkl_x00e6_": "Godkendt",
+    "Antal_x0020_digitale_x0020_trans": "50000",
+    "Antal_x0020_totale_x0020_transak": "75000",
+    "Selvbetjenings_x002d_URL": "https://defense.gondor.me",
+    "Selvbetjening_x0020_tilg_x00e6_n": [
+      "beacon",
+      "palantír"
+    ],
+    "Loginmetoder": "Gondorian Authentication",
+    "F_x00e6_llesbegreb": [
+      "Defense",
+      "Military",
+      "Security"
+    ],
+    "Software_x0020_pakke": "White Tower Defense Suite",
+    "Versions_x0020_nummer_x002f_rele": "v3.4.8",
+    "LikesCount": null,
+    "ContentTypeId": {
+      "StringValue": "0x01004C8D264DE7164D4ABF2189003B5EB697",
+      "TypeId": "{da0f1e90-296f-480e-bc27-cefe51eff241}"
+    },
+    "_ModerationComments": null,
+    "File_x0020_Type": null,
+    "ComplianceAssetId": null,
+    "_ColorHex": null,
+    "_ColorTag": null,
+    "_Emoji": null,
+    "ID": 68,
+    "Modified": "2025-04-10T13:42:56Z",
+    "Created": "2025-02-05T08:15:30Z",
+    "Author": {
+      "Email": "gondorian.admin@gondor.me",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 221,
+      "LookupValue": "Hurin of the Keys"
+    },
+    "Editor": {
+      "Email": "ioreth@houses.gondor.me",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 356,
+      "LookupValue": "Ioreth of the Houses of Healing"
+    },
+    "_HasCopyDestinations": null,
+    "_CopySource": null,
+    "owshiddenversion": 11,
+    "WorkflowVersion": 1,
+    "_UIVersion": 1536,
+    "_UIVersionString": "3.0",
+    "Attachments": false,
+    "_ModerationStatus": 0,
+    "InstanceID": null,
+    "Order": 100.0,
+    "GUID": "ef6d4328-fc17-7ed5-1931-g0d7gf98407h",
+    "WorkflowInstanceID": null,
+    "FileRef": "/Teams/citadel-command/Lists/Systemoversigt/68_.000",
+    "FileDirRef": "/Teams/citadel-command/Lists/Systemoversigt",
+    "Last_x0020_Modified": "2025-04-10T13:42:56Z",
+    "Created_x0020_Date": "2025-02-05T08:15:30Z",
+    "FSObjType": "0",
+    "SortBehavior": {
+      "LookupId": 1,
+      "LookupValue": "0",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "FileLeafRef": "68_.000",
+    "UniqueId": "9d354e6i-47h7-7g91-1d30-7445f2if23ei",
+    "ParentUniqueId": "{G9808F45-3HI0-7705-EH5D-H75512C0GFE}",
+    "SyncClientId": {
+      "LookupId": 1,
+      "LookupValue": null,
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "ProgId": "",
+    "ScopeId": "{765H21G0-2578-7H1E-EH57-75DEFD388EGG}",
+    "MetaInfo": "",
+    "_Level": 1,
+    "_IsCurrentVersion": true,
+    "ItemChildCount": "0",
+    "FolderChildCount": "0",
+    "Restricted": "",
+    "OriginatorId": "",
+    "NoExecute": "0",
+    "ContentVersion": "0",
+    "_ComplianceFlags": "",
+    "_ComplianceTag": "",
+    "_ComplianceTagWrittenTime": "",
+    "_ComplianceTagUserId": "",
+    "AccessPolicy": "",
+    "_VirusStatus": "",
+    "_VirusVendorID": "",
+    "_VirusInfo": "",
+    "_RansomwareAnomalyMetaInfo": "",
+    "_DraftOwnerId": "",
+    "AppAuthor": null,
+    "AppEditor": null,
+    "SMTotalSize": {
+      "LookupId": 65280,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "SMLastModifiedDate": "2025-04-10T13:42:56Z",
+    "SMTotalFileStreamSize": "0",
+    "SMTotalFileCount": {
+      "LookupId": 0,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "_CommentFlags": "",
+    "_CommentCount": ""
+  },
+  {
+    "Overf_x00f8_rt_x0020_til_x0020_K": null,
+    "Title": "Elven Knowledge Repository",
+    "Kaldenavn": "EKR",
+    "Beskrivelse": "<div class=\"ExternalClass749C3986169A42E38971BD44D024552C\"><div>Comprehensive archive for <div>storing and retrieving ancient knowledge and lore</div> of the Elven peoples</div></div>",
+    "Systemejerskab": "MSB-Elven Council: Knowledge Preservation",
+    "Systemejerskab_x0020__x002d__x00": "Archives",
+    "Systemejer2": [
+      {
+        "Email": "erestor@rivendell.me",
+        "TypeId": "{a843cb51f8b7d2c19a5ec96f42718e}",
+        "LookupId": 154,
+        "LookupValue": "Erestor of Rivendell"
+      }
+    ],
+    "System_x0020_stedfortr_x00e6_der": [
+      {
+        "Email": "glorfindel@rivendell.me",
+        "TypeId": "{b723ab43c9ef3d18b4f7c85e31629d}",
+        "LookupId": 118,
+        "LookupValue": "Glorfindel of Rivendell"
+      }
+    ],
+    "Intern_x0020_driftsansvarlig2": [
+      {
+        "Email": "lindir@rivendell.me",
+        "TypeId": "{c956ab54c16bd4c1889d2996f57282}",
+        "LookupId": 183,
+        "LookupValue": "Lindir of Rivendell"
+      }
+    ],
+    "Ekstern_x0020_driftsansvarlig": "<div class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\"><strong>Support available through all seasons</strong> via:</div><ul><li class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\">Elven messengers <span>+45 98 76 54 32</span></li><li><span>Thought-sending: </span><a href=\"mailto:archives@elvenrealms.me\">archives@elvenrealms.me</a></li><li>Chief Archivist: <br>Círdan Phone: <span>+45 12 34 56 78</span> | Mobile: <span>+45 87 65 43 21</span></li></ul>",
+    "Systemleverand_x00f8_r": "<div class=\"ExternalClassA02C452DED0E464598DEEA20288C3655\">Noldorian Knowledge Systems</div>",
+    "Urgency_x0020_rating": "Heritage Critical Service",
+    "Antal_x0020_brugere": "> 300",
+    "Teknisk_x0020_dokumentation2": {
+      "Description": "Ancient Architecture Documentation",
+      "Url": "https://elvenrealms.sharepoint.com/Teams/elven-council/EKR/Technical",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Interne_x0020_systemafh_x00e6_ng": [
+      {
+        "LookupId": 167,
+        "LookupValue": "Elven Translation System",
+        "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+      }
+    ],
+    "Systemafh_x00e6_ngigheder_x0020_": [],
+    "Eksterne_x0020_systemafh_x00e6_n": "<div class=\"ExternalClass2DF7EE5ABA124E6D89233BB7D558BD76\"><p>Integration with Valinor Historical Archives</p></div>",
+    "Kommentarer": "<div class=\"ExternalClass7580E16CC15D4C01AEAB97115961E035\"><p>Migration to Undying Lands platform planned for Q4 2025</p></div>",
+    "Servernavne": null,
+    "Brugervejledninger": {
+      "Description": "Scholar's Access Guide",
+      "Url": "https://elvenrealms.sharepoint.com/Teams/elven-council/EKR/Guides",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Superbrugerorganisation": {
+      "Description": "Lore Masters Circle",
+      "Url": "https://elvenrealms.sharepoint.com/Teams/lore-masters/Members",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "IT_x002d_sikkerheds_x0020_katego": "Med historiske hemmeligheder",
+    "Intern_x0020_IT_x002d_Sikkerheds": {
+      "Description": "Ancient Knowledge Protection Protocols",
+      "Url": "https://elvenrealms.sharepoint.com/Teams/security/Documents/EKR-Security",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontrakt_x0020_beskrivelse": {
+      "Description": "Elven Council Charter",
+      "Url": "https://elvenrealms.sharepoint.com/Teams/contracts/EKR-Charter",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontraktudl_x00f8_bsdato": "2025-08-15T00:00:00Z",
+    "Udbudstype": "High Council Selection",
+    "End_x002d_of_x002d_Life": "2025-12-15T00:00:00Z",
+    "End_x002d_of_x002d_Life_x0020_be": "Migration to Undying Lands system",
+    "Arkivering": "Systemet er i drift, under beskyttelse",
+    "Open_x0020_Data": "delvist",
+    "Open_x0020_Source_x0020_system": "Delvist",
+    "Digital_x0020_post": "Ja",
+    "Systemkategori": [
+      "Knowledge",
+      "Archives",
+      "Heritage"
+    ],
+    "Tilg_x00e6_ngelighedserkl_x00e6_": "Godkendt",
+    "Antal_x0020_digitale_x0020_trans": "20000",
+    "Antal_x0020_totale_x0020_transak": "25000",
+    "Selvbetjenings_x002d_URL": "https://knowledge.elvenrealms.me",
+    "Selvbetjening_x0020_tilg_x00e6_n": [
+      "crystal",
+      "scroll",
+      "mirror"
+    ],
+    "Loginmetoder": "Elven Mind Authentication",
+    "F_x00e6_llesbegreb": [
+      "Knowledge",
+      "History",
+      "Lore"
+    ],
+    "Software_x0020_pakke": "Celebrimbor Knowledge Suite",
+    "Versions_x0020_nummer_x002f_rele": "v5.7.3",
+    "LikesCount": null,
+    "ContentTypeId": {
+      "StringValue": "0x01004C8D264DE7164D4ABF2189003B5EB697",
+      "TypeId": "{da0f1e90-296f-480e-bc27-cefe51eff241}"
+    },
+    "_ModerationComments": null,
+    "File_x0020_Type": null,
+    "ComplianceAssetId": null,
+    "_ColorHex": null,
+    "_ColorTag": null,
+    "_Emoji": null,
+    "ID": 85,
+    "Modified": "2025-06-18T10:35:42Z",
+    "Created": "2025-03-07T13:20:55Z",
+    "Author": {
+      "Email": "arwen@rivendell.me",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 245,
+      "LookupValue": "Arwen Undómiel"
+    },
+    "Editor": {
+      "Email": "celeborn@lothlorien.me",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 412,
+      "LookupValue": "Celeborn of Lothlorien"
+    },
+    "_HasCopyDestinations": null,
+    "_CopySource": null,
+    "owshiddenversion": 15,
+    "WorkflowVersion": 1,
+    "_UIVersion": 1536,
+    "_UIVersionString": "3.0",
+    "Attachments": false,
+    "_ModerationStatus": 0,
+    "InstanceID": null,
+    "Order": 100.0,
+    "GUID": "gh7e5439-gd28-8fe6-2042-h1e8hg09518i",
+    "WorkflowInstanceID": null,
+    "FileRef": "/Teams/elven-council/Lists/Systemoversigt/85_.000",
+    "FileDirRef": "/Teams/elven-council/Lists/Systemoversigt",
+    "Last_x0020_Modified": "2025-06-18T10:35:42Z",
+    "Created_x0020_Date": "2025-03-07T13:20:55Z",
+    "FSObjType": "0",
+    "SortBehavior": {
+      "LookupId": 1,
+      "LookupValue": "0",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "FileLeafRef": "85_.000",
+    "UniqueId": "0e465f7j-58i8-8h02-2e41-8556g3jg34fj",
+    "ParentUniqueId": "{H0919G56-4IJ1-8816-FI6E-I86623D1HGF}",
+    "SyncClientId": {
+      "LookupId": 1,
+      "LookupValue": null,
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "ProgId": "",
+    "ScopeId": "{876I32H1-3689-8I2F-FI68-86EFGE499FHH}",
+    "MetaInfo": "",
+    "_Level": 1,
+    "_IsCurrentVersion": true,
+    "ItemChildCount": "0",
+    "FolderChildCount": "0",
+    "Restricted": "",
+    "OriginatorId": "",
+    "NoExecute": "0",
+    "ContentVersion": "0",
+    "_ComplianceFlags": "",
+    "_ComplianceTag": "",
+    "_ComplianceTagWrittenTime": "",
+    "_ComplianceTagUserId": "",
+    "AccessPolicy": "",
+    "_VirusStatus": "",
+    "_VirusVendorID": "",
+    "_VirusInfo": "",
+    "_RansomwareAnomalyMetaInfo": "",
+    "_DraftOwnerId": "",
+    "AppAuthor": null,
+    "AppEditor": null,
+    "SMTotalSize": {
+      "LookupId": 72340,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "SMLastModifiedDate": "2025-06-18T10:35:42Z",
+    "SMTotalFileStreamSize": "0",
+    "SMTotalFileCount": {
+      "LookupId": 0,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "_CommentFlags": "",
+    "_CommentCount": ""
+  },
+  {
+    "Overf_x00f8_rt_x0020_til_x0020_K": null,
+    "Title": "Rohan Rider Management System",
+    "Kaldenavn": "RRMS",
+    "Beskrivelse": "<div class=\"ExternalClass749C3986169A42E38971BD44D024552C\"><div>Comprehensive platform for <div>coordinating horsemen and cavalry operations</div> across the kingdom of Rohan</div></div>",
+    "Systemejerskab": "MKB-Royal Stables: Cavalry Operations",
+    "Systemejerskab_x0020__x002d__x00": "Military",
+    "Systemejer2": [
+      {
+        "Email": "theoden@rohan.me",
+        "TypeId": "{a843cb51f8b7d2c19a5ec96f42718e}",
+        "LookupId": 167,
+        "LookupValue": "Théoden King"
+      }
+    ],
+    "System_x0020_stedfortr_x00e6_der": [
+      {
+        "Email": "eomer@rohan.me",
+        "TypeId": "{b723ab43c9ef3d18b4f7c85e31629d}",
+        "LookupId": 103,
+        "LookupValue": "Éomer Marshal"
+      }
+    ],
+    "Intern_x0020_driftsansvarlig2": [
+      {
+        "Email": "gamling@rohan.me",
+        "TypeId": "{c956ab54c16bd4c1889d2996f57282}",
+        "LookupId": 178,
+        "LookupValue": "Gamling of Rohan"
+      }
+    ],
+    "Ekstern_x0020_driftsansvarlig": "<div class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\"><strong>Support available from sunrise to sunset</strong> via:</div><ul><li class=\"ExternalClass92C4EA46862241C4B93B04CF017AD1A1\">Horn signals <span>+45 44 33 22 11</span></li><li><span>Rider network: </span><a href=\"mailto:riders@rohan.me\">riders@rohan.me</a></li><li>Marshal of the Mark: <br>Elfhelm Phone: <span>+45 22 33 44 55</span> | Mobile: <span>+45 66 77 88 99</span></li></ul>",
+    "Systemleverand_x00f8_r": "<div class=\"ExternalClassA02C452DED0E464598DEEA20288C3655\">Edoras Technical Solutions</div>",
+    "Urgency_x0020_rating": "Cavalry Critical Service",
+    "Antal_x0020_brugere": "> 800",
+    "Teknisk_x0020_dokumentation2": {
+      "Description": "Cavalry System Documentation",
+      "Url": "https://rohan.sharepoint.com/Teams/royal-stables/RRMS/Technical",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Interne_x0020_systemafh_x00e6_ng": [
+      {
+        "LookupId": 142,
+        "LookupValue": "Horse Registry System",
+        "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+      }
+    ],
+    "Systemafh_x00e6_ngigheder_x0020_": [],
+    "Eksterne_x0020_systemafh_x00e6_n": "<div class=\"ExternalClass2DF7EE5ABA124E6D89233BB7D558BD76\"><p>Integration with Gondorian warning beacons</p></div>",
+    "Kommentarer": "<div class=\"ExternalClass7580E16CC15D4C01AEAB97115961E035\"><p>Eastfold patrol module scheduled for deployment in Q2 2025</p></div>",
+    "Servernavne": null,
+    "Brugervejledninger": {
+      "Description": "Rider's Handbook",
+      "Url": "https://rohan.sharepoint.com/Teams/royal-stables/RRMS/Manuals",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Superbrugerorganisation": {
+      "Description": "Marshal's Council",
+      "Url": "https://rohan.sharepoint.com/Teams/marshals-council/RRMS/Admins",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "IT_x002d_sikkerheds_x0020_katego": "Med militære ressourcedata",
+    "Intern_x0020_IT_x002d_Sikkerheds": {
+      "Description": "Cavalry Security Protocols",
+      "Url": "https://rohan.sharepoint.com/Teams/security/Documents/RRMS-Security",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontrakt_x0020_beskrivelse": {
+      "Description": "Royal Commission",
+      "Url": "https://rohan.sharepoint.com/Teams/contracts/RRMS-Royal-Commission",
+      "TypeId": "{fa8b44af-7b43-43f2-904a-bd319497011e}"
+    },
+    "Kontraktudl_x00f8_bsdato": "2025-10-10T00:00:00Z",
+    "Udbudstype": "Royal Decree",
+    "End_x002d_of_x002d_Life": null,
+    "End_x002d_of_x002d_Life_x0020_be": null,
+    "Arkivering": "Systemet er i drift, under mobilisering",
+    "Open_x0020_Data": "nej",
+    "Open_x0020_Source_x0020_system": "Nej",
+    "Digital_x0020_post": "Ja",
+    "Systemkategori": [
+      "Cavalry",
+      "Military",
+      "Resource Management"
+    ],
+    "Tilg_x00e6_ngelighedserkl_x00e6_": "Godkendt",
+    "Antal_x0020_digitale_x0020_trans": "35000",
+    "Antal_x0020_totale_x0020_transak": "40000",
+    "Selvbetjenings_x002d_URL": "https://riders.rohan.me",
+    "Selvbetjening_x0020_tilg_x00e6_n": [
+      "field-dispatch",
+      "horn"
+    ],
+    "Loginmetoder": "Rohirrim Identification",
+    "F_x00e6_llesbegreb": [
+      "Cavalry",
+      "Horses",
+      "Defense"
+    ],
+    "Software_x0020_pakke": "Ridemark Command Suite",
+    "Versions_x0020_nummer_x002f_rele": "v4.1.5",
+    "LikesCount": null,
+    "ContentTypeId": {
+      "StringValue": "0x01004C8D264DE7164D4ABF2189003B5EB697",
+      "TypeId": "{da0f1e90-296f-480e-bc27-cefe51eff241}"
+    },
+    "_ModerationComments": null,
+    "File_x0020_Type": null,
+    "ComplianceAssetId": null,
+    "_ColorHex": null,
+    "_ColorTag": null,
+    "_Emoji": null,
+    "ID": 93,
+    "Modified": "2025-07-22T16:40:18Z",
+    "Created": "2025-04-15T09:10:25Z",
+    "Author": {
+      "Email": "eowyn@rohan.me",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 278,
+      "LookupValue": "Éowyn of Rohan"
+    },
+    "Editor": {
+      "Email": "hama@rohan.me",
+      "TypeId": "{c956ab54-16bd-4c18-89d2-996f57282a6f}",
+      "LookupId": 389,
+      "LookupValue": "Háma Doorward"
+    },
+    "_HasCopyDestinations": null,
+    "_CopySource": null,
+    "owshiddenversion": 14,
+    "WorkflowVersion": 1,
+    "_UIVersion": 1536,
+    "_UIVersionString": "3.0",
+    "Attachments": false,
+    "_ModerationStatus": 0,
+    "InstanceID": null,
+    "Order": 100.0,
+    "GUID": "ij8f654a-he39-9gf7-3153-i2f9ih10629j",
+    "WorkflowInstanceID": null,
+    "FileRef": "/Teams/royal-stables/Lists/Systemoversigt/93_.000",
+    "FileDirRef": "/Teams/royal-stables/Lists/Systemoversigt",
+    "Last_x0020_Modified": "2025-07-22T16:40:18Z",
+    "Created_x0020_Date": "2025-04-15T09:10:25Z",
+    "FSObjType": "0",
+    "SortBehavior": {
+      "LookupId": 1,
+      "LookupValue": "0",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "FileLeafRef": "93_.000",
+    "UniqueId": "1f576g8k-69j9-9i13-3f52-9667h4kh45gk",
+    "ParentUniqueId": "{I1030H67-5JK2-9927-GJ7F-J97734E2IGH}",
+    "SyncClientId": {
+      "LookupId": 1,
+      "LookupValue": null,
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "ProgId": "",
+    "ScopeId": "{987J43I2-4790-9J3G-GJ79-97FGHF500GII}",
+    "MetaInfo": "",
+    "_Level": 1,
+    "_IsCurrentVersion": true,
+    "ItemChildCount": "0",
+    "FolderChildCount": "0",
+    "Restricted": "",
+    "OriginatorId": "",
+    "NoExecute": "0",
+    "ContentVersion": "0",
+    "_ComplianceFlags": "",
+    "_ComplianceTag": "",
+    "_ComplianceTagWrittenTime": "",
+    "_ComplianceTagUserId": "",
+    "AccessPolicy": "",
+    "_VirusStatus": "",
+    "_VirusVendorID": "",
+    "_VirusInfo": "",
+    "_RansomwareAnomalyMetaInfo": "",
+    "_DraftOwnerId": "",
+    "AppAuthor": null,
+    "AppEditor": null,
+    "SMTotalSize": {
+      "LookupId": 83460,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "SMLastModifiedDate": "2025-07-22T16:40:18Z",
+    "SMTotalFileStreamSize": "0",
+    "SMTotalFileCount": {
+      "LookupId": 0,
+      "LookupValue": "",
+      "TypeId": "{f1d34cc0-9b50-4a78-be78-d5facfcccfb7}"
+    },
+    "_CommentFlags": "",
+    "_CommentCount": ""
+  }
+]
