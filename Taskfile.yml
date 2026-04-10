@@ -5,7 +5,7 @@ dotenv: ['.env.local', '.env']
 
 vars:
   # https://taskfile.dev/reference/templating/
-  BASE_URL: '{{.TASK_BASE_URL | default .COMPOSE_SERVER_DOMAIN | default .COMPOSE_DOMAIN | default "https://hoeringsportal.local.itkdev.dk"}}'
+  BASE_URL: '{{.TASK_BASE_URL | default .COMPOSE_SERVER_DOMAIN | default .COMPOSE_DOMAIN | default "https://itstyr.local.itkdev.dk"}}'
   DOCKER_COMPOSE: '{{.TASK_DOCKER_COMPOSE | default "docker compose"}}'
 
 tasks:
