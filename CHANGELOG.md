@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-39](https://github.com/itk-dev/sysstatus/pull/39)
+  Prevented duplicating inactive reports and systems
 * [PR-38](https://github.com/itk-dev/sysstatus/pull/38)
   * Update importers
   * Add example data
