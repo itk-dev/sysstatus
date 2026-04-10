@@ -74,9 +74,9 @@ abstract class BaseImporter implements ImportInterface
     /**
      * @throws \Exception
      */
-    protected function convertDate(string $date): \DateTime
+    protected function convertDate(string $date): ?\DateTimeInterface
     {
-        return new \DateTime($date);
+        return empty($date) ? null : new \DateTimeImmutable($date);
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class BaseImporter implements ImportInterface
     protected function convertSystemOwner(array $systemOwner): string
     {
         if (empty($systemOwner)) {
-          return '';
+            return '';
         }
 
         return $systemOwner[0]->LookupValue ?? '';
