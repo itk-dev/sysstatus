@@ -6,6 +6,7 @@ use App\Repository\GroupRepository;
 use App\Repository\ReportRepository;
 use App\Repository\SystemRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 abstract class BaseImporter implements ImportInterface
@@ -21,6 +22,16 @@ abstract class BaseImporter implements ImportInterface
     ) {
         $this->url = $this->params->get('system_url') ?? '';
     }
+
+    public function import(string $src, ?ProgressBar $progressBar = null): void
+    {
+        // We need to be able to find all entities during import.
+        $this->entityManager->getFilters()->disable('entity_active');
+
+        $this->doImport($src, $progressBar);
+    }
+
+    abstract protected function doImport(string $src, ?ProgressBar $progressBar): void;
 
     protected function sanitizeText(string $str): ?string
     {
