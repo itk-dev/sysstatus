@@ -29,7 +29,7 @@ Make sure you have a set of JSON files for testing import Commands.
 ### Start Docker containers
 
 ```shell
-docker compose up -d
+docker compose up --detach
 docker compose exec phpfpm composer install
 docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 ```
@@ -37,7 +37,7 @@ docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interact
 ### Create a super admin user
 
 ```sh
-docker compose exec phpfpm bin/console SuperUser
+docker compose exec phpfpm bin/console app:user:create admin@example.com --password password --role=ROLE_SUPER_ADMIN
 ```
 
 ### Access the site
@@ -88,7 +88,7 @@ flowchart TD
  Theme[Theme]
  ThemeCategory[ThemeCategory]
  User[User]
- 
+
  fos_user_user_group{{JoinTable: fos_user_user_group }}
  group_system_themes{{JoinTable: group_system_themes }}
  group_report_themes{{JoinTable: group_report_themes }}
@@ -111,7 +111,7 @@ flowchart TD
  System --- |ManyToMany| SelServiceAFI
 
  Theme --- |ManyToOne| ThemeCategory
- 
+
  Answers --- |ManyToOne| Question
   Question -- JoinCollum Answers and Question --o Answers
 
