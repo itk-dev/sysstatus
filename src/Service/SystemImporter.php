@@ -24,7 +24,7 @@ class SystemImporter extends BaseImporter
         parent::__construct($reportRepository, $systemRepository, $groupRepository, $entityManager, $params);
     }
 
-    public function import(string $src, ?ProgressBar $progressBar = null): void
+    public function doImport(string $src, ?ProgressBar $progressBar = null): void
     {
         $json = file_get_contents($src);
         $entries = json_decode($json);

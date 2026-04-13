@@ -8,6 +8,10 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-04-13
+
+* [PR-39](https://github.com/itk-dev/sysstatus/pull/39)
+  Prevented duplicating inactive reports and systems
 * [PR-38](https://github.com/itk-dev/sysstatus/pull/38)
   * Update importers
   * Add example data
@@ -177,7 +181,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
 
-[Unreleased]: https://github.com/itk-dev/sysstatus/compare/main...develop
+[Unreleased]: https://github.com/itk-dev/sysstatus/compare/3.1.0...HEAD
+[3.1.0]: https://github.com/itk-dev/sysstatus/compare/3.0.2...3.1.0
 [3.0.2]: https://github.com/itk-dev/sysstatus/releases/tag/3.0.2
 [3.0.1]: https://github.com/itk-dev/sysstatus/releases/tag/3.0.1
 [3.0.0]: https://github.com/itk-dev/sysstatus/releases/tag/3.0.0
