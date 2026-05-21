@@ -14,6 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @extends AbstractCrudController<UserGroup>
+ */
 class GroupCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

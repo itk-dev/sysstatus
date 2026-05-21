@@ -16,6 +16,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @extends AbstractFilterableCrudController<Report>
+ */
 class ReportCrudController extends AbstractFilterableCrudController
 {
     public static function getEntityFqcn(): string

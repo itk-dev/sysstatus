@@ -26,7 +26,10 @@ abstract class BaseImporter implements ImportInterface
     public function import(string $src, ?ProgressBar $progressBar = null): void
     {
         // We need to be able to find all entities during import.
-        $this->entityManager->getFilters()->disable('entity_active');
+        $filters = $this->entityManager->getFilters();
+        if ($filters->isEnabled('entity_active')) {
+            $filters->disable('entity_active');
+        }
 
         $this->doImport($src, $progressBar);
     }

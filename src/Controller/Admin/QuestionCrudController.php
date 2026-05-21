@@ -9,6 +9,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 
+/**
+ * @extends AbstractCrudController<Question>
+ */
 class QuestionCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -36,8 +39,7 @@ class QuestionCrudController extends AbstractCrudController
 
         if (Crud::PAGE_EDIT === $pageName) {
             return [$id];
-        } else {
-            throw new \Exception('Invalid page: '.$pageName);
         }
+        throw new \Exception('Invalid page: '.$pageName);
     }
 }
