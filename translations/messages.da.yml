@@ -211,14 +211,14 @@ menu:
     themes: Temaer
     admin: Administration
     sysstatus: Sysstatus
-    separator: ''
+    separator: ""
     dashboards: Dashboards
     list:
         reports: Anmeldelser
         systems: Systemer
     dashboard:
-        reports: 'Dashboard: Anmeldelser'
-        systems: 'Dashboard: Systemer'
+        reports: "Dashboard: Anmeldelser"
+        systems: "Dashboard: Systemer"
     groups: Grupper
     theme_category: Tema-Kategori
     exports: Eksport
@@ -244,9 +244,9 @@ Smiley: Smiley
 Username: Brugernavn
 Email: Email
 Enabled: Aktiveret
-'Last login': Sidste login
+"Last login": Sidste login
 Roles: Roller
-'Plain password': Ubeskyttet kodeord
+"Plain password": Ubeskyttet kodeord
 ROLE_USER: ROLE_USER
 ROLE_ADMIN: ROLE_ADMIN
 Green: Grøn
@@ -257,32 +257,32 @@ ID: ID
 Actions: Handlinger
 Name: Navn
 answers_show:
-    id: ''
+    id: ""
     question: Spørgsmål
     smiley: Smiley
     actions: Handlinger
     edit: Ret
     no_active_theme: Intet tilkoblet tema.
-'Created By': Oprettet af
-'Updated By': Opdateret af
-'Created At': Oprettet
-'Updated At': Opdateret
+"Created By": Oprettet af
+"Updated By": Opdateret af
+"Created At": Oprettet
+"Updated At": Opdateret
 custom_filters:
     none: Alle
 Apply: Udfør
 Group: Gruppe
 label:
-    'null': ''
+    "null": ""
 dashboard:
     report: Dashboard - Anmeldelser
     system: Dashboard - Systemer
-    title_prefix: 'Dashboard: '
+    title_prefix: "Dashboard: "
     no_categories_for_result: Ingen kategorier koblet på resultaterne.
 Filter: Filtrér
 embedded_list:
     open:
         new_tab: Redigér
-'Sort order': Vægt
+"Sort order": Vægt
 ThemeCategory: Tema-Kategori
 easyadmin_embedded_list_row:
     no_entity: Vises først efter der er gemt første gang.
