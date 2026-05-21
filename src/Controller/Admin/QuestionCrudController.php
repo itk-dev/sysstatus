@@ -36,8 +36,7 @@ class QuestionCrudController extends AbstractCrudController
 
         if (Crud::PAGE_EDIT === $pageName) {
             return [$id];
-        } else {
-            throw new \Exception('Invalid page: '.$pageName);
         }
+        throw new \Exception('Invalid page: '.$pageName);
     }
 }

@@ -48,8 +48,7 @@ class ImportRunCrudController extends AbstractCrudController
             return [$id, $type, $datetime, $result, $output];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [$type, $datetime, $result, $output];
-        } else {
-            throw new \Exception('Invalid page: '.$pageName);
         }
+        throw new \Exception('Invalid page: '.$pageName);
     }
 }

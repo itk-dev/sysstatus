@@ -88,8 +88,7 @@ class SystemCrudController extends AbstractFilterableCrudController
             ];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$sys_title, $text_editor, $groups, $edoc_url];
-        } else {
-            throw new \Exception('Invalid page: '.$pageName);
         }
+        throw new \Exception('Invalid page: '.$pageName);
     }
 }
