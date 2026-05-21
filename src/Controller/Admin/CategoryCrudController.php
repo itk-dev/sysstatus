@@ -13,6 +13,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
+/**
+ * @extends AbstractCrudController<Category>
+ */
 class CategoryCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

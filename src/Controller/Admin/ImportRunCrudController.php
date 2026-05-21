@@ -12,6 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+/**
+ * @extends AbstractCrudController<ImportRun>
+ */
 class ImportRunCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

@@ -13,6 +13,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @template TEntity of object
+ *
+ * @extends AbstractCrudController<TEntity>
+ */
 abstract class AbstractFilterableCrudController extends AbstractCrudController
 {
     use EntityFilterTrait;

@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @extends AbstractCrudController<Answer>
+ */
 class AnswerCrudController extends AbstractCrudController
 {
     public function __construct(
@@ -30,6 +33,9 @@ class AnswerCrudController extends AbstractCrudController
         return Answer::class;
     }
 
+    /**
+     * @param AdminContext<Answer> $context
+     */
     #[\Override]
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
