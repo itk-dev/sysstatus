@@ -10,7 +10,7 @@
 
 {% block main %}
   {% if custom_filters is defined %}
-    {{ include('_partials/custom_filters.html.twig', {custom_filters}) }}
+    {{ include('_partials/custom_filters.html.twig', {custom_filters: custom_filters}) }}
   {% endif %}
 
   <div class="dashboard--table">

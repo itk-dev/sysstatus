@@ -37,7 +37,7 @@
 
             <td>
               <a href="{{ ea_url({
-                            referer,
+                            referer: referer,
                          })
                          .setController('App\\Controller\\Admin\\AnswerCrudController')
                          .setAction('edit')
@@ -53,7 +53,7 @@
                             report: 'App\\Entity\\Report' == get_class(entity.instance) ? entity.instance.id : null,
                             system: 'App\\Entity\\System' == get_class(entity.instance) ? entity.instance.id : null,
                             question: question.id,
-                            referer,
+                            referer: referer,
                          })
                          .setController('App\\Controller\\Admin\\AnswerCrudController')
                          .setAction('new')
