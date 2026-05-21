@@ -14,6 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
+/**
+ * @extends AbstractFilterableCrudController<System>
+ */
 class SystemCrudController extends AbstractFilterableCrudController
 {
     public static function getEntityFqcn(): string
@@ -88,8 +91,7 @@ class SystemCrudController extends AbstractFilterableCrudController
             ];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$sys_title, $text_editor, $groups, $edoc_url];
-        } else {
-            throw new \Exception('Invalid page: '.$pageName);
         }
+        throw new \Exception('Invalid page: '.$pageName);
     }
 }

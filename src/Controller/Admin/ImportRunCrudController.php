@@ -12,6 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+/**
+ * @extends AbstractCrudController<ImportRun>
+ */
 class ImportRunCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -48,8 +51,7 @@ class ImportRunCrudController extends AbstractCrudController
             return [$id, $type, $datetime, $result, $output];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [$type, $datetime, $result, $output];
-        } else {
-            throw new \Exception('Invalid page: '.$pageName);
         }
+        throw new \Exception('Invalid page: '.$pageName);
     }
 }

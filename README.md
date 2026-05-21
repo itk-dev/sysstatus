@@ -29,7 +29,8 @@ Make sure you have a set of JSON files for testing import Commands.
 ### Start Docker containers
 
 ```shell
-docker compose up --detach
+docker compose pull
+docker compose up --detach --remove-orphans
 docker compose exec phpfpm composer install
 docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 ```

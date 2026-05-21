@@ -37,14 +37,13 @@ class ThemeManager
             }
 
             return $userCategories;
-        } else {
-            $createdCategories = $this->categoryRepository->findBy([
-                'createdBy' => $user->getUsername(),
-            ]);
+        }
+        $createdCategories = $this->categoryRepository->findBy([
+            'createdBy' => $user->getUsername(),
+        ]);
 
-            foreach ($createdCategories as $category) {
-                $userCategories[$category->getName()] = $category;
-            }
+        foreach ($createdCategories as $category) {
+            $userCategories[$category->getName()] = $category;
         }
 
         $userGroups = $user->getGroups();
