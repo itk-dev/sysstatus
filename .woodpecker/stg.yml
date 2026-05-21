@@ -23,10 +23,9 @@ steps:
       user:
         from_secret: user
       actions:
-        - git reset --hard
         - git fetch origin ${CI_COMMIT_BRANCH}
-        - git checkout ${CI_COMMIT_BRANCH}
-        - git pull
+        - git checkout --force ${CI_COMMIT_BRANCH}
+        - git reset --hard origin/${CI_COMMIT_BRANCH}
         - itkdev-docker-compose-server up --detach --force-recreate
         - itkdev-docker-compose-server exec phpfpm composer install --no-dev --classmap-authoritative
         # https://symfony.com/doc/current/frontend/asset_mapper.html#serving-assets-in-dev-vs-prod
